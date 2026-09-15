@@ -3,6 +3,26 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>JibLi-vraison | Service de livraison</title>
+<!-- Mapbox CSS & JS -->
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+<!-- Mapbox Geocoder (للإكمال التلقائي ديال العناوين) -->
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+  // حط التوكين ديالك هنا
+mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
+
+// حساب المسافة بين نقطتين بـ الكيلومتر (Haversine Formula)
+function calculateDistance(lon1, lat1, lon2, lat2) {
+  const R = 6371; // شعاع الأرض بـ كم
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon/2) * Math.sin(dLon/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c; // المسافة بـ كم
+} 
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#090909;color:#fff}a{text-decoration:none;color:inherit}.c{width:92%;max-width:1100px;margin:auto}
 header{position:sticky;top:0;background:#090909ee;border-bottom:1px solid #292929;z-index:5}nav{height:70px;display:flex;align-items:center;justify-content:space-between}.brand{font-size:24px;font-weight:900;font-style:italic}.brand span{color:#ffb900}.links{display:flex;gap:20px;font-size:14px}.btn{display:inline-block;padding:13px 18px;border-radius:11px;font-weight:800}.yellow{background:#ffb900;color:#111}.dark{background:#171717;border:1px solid #555}

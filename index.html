@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="fr">
 <head>
@@ -7,6 +8,9 @@
 <!-- Mapbox GL JS -->
 <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+
+<!-- Google Places API (إستبدل YOUR_GOOGLE_MAPS_API_KEY بالمفتاح الخاص بك) -->
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
 
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#090909;color:#fff}a{text-decoration:none;color:inherit}.c{width:92%;max-width:1100px;margin:auto}
@@ -22,11 +26,16 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 .search-input:focus { border-color: #ffb900; }
 .gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 12px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; white-space: nowrap; font-size: 14px; }
 .gps-btn:hover { background: #ffb900; color: #111; }
-.suggestions-list { position: absolute; top: 100%; left: 0; right: 0; background: #1a1a1a; border: 1px solid #444; border-radius: 8px; max-height: 220px; overflow-y: auto; z-index: 1000; display: none; margin: 5px 0 0 0; padding: 0; list-style: none; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-.suggestions-list li { padding: 12px 15px; cursor: pointer; color: #fff; border-bottom: 1px solid #2a2a2a; font-size: 14px; }
-.suggestions-list li:hover { background: #ffb900; color: #000; }
 #map { width: 100%; height: 320px; border-radius: 15px; margin-top: 15px; border: 1px solid #333; }
 .map-hint { font-size: 12px; color: #ffb900; margin-top: 8px; display: block; }
+
+/* Style des suggestions Google Places */
+.pac-container { background-color: #1a1a1a !important; border: 1px solid #444 !important; border-radius: 8px !important; font-family: Arial, sans-serif !important; }
+.pac-item { color: #fff !important; border-top: 1px solid #2a2a2a !important; padding: 10px !important; cursor: pointer; }
+.pac-item:hover { background-color: #ffb900 !important; color: #000 !important; }
+.pac-item-query { color: #ffb900 !important; font-weight: bold; }
+.pac-matched { color: #fff !important; }
+.pac-icon { display: none !important; }
 </style>
 </head>
 <body>
@@ -49,15 +58,13 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
         <input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare Kenitra, Mimosa..." autocomplete="off">
         <button type="button" class="gps-btn" onclick="useCurrentLocation()">🎯 Ma position</button>
       </div>
-      <ul id="list-depart" class="suggestions-list"></ul>
     </div>
   </div>
 
   <div>
     <label style="font-weight:700;display:block;margin-bottom:5px">🏁 Destination</label>
     <div class="search-box">
-      <input type="text" id="input-dest" class="search-input" placeholder="Ex: Pharmacie, Bir Rami, Mehdia..." autocomplete="off">
-      <ul id="list-dest" class="suggestions-list"></ul>
+      <input type="text" id="input-dest" class="search-input" placeholder="Ex: Pharmacie Chateau, Bir Rami..." autocomplete="off">
     </div>
   </div>
 
@@ -96,56 +103,45 @@ let depCoord = null, destCoord = null;
 let depName = '', destName = '';
 let depMarker = null, destMarker = null;
 
-// Search Functionality using Photon API (Much better for Kenitra places & Pharmacies)
-function setupSearch(inputId, listId, isDepart) {
-  const input = document.getElementById(inputId);
-  const list = document.getElementById(listId);
-  let timer;
+// Initialize Google Autocomplete with Kenitra restriction
+function initGooglePlaces() {
+  const options = {
+    componentRestrictions: { country: 'ma' },
+    bounds: new google.maps.LatLngBounds(
+      new google.maps.LatLng(34.2000, -6.6500),
+      new google.maps.LatLng(34.3200, -6.5000)
+    ),
+    strictBounds: false
+  };
 
-  input.addEventListener('input', () => {
-    clearTimeout(timer);
-    const query = input.value.trim();
-    if (query.length < 2) { list.style.display = 'none'; return; }
+  const inputDepart = document.getElementById('input-depart');
+  const inputDest = document.getElementById('input-dest');
 
-    timer = setTimeout(() => {
-      // Search centered on Kenitra longitude/latitude
-      fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&lon=-6.5802&lat=34.2610&limit=6`)
-        .then(res => res.json())
-        .then(data => {
-          list.innerHTML = '';
-          if (!data.features || data.features.length === 0) { list.style.display = 'none'; return; }
-          
-          data.features.forEach(item => {
-            const props = item.properties;
-            const name = props.name || props.street || query;
-            const district = props.district || props.city || 'Kénitra';
-            const label = `${name} (${district})`;
+  const autoDepart = new google.maps.places.Autocomplete(inputDepart, options);
+  const autoDest = new google.maps.places.Autocomplete(inputDest, options);
 
-            const li = document.createElement('li');
-            li.textContent = label;
-            li.onclick = () => {
-              input.value = label;
-              list.style.display = 'none';
-              const coords = item.geometry.coordinates; // [lon, lat]
-              setPoint(coords, label, isDepart);
-            };
-            list.appendChild(li);
-          });
-          list.style.display = 'block';
-        })
-        .catch(() => { list.style.display = 'none'; });
-  }, 250);
+  autoDepart.addListener('place_changed', () => {
+    const place = autoDepart.getPlace();
+    if (place.geometry) {
+      const coords = [place.geometry.location.lng(), place.geometry.location.lat()];
+      setPoint(coords, place.name || inputDepart.value, true);
+    }
   });
 
-  document.addEventListener('click', (e) => {
-    if (!input.contains(e.target) && !list.contains(e.target)) {
-      list.style.display = 'none';
+  autoDest.addListener('place_changed', () => {
+    const place = autoDest.getPlace();
+    if (place.geometry) {
+      const coords = [place.geometry.location.lng(), place.geometry.location.lat()];
+      setPoint(coords, place.name || inputDest.value, false);
     }
   });
 }
 
-setupSearch('input-depart', 'list-depart', true);
-setupSearch('input-dest', 'list-dest', false);
+window.onload = () => {
+  if (typeof google !== 'undefined' && google.maps && google.maps.places) {
+    initGooglePlaces();
+  }
+};
 
 // Click on map functionality
 map.on('click', (e) => {
@@ -240,4 +236,3 @@ function calculate() {
 </script>
 </body>
 </html>
-

@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="fr">
 <head>
@@ -9,9 +8,6 @@
 <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
 
-<!-- Google Places API (إستبدل YOUR_GOOGLE_MAPS_API_KEY بالمفتاح الخاص بك) -->
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
-
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#090909;color:#fff}a{text-decoration:none;color:inherit}.c{width:92%;max-width:1100px;margin:auto}
 header{position:sticky;top:0;background:#090909ee;border-bottom:1px solid #292929;z-index:5}nav{height:70px;display:flex;align-items:center;justify-content:space-between}.brand{font-size:24px;font-weight:900;font-style:italic}.brand span{color:#ffb900}.links{display:flex;gap:20px;font-size:14px}.btn{display:inline-block;padding:13px 18px;border-radius:11px;font-weight:800;cursor:pointer;border:none}.yellow{background:#ffb900;color:#111}.dark{background:#171717;border:1px solid #555;color:#fff}
@@ -19,23 +15,18 @@ header{position:sticky;top:0;background:#090909ee;border-bottom:1px solid #29292
 section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:center;color:#aaa}.cards,.steps,.why{display:grid;gap:16px}.cards{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:repeat(4,1fr)}.why{grid-template-columns:repeat(4,1fr)}.card,.step,.whyitem,.tarif,.faq details{background:#151515;border:1px solid #2b2b2b;border-radius:17px;padding:24px}.icon{font-size:30px}.card p,.step p,.whyitem small,.answer{color:#aaa}.num{width:38px;height:38px;background:#ffb900;color:#111;border-radius:50%;display:grid;place-items:center;font-weight:900}.whyitem{text-align:center}.whyitem span{font-size:28px}.tarif{max-width:650px;margin:auto;text-align:center}.result{font-size:30px;font-weight:900;color:#ffb900;margin:12px}.cta{background:linear-gradient(135deg,#ffb900,#f08d00);color:#111;border-radius:23px;padding:40px;display:flex;justify-content:space-between;align-items:center;gap:20px}.cta h2{font-size:32px;margin:0}.cta .btn{background:#111;color:#fff}footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}.wa{position:fixed;right:18px;bottom:18px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:28px;z-index:10}
 @media(max-width:800px){.links{display:none}.grid,.cards,.steps,.why{grid-template-columns:1fr}.hero{padding:50px 0}.cta{display:block}.cta .btn{margin-top:20px}}
 
-/* Custom Inputs & GPS Button */
+/* Inputs & GPS Buttons */
 .search-box { position: relative; width: 100%; text-align: left; }
 .input-group { display: flex; gap: 8px; }
-.search-input { flex: 1; padding: 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 16px; outline: none; }
+.search-input { flex: 1; padding: 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 15px; outline: none; }
 .search-input:focus { border-color: #ffb900; }
-.gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 12px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; white-space: nowrap; font-size: 14px; }
+.gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 10px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; }
 .gps-btn:hover { background: #ffb900; color: #111; }
+.suggestions-list { position: absolute; top: 100%; left: 0; right: 0; background: #1a1a1a; border: 1px solid #444; border-radius: 8px; max-height: 220px; overflow-y: auto; z-index: 1000; display: none; margin: 5px 0 0 0; padding: 0; list-style: none; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+.suggestions-list li { padding: 12px 15px; cursor: pointer; color: #fff; border-bottom: 1px solid #2a2a2a; font-size: 14px; }
+.suggestions-list li:hover { background: #ffb900; color: #000; }
 #map { width: 100%; height: 320px; border-radius: 15px; margin-top: 15px; border: 1px solid #333; }
 .map-hint { font-size: 12px; color: #ffb900; margin-top: 8px; display: block; }
-
-/* Style des suggestions Google Places */
-.pac-container { background-color: #1a1a1a !important; border: 1px solid #444 !important; border-radius: 8px !important; font-family: Arial, sans-serif !important; }
-.pac-item { color: #fff !important; border-top: 1px solid #2a2a2a !important; padding: 10px !important; cursor: pointer; }
-.pac-item:hover { background-color: #ffb900 !important; color: #000 !important; }
-.pac-item-query { color: #ffb900 !important; font-weight: bold; }
-.pac-matched { color: #fff !important; }
-.pac-icon { display: none !important; }
 </style>
 </head>
 <body>
@@ -56,15 +47,20 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
     <div class="search-box">
       <div class="input-group">
         <input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare Kenitra, Mimosa..." autocomplete="off">
-        <button type="button" class="gps-btn" onclick="useCurrentLocation()">🎯 Ma position</button>
+        <button type="button" class="gps-btn" onclick="useCurrentLocation(true)">🎯 Ma position</button>
       </div>
+      <ul id="list-depart" class="suggestions-list"></ul>
     </div>
   </div>
 
   <div>
     <label style="font-weight:700;display:block;margin-bottom:5px">🏁 Destination</label>
     <div class="search-box">
-      <input type="text" id="input-dest" class="search-input" placeholder="Ex: Pharmacie Chateau, Bir Rami..." autocomplete="off">
+      <div class="input-group">
+        <input type="text" id="input-dest" class="search-input" placeholder="Ex: Pharmacie Chateau, Bir Rami..." autocomplete="off">
+        <button type="button" class="gps-btn" onclick="useCurrentLocation(false)">🎯 Ma position</button>
+      </div>
+      <ul id="list-dest" class="suggestions-list"></ul>
     </div>
   </div>
 
@@ -90,7 +86,8 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 <a class="wa" href="https://wa.me/212634084543">☏</a>
 
 <script>
-mapboxgl.accessToken = 'pk.eyJ1IjoiamlibGktdnJhaXNvbiIsImEiOiJjbXUzcWRhbWgwY21xMnhzZnJud3FtYXlmIn0.9LYyPUAJTdtu8eLiCT6y7Q';
+const mapboxToken = 'pk.eyJ1IjoiamlibGktdnJhaXNvbiIsImEiOiJjbXUzcWRhbWgwY21xMnhzZnJud3FtYXlmIn0.9LYyPUAJTdtu8eLiCT6y7Q';
+mapboxgl.accessToken = mapboxToken;
 
 const map = new mapboxgl.Map({
   container: 'map',
@@ -103,45 +100,54 @@ let depCoord = null, destCoord = null;
 let depName = '', destName = '';
 let depMarker = null, destMarker = null;
 
-// Initialize Google Autocomplete with Kenitra restriction
-function initGooglePlaces() {
-  const options = {
-    componentRestrictions: { country: 'ma' },
-    bounds: new google.maps.LatLngBounds(
-      new google.maps.LatLng(34.2000, -6.6500),
-      new google.maps.LatLng(34.3200, -6.5000)
-    ),
-    strictBounds: false
-  };
+// Search Function using Mapbox Geocoding (Works perfectly in Kenitra)
+function setupSearch(inputId, listId, isDepart) {
+  const input = document.getElementById(inputId);
+  const list = document.getElementById(listId);
+  let timer;
 
-  const inputDepart = document.getElementById('input-depart');
-  const inputDest = document.getElementById('input-dest');
+  input.addEventListener('input', () => {
+    clearTimeout(timer);
+    const query = input.value.trim();
+    if (query.length < 2) { list.style.display = 'none'; return; }
 
-  const autoDepart = new google.maps.places.Autocomplete(inputDepart, options);
-  const autoDest = new google.maps.places.Autocomplete(inputDest, options);
+    timer = setTimeout(() => {
+      // Proximity around Kenitra coordinates [-6.5802, 34.2610]
+      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxToken}&proximity=-6.5802,34.2610&country=ma&limit=5`;
 
-  autoDepart.addListener('place_changed', () => {
-    const place = autoDepart.getPlace();
-    if (place.geometry) {
-      const coords = [place.geometry.location.lng(), place.geometry.location.lat()];
-      setPoint(coords, place.name || inputDepart.value, true);
-    }
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          list.innerHTML = '';
+          if (!data.features || data.features.length === 0) { list.style.display = 'none'; return; }
+
+          data.features.forEach(item => {
+            const li = document.createElement('li');
+            const placeName = item.text + (item.context ? `, ${item.context[0].text}` : '');
+            li.textContent = placeName;
+            
+            li.onclick = () => {
+              input.value = placeName;
+              list.style.display = 'none';
+              setPoint(item.center, placeName, isDepart);
+            };
+            list.appendChild(li);
+          });
+          list.style.display = 'block';
+        })
+        .catch(() => { list.style.display = 'none'; });
+    }, 250);
   });
 
-  autoDest.addListener('place_changed', () => {
-    const place = autoDest.getPlace();
-    if (place.geometry) {
-      const coords = [place.geometry.location.lng(), place.geometry.location.lat()];
-      setPoint(coords, place.name || inputDest.value, false);
+  document.addEventListener('click', (e) => {
+    if (!input.contains(e.target) && !list.contains(e.target)) {
+      list.style.display = 'none';
     }
   });
 }
 
-window.onload = () => {
-  if (typeof google !== 'undefined' && google.maps && google.maps.places) {
-    initGooglePlaces();
-  }
-};
+setupSearch('input-depart', 'list-depart', true);
+setupSearch('input-dest', 'list-dest', false);
 
 // Click on map functionality
 map.on('click', (e) => {
@@ -164,18 +170,21 @@ map.on('click', (e) => {
   }
 });
 
-// GPS Location button
-function useCurrentLocation() {
+// GPS Location button for both Départ and Destination
+function useCurrentLocation(isDepart) {
+  const inputId = isDepart ? 'input-depart' : 'input-dest';
+  const input = document.getElementById(inputId);
+  
   if (navigator.geolocation) {
-    document.getElementById('input-depart').value = "Localisation GPS en cours...";
+    input.value = "Localisation GPS...";
     navigator.geolocation.getCurrentPosition(position => {
       const coords = [position.coords.longitude, position.coords.latitude];
       const name = "Ma position exacte (GPS)";
-      document.getElementById('input-depart').value = name;
-      setPoint(coords, name, true);
+      input.value = name;
+      setPoint(coords, name, isDepart);
     }, () => {
       alert("Veuillez autoriser la géolocalisation sur votre téléphone.");
-      document.getElementById('input-depart').value = "";
+      input.value = "";
     });
   } else {
     alert("Géolocalisation non supportée.");
@@ -227,7 +236,7 @@ function calculate() {
     document.getElementById('status').textContent = 'Distance estimée : ' + shown + ' km';
 
     let gpsDep = depName.includes("GPS") || depName.includes("carte") ? `https://www.google.com/maps?q=${depCoord[1]},${depCoord[0]}` : depName;
-    let gpsDest = destName.includes("carte") ? `https://www.google.com/maps?q=${destCoord[1]},${destCoord[0]}` : destName;
+    let gpsDest = destName.includes("GPS") || destName.includes("carte") ? `https://www.google.com/maps?q=${destCoord[1]},${destCoord[0]}` : destName;
 
     let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n📍 Départ : ${gpsDep}\n🏁 Destination : ${gpsDest}\n📏 Distance : ${shown} km\n💰 Prix estimé : ${price} DH`;
     document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
@@ -236,3 +245,4 @@ function calculate() {
 </script>
 </body>
 </html>
+

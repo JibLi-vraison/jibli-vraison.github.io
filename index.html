@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="fr">
 <head>
@@ -21,12 +20,13 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 .input-group { display: flex; gap: 8px; }
 .search-input { flex: 1; padding: 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 16px; outline: none; }
 .search-input:focus { border-color: #ffb900; }
-.gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 15px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+.gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 12px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; white-space: nowrap; font-size: 14px; }
 .gps-btn:hover { background: #ffb900; color: #111; }
-.suggestions-list { position: absolute; top: 100%; left: 0; right: 0; background: #1a1a1a; border: 1px solid #444; border-radius: 8px; max-height: 200px; overflow-y: auto; z-index: 100; display: none; margin: 5px 0 0 0; padding: 0; list-style: none; }
-.suggestions-list li { padding: 12px; cursor: pointer; color: #fff; border-bottom: 1px solid #2a2a2a; font-size: 14px; }
+.suggestions-list { position: absolute; top: 100%; left: 0; right: 0; background: #1a1a1a; border: 1px solid #444; border-radius: 8px; max-height: 220px; overflow-y: auto; z-index: 1000; display: none; margin: 5px 0 0 0; padding: 0; list-style: none; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+.suggestions-list li { padding: 12px 15px; cursor: pointer; color: #fff; border-bottom: 1px solid #2a2a2a; font-size: 14px; }
 .suggestions-list li:hover { background: #ffb900; color: #000; }
-#map { width: 100%; height: 320px; border-radius: 15px; margin-top: 20px; border: 1px solid #333; }
+#map { width: 100%; height: 320px; border-radius: 15px; margin-top: 15px; border: 1px solid #333; }
+.map-hint { font-size: 12px; color: #ffb900; margin-top: 8px; display: block; }
 </style>
 </head>
 <body>
@@ -47,7 +47,7 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
     <div class="search-box">
       <div class="input-group">
         <input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare Kenitra, Mimosa..." autocomplete="off">
-        <button class="gps-btn" onclick="useCurrentLocation()">🎯 Ma position</button>
+        <button type="button" class="gps-btn" onclick="useCurrentLocation()">🎯 Ma position</button>
       </div>
       <ul id="list-depart" class="suggestions-list"></ul>
     </div>
@@ -56,7 +56,7 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
   <div>
     <label style="font-weight:700;display:block;margin-bottom:5px">🏁 Destination</label>
     <div class="search-box">
-      <input type="text" id="input-dest" class="search-input" placeholder="Ex: Bir Rami, Mehdia..." autocomplete="off">
+      <input type="text" id="input-dest" class="search-input" placeholder="Ex: Pharmacie, Bir Rami, Mehdia..." autocomplete="off">
       <ul id="list-dest" class="suggestions-list"></ul>
     </div>
   </div>
@@ -67,6 +67,7 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 <p id="status" style="color:#aaa;margin-bottom:15px;">Sélectionnez les deux adresses pour afficher le tarif.</p>
 
 <div id="map"></div>
+<span class="map-hint">💡 Vous pouvez aussi cliquer directement sur la carte pour choisir vos points.</span>
 <br>
 <a id="order" class="btn yellow" href="https://wa.me/212634084543" style="width:100%;text-align:center;">Commander sur WhatsApp</a>
 </div></div></section>
@@ -95,7 +96,7 @@ let depCoord = null, destCoord = null;
 let depName = '', destName = '';
 let depMarker = null, destMarker = null;
 
-// Search Functionality
+// Search Functionality using Photon API (Much better for Kenitra places & Pharmacies)
 function setupSearch(inputId, listId, isDepart) {
   const input = document.getElementById(inputId);
   const list = document.getElementById(listId);
@@ -107,46 +108,81 @@ function setupSearch(inputId, listId, isDepart) {
     if (query.length < 2) { list.style.display = 'none'; return; }
 
     timer = setTimeout(() => {
-      fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + ' Kenitra Morocco')}&limit=5`)
+      // Search centered on Kenitra longitude/latitude
+      fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&lon=-6.5802&lat=34.2610&limit=6`)
         .then(res => res.json())
         .then(data => {
           list.innerHTML = '';
-          if (data.length === 0) { list.style.display = 'none'; return; }
-          data.forEach(item => {
+          if (!data.features || data.features.length === 0) { list.style.display = 'none'; return; }
+          
+          data.features.forEach(item => {
+            const props = item.properties;
+            const name = props.name || props.street || query;
+            const district = props.district || props.city || 'Kénitra';
+            const label = `${name} (${district})`;
+
             const li = document.createElement('li');
-            li.textContent = item.display_name.split(',')[0] + ', Kénitra';
+            li.textContent = label;
             li.onclick = () => {
-              input.value = li.textContent;
+              input.value = label;
               list.style.display = 'none';
-              const coords = [parseFloat(item.lon), parseFloat(item.lat)];
-              setPoint(coords, li.textContent, isDepart);
+              const coords = item.geometry.coordinates; // [lon, lat]
+              setPoint(coords, label, isDepart);
             };
             list.appendChild(li);
           });
           list.style.display = 'block';
-        });
-    }, 300);
+        })
+        .catch(() => { list.style.display = 'none'; });
+  }, 250);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!input.contains(e.target) && !list.contains(e.target)) {
+      list.style.display = 'none';
+    }
   });
 }
 
 setupSearch('input-depart', 'list-depart', true);
 setupSearch('input-dest', 'list-dest', false);
 
-// GPS Position
+// Click on map functionality
+map.on('click', (e) => {
+  const coords = [e.lngLat.lng, e.lngLat.lat];
+  if (!depCoord) {
+    const name = "Point sur la carte (Départ)";
+    document.getElementById('input-depart').value = name;
+    setPoint(coords, name, true);
+  } else if (!destCoord) {
+    const name = "Point sur la carte (Destination)";
+    document.getElementById('input-dest').value = name;
+    setPoint(coords, name, false);
+  } else {
+    const name = "Point sur la carte (Départ)";
+    document.getElementById('input-depart').value = name;
+    document.getElementById('input-dest').value = "";
+    if (destMarker) destMarker.remove();
+    destCoord = null;
+    setPoint(coords, name, true);
+  }
+});
+
+// GPS Location button
 function useCurrentLocation() {
   if (navigator.geolocation) {
-    document.getElementById('input-depart').value = "Localisation en cours...";
+    document.getElementById('input-depart').value = "Localisation GPS en cours...";
     navigator.geolocation.getCurrentPosition(position => {
       const coords = [position.coords.longitude, position.coords.latitude];
-      const name = "Ma position actuelle (GPS)";
+      const name = "Ma position exacte (GPS)";
       document.getElementById('input-depart').value = name;
       setPoint(coords, name, true);
     }, () => {
-      alert("Impossible d'accéder à votre position GPS. Veuillez autoriser la localisation.");
+      alert("Veuillez autoriser la géolocalisation sur votre téléphone.");
       document.getElementById('input-depart').value = "";
     });
   } else {
-    alert("La géolocalisation n'est pas supportée par votre navigateur.");
+    alert("Géolocalisation non supportée.");
   }
 }
 
@@ -163,7 +199,6 @@ function setPoint(coords, name, isDepart) {
     destMarker = new mapboxgl.Marker({ color: '#ff4444' }).setLngLat(coords).addTo(map);
   }
 
-  // Adjust camera
   if (depCoord && destCoord) {
     const bounds = new mapboxgl.LngLatBounds();
     bounds.extend(depCoord);
@@ -195,13 +230,14 @@ function calculate() {
     document.getElementById('result').textContent = price + ' DH';
     document.getElementById('status').textContent = 'Distance estimée : ' + shown + ' km';
 
-    // Link with Google Maps GPS link for delivery driver
-    let gpsLink = depName.includes("GPS") ? `https://www.google.com/maps?q=${depCoord[1]},${depCoord[0]}` : depName;
+    let gpsDep = depName.includes("GPS") || depName.includes("carte") ? `https://www.google.com/maps?q=${depCoord[1]},${depCoord[0]}` : depName;
+    let gpsDest = destName.includes("carte") ? `https://www.google.com/maps?q=${destCoord[1]},${destCoord[0]}` : destName;
 
-    let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n📍 Départ : ${gpsLink}\n🏁 Destination : ${destName}\n📏 Distance : ${shown} km\n💰 Prix estimé : ${price} DH`;
+    let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n📍 Départ : ${gpsDep}\n🏁 Destination : ${gpsDest}\n📏 Distance : ${shown} km\n💰 Prix estimé : ${price} DH`;
     document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
   }
 }
 </script>
 </body>
 </html>
+

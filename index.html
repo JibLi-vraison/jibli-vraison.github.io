@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>JibLi-vraison | Service de livraison</title>
 
-<!-- Mapbox GL JS & Geocoder -->
+<!-- Mapbox GL JS & Geocoder CSS/JS -->
 <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
@@ -17,6 +17,12 @@ header{position:sticky;top:0;background:#090909ee;border-bottom:1px solid #29292
 section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:center;color:#aaa}.cards,.steps,.why{display:grid;gap:16px}.cards{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:repeat(4,1fr)}.why{grid-template-columns:repeat(4,1fr)}.card,.step,.whyitem,.tarif,.faq details{background:#151515;border:1px solid #2b2b2b;border-radius:17px;padding:24px}.icon{font-size:30px}.card p,.step p,.whyitem small,.answer{color:#aaa}.num{width:38px;height:38px;background:#ffb900;color:#111;border-radius:50%;display:grid;place-items:center;font-weight:900}.whyitem{text-align:center}.whyitem span{font-size:28px}.tarif{max-width:650px;margin:auto;text-align:center}.calc{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;margin:20px 0}.calc input{width:180px;padding:14px;border-radius:10px;border:1px solid #555;background:#0f0f0f;color:#fff;font-size:18px}.result{font-size:30px;font-weight:900;color:#ffb900;margin:12px}.cta{background:linear-gradient(135deg,#ffb900,#f08d00);color:#111;border-radius:23px;padding:40px;display:flex;justify-content:space-between;align-items:center;gap:20px}.cta h2{font-size:32px;margin:0}.cta .btn{background:#111;color:#fff}footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}.wa{position:fixed;right:18px;bottom:18px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:28px;z-index:10}
 @media(max-width:800px){.links{display:none}.grid,.cards,.steps,.why{grid-template-columns:1fr}.hero{padding:50px 0}.cta{display:block}.cta .btn{margin-top:20px}}
 .tarif input:focus{outline:2px solid #ffb900;border-color:#ffb900}.btn:disabled{opacity:.65;cursor:not-allowed}
+
+/* Mapbox Custom Styling */
+.mapboxgl-ctrl-geocoder { width: 100% !important; max-width: none !important; background-color: #0f0f0f !important; border: 1px solid #555 !important; border-radius: 10px !important; }
+.mapboxgl-ctrl-geocoder input { color: #fff !important; font-size: 16px !important; }
+.mapboxgl-ctrl-geocoder--icon-search { fill: #ffb900 !important; }
+#map { width: 100%; height: 300px; border-radius: 15px; margin-top: 20px; border: 1px solid #333; }
 </style>
 </head>
 <body>
@@ -29,23 +35,24 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 </div></div></section>
 
 <section id="comment"><div class="c"><h2 class="title">Comment ça marche ?</h2><p class="sub">Commander est simple.</p><div class="steps">
-<div class="step"><div class="num">1</div><h3>Lieu de départ</h3><p>Envoyez la localisation du point de récupération.</p></div><div class="step"><div class="num">2</div><h3>Destination</h3><p>Indiquez où vous souhaitez recevoir la commande.</p></div><div class="step"><div class="num">3</div><h3>Confirmation</h3><p>Nous confirmons le prix et les détails.</p></div><div class="step"><div class="num">4</div><h3>Livraison</h3><p>Nous récupérons puis livrons votre commande.</p></div>
+<div class="step"><div class="num">1</div><h3>Lieu de départ</h3><p>Recherchez ou sélectionnez le point de récupération.</p></div><div class="step"><div class="num">2</div><h3>Destination</h3><p>Indiquez où vous souhaitez recevoir la commande.</p></div><div class="step"><div class="num">3</div><h3>Confirmation</h3><p>Le tarif s'affiche automatiquement.</p></div><div class="step"><div class="num">4</div><h3>Livraison</h3><p>Nous récupérons puis livrons votre commande.</p></div>
 </div></div></section>
 
-<!-- Seule nouvelle fonctionnalité : calculateur -->
-<section id="tarifs"><div class="c"><h2 class="title">Commander ma livraison</h2><p class="sub">Pour chaque lieu, copiez votre localisation ou saisissez simplement le nom du lieu.</p><div class="tarif">
-<div style="display:grid;gap:12px;margin-bottom:18px;text-align:left">
-<label for="depart" style="font-weight:700">📍 Départ</label>
-<input id="depart" type="text" placeholder="Saisissez ou copiez la localisation" style="width:100%;padding:14px;border-radius:10px;border:1px solid #555;background:#0f0f0f;color:#fff;font-size:18px">
-<label for="destination" style="font-weight:700">🏁 Destination</label>
-<input id="destination" type="text" placeholder="Saisissez ou copiez la localisation" style="width:100%;padding:14px;border-radius:10px;border:1px solid #555;background:#0f0f0f;color:#fff;font-size:18px">
+<!-- Section Calculateur & Carte -->
+<section id="tarifs"><div class="c"><h2 class="title">Commander ma livraison</h2><p class="sub">Sélectionnez le lieu de départ et d'arrivée sur Kénitra pour calculer le prix.</p><div class="tarif">
+<div style="display:grid;gap:15px;margin-bottom:18px;text-align:left">
+<label style="font-weight:700">📍 Départ</label>
+<div id="geocoder-depart"></div>
+<label style="font-weight:700">🏁 Destination</label>
+<div id="geocoder-destination"></div>
 </div>
-<a id="order" class="btn yellow" href="https://wa.me/212634084543">Commander sur WhatsApp</a>
-</div></div></section>
 
-<section id="estimation"><div class="c"><h2 class="title">Estimer le prix de la livraison</h2><p class="sub">Facultatif : indiquez la distance en kilomètres pour obtenir une estimation instantanée.</p><div class="tarif">
-<div class="calc"><input id="km" type="text" inputmode="decimal" autocomplete="off" placeholder="Kilométrage"><span>km</span></div>
-<div class="result" id="result">—</div><p id="status">Indiquez une distance en kilomètres pour obtenir une estimation.</p>
+<div class="result" id="result">— DH</div>
+<p id="status" style="color:#aaa;margin-bottom:15px;">Sélectionnez les deux adresses pour afficher le tarif.</p>
+
+<div id="map"></div>
+<br>
+<a id="order" class="btn yellow" href="https://wa.me/212634084543" style="width:100%;text-align:center;">Commander sur WhatsApp</a>
 </div></div></section>
 
 <section><div class="c"><h2 class="title">Pourquoi JibLi-vraison ?</h2><p class="sub">Un service de proximité, simple et direct.</p><div class="why">
@@ -53,9 +60,9 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 </div></div></section>
 
 <section id="faq"><div class="c"><h2 class="title">Questions fréquentes</h2><div class="faq">
-<details><summary>Comment commander ?</summary><div class="answer">Indiquez le lieu de départ et la destination, puis contactez-nous sur WhatsApp. Le kilométrage est facultatif et sert uniquement à afficher une estimation.</div></details>
+<details><summary>Comment commander ?</summary><div class="answer">Choisissez le lieu de départ et la destination فـ الخريطة, ثم اضغط على زر WhatsApp.</div></details>
 <details><summary>Où faites-vous les livraisons ?</summary><div class="answer">Le service est destiné aux livraisons à Kénitra.</div></details>
-<details><summary>Comment connaître le prix ?</summary><div class="answer">Si vous connaissez le kilométrage, vous pouvez l’indiquer pour voir une estimation. Sinon, JibLi-vraison confirme le tarif après réception des lieux.</div></details>
+<details><summary>Comment connaître le prix ?</summary><div class="answer">Le prix est calculé automatiquement en fonction du kilométrage exact.</div></details>
 <details><summary>Quels sont vos horaires ?</summary><div class="answer">De 16h00 à 4h00, ainsi que tout le week-end.</div></details>
 </div></div></section>
 
@@ -65,69 +72,92 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 
 <script>
 (function(){
-  const depart=document.getElementById('depart');
-  const destination=document.getElementById('destination');
-  const order=document.getElementById('order');
-  const km=document.getElementById('km');
-  const result=document.getElementById('result');
-  const status=document.getElementById('status');
+  mapboxgl.accessToken = 'Pk.eyJ1IjoiamlibGktdnJhaXNvbiIsImEiOiJjbXUzcWRhbWgwY21xMnhzZnJud3FtYXlmIn0.9LYyPUAJTdtu8eLiCT6y7Q';
 
-  let departureLink='';
+  let departCoord = null;
+  let destCoord = null;
+  let departName = '';
+  let destName = '';
 
-  function refreshWhatsApp(){
-    let msg='Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n';
-    msg+='📍 Départ : '+(depart.value.trim()||'À préciser')+'\n';
-    if(departureLink) msg+='🗺️ Départ : '+departureLink+'\n';
-    msg+='🏁 Destination : '+(destination.value.trim()||'À préciser');
-    order.href='https://api.whatsapp.com/send?phone=212634084543&text='+encodeURIComponent(msg);
+  const kenitraBounds = [-6.65, 34.20, -6.50, 34.32];
+
+  const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/dark-v11',
+    center: [-6.5802, 34.2610],
+    zoom: 12
+  });
+
+  const geocoderDepart = new MapboxGeocoder({
+    accessToken: mapboxgl.accessToken,
+    mapboxgl: mapboxgl,
+    placeholder: 'Rechercher le lieu de départ à Kénitra...',
+    bbox: kenitraBounds,
+    proximity: { longitude: -6.5802, latitude: 34.2610 }
+  });
+
+  const geocoderDest = new MapboxGeocoder({
+    accessToken: mapboxgl.accessToken,
+    mapboxgl: mapboxgl,
+    placeholder: 'Rechercher la destination...',
+    bbox: kenitraBounds,
+    proximity: { longitude: -6.5802, latitude: 34.2610 }
+  });
+
+  document.getElementById('geocoder-depart').appendChild(geocoderDepart.onAdd(map));
+  document.getElementById('geocoder-destination').appendChild(geocoderDest.onAdd(map));
+
+  geocoderDepart.on('result', (e) => {
+    departCoord = e.result.geometry.coordinates;
+    departName = e.result.text;
+    calculate();
+  });
+
+  geocoderDest.on('result', (e) => {
+    destCoord = e.result.geometry.coordinates;
+    destName = e.result.text;
+    calculate();
+  });
+
+  function getDistance(c1, c2) {
+    const R = 6371;
+    const dLat = (c2[1] - c1[1]) * Math.PI / 180;
+    const dLon = (c2[0] - c1[0]) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(c1[1] * Math.PI / 180) * Math.cos(c2[1] * Math.PI / 180) *
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
   }
 
-  /* Include destination map link in WhatsApp */
-  window.__refresh=refreshWhatsApp;
-  function refreshWithDestination(){
-    let msg='Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n';
-    msg+='📍 Départ : '+(depart.value.trim()||'À préciser')+'\n';
-    if(departureLink) msg+='🗺️ Départ : '+departureLink+'\n';
-    msg+='🏁 Destination : '+(destination.value.trim()||'À préciser');
-    if(destination.dataset.mapLink) msg+='\n🗺️ Destination : '+destination.dataset.mapLink;
-    order.href='https://api.whatsapp.com/send?phone=212634084543&text='+encodeURIComponent(msg);
-  }
-  destination.addEventListener('change',refreshWithDestination);
-  window.__refresh=refreshWithDestination;
+  function calculate(){
+    if(departCoord && destCoord){
+      const n = getDistance(departCoord, destCoord);
+      let price;
+      if(n<=4) price=20;
+      else if(n<6) price=25;
+      else if(n<7) price=26;
+      else if(n<8) price=27;
+      else if(n<9) price=28;
+      else if(n<10) price=29;
+      else price=35+Math.ceil(n-10)*2;
 
-  /* Estimateur indépendant : le prix s'affiche immédiatement pendant la saisie. */
-  function estimate(){
-    const raw=String(km.value || '').trim().replace(/\s/g,'').replace(',', '.');
-    if(raw === ''){
-      result.textContent='—';
-      status.textContent='Indiquez une distance en kilomètres pour obtenir une estimation.';
-      return;
+      const shown = n.toFixed(1);
+      document.getElementById('result').textContent = price + ' DH';
+      document.getElementById('status').textContent = 'Distance estimée : ' + shown + ' km';
+
+      // Update WhatsApp link
+      let msg = 'Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n';
+      msg += '📍 Départ : ' + (departName || 'Adresse sélectionnée') + '\n';
+      msg += '🏁 Destination : ' + (destName || 'Adresse sélectionnée') + '\n';
+      msg += '📏 Distance : ' + shown + ' km\n';
+      msg += '💰 Prix estimé : ' + price + ' DH';
+      
+      document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
     }
-    const n=Number(raw);
-    if(!Number.isFinite(n) || n <= 0){
-      result.textContent='—';
-      status.textContent='Entrez un nombre de kilomètres valide.';
-      return;
-    }
-    let price;
-    if(n<=4) price=20;
-    else if(n<6) price=25;
-    else if(n<7) price=26;
-    else if(n<8) price=27;
-    else if(n<9) price=28;
-    else if(n<10) price=29;
-    else price=35+Math.ceil(n-10)*2;
-    const shown=Number.isInteger(n) ? String(n) : n.toFixed(2).replace(/0+$/,'').replace(/\.$/,'');
-    result.textContent=price+' DH';
-    status.textContent='Estimation pour '+shown+' km';
   }
-  km.addEventListener('input',estimate);
-  km.addEventListener('change',estimate);
-  km.addEventListener('blur',estimate);
-
-  refreshWithDestination();
 })();
 </script>
-
 </body>
 </html>
+

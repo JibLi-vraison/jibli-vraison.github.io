@@ -15,7 +15,6 @@ header{position:sticky;top:0;background:#090909ee;border-bottom:1px solid #29292
 section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:center;color:#aaa}.cards,.steps,.why{display:grid;gap:16px}.cards{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:repeat(4,1fr)}.why{grid-template-columns:repeat(4,1fr)}.card,.step,.whyitem,.tarif,.faq details{background:#151515;border:1px solid #2b2b2b;border-radius:17px;padding:24px}.icon{font-size:30px}.card p,.step p,.whyitem small,.answer{color:#aaa}.num{width:38px;height:38px;background:#ffb900;color:#111;border-radius:50%;display:grid;place-items:center;font-weight:900}.whyitem{text-align:center}.whyitem span{font-size:28px}.tarif{max-width:650px;margin:auto;text-align:center}.result{font-size:30px;font-weight:900;color:#ffb900;margin:12px}.cta{background:linear-gradient(135deg,#ffb900,#f08d00);color:#111;border-radius:23px;padding:40px;display:flex;justify-content:space-between;align-items:center;gap:20px}.cta h2{font-size:32px;margin:0}.cta .btn{background:#111;color:#fff}footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}.wa{position:fixed;right:18px;bottom:18px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:28px;z-index:10}
 @media(max-width:800px){.links{display:none}.grid,.cards,.steps,.why{grid-template-columns:1fr}.hero{padding:50px 0}.cta{display:block}.cta .btn{margin-top:20px}}
 
-/* Inputs & GPS Buttons */
 .search-box { position: relative; width: 100%; text-align: left; }
 .input-group { display: flex; gap: 8px; }
 .search-input { flex: 1; padding: 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 15px; outline: none; }
@@ -38,7 +37,6 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 <div class="card"><div class="icon">🛒</div><h3>E-commerce</h3><p>Livraison de vos commandes en ligne.</p></div><div class="card"><div class="icon">🍔</div><h3>Restaurants</h3><p>Vos repas livrés rapidement.</p></div><div class="card"><div class="icon">💊</div><h3>Pharmacie</h3><p>Produits de pharmacie selon les conditions applicables.</p></div><div class="card"><div class="icon">🛍️</div><h3>Courses diverses</h3><p>Petits achats et besoins du quotidien.</p></div><div class="card"><div class="icon">📦</div><h3>Petits colis</h3><p>Un service de proximité pour vos petits envois.</p></div><div class="card"><div class="icon">🌙</div><h3>Service nocturne</h3><p>Disponible de 16h00 à 4h00.</p></div>
 </div></div></section>
 
-<!-- Section Calculateur & Carte -->
 <section id="tarifs"><div class="c"><h2 class="title">Commander ma livraison</h2><p class="sub">Sélectionnez le lieu de départ et d'arrivée sur Kénitra pour calculer le prix.</p><div class="tarif">
 <div style="display:grid;gap:15px;margin-bottom:18px;text-align:left">
   
@@ -46,7 +44,7 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
     <label style="font-weight:700;display:block;margin-bottom:5px">📍 Départ</label>
     <div class="search-box">
       <div class="input-group">
-        <input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare Kenitra, Mimosa..." autocomplete="off">
+        <input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare, Mimosa, Bir Rami..." autocomplete="off">
         <button type="button" class="gps-btn" onclick="useCurrentLocation(true)">🎯 Ma position</button>
       </div>
       <ul id="list-depart" class="suggestions-list"></ul>
@@ -57,7 +55,7 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
     <label style="font-weight:700;display:block;margin-bottom:5px">🏁 Destination</label>
     <div class="search-box">
       <div class="input-group">
-        <input type="text" id="input-dest" class="search-input" placeholder="Ex: Pharmacie Chateau, Bir Rami..." autocomplete="off">
+        <input type="text" id="input-dest" class="search-input" placeholder="Ex: Pharmacie, Mehdia..." autocomplete="off">
         <button type="button" class="gps-btn" onclick="useCurrentLocation(false)">🎯 Ma position</button>
       </div>
       <ul id="list-dest" class="suggestions-list"></ul>
@@ -100,7 +98,6 @@ let depCoord = null, destCoord = null;
 let depName = '', destName = '';
 let depMarker = null, destMarker = null;
 
-// Search Function using Mapbox Geocoding (Works perfectly in Kenitra)
 function setupSearch(inputId, listId, isDepart) {
   const input = document.getElementById(inputId);
   const list = document.getElementById(listId);
@@ -112,8 +109,9 @@ function setupSearch(inputId, listId, isDepart) {
     if (query.length < 2) { list.style.display = 'none'; return; }
 
     timer = setTimeout(() => {
-      // Proximity around Kenitra coordinates [-6.5802, 34.2610]
-      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxToken}&proximity=-6.5802,34.2610&country=ma&limit=5`;
+      // Bounding box strictly for Kenitra boundaries
+      const kenitraBounds = '-6.6600,34.2000,-6.5000,34.3200';
+      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxToken}&bbox=${kenitraBounds}&limit=5`;
 
       fetch(url)
         .then(res => res.json())
@@ -123,7 +121,7 @@ function setupSearch(inputId, listId, isDepart) {
 
           data.features.forEach(item => {
             const li = document.createElement('li');
-            const placeName = item.text + (item.context ? `, ${item.context[0].text}` : '');
+            const placeName = item.place_name_fr || item.place_name;
             li.textContent = placeName;
             
             li.onclick = () => {
@@ -136,7 +134,7 @@ function setupSearch(inputId, listId, isDepart) {
           list.style.display = 'block';
         })
         .catch(() => { list.style.display = 'none'; });
-    }, 250);
+    }, 200);
   });
 
   document.addEventListener('click', (e) => {
@@ -149,7 +147,6 @@ function setupSearch(inputId, listId, isDepart) {
 setupSearch('input-depart', 'list-depart', true);
 setupSearch('input-dest', 'list-dest', false);
 
-// Click on map functionality
 map.on('click', (e) => {
   const coords = [e.lngLat.lng, e.lngLat.lat];
   if (!depCoord) {
@@ -170,7 +167,6 @@ map.on('click', (e) => {
   }
 });
 
-// GPS Location button for both Départ and Destination
 function useCurrentLocation(isDepart) {
   const inputId = isDepart ? 'input-depart' : 'input-dest';
   const input = document.getElementById(inputId);
@@ -245,4 +241,5 @@ function calculate() {
 </script>
 </body>
 </html>
+
 

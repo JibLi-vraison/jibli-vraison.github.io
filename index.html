@@ -1,11 +1,76 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JibLi-vraison | Service de livraison</title>
 
+<!-- Leaflet CSS & JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#090909;color:#fff}a{text-decoration:none;color:inherit}.c{width:92%;max-width:1100px;margin:auto}
+header{position:sticky;top:0;background:#090909ee;border-bottom:1px solid #292929;z-index:5}nav{height:70px;display:flex;align-items:center;justify-content:space-between}.brand{font-size:24px;font-weight:900;font-style:italic}.brand span{color:#ffb900}.links{display:flex;gap:20px;font-size:14px}.btn{display:inline-block;padding:13px 18px;border-radius:11px;font-weight:800;cursor:pointer;border:none}.yellow{background:#ffb900;color:#111}.dark{background:#171717;border:1px solid #555;color:#fff}
+.hero{padding:70px 0;background:radial-gradient(circle at 75% 45%,#ffb90022,transparent 30%)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:45px;align-items:center}h1{font-size:clamp(42px,6vw,70px);line-height:.98;margin:18px 0}h1 span{color:#ffb900}.ey{display:inline-block;color:#ffb900;background:#211b0b;border:1px solid #5d4600;border-radius:30px;padding:7px 13px;font-size:13px;font-weight:800}.hero p{color:#ccc;font-size:18px}.hours{margin:24px 0;padding:16px 20px;border-left:4px solid #ffb900;background:#171717;border-radius:0 12px 12px 0;font-size:15px;line-height:1.5}.hours b{display:block;color:#ffb900;font-size:18px;margin-bottom:4px}.actions{display:flex;gap:10px;flex-wrap:wrap}.poster{width:100%;border-radius:18px;border:1px solid #333}
+section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:center;color:#aaa}.cards,.steps,.why{display:grid;gap:16px}.cards{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:repeat(4,1fr)}.why{grid-template-columns:repeat(4,1fr)}.card,.step,.whyitem,.tarif,.faq details{background:#151515;border:1px solid #2b2b2b;border-radius:17px;padding:24px}.icon{font-size:30px}.card p,.step p,.whyitem small,.answer{color:#aaa}.num{width:38px;height:38px;background:#ffb900;color:#111;border-radius:50%;display:grid;place-items:center;font-weight:900}.whyitem{text-align:center}.whyitem span{font-size:28px}.tarif{max-width:650px;margin:auto;text-align:center}.result{font-size:30px;font-weight:900;color:#ffb900;margin:12px}.cta{background:linear-gradient(135deg,#ffb900,#f08d00);color:#111;border-radius:23px;padding:40px;display:flex;justify-content:space-between;align-items:center;gap:20px}.cta h2{font-size:32px;margin:0}.cta .btn{background:#111;color:#fff}footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}.wa{position:fixed;right:18px;bottom:18px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:28px;z-index:10}
+@media(max-width:800px){.links{display:none}.grid,.cards,.steps,.why{grid-template-columns:1fr}.hero{padding:50px 0}.cta{display:block}.cta .btn{margin-top:20px}}
+
+.search-box { position: relative; width: 100%; text-align: left; }
+.input-group { display: flex; gap: 8px; }
+.search-input { flex: 1; padding: 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 15px; outline: none; }
+.search-input:focus { border-color: #ffb900; }
+.gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 10px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; }
+.gps-btn:hover { background: #ffb900; color: #111; }
+
+/* تصميم القائمة المستوحى من Google Maps */
+.suggestions-list { position: absolute; top: 100%; left: 0; right: 0; background: #1a1a1a; border: 1px solid #444; border-radius: 12px; max-height: 280px; overflow-y: auto; z-index: 1000; display: none; margin: 6px 0 0 0; padding: 0; list-style: none; box-shadow: 0 12px 24px rgba(0,0,0,0.6); }
+.suggestions-list li { padding: 12px 14px; cursor: pointer; color: #fff; border-bottom: 1px solid #2a2a2a; display: flex; align-items: center; gap: 12px; }
+.suggestions-list li:last-child { border-bottom: none; }
+.suggestions-list li:hover { background: #2a2a2a; }
+.suggestions-list li:hover .main-title { color: #ffb900; }
+.suggest-icon { width: 32px; height: 32px; background: #282828; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.suggest-info { display: flex; flex-direction: column; gap: 2px; overflow: hidden; }
+.main-title { font-weight: 700; font-size: 15px; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sub-addr { font-size: 12px; color: #999999; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+#map { width: 100%; height: 350px; border-radius: 15px; margin-top: 15px; border: 2px solid #ffb900; }
+.map-hint { font-size: 12px; color: #ffb900; margin-top: 8px; display: block; }
+</style>
+</head>
+<body>
+<header><div class="c"><nav><a class="brand" href="#">JibLi-<span>vraison</span></a><div class="links"><a href="#services">Services</a><a href="#tarifs">Tarifs</a><a href="#faq">FAQ</a></div><div style="display:flex;gap:8px;align-items:center"><a class="btn dark" href="mailto:jibli.vraison@gmail.com">Email</a><a class="btn yellow" href="https://wa.me/212634084543">WhatsApp</a></div></nav></div></header>
+
+<section class="hero"><div class="c grid"><div><div class="ey">SERVICE DE COURSIER À MOTO</div><h1>Une livraison.<br><span>Simple. Rapide.</span></h1><p>Vos courses, petits colis, commandes et besoins du quotidien livrés à Kénitra.</p>
+<div class="hours">
+  <b>Disponible à Kénitra</b>
+  Lun - Sam : 17h00 à 02h00<br>
+  Dimanche : 10h00 à 02h00
+</div>
+<div class="actions"><a class="btn yellow" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison.">Commander sur WhatsApp</a><a class="btn dark" href="tel:+212634084543">📞 06 34 08 45 43</a></div></div><div><img class="poster" src="jibli-vraison-affiche.jpg" alt="JibLi-vraison"></div></div></section>
+
+<section id="services"><div class="c"><h2 class="title">Tous vos besoins, une seule livraison</h2><p class="sub">Un service local pensé pour Kénitra.</p><div class="cards">
+<div class="card"><div class="icon">🛒</div><h3>E-commerce</h3><p>Livraison de vos commandes en ligne.</p></div><div class="card"><div class="icon">🍔</div><h3>Restaurants</h3><p>Vos repas livrés rapidement.</p></div><div class="card"><div class="icon">💊</div><h3>Pharmacie</h3><p>Produits de pharmacie selon les conditions applicables.</p></div><div class="card"><div class="icon">🛍️</div><h3>Courses diverses</h3><p>Petits achats et besoins du quotidien.</p></div><div class="card"><div class="icon">📦</div><h3>Petits colis</h3><p>Un service de proximité pour vos petits envois.</p></div><div class="card"><div class="icon">🌙</div><h3>Service nocturne</h3><p>Disponible en soirée et nuit.</p></div>
+</div></div></section>
+
+<section id="tarifs"><div class="c"><h2 class="title">Commander ma livraison</h2><p class="sub">Sélectionnez le lieu de départ et d'arrivée sur Kénitra pour calculer le prix.</p><div class="tarif">
+<div style="display:grid;gap:15px;margin-bottom:18px;text-align:left">
+  
+  <div>
+    <label style="font-weight:700;display:block;margin-bottom:5px">🚦🟢 Départ</label>
+    <div class="search-box">
+      <div class="input-group">
+        <input type="text" id="input-depart" class="search-input" placeholder="Ex: Marjane, Gare, Mehdia..." autocomplete="off">
+        <button type="button" class="gps-btn" onclick="useCurrentLocation(true)">🎯 Ma position</button>
+      </div>
+      <ul id="list-depart" class="suggestions-list"></ul>
+    </div>
   </div>
 
   <div>
     <label style="font-weight:700;display:block;margin-bottom:5px">🚦🔴 Destination</label>
     <div class="search-box">
       <div class="input-group">
-        <input type="text" id="input-dest" class="search-input" placeholder="Ex: Pharmacie, Mehdia, Café..." autocomplete="off">
+        <input type="text" id="input-dest" class="search-input" placeholder="Ex: Mehdia Mall, Pharmacie, Café..." autocomplete="off">
         <button type="button" class="gps-btn" onclick="useCurrentLocation(false)">🎯 Ma position</button>
       </div>
       <ul id="list-dest" class="suggestions-list"></ul>
@@ -58,51 +123,58 @@ function setupSearch(inputId, listId, isDepart) {
     if (query.length < 2) { list.style.display = 'none'; return; }
 
     timer = setTimeout(() => {
-      const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&lat=34.2610&lon=-6.5802&limit=8`;
+      // البحث مع تغطية شاملة للمغرب وإعطاء الأولوية لحي القنيطرة
+      const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&lat=34.2610&lon=-6.5802&limit=12`;
 
       fetch(url)
         .then(res => res.json())
         .then(data => {
           list.innerHTML = '';
-          if (!data || !data.features || data.features.length === 0) { 
-            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + " Kenitra")}&limit=5`)
-              .then(r => r.json())
-              .then(nomData => {
-                if(!nomData || nomData.length === 0) { list.style.display = 'none'; return; }
-                nomData.forEach(item => {
-                  const li = document.createElement('li');
-                  const cleanName = item.display_name.split(',').slice(0, 2).join(',');
-                  li.textContent = cleanName;
-                  li.onclick = () => {
-                    input.value = cleanName;
-                    list.style.display = 'none';
-                    setPoint([parseFloat(item.lat), parseFloat(item.lon)], cleanName, isDepart);
-                  };
-                  list.appendChild(li);
-                });
-                list.style.display = 'block';
-              });
-            return; 
-          }
+          if (!data || !data.features || data.features.length === 0) { list.style.display = 'none'; return; }
+
+          const seen = new Set();
 
           data.features.forEach(feat => {
             const props = feat.properties;
-            const name = props.name || props.street || props.district || props.city || "Point à Kenitra";
-            const city = props.city || props.county || "Kénitra";
-            const fullLabel = `${name} (${city})`;
+            
+            // اسم النقطة/المحل الرئيسية
+            const name = props.name || props.street || props.district || "Lieu";
 
+            // إعداد تفاصيل العنوان الفرعي (الشارع، الحي، المدينة)
+            let details = [];
+            if (props.street && props.street !== name) details.push(props.street);
+            if (props.district && props.district !== name) details.push(props.district);
+            if (props.city) details.push(props.city);
+            else if (props.county) details.push(props.county);
+            else details.push('Maroc');
+
+            const subAddress = details.join(', ');
+            const uniqueKey = `${name.toLowerCase()}_${subAddress.toLowerCase()}`;
+
+            // تصفية العناصر المكررة
+            if (seen.has(uniqueKey)) return;
+            seen.add(uniqueKey);
+
+            // إنشاء عنصر القائمة بنفس شكل Google Maps
             const li = document.createElement('li');
-            li.textContent = fullLabel;
+            li.innerHTML = `
+              <div class="suggest-icon">📍</div>
+              <div class="suggest-info">
+                <span class="main-title">${name}</span>
+                <span class="sub-addr">${subAddress}</span>
+              </div>
+            `;
             
             li.onclick = () => {
               input.value = name;
               list.style.display = 'none';
               const coords = [feat.geometry.coordinates[1], feat.geometry.coordinates[0]];
-              setPoint(coords, name, isDepart);
+              setPoint(coords, `${name} (${subAddress})`, isDepart);
             };
             list.appendChild(li);
           });
-          list.style.display = 'block';
+
+          list.style.display = list.children.length > 0 ? 'block' : 'none';
         })
         .catch(() => { list.style.display = 'none'; });
     }, 150);
@@ -193,7 +265,6 @@ function calculateRouteDistance() {
     .then(data => {
       if (data.routes && data.routes.length > 0) {
         const route = data.routes[0];
-        // تعديل بسيط (+2.5%) لمطابقة دقة Google Maps تماماً
         const distKm = (route.distance / 1000) * 1.025; 
 
         if (routePolyline) map.removeLayer(routePolyline);

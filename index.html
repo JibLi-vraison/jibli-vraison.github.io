@@ -18,12 +18,12 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 @media(max-width:800px){.links{display:none}.grid,.cards,.steps,.why{grid-template-columns:1fr}.hero{padding:50px 0}.cta{display:block}.cta .btn{margin-top:20px}}
 .tarif input:focus{outline:2px solid #ffb900;border-color:#ffb900}.btn:disabled{opacity:.65;cursor:not-allowed}
 
-/* Mapbox Custom Styling Fixes */
-.mapboxgl-ctrl-geocoder { width: 100% !important; max-width: none !important; background-color: #1a1a1a !important; border: 1px solid #555 !important; border-radius: 10px !important; }
+/* Mapbox Custom Styling */
+.mapboxgl-ctrl-geocoder { width: 100% !important; max-width: none !important; background-color: #1a1a1a !important; border: 1px solid #555 !important; border-radius: 10px !important; z-index: 10 !important; }
 .mapboxgl-ctrl-geocoder input { color: #ffffff !important; font-size: 16px !important; }
 .mapboxgl-ctrl-geocoder--icon-search { fill: #ffb900 !important; }
-.mapboxgl-ctrl-geocoder .suggestions { background-color: #1a1a1a !important; border: 1px solid #444 !important; }
-.mapboxgl-ctrl-geocoder .suggestions > li > a { color: #ffffff !important; font-size: 14px !important; }
+.mapboxgl-ctrl-geocoder .suggestions { background-color: #1a1a1a !important; border: 1px solid #444 !important; border-radius: 8px !important; overflow: hidden; }
+.mapboxgl-ctrl-geocoder .suggestions > li > a { color: #ffffff !important; font-size: 14px !important; padding: 10px !important; }
 .mapboxgl-ctrl-geocoder .suggestions > .active > a, 
 .mapboxgl-ctrl-geocoder .suggestions > li > a:hover { background-color: #ffb900 !important; color: #000000 !important; }
 #map { width: 100%; height: 300px; border-radius: 15px; margin-top: 20px; border: 1px solid #333; }
@@ -64,7 +64,7 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 </div></div></section>
 
 <section id="faq"><div class="c"><h2 class="title">Questions fréquentes</h2><div class="faq">
-<details><summary>Comment commander ?</summary><div class="answer">Choisissez le lieu de départ et la destination فـ الخريطة, puis cliquez sur le bouton WhatsApp.</div></details>
+<details><summary>Comment commander ?</summary><div class="answer">Choisissez le lieu de départ et la destination, puis cliquez sur le bouton WhatsApp.</div></details>
 <details><summary>Où faites-vous les livraisons ?</summary><div class="answer">Le service est destiné aux livraisons à Kénitra.</div></details>
 <details><summary>Comment connaître le prix ?</summary><div class="answer">Le prix est calculé automatiquement en fonction du kilométrage exact.</div></details>
 <details><summary>Quels sont vos horaires ?</summary><div class="answer">De 16h00 à 4h00, ainsi que tout le week-end.</div></details>
@@ -76,7 +76,8 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 
 <script>
 (function(){
-  mapboxgl.accessToken = 'Pk.eyJ1IjoiamlibGktdnJhaXNvbiIsImEiOiJjbXUzcWRhbWgwY21xMnhzZnJud3FtYXlmIn0.9LYyPUAJTdtu8eLiCT6y7Q';
+  // Token m9ad b pk. sghira
+  mapboxgl.accessToken = 'pk.eyJ1IjoiamlibGktdnJhaXNvbiIsImEiOiJjbXUzcWRhbWgwY21xMnhzZnJud3FtYXlmIn0.9LYyPUAJTdtu8eLiCT6y7Q';
 
   let departCoord = null;
   let destCoord = null;
@@ -150,7 +151,6 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
       document.getElementById('result').textContent = price + ' DH';
       document.getElementById('status').textContent = 'Distance estimée : ' + shown + ' km';
 
-      // Update WhatsApp link
       let msg = 'Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n';
       msg += '📍 Départ : ' + (departName || 'Adresse sélectionnée') + '\n';
       msg += '🏁 Destination : ' + (destName || 'Adresse sélectionnée') + '\n';

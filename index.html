@@ -51,7 +51,7 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
     <label style="font-weight:700;display:block;margin-bottom:5px">🚦🟢 Départ</label>
     <div class="search-box">
       <div class="input-group">
-        <input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare, Mimosa, Bir Rami..." autocomplete="off">
+        <input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare, Joutiyat Benabbad, Bir Rami..." autocomplete="off">
         <button type="button" class="gps-btn" onclick="useCurrentLocation(true)">🎯 Ma position</button>
       </div>
       <ul id="list-depart" class="suggestions-list"></ul>
@@ -62,7 +62,7 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
     <label style="font-weight:700;display:block;margin-bottom:5px">🚦🔴 Destination</label>
     <div class="search-box">
       <div class="input-group">
-        <input type="text" id="input-dest" class="search-input" placeholder="Ex: Pharmacie, Mehdia..." autocomplete="off">
+        <input type="text" id="input-dest" class="search-input" placeholder="Ex: Pharmacie, Mehdia, Café..." autocomplete="off">
         <button type="button" class="gps-btn" onclick="useCurrentLocation(false)">🎯 Ma position</button>
       </div>
       <ul id="list-dest" class="suggestions-list"></ul>
@@ -91,7 +91,6 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 <a class="wa" href="https://wa.me/212634084543">☏</a>
 
 <script>
-// الخريطة الرسمية لـ Google Maps
 const map = L.map('map').setView([34.2610, -6.5802], 14);
 
 L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
@@ -115,39 +114,56 @@ function setupSearch(inputId, listId, isDepart) {
     if (query.length < 2) { list.style.display = 'none'; return; }
 
     timer = setTimeout(() => {
-      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=ma&limit=8&accept-language=fr,ar`;
+      // البحث المباشر فـ القنيطرة بـ Photon API الأسرع الشامل للأماكن والمحلات
+      const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&lat=34.2610&lon=-6.5802&limit=8`;
 
       fetch(url)
         .then(res => res.json())
         .then(data => {
           list.innerHTML = '';
-          if (!data || data.length === 0) { list.style.display = 'none'; return; }
+          if (!data || !data.features || data.features.length === 0) { 
+            // تجربة بحث احتياطية ثانية فـ حالة عدم وجود نتائج
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + " Kenitra")}&limit=5`)
+              .then(r => r.json())
+              .then(nomData => {
+                if(!nomData || nomData.length === 0) { list.style.display = 'none'; return; }
+                nomData.forEach(item => {
+                  const li = document.createElement('li');
+                  const cleanName = item.display_name.split(',').slice(0, 2).join(',');
+                  li.textContent = cleanName;
+                  li.onclick = () => {
+                    input.value = cleanName;
+                    list.style.display = 'none';
+                    setPoint([parseFloat(item.lat), parseFloat(item.lon)], cleanName, isDepart);
+                  };
+                  list.appendChild(li);
+                });
+                list.style.display = 'block';
+              });
+            return; 
+          }
 
-          const filtered = data.filter(item => 
-            item.display_name.toLowerCase().includes('kenitra') || 
-            item.display_name.toLowerCase().includes('kénitra') ||
-            item.display_name.toLowerCase().includes('mehdya') ||
-            item.display_name.toLowerCase().includes('maamora')
-          );
+          data.features.forEach(feat => {
+            const props = feat.properties;
+            const name = props.name || props.street || props.district || props.city || "Point à Kenitra";
+            const city = props.city || props.county || "Kénitra";
+            const fullLabel = `${name} (${city})`;
 
-          const results = filtered.length > 0 ? filtered : data;
-
-          results.slice(0, 5).forEach(item => {
             const li = document.createElement('li');
-            const cleanName = item.display_name.split(',').slice(0, 2).join(',');
-            li.textContent = cleanName;
+            li.textContent = fullLabel;
             
             li.onclick = () => {
-              input.value = cleanName;
+              input.value = name;
               list.style.display = 'none';
-              setPoint([parseFloat(item.lat), parseFloat(item.lon)], cleanName, isDepart);
+              const coords = [feat.geometry.coordinates[1], feat.geometry.coordinates[0]];
+              setPoint(coords, name, isDepart);
             };
             list.appendChild(li);
           });
           list.style.display = 'block';
         })
         .catch(() => { list.style.display = 'none'; });
-    }, 200);
+    }, 150);
   });
 
   document.addEventListener('click', (e) => {

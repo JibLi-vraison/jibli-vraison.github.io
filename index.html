@@ -4,9 +4,9 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>JibLi-vraison | Service de livraison</title>
 
-<!-- Mapbox GL JS -->
-<link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
-<script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+<!-- Leaflet CSS & JS (لجلب خرائط Google Maps مباشرة وبدون مشاكل) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#090909;color:#fff}a{text-decoration:none;color:inherit}.c{width:92%;max-width:1100px;margin:auto}
@@ -68,7 +68,7 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 <p id="status" style="color:#aaa;margin-bottom:15px;">Sélectionnez les deux adresses pour afficher le tarif.</p>
 
 <div id="map"></div>
-<span class="map-hint">💡 Cliquez directement sur la carte pour choisir précisément votre emplacement.</span>
+<span class="map-hint">💡 Vous pouvez cliquer directement sur la carte pour choisir vos points.</span>
 <br>
 <a id="order" class="btn yellow" href="https://wa.me/212634084543" style="width:100%;text-align:center;">Commander sur WhatsApp</a>
 </div></div></section>
@@ -84,21 +84,21 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 <a class="wa" href="https://wa.me/212634084543">☏</a>
 
 <script>
-const mapboxToken = 'pk.eyJ1IjoiamlibGktdnJhaXNvbiIsImEiOiJjbXUzcWRhbWgwY21xMnhzZnJud3FtYXlmIn0.9LYyPUAJTdtu8eLiCT6y7Q';
-mapboxgl.accessToken = mapboxToken;
+// إنشاء الخريطة باستخدام Leaflet مع طبقة Google Maps المباشرة
+const map = L.map('map').setView([34.2610, -6.5802], 14);
 
-// الستايل "streets-v12" هو الستايل المليء بكل المحلات والمساجد والسناكات
-const map = new mapboxgl.Map({
-  container: 'map',
-  style: 'mapbox://styles/mapbox/streets-v12',
-  center: [-6.5802, 34.2610],
-  zoom: 14
-});
+// طبقة Google Maps الرسمية (تتضمن جميع الأسماء والعناوين بالعربية الصحيحة والإيقونات)
+L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+  maxZoom: 20,
+  subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+  attribution: '© Google Maps'
+}).addTo(map);
 
 let depCoord = null, destCoord = null;
 let depName = '', destName = '';
 let depMarker = null, destMarker = null;
 
+// البحث عن الأماكن باستعمال Nominatim الموجه للمغرب واللغة العربية
 function setupSearch(inputId, listId, isDepart) {
   const input = document.getElementById(inputId);
   const list = document.getElementById(listId);
@@ -110,31 +110,29 @@ function setupSearch(inputId, listId, isDepart) {
     if (query.length < 2) { list.style.display = 'none'; return; }
 
     timer = setTimeout(() => {
-      const kenitraBounds = '-6.6600,34.2000,-6.5000,34.3200';
-      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxToken}&bbox=${kenitraBounds}&limit=5`;
+      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + ' Kenitra')}&bounded=1&viewbox=-6.66,34.32,-6.50,34.20&accept-language=ar,fr`;
 
       fetch(url)
         .then(res => res.json())
         .then(data => {
           list.innerHTML = '';
-          if (!data.features || data.features.length === 0) { list.style.display = 'none'; return; }
+          if (!data || data.length === 0) { list.style.display = 'none'; return; }
 
-          data.features.forEach(item => {
+          data.slice(0, 5).forEach(item => {
             const li = document.createElement('li');
-            const placeName = item.place_name_fr || item.place_name;
-            li.textContent = placeName;
+            li.textContent = item.display_name.split(',').slice(0, 3).join(',');
             
             li.onclick = () => {
-              input.value = placeName;
+              input.value = li.textContent;
               list.style.display = 'none';
-              setPoint(item.center, placeName, isDepart);
+              setPoint([parseFloat(item.lat), parseFloat(item.lon)], li.textContent, isDepart);
             };
             list.appendChild(li);
           });
           list.style.display = 'block';
         })
         .catch(() => { list.style.display = 'none'; });
-    }, 200);
+    }, 250);
   });
 
   document.addEventListener('click', (e) => {
@@ -147,8 +145,9 @@ function setupSearch(inputId, listId, isDepart) {
 setupSearch('input-depart', 'list-depart', true);
 setupSearch('input-dest', 'list-dest', false);
 
+// Click on map
 map.on('click', (e) => {
-  const coords = [e.lngLat.lng, e.lngLat.lat];
+  const coords = [e.latlng.lat, e.latlng.lng];
   if (!depCoord) {
     const name = "Point sur la carte (Départ)";
     document.getElementById('input-depart').value = name;
@@ -161,7 +160,7 @@ map.on('click', (e) => {
     const name = "Point sur la carte (Départ)";
     document.getElementById('input-depart').value = name;
     document.getElementById('input-dest').value = "";
-    if (destMarker) destMarker.remove();
+    if (destMarker) map.removeLayer(destMarker);
     destCoord = null;
     setPoint(coords, name, true);
   }
@@ -174,7 +173,7 @@ function useCurrentLocation(isDepart) {
   if (navigator.geolocation) {
     input.value = "Localisation GPS...";
     navigator.geolocation.getCurrentPosition(position => {
-      const coords = [position.coords.longitude, position.coords.latitude];
+      const coords = [position.coords.latitude, position.coords.longitude];
       const name = "Ma position exacte (GPS)";
       input.value = name;
       setPoint(coords, name, isDepart);
@@ -191,22 +190,20 @@ function setPoint(coords, name, isDepart) {
   if (isDepart) {
     depCoord = coords;
     depName = name;
-    if (depMarker) depMarker.remove();
-    depMarker = new mapboxgl.Marker({ color: '#ffb900' }).setLngLat(coords).addTo(map);
+    if (depMarker) map.removeLayer(depMarker);
+    depMarker = L.marker(coords).addTo(map).bindPopup("Départ").openPopup();
   } else {
     destCoord = coords;
     destName = name;
-    if (destMarker) destMarker.remove();
-    destMarker = new mapboxgl.Marker({ color: '#ff4444' }).setLngLat(coords).addTo(map);
+    if (destMarker) map.removeLayer(destMarker);
+    destMarker = L.marker(coords).addTo(map).bindPopup("Destination").openPopup();
   }
 
   if (depCoord && destCoord) {
-    const bounds = new mapboxgl.LngLatBounds();
-    bounds.extend(depCoord);
-    bounds.extend(destCoord);
-    map.fitBounds(bounds, { padding: 50 });
+    const bounds = L.latLngBounds([depCoord, destCoord]);
+    map.fitBounds(bounds, { padding: [40, 40] });
   } else {
-    map.flyTo({ center: coords, zoom: 15 });
+    map.setView(coords, 15);
   }
 
   calculate();
@@ -214,10 +211,10 @@ function setPoint(coords, name, isDepart) {
 
 function getDistance(c1, c2) {
   const R = 6371;
-  const dLat = (c2[1] - c1[1]) * Math.PI / 180;
-  const dLon = (c2[0] - c1[0]) * Math.PI / 180;
+  const dLat = (c2[0] - c1[0]) * Math.PI / 180;
+  const dLon = (c2[1] - c1[1]) * Math.PI / 180;
   const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-            Math.cos(c1[1] * Math.PI / 180) * Math.cos(c2[1] * Math.PI / 180) *
+            Math.cos(c1[0] * Math.PI / 180) * Math.cos(c2[0] * Math.PI / 180) *
             Math.sin(dLon/2) * Math.sin(dLon/2);
   return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
 }
@@ -231,8 +228,8 @@ function calculate() {
     document.getElementById('result').textContent = price + ' DH';
     document.getElementById('status').textContent = 'Distance estimée : ' + shown + ' km';
 
-    let gpsDep = depName.includes("GPS") || depName.includes("carte") ? `https://www.google.com/maps?q=${depCoord[1]},${depCoord[0]}` : depName;
-    let gpsDest = destName.includes("GPS") || destName.includes("carte") ? `https://www.google.com/maps?q=${destCoord[1]},${destCoord[0]}` : destName;
+    let gpsDep = depName.includes("GPS") || depName.includes("carte") ? `https://www.google.com/maps?q=${depCoord[0]},${depCoord[1]}` : depName;
+    let gpsDest = destName.includes("GPS") || destName.includes("carte") ? `https://www.google.com/maps?q=${destCoord[0]},${destCoord[1]}` : destName;
 
     let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n📍 Départ : ${gpsDep}\n🏁 Destination : ${gpsDest}\n📏 Distance : ${shown} km\n💰 Prix estimé : ${price} DH`;
     document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
@@ -241,4 +238,5 @@ function calculate() {
 </script>
 </body>
 </html>
+
 

@@ -102,6 +102,7 @@ L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
 let depCoord = null, destCoord = null;
 let depName = '', destName = '';
 let depMarker = null, destMarker = null;
+let routePolyline = null;
 
 function setupSearch(inputId, listId, isDepart) {
   const input = document.getElementById(inputId);
@@ -114,7 +115,6 @@ function setupSearch(inputId, listId, isDepart) {
     if (query.length < 2) { list.style.display = 'none'; return; }
 
     timer = setTimeout(() => {
-      // البحث المباشر فـ القنيطرة بـ Photon API الأسرع الشامل للأماكن والمحلات
       const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&lat=34.2610&lon=-6.5802&limit=8`;
 
       fetch(url)
@@ -122,7 +122,6 @@ function setupSearch(inputId, listId, isDepart) {
         .then(data => {
           list.innerHTML = '';
           if (!data || !data.features || data.features.length === 0) { 
-            // تجربة بحث احتياطية ثانية فـ حالة عدم وجود نتائج
             fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + " Kenitra")}&limit=5`)
               .then(r => r.json())
               .then(nomData => {
@@ -236,10 +235,47 @@ function setPoint(coords, name, isDepart) {
     map.setView(coords, 15);
   }
 
-  calculate();
+  calculateRouteDistance();
 }
 
-function getDistance(c1, c2) {
+function calculateRouteDistance() {
+  if (!depCoord || !destCoord) return;
+
+  document.getElementById('status').textContent = 'Calcul du trajet en cours...';
+
+  // حساب مسافة الطريق الحقيقية (Driving Route) عبر OSRM API
+  const url = `https://router.project-osrm.org/route/v1/driving/${depCoord[1]},${depCoord[0]};${destCoord[1]},${destCoord[0]}?overview=full&geometries=geojson`;
+
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      if (data.routes && data.routes.length > 0) {
+        const route = data.routes[0];
+        const distKm = route.distance / 1000; // تحويل المتر إلى الكيلومتر
+
+        // رسم الطريق الحقيقي فوق الخريطة
+        if (routePolyline) map.removeLayer(routePolyline);
+        routePolyline = L.geoJSON(route.geometry, {
+          style: { color: '#ffb900', weight: 5, opacity: 0.8 }
+        }).addTo(map);
+
+        map.fitBounds(routePolyline.getBounds(), { padding: [40, 40] });
+        renderPrice(distKm);
+      } else {
+        fallbackAirDistance();
+      }
+    })
+    .catch(() => {
+      fallbackAirDistance();
+    });
+}
+
+function fallbackAirDistance() {
+  const n = getAirDistance(depCoord, destCoord);
+  renderPrice(n);
+}
+
+function getAirDistance(c1, c2) {
   const R = 6371;
   const dLat = (c2[0] - c1[0]) * Math.PI / 180;
   const dLon = (c2[1] - c1[1]) * Math.PI / 180;
@@ -249,21 +285,18 @@ function getDistance(c1, c2) {
   return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
 }
 
-function calculate() {
-  if (depCoord && destCoord) {
-    const n = getDistance(depCoord, destCoord);
-    let price = n <= 4 ? 20 : n < 6 ? 25 : n < 7 ? 26 : n < 8 ? 27 : n < 9 ? 28 : n < 10 ? 29 : 35 + Math.ceil(n - 10) * 2;
-    const shown = n.toFixed(1);
+function renderPrice(n) {
+  let price = n <= 4 ? 20 : n < 6 ? 25 : n < 7 ? 26 : n < 8 ? 27 : n < 9 ? 28 : n < 10 ? 29 : 35 + Math.ceil(n - 10) * 2;
+  const shown = n.toFixed(1);
 
-    document.getElementById('result').textContent = price + ' DH';
-    document.getElementById('status').textContent = 'Distance estimée : ' + shown + ' km';
+  document.getElementById('result').textContent = price + ' DH';
+  document.getElementById('status').textContent = 'Distance estimée par la route : ' + shown + ' km';
 
-    let linkDep = `https://www.google.com/maps?q=${depCoord[0]},${depCoord[1]}`;
-    let linkDest = `https://www.google.com/maps?q=${destCoord[0]},${destCoord[1]}`;
+  let linkDep = `https://www.google.com/maps?q=${depCoord[0]},${depCoord[1]}`;
+  let linkDest = `https://www.google.com/maps?q=${destCoord[0]},${destCoord[1]}`;
 
-    let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${depName}\n🔗 Link : ${linkDep}\n\n🏁 Destination : ${destName}\n🔗 Link : ${linkDest}\n\n📏 Distance : ${shown} km\n💰 Prix estimé : ${price} DH`;
-    document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
-  }
+  let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${depName}\n🔗 Link : ${linkDep}\n\n🏁 Destination : ${destName}\n🔗 Link : ${linkDest}\n\n📏 Distance : ${shown} km\n💰 Prix estimé : ${price} DH`;
+  document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
 }
 </script>
 </body>

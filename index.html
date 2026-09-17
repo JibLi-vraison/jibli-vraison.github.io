@@ -1,160 +1,253 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jibli - جيب لي</title>
+  
+  <!-- Leaflet CSS for Maps -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    :root {
+      --primary: #FF5722;
+      --secondary: #2C3E50;
+      --bg: #F4F6F7;
     }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: var(--bg); color: #333; direction: rtl; padding-bottom: 40px; }
 
-    body {
-      background-color: #f4f6f8;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 15px;
-    }
-
-    .card {
-      background: #ffffff;
-      width: 100%;
-      max-width: 450px;
-      padding: 25px 20px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    }
-
-    .title {
+    header {
+      background: var(--primary);
+      color: white;
       text-align: center;
-      font-size: 26px;
+      padding: 18px 10px;
+      font-size: 24px;
       font-weight: bold;
-      color: #ff4d4d;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 15px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
 
     .form-group {
-      margin-bottom: 18px;
+      margin-bottom: 15px;
+      position: relative;
     }
 
     label {
       display: block;
-      font-size: 15px;
+      margin-bottom: 6px;
       font-weight: 600;
-      color: #222;
-      margin-bottom: 8px;
+      color: var(--secondary);
     }
 
     input, textarea {
       width: 100%;
-      padding: 12px 14px;
-      border: 1px solid #e0e0e0;
-      border-radius: 10px;
-      font-size: 14px;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
       outline: none;
-      background-color: #fafafa;
-      transition: 0.2s;
     }
 
     input:focus, textarea:focus {
-      border-color: #ff4d4d;
-      background-color: #fff;
+      border-color: var(--primary);
     }
 
-    .btn-submit {
+    .suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 0 0 8px 8px;
+      max-height: 150px;
+      overflow-y: auto;
+      z-index: 1000;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .suggestion-item {
+      padding: 10px;
+      cursor: pointer;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+
+    .suggestion-item:hover {
+      background-color: #f0f0f0;
+    }
+
+    #map {
+      height: 200px;
+      border-radius: 8px;
+      margin-top: 10px;
+      margin-bottom: 15px;
+    }
+
+    .price-box {
+      background: #FFF3E0;
+      border: 1px solid #FFE0B2;
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: #E65100;
+      margin-bottom: 15px;
+    }
+
+    .btn {
       width: 100%;
-      background-color: #25D366;
+      background: #25D366;
       color: white;
       border: none;
       padding: 14px;
-      border-radius: 10px;
-      font-size: 16px;
+      border-radius: 8px;
+      font-size: 18px;
       font-weight: bold;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      margin-top: 10px;
-      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+      gap: 10px;
     }
 
-    .btn-submit:hover {
-      background-color: #20ba5a;
-    }
-
-    .note {
-      text-align: center;
-      font-size: 12px;
-      color: #888;
-      margin-top: 15px;
-    }
+    .btn:hover { background: #1EBE5D; }
   </style>
 </head>
 <body>
 
-  <div class="card">
-    <div class="title">
-      🚀 Jibli - جيب لي
-    </div>
+  <header>🚀 Jibli - جيب لي</header>
 
-    <!-- الطلب -->
+  <div class="container">
     <div class="form-group">
       <label>📦 أشنو بغيتي نجيبو ليك؟</label>
-      <textarea id="items" rows="3" placeholder="مثلاً: غداء من سناك البركة، دوا من صيدلية المركز..."></textarea>
+      <textarea id="items" rows="3" placeholder="مثلاً: غداء من مأكولات السعادة، دوا من الصيدلية..."></textarea>
     </div>
 
-    <!-- الانطلاق -->
     <div class="form-group">
-      <label>📍 عنوان الانطلاق (منين ناخدو الطلب):</label>
-      <input type="text" id="pickup" placeholder="مثلاً: سناك البركة، حي السلام، القنيطرة">
+      <label>📍 منين غناخدو الطلب؟ (الانطلاق)</label>
+      <input type="text" id="pickup" placeholder="اكتب المكان أو المدينة..." oninput="searchLocation(this.value, 'pickup-list', 'pickup')">
+      <div id="pickup-list" class="suggestions"></div>
     </div>
 
-    <!-- الوصول -->
     <div class="form-group">
-      <label>🎯 عنوان الوصول (فين نجيبوه ليك):</label>
-      <input type="text" id="dropoff" placeholder="مثلاً: زنقة 5، رقم 12، حي الوفاء، القنيطرة">
+      <label>🎯 فين غنوصلوه ليك؟ (الوصول)</label>
+      <input type="text" id="dropoff" placeholder="اكتب مكان التسليم..." oninput="searchLocation(this.value, 'dropoff-list', 'dropoff')">
+      <div id="dropoff-list" class="suggestions"></div>
     </div>
 
-    <!-- زر الواتساب -->
-    <button class="btn-submit" onclick="sendWhatsApp()">
-      📲 أرسل الطلب عبر الواتساب
+    <div id="map"></div>
+
+    <div class="price-box" id="price-box">
+      💰 ثمن التوصيل المتوقع: <span>--</span> درهم
+    </div>
+
+    <button class="btn" onclick="sendOrder()">
+      📲 صيفط الطلب فـ واتساب
     </button>
-
-    <div class="note">
-      🗺️ سيتم إنشاء رابط مباشر لخريطة Google Maps فور إرسال الطلب
-    </div>
   </div>
 
-  <script>
-    function sendWhatsApp() {
-      const items = document.getElementById('items').value.trim();
-      const pickup = document.getElementById('pickup').value.trim();
-      const dropoff = document.getElementById('dropoff').value.trim();
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-      if (!items || !pickup || !dropoff) {
-        alert('عفاك عمر كاع الخانات باش نقدرو نوصّلو ليك الطلب!');
+  <script>
+    let map = L.map('map').setView([33.5731, -7.5898], 11); // Casablanca as default
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    let pickupCoords = null;
+    let dropoffCoords = null;
+    let pickupMarker, dropoffMarker;
+
+    // Search Locations using Nominatim (Free)
+    async function searchLocation(query, listId, type) {
+      const listContainer = document.getElementById(listId);
+      if (query.length < 3) {
+        listContainer.innerHTML = '';
         return;
       }
 
-      // ⚠️ بدل هاد النمرة بنمرتك ديال الواتساب (بدون + وبدون 0 فـ الأول)
-      const phone = "212600000000"; 
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + ', Morocco')}`);
+      const data = await response.json();
 
-      const message = `السلام عليكم، بغيت نطلب التوصيل مع Jibli 🚀%0A%0A📦 *الطلب:* ${encodeURIComponent(items)}%0A%0A📍 *مكان الانطلاق:* ${encodeURIComponent(pickup)}%0A%0A🎯 *مكان الوصول:* ${encodeURIComponent(dropoff)}`;
+      listContainer.innerHTML = '';
+      data.forEach(place => {
+        const div = document.createElement('div');
+        div.className = 'suggestion-item';
+        div.innerText = place.display_name;
+        div.onclick = () => selectPlace(place, listId, type);
+        listContainer.appendChild(div);
+      });
+    }
 
-      window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+    function selectPlace(place, listId, type) {
+      document.getElementById(listId).innerHTML = '';
+      const lat = parseFloat(place.lat);
+      const lon = parseFloat(place.lon);
+
+      if (type === 'pickup') {
+        document.getElementById('pickup').value = place.display_name.split(',')[0];
+        pickupCoords = [lat, lon];
+        if (pickupMarker) map.removeLayer(pickupMarker);
+        pickupMarker = L.marker(pickupCoords).addTo(map).bindPopup("مكان الانطلاق").openPopup();
+      } else {
+        document.getElementById('dropoff').value = place.display_name.split(',')[0];
+        dropoffCoords = [lat, lon];
+        if (dropoffMarker) map.removeLayer(dropoffMarker);
+        dropoffMarker = L.marker(dropoffCoords).addTo(map).bindPopup("مكان الوصول").openPopup();
+      }
+
+      map.setView([lat, lon], 13);
+      calculatePrice();
+    }
+
+    function calculatePrice() {
+      if (!pickupCoords || !dropoffCoords) return;
+
+      // Distance calculation in KM (Haversine Formula)
+      const R = 6371;
+      const dLat = (dropoffCoords[0] - pickupCoords[0]) * Math.PI / 180;
+      const dLon = (dropoffCoords[1] - pickupCoords[1]) * Math.PI / 180;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(pickupCoords[0] * Math.PI / 180) * Math.cos(dropoffCoords[0] * Math.PI / 180) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      const distance = R * c;
+
+      // Pricing logic: Base 10 DH + 3 DH per KM
+      let price = Math.round(10 + (distance * 3));
+      if (price < 12) price = 12;
+
+      document.getElementById('price-box').innerHTML = `💰 ثمن التوصيل المتوقع: <span>${price}</span> درهم (${distance.toFixed(1)} كم)`;
+    }
+
+    function sendOrder() {
+      const items = document.getElementById('items').value;
+      const pickup = document.getElementById('pickup').value;
+      const dropoff = document.getElementById('dropoff').value;
+
+      if (!items || !pickup || !dropoff) {
+        alert('عفاك عمر كاع المعلومات باش تكمل الطلب!');
+        return;
+      }
+
+      const phone = "212600000000"; // غيّر هاد الرقم لـ رقم الواتساب ديالك
+      const text = `سلام، بغيت نطلب التوصيل مع Jibli 🚀%0A%0A📦 *الطلب:* ${items}%0A📍 *من:* ${pickup}%0A🎯 *إلى:* ${dropoff}`;
+      
+      window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
     }
   </script>
-
 </body>
 </html>
+

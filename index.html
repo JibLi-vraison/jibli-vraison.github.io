@@ -1,410 +1,121 @@
 <!DOCTYPE html>
-<html lang="fr" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JibLi-livraison - Kénitra</title>
-  
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
+  <title>Jibli - جيب لي</title>
   <style>
-    :root {
-      --bg-color: #121212;
-      --card-bg: #1e1e1e;
-      --accent: #ffb703;
-      --accent-hover: #fb8500;
-      --text: #ffffff;
-      --text-muted: #a0a0a0;
-      --border: #333333;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-      background-color: var(--bg-color);
-      color: var(--text);
-      padding: 15px 10px 40px;
-      display: flex;
-      justify-content: center;
-    }
-
+    :root { --primary: #FF5722; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
+    body { background-color: #f4f6f7; padding: 20px 10px; direction: rtl; }
+    
     .container {
-      width: 100%;
       max-width: 480px;
-      background: var(--card-bg);
+      margin: 0 auto;
+      background: white;
+      padding: 25px;
       border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-      border: 1px solid var(--border);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     }
 
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    h1 {
+      text-align: center;
+      color: var(--primary);
       margin-bottom: 20px;
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: 900;
-      font-style: italic;
-      color: var(--text);
-    }
-
-    .logo span {
-      color: var(--accent);
-    }
-
-    .badge-city {
-      background: rgba(255, 183, 3, 0.15);
-      color: var(--accent);
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: bold;
-      border: 1px solid var(--accent);
+      font-size: 26px;
     }
 
     .form-group {
-      margin-bottom: 16px;
-      position: relative;
+      margin-bottom: 18px;
     }
 
     label {
       display: block;
-      margin-bottom: 6px;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
-
-    .input-wrapper {
-      display: flex;
-      gap: 8px;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
     }
 
     input, textarea {
       width: 100%;
-      background: #2a2a2a;
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 12px;
+      padding: 14px;
+      border: 1px solid #ddd;
       border-radius: 10px;
-      font-size: 14px;
+      font-size: 15px;
       outline: none;
-      transition: 0.2s;
+      transition: 0.3s;
     }
 
     input:focus, textarea:focus {
-      border-color: var(--accent);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.1);
     }
 
-    .btn-gps {
-      background: rgba(255, 183, 3, 0.1);
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      padding: 0 12px;
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: bold;
-      cursor: pointer;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .btn-gps:hover {
-      background: var(--accent);
-      color: #000;
-    }
-
-    .suggestions {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: #252525;
-      border: 1px solid var(--border);
-      border-radius: 0 0 10px 10px;
-      max-height: 180px;
-      overflow-y: auto;
-      z-index: 2000;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.4);
-    }
-
-    .suggestion-item {
-      padding: 12px;
-      border-bottom: 1px solid #333;
-      cursor: pointer;
-      font-size: 13px;
-    }
-
-    .suggestion-item:hover {
-      background: #333;
-      color: var(--accent);
-    }
-
-    #map {
-      height: 200px;
-      border-radius: 12px;
-      margin: 15px 0;
-      border: 1px solid var(--border);
-    }
-
-    .price-card {
-      background: rgba(255, 183, 3, 0.1);
-      border: 1px dashed var(--accent);
-      padding: 12px;
-      border-radius: 10px;
-      text-align: center;
-      color: var(--accent);
-      font-weight: bold;
-      font-size: 15px;
-      margin-bottom: 15px;
-    }
-
-    .btn-send {
+    .btn {
       width: 100%;
       background: #25D366;
-      color: #fff;
+      color: white;
       border: none;
-      padding: 14px;
+      padding: 16px;
       border-radius: 10px;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: bold;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
+      margin-top: 10px;
     }
 
-    .btn-send:hover {
-      background: #1eb857;
-    }
-
-    .info-text {
-      font-size: 12px;
-      color: var(--text-muted);
-      text-align: center;
-      margin-top: 12px;
-    }
+    .btn:hover { background: #1EBE5D; }
+    .note { font-size: 13px; color: #777; text-align: center; margin-top: 15px; }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <div class="header">
-      <div class="logo">JibLi<span>-livraison</span></div>
-      <div class="badge-city">📍 Kénitra</div>
-    </div>
+    <h1>🚀 Jibli - جيب لي</h1>
 
-    <!-- Commande -->
     <div class="form-group">
-      <label>📦 Que voulez-vous commander ? / أشنو بغيتي؟</label>
-      <textarea id="items" rows="2" placeholder="Ex: Pizza de chez Fresh Pizza, médicaments, repas..."></textarea>
+      <label>📦 أشنو بغيتي نجيبو ليك؟</label>
+      <textarea id="items" rows="3" placeholder="مثلاً: غداء من سناك البركة، دوا من صيدلية المركز..."></textarea>
     </div>
 
-    <!-- Départ -->
     <div class="form-group">
-      <label>🟢 Point de Départ (الانطلاق)</label>
-      <div class="input-wrapper">
-        <input type="text" id="pickup" placeholder="Rechercher à Kénitra (Ex: Fresh Pizza...)" oninput="searchKenitra(this.value, 'pickup-list', 'pickup')">
-        <button class="btn-gps" onclick="getCurrentLocation('pickup')">🎯 Ma position</button>
-      </div>
-      <div id="pickup-list" class="suggestions"></div>
+      <label>📍 عنوان الانطلاق (منين ناخدو الطلب):</label>
+      <input type="text" id="pickup" placeholder="مثلاً: سناك البركة، حي السلام، القنيطرة">
     </div>
 
-    <!-- Destination -->
     <div class="form-group">
-      <label>🔴 Destination (الوصول)</label>
-      <div class="input-wrapper">
-        <input type="text" id="dropoff" placeholder="Rechercher à Kénitra (Ex: Mimosa, Saknia...)" oninput="searchKenitra(this.value, 'dropoff-list', 'dropoff')">
-        <button class="btn-gps" onclick="getCurrentLocation('dropoff')">🎯 Ma position</button>
-      </div>
-      <div id="dropoff-list" class="suggestions"></div>
+      <label>🎯 عنوان الوصول (فين نجيبوه ليك):</label>
+      <input type="text" id="dropoff" placeholder="مثلاً: زنقة 5، رقم 12، حي الوفاء، القنيطرة">
     </div>
 
-    <!-- Map -->
-    <div id="map"></div>
-
-    <!-- Price estimation -->
-    <div class="price-card" id="price-card">
-      💰 Prix estimé: -- DH
-    </div>
-
-    <!-- WhatsApp Button -->
-    <button class="btn-send" onclick="sendOrder()">
-      📲 Envoyer la commande (WhatsApp)
+    <button class="btn" onclick="sendOrder()">
+      📲 أرسل الطلب عبر الواتساب
     </button>
 
-    <p class="info-text">💡 Seuls les lieux situés à Kénitra et ses environs sont affichés.</p>
+    <p class="note">🗺️ سيتم إنشاء رابط مباشر لخريطة Google Maps فور إرسال الطلب</p>
   </div>
 
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
   <script>
-    // الإحداثيات المركزية لمدينة القنيطرة
-    const KENITRA_LAT = 34.2610;
-    const KENITRA_LNG = -6.5802;
-
-    // إعداد الخريطة
-    let map = L.map('map').setView([KENITRA_LAT, KENITRA_LNG], 13);
-    
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap'
-    }).addTo(map);
-
-    let pickupCoords = null;
-    let dropoffCoords = null;
-    let pickupMarker, dropoffMarker;
-
-    // 📍 حصر البحث فـ حدود مدينة القنيطرة والمهدية وبئر رامي والساكنية
-    async function searchKenitra(query, listId, type) {
-      const listContainer = document.getElementById(listId);
-      
-      if (query.length < 2) {
-        listContainer.innerHTML = '';
-        return;
-      }
-
-      // Viewbox القنيطرة (Bounding box)
-      const viewbox = "-6.68,34.33,-6.48,34.20";
-      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=ma&viewbox=${viewbox}&bounded=1&limit=7&accept-language=fr,ar`;
-
-      try {
-        const response = await fetch(url);
-        let data = await response.json();
-
-        // إلا مالقاش نتيجة بـ التحديد الضيق، كيزيد كلمة Kenitra أوتوماتيكياً
-        if (data.length === 0) {
-          const fallbackUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + ' Kenitra')}&countrycodes=ma&limit=7&accept-language=fr,ar`;
-          const res2 = await fetch(fallbackUrl);
-          data = await res2.json();
-        }
-
-        renderSuggestions(data, listContainer, type);
-      } catch (err) {
-        console.error("Erreur de recherche:", err);
-      }
-    }
-
-    function renderSuggestions(data, container, type) {
-      container.innerHTML = '';
-      data.forEach(place => {
-        const div = document.createElement('div');
-        div.className = 'suggestion-item';
-        
-        // تنقية اسم المكان ليظهر بشكل ملخص وواضح
-        const parts = place.display_name.split(',');
-        const mainName = parts[0];
-        const subName = parts[1] || 'Kénitra';
-        
-        div.innerHTML = `📍 <strong>${mainName}</strong> <small style="color:#aaa;">(${subName.trim()})</small>`;
-        div.onclick = () => selectPlace(place, container.id, type);
-        container.appendChild(div);
-      });
-    }
-
-    function selectPlace(place, listId, type) {
-      document.getElementById(listId).innerHTML = '';
-      const lat = parseFloat(place.lat);
-      const lon = parseFloat(place.lon);
-      const shortName = place.display_name.split(',')[0];
-
-      if (type === 'pickup') {
-        document.getElementById('pickup').value = shortName;
-        pickupCoords = [lat, lon];
-        if (pickupMarker) map.removeLayer(pickupMarker);
-        pickupMarker = L.marker(pickupCoords).addTo(map).bindPopup("Point de Départ").openPopup();
-      } else {
-        document.getElementById('dropoff').value = shortName;
-        dropoffCoords = [lat, lon];
-        if (dropoffMarker) map.removeLayer(dropoffMarker);
-        dropoffMarker = L.marker(dropoffCoords).addTo(map).bindPopup("Destination").openPopup();
-      }
-
-      map.setView([lat, lon], 14);
-      calculatePrice();
-    }
-
-    // تحديد الموقع المباشر بـ GPS
-    function getCurrentLocation(type) {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-          
-          if (type === 'pickup') {
-            pickupCoords = [lat, lon];
-            document.getElementById('pickup').value = "Ma position actuelle (GPS)";
-            if (pickupMarker) map.removeLayer(pickupMarker);
-            pickupMarker = L.marker(pickupCoords).addTo(map).bindPopup("Mon Emplacement").openPopup();
-          } else {
-            dropoffCoords = [lat, lon];
-            document.getElementById('dropoff').value = "Ma position actuelle (GPS)";
-            if (dropoffMarker) map.removeLayer(dropoffMarker);
-            dropoffMarker = L.marker(dropoffCoords).addTo(map).bindPopup("Mon Emplacement").openPopup();
-          }
-          map.setView([lat, lon], 15);
-          calculatePrice();
-        }, () => {
-          alert("Impossible d'accéder à votre position. Veuillez activer le GPS.");
-        });
-      }
-    }
-
-    // حساب الثمن التقديري للتوصيل فـ القنيطرة
-    function calculatePrice() {
-      if (!pickupCoords || !dropoffCoords) return;
-
-      const R = 6371; // نصف قطر الأرض بالكيلومتر
-      const dLat = (dropoffCoords[0] - pickupCoords[0]) * Math.PI / 180;
-      const dLon = (dropoffCoords[1] - pickupCoords[1]) * Math.PI / 180;
-      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(pickupCoords[0] * Math.PI / 180) * Math.cos(dropoffCoords[0] * Math.PI / 180) *
-                Math.sin(dLon/2) * Math.sin(dLon/2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      const distance = R * c;
-
-      // تسعيرة التوصيل داخل القنيطرة: 10 دراهم كحد أدنى + 2.5 درهم لكل كلم
-      let price = Math.round(10 + (distance * 2.5));
-      if (price < 12) price = 12;
-
-      document.getElementById('price-card').innerHTML = `💰 Prix estimé: <span>${price} DH</span> (${distance.toFixed(1)} km)`;
-    }
-
-    // إرسال الطلب عبر الواتساب
     function sendOrder() {
       const items = document.getElementById('items').value;
       const pickup = document.getElementById('pickup').value;
       const dropoff = document.getElementById('dropoff').value;
 
       if (!items || !pickup || !dropoff) {
-        alert('Veuillez remplir tous les champs svp!');
+        alert('عفاك دخل كاع المعلومات باش نكَمّلو الطلب!');
         return;
       }
 
-      // رابط مباشر لخريطة Google Maps للمسار
-      let gmapsUrl = "";
-      if (pickupCoords && dropoffCoords) {
-        gmapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${pickupCoords[0]},${pickupCoords[1]}&destination=${dropoffCoords[0]},${dropoffCoords[1]}`;
-      } else {
-        gmapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(pickup + ' Kenitra')}&destination=${encodeURIComponent(dropoff + ' Kenitra')}`;
-      }
+      // رابط مباشر يفتح المسار المظبوط فـ Google Maps
+      const gmapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(pickup)}&destination=${encodeURIComponent(dropoff)}`;
 
-      const phone = "212600000000"; // ⚠️ غيّر هاد الرقم لـ رقم الواتساب ديالك
+      const phone = "212600000000"; // ⚠️ أكتب رقم الواتساب ديالك هنا
       
-      const text = `سلام، بغيت نطلب التوصيل مع JibLi 🚀%0A%0A📦 *الطلب:* ${items}%0A📍 *من:* ${pickup}%0A🎯 *إلى:* ${dropoff}%0A%0A🗺️ *رابط Google Maps للمسار:*%0A${encodeURIComponent(gmapsUrl)}`;
+      const text = `سلام، بغيت نطلب التوصيل مع Jibli 🚀%0A%0A📦 *الطلب:* ${items}%0A📍 *من:* ${pickup}%0A🎯 *إلى:* ${dropoff}%0A%0A🗺️ *رابط المسار فـ Google Maps:*%0A${encodeURIComponent(gmapsUrl)}`;
 
       window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
     }

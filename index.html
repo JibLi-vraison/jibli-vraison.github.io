@@ -40,7 +40,7 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 .suggestions-list li { padding: 12px; cursor: pointer; color: #fff; border-bottom: 1px solid #2a2a2a; }
 .suggestions-list li:hover { background: #2a2a2a; color: #ffb900; }
 
-#map { width: 100%; height: 300px; border-radius: 15px; margin-top: 15px; border: 2px solid #ffb900; }
+#map { width: 100%; height: 300px; border-radius: 15px; margin-top: 15px; border: 2px solid #ffb900; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -184,6 +184,7 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
     </div>
   </div>
   <div id="map"></div>
+  <p style="font-size:12px;color:#888;margin-top:6px;text-align:left;">💡 <b>Conseil:</b> Vous pouvez aussi cliquer directement sur la carte pour définir le départ puis la destination.</p>
 </div>
 
 <!-- MANUAL MODE FORM -->
@@ -258,6 +259,47 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 
 let depCoord = null, destCoord = null, depName = '', destName = '';
 let depMarker = null, destMarker = null, routePolyline = null;
 
+// CLICK ON MAP EVENT (CLICK TO SELECT DEPART THEN DESTINATION)
+map.on('click', function(e) {
+  const lat = e.latlng.lat;
+  const lng = e.latlng.lng;
+
+  // Reverse Geocoding to get address name
+  fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+    .then(res => res.json())
+    .then(data => {
+      let name = "Point sur la carte";
+      if (data && data.display_name) {
+        name = data.display_name.split(',')[0];
+      }
+
+      if (!depCoord || (depCoord && destCoord)) {
+        // Reset or first click -> set Departure
+        if (destMarker) { map.removeLayer(destMarker); destMarker = null; destCoord = null; }
+        if (routePolyline) { map.removeLayer(routePolyline); routePolyline = null; }
+        
+        document.getElementById('input-depart').value = name;
+        setPoint([lat, lng], name, true);
+      } else {
+        // Second click -> set Destination
+        document.getElementById('input-dest').value = name;
+        setPoint([lat, lng], name, false);
+      }
+    }).catch(() => {
+      // Fallback if reverse geocoding fails
+      const name = "Position sélectionnée";
+      if (!depCoord || (depCoord && destCoord)) {
+        if (destMarker) { map.removeLayer(destMarker); destMarker = null; destCoord = null; }
+        if (routePolyline) { map.removeLayer(routePolyline); routePolyline = null; }
+        document.getElementById('input-depart').value = name;
+        setPoint([lat, lng], name, true);
+      } else {
+        document.getElementById('input-dest').value = name;
+        setPoint([lat, lng], name, false);
+      }
+    });
+});
+
 function setupSearch(inputId, listId, isDepart) {
   const input = document.getElementById(inputId);
   const list = document.getElementById(listId);
@@ -298,11 +340,11 @@ function setPoint(coords, name, isDepart) {
   if (isDepart) {
     depCoord = coords; depName = name;
     if (depMarker) map.removeLayer(depMarker);
-    depMarker = L.marker(coords).addTo(map);
+    depMarker = L.marker(coords).addTo(map).bindPopup("<b>Départ:</b> " + name).openPopup();
   } else {
     destCoord = coords; destName = name;
     if (destMarker) map.removeLayer(destMarker);
-    destMarker = L.marker(coords).addTo(map);
+    destMarker = L.marker(coords).addTo(map).bindPopup("<b>Destination:</b> " + name).openPopup();
   }
   if (depCoord && destCoord) calculateRouteDistance();
 }

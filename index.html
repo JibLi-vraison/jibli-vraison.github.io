@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="fr">
 <head>
@@ -95,7 +96,16 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 .suggestions-list li:last-child { border-bottom: none; }
 .suggestions-list li:hover { background: #2a2a2a; color: #ffb900; }
 
-#map { width: 100%; height: 280px; border-radius: 15px; margin-top: 15px; border: 2px solid #ffb900; z-index: 1; }
+#map { width: 100%; height: 320px; border-radius: 15px; margin-top: 15px; border: 2px solid #ffb900; z-index: 1; }
+
+/* Custom Leaflet Layer Control Styling for dark theme */
+.leaflet-control-layers {
+  background: #181818 !important;
+  color: #fff !important;
+  border: 1px solid #ffb900 !important;
+  border-radius: 8px !important;
+}
+.leaflet-control-layers-label { color: #fff !important; }
 </style>
 </head>
 <body>
@@ -237,7 +247,7 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
     </div>
   </div>
   <div id="map"></div>
-  <p style="font-size:12px;color:#888;margin-top:8px;text-align:left;">💡 <b>Conseil:</b> Vous pouvez aussi cliquer directement sur la carte pour définir le départ puis la destination.</p>
+  <p style="font-size:12px;color:#888;margin-top:8px;text-align:left;">💡 <b>Conseil:</b> Vous pouvez changer le style de la carte (Détaillée / Satellite) en haut à droite de la carte.</p>
 </div>
 
 <!-- MANUAL MODE FORM -->
@@ -304,9 +314,34 @@ function switchMode(mode) {
   }
 }
 
-// Leaflet Map Init
+// Map Initialization
 const map = L.map('map').setView([34.2610, -6.5802], 14);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+
+// 1. Detailed Map (OpenStreetMap Standard - Very Detailed Streets & Places)
+const streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
+  maxZoom: 19,
+  attribution: '© OpenStreetMap'
+}).addTo(map);
+
+// 2. High-Detail Esri Streets (Extremely Detailed Topography & Names)
+const esriStreets = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+  maxZoom: 19,
+  attribution: 'Tiles &copy; Esri'
+});
+
+// 3. Satellite Map (Esri World Imagery)
+const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+  maxZoom: 19,
+  attribution: 'Tiles &copy; Esri'
+});
+
+// Add Layer Control switcher at top right
+const baseMaps = {
+  "🗺️ Carte Détaillée": streetLayer,
+  "🏙️ ESRI Streets": esriStreets,
+  "🛰️ Vue Satellite": satelliteLayer
+};
+L.control.layers(baseMaps).addTo(map);
 
 let depCoord = null, destCoord = null, depName = '', destName = '';
 let depMarker = null, destMarker = null, routePolyline = null;
@@ -535,4 +570,3 @@ function useCurrentLocation(isDepart) {
 </script>
 </body>
 </html>
-

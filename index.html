@@ -57,7 +57,6 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
   .tarif{padding:15px 12px}
 }
 
-/* FIX SEARCH & MAP POSITIONS */
 .search-box { position: relative; width: 100%; text-align: left; }
 .input-group { display: flex; gap: 8px; }
 .search-input { flex: 1; min-width: 0; padding: 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 15px; outline: none; }
@@ -68,7 +67,6 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 .mode-btn { flex: 1; padding: 12px 8px; border: none; background: transparent; color: #aaa; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 13px; }
 .mode-btn.active { background: #ffb900; color: #111; }
 
-/* FIX SUGGESTIONS OVERLAY & DUPLICATES */
 .suggestions-list { 
   position: absolute; 
   top: 100%; 
@@ -105,7 +103,6 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 
 <section class="hero">
   <div class="c">
-    <!-- POSTER (AFFICHE) PRINCIPALE -->
     <div class="poster-container">
       <svg viewBox="0 0 1000 650" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="background:#090909; font-family:Arial, sans-serif; border-radius:18px; border:1px solid #333; box-shadow:0 12px 40px rgba(0,0,0,0.8);">
         <rect width="1000" height="650" fill="#0c0c0c" rx="18"/>
@@ -183,7 +180,6 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
       </svg>
     </div>
 
-    <!-- BOUTONS D'ACTION DIRECTE -->
     <div class="hero-actions">
       <a class="btn yellow" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison.">Commander sur WhatsApp</a>
       <a class="btn dark" href="tel:+212634084543">📞 06 34 08 45 43</a>
@@ -316,12 +312,10 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 
 let depCoord = null, destCoord = null, depName = '', destName = '';
 let depMarker = null, destMarker = null, routePolyline = null;
 
-// CLICK ON MAP EVENT (CLICK TO SELECT DEPART THEN DESTINATION)
 map.on('click', function(e) {
   const lat = e.latlng.lat;
   const lng = e.latlng.lng;
 
-  // Reverse Geocoding to get address name
   fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
     .then(res => res.json())
     .then(data => {
@@ -354,7 +348,6 @@ map.on('click', function(e) {
     });
 });
 
-// SEARCH & DEDUPLICATION FIX
 function setupSearch(inputId, listId, isDepart) {
   const input = document.getElementById(inputId);
   const list = document.getElementById(listId);
@@ -376,7 +369,7 @@ function setupSearch(inputId, listId, isDepart) {
 
           data.forEach(item => {
             let parts = item.display_name.split(',');
-            let shortName = parts.slice(0, 2).join(', ').trim(); // e.g. "Marjane, Route de Rabat"
+            let shortName = parts.slice(0, 2).join(', ').trim();
 
             if (!seenNames.has(shortName)) {
               seenNames.add(shortName);
@@ -397,7 +390,6 @@ function setupSearch(inputId, listId, isDepart) {
     }, 200);
   });
 
-  // Hide suggestions when clicking outside
   document.addEventListener('click', (e) => {
     if (!input.contains(e.target) && !list.contains(e.target)) {
       list.style.display = 'none';
@@ -452,12 +444,22 @@ function calculateManualPrice() {
   }
 }
 
+// FIX: ADD LINKS FOR ALL CASES (EVEN > 15 KM)
 function renderPrice(n, dep, dest, isAuto) {
+  let linkDep = isAuto && depCoord ? `https://www.google.com/maps?q=${depCoord[0]},${depCoord[1]}` : null;
+  let linkDest = isAuto && destCoord ? `https://www.google.com/maps?q=${destCoord[0]},${destCoord[1]}` : null;
+
   if (n > 15) {
     document.getElementById('result').textContent = 'Sur Devis 🏷️';
     document.getElementById('status').innerHTML = `<b style="color:#ffb900">📍 Zone Éloignée (${n.toFixed(1)} km)</b><br>Pour les distances supérieures à 15 km, le tarif est calculé sur mesure.`;
     
-    let msg = `Bonjour JibLi-vraison 👋\nJe souhaite obtenir un devis personnalisé pour une livraison longue distance.\n\n📍 Départ : ${dep}\n🏁 Destination : ${dest}\n📏 Distance : ${n.toFixed(1)} km\n\nMerci de me communiquer votre meilleur tarif.`;
+    let msg = '';
+    if (isAuto && linkDep && linkDest) {
+      msg = `Bonjour JibLi-vraison 👋\nJe souhaite obtenir un devis personnalisé pour une livraison longue distance.\n\n📍 Départ : ${dep}\n🔗 Link : ${linkDep}\n\n🏁 Destination : ${dest}\n🔗 Link : ${linkDest}\n\n📏 Distance : ${n.toFixed(1)} km\n\nMerci de me communiquer votre meilleur tarif.`;
+    } else {
+      msg = `Bonjour JibLi-vraison 👋\nJe souhaite obtenir un devis personnalisé pour une livraison longue distance.\n\n📍 Départ : ${dep}\n🏁 Destination : ${dest}\n📏 Distance : ${n.toFixed(1)} km\n\nMerci de me communiquer votre meilleur tarif.`;
+    }
+    
     document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
     return;
   }
@@ -468,9 +470,7 @@ function renderPrice(n, dep, dest, isAuto) {
   document.getElementById('status').textContent = 'Distance estimée : ' + n.toFixed(1) + ' km';
 
   let msg = '';
-  if(isAuto) {
-    let linkDep = `https://www.google.com/maps?q=${depCoord[0]},${depCoord[1]}`;
-    let linkDest = `https://www.google.com/maps?q=${destCoord[0]},${destCoord[1]}`;
+  if(isAuto && linkDep && linkDest) {
     msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${dep}\n🔗 Link : ${linkDep}\n\n🏁 Destination : ${dest}\n🔗 Link : ${linkDest}\n\n📏 Distance : ${n.toFixed(1)} km\n💰 Prix : ${price} DH`;
   } else {
     msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${dep}\n🏁 Destination : ${dest}\n📏 Distance estimée : ${n} km\n💰 Prix calculé : ${price} DH`;

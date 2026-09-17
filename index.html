@@ -16,13 +16,11 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 @media(max-width:800px){.links{display:none}.grid,.cards,.steps,.why{grid-template-columns:1fr}.hero{padding:50px 0}.cta{display:block}.cta .btn{margin-top:20px}}
 
 .search-box { position: relative; width: 100%; text-align: left; }
-.input-group { display: flex; gap: 6px; flex-wrap: wrap; }
-.search-input { flex: 1; min-width: 180px; padding: 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 14px; outline: none; }
+.input-group { display: flex; gap: 8px; }
+.search-input { flex: 1; padding: 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 15px; outline: none; }
 .search-input:focus { border-color: #ffb900; }
-.gps-btn, .gmaps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 10px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 12px; height: 45px; }
-.gmaps-btn { border-color: #4285F4; color: #4285F4; }
+.gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 10px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; }
 .gps-btn:hover { background: #ffb900; color: #111; }
-.gmaps-btn:hover { background: #4285F4; color: #fff; }
 
 .suggestions-list { position: absolute; top: 100%; left: 0; right: 0; background: #1a1a1a; border: 1px solid #444; border-radius: 12px; max-height: 280px; overflow-y: auto; z-index: 1000; display: none; margin: 6px 0 0 0; padding: 0; list-style: none; box-shadow: 0 12px 24px rgba(0,0,0,0.6); }
 .suggestions-list li { padding: 12px 14px; cursor: pointer; color: #fff; border-bottom: 1px solid #2a2a2a; display: flex; align-items: center; gap: 12px; }
@@ -60,9 +58,8 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
     <label style="font-weight:700;display:block;margin-bottom:5px">🚦🟢 Départ</label>
     <div class="search-box">
       <div class="input-group">
-        <input type="text" id="input-depart" class="search-input" placeholder="Ecrivez ou collez un lien Google Maps..." autocomplete="off">
+        <input type="text" id="input-depart" class="search-input" placeholder="Ex: Marjane, Gare, Mehdia..." autocomplete="off">
         <button type="button" class="gps-btn" onclick="useCurrentLocation(true)">🎯 GPS</button>
-        <a href="https://maps.google.com" target="_blank" class="gmaps-btn">🗺️ Google Maps</a>
       </div>
       <ul id="list-depart" class="suggestions-list"></ul>
     </div>
@@ -72,9 +69,8 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
     <label style="font-weight:700;display:block;margin-bottom:5px">🚦🔴 Destination</label>
     <div class="search-box">
       <div class="input-group">
-        <input type="text" id="input-dest" class="search-input" placeholder="Ecrivez ou collez un lien Google Maps..." autocomplete="off">
+        <input type="text" id="input-dest" class="search-input" placeholder="Ex: Mehdia Mall, Pharmacie, Café..." autocomplete="off">
         <button type="button" class="gps-btn" onclick="useCurrentLocation(false)">🎯 GPS</button>
-        <a href="https://maps.google.com" target="_blank" class="gmaps-btn">🗺️ Google Maps</a>
       </div>
       <ul id="list-dest" class="suggestions-list"></ul>
     </div>
@@ -122,18 +118,6 @@ function setupSearch(inputId, listId, isDepart) {
   input.addEventListener('input', () => {
     clearTimeout(timer);
     const query = input.value.trim();
-
-    // إذا قام الزبون بنسخ رابط Google Maps مباشرة
-    if (query.includes('google.com/maps') || query.includes('maps.app.goo.gl')) {
-      extractCoordsFromUrl(query, (coords) => {
-        if (coords) {
-          const name = "Lien Google Maps";
-          setPoint(coords, name, isDepart);
-        }
-      });
-      return;
-    }
-
     if (query.length < 2) { list.style.display = 'none'; return; }
 
     timer = setTimeout(() => {
@@ -178,14 +162,6 @@ function setupSearch(inputId, listId, isDepart) {
       list.style.display = 'none';
     }
   });
-}
-
-function extractCoordsFromUrl(url, callback) {
-  const reg = /@(-?\d+\.\d+),(-?\d+\.\d+)/;
-  const match = url.match(reg);
-  if (match) {
-    callback([parseFloat(match[1]), parseFloat(match[2])]);
-  }
 }
 
 setupSearch('input-depart', 'list-depart', true);

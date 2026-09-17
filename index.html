@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="fr">
 <head>
@@ -13,8 +12,19 @@
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#090909;color:#fff}a{text-decoration:none;color:inherit}.c{width:92%;max-width:1100px;margin:auto}
 header{position:sticky;top:0;background:#090909ee;border-bottom:1px solid #292929;z-index:5}nav{height:70px;display:flex;align-items:center;justify-content:space-between}.brand{font-size:24px;font-weight:900;font-style:italic}.brand span{color:#ffb900}.links{display:flex;gap:20px;font-size:14px}.btn{display:inline-block;padding:13px 18px;border-radius:11px;font-weight:800;cursor:pointer;border:none}.yellow{background:#ffb900;color:#111}.dark{background:#171717;border:1px solid #555;color:#fff}
 .hero{padding:70px 0;background:radial-gradient(circle at 75% 45%,#ffb90022,transparent 30%)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:45px;align-items:center}h1{font-size:clamp(42px,6vw,70px);line-height:.98;margin:18px 0}h1 span{color:#ffb900}.ey{display:inline-block;color:#ffb900;background:#211b0b;border:1px solid #5d4600;border-radius:30px;padding:7px 13px;font-size:13px;font-weight:800}.hero p{color:#ccc;font-size:18px}.hours{margin:24px 0;padding:16px 20px;border-left:4px solid #ffb900;background:#171717;border-radius:0 12px 12px 0;font-size:15px;line-height:1.5}.hours b{display:block;color:#ffb900;font-size:18px;margin-bottom:4px}.actions{display:flex;gap:10px;flex-wrap:wrap}.poster{width:100%;border-radius:18px;border:1px solid #333}
-section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:center;color:#aaa}.cards,.steps,.why{display:grid;gap:16px}.cards{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:repeat(4,1fr)}.why{grid-template-columns:repeat(4,1fr)}.card,.step,.whyitem,.tarif,.faq details{background:#151515;border:1px solid #2b2b2b;border-radius:17px;padding:24px}.icon{font-size:30px}.card p,.step p,.whyitem small,.answer{color:#aaa}.num{width:38px;height:38px;background:#ffb900;color:#111;border-radius:50%;display:grid;place-items:center;font-weight:900}.whyitem{text-align:center}.whyitem span{font-size:28px}.tarif{max-width:650px;margin:auto;text-align:center}.result{font-size:30px;font-weight:900;color:#ffb900;margin:12px}.cta{background:linear-gradient(135deg,#ffb900,#f08d00);color:#111;border-radius:23px;padding:40px;display:flex;justify-content:space-between;align-items:center;gap:20px}.cta h2{font-size:32px;margin:0}.cta .btn{background:#111;color:#fff}footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}.wa{position:fixed;right:18px;bottom:18px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:28px;z-index:10}
-@media(max-width:800px){.links{display:none}.grid,.cards,.steps,.why{grid-template-columns:1fr}.hero{padding:50px 0}.cta{display:block}.cta .btn{margin-top:20px}}
+section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:center;color:#aaa}.cards,.steps,.why{display:grid;gap:16px}.cards{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:repeat(4,1fr)}.why{grid-template-columns:repeat(4,1fr)}.card,.step,.whyitem,.tarif,.faq details{background:#151515;border:1px solid #2b2b2b;border-radius:17px;padding:24px}.icon{font-size:30px}.card p,.step p,.whyitem small,.answer{color:#aaa}.num{width:38px;height:38px;background:#ffb900;color:#111;border-radius:50%;display:grid;place-items:center;font-weight:900}.whyitem{text-align:center}.whyitem span{font-size:28px}.tarif{max-width:650px;margin:auto;text-align:center}.result{font-size:30px;font-weight:900;color:#ffb900;margin:12px}.cta{background:linear-gradient(135deg,#ffb900,#f08d00);color:#111;border-radius:23px;padding:40px;display:flex;justify-content:space-between;align-items:center;gap:20px}.cta h2{font-size:32px;margin:0}.cta .btn{background:#111;color:#fff}footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
+.wa{position:fixed;right:20px;bottom:30px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:28px;z-index:99;box-shadow:0 4px 15px rgba(0,0,0,0.5)}
+
+/* Responsive adjustments */
+.hero-banner-container { display: block; }
+@media(max-width:800px){
+  .links{display:none}
+  .grid,.cards,.steps,.why{grid-template-columns:1fr}
+  .hero{padding:40px 0}
+  .cta{display:block}
+  .cta .btn{margin-top:20px}
+  .hero-banner-container { display: none; } /* Hide heavy SVG Banner on mobile */
+}
 
 .search-box { position: relative; width: 100%; text-align: left; }
 .input-group { display: flex; gap: 8px; }
@@ -43,8 +53,8 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
   Dimanche : 10h00 à 02h00
 </div>
 <div class="actions"><a class="btn yellow" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison.">Commander sur WhatsApp</a><a class="btn dark" href="tel:+212634084543">📞 06 34 08 45 43</a></div></div>
-<div>
-  <!-- POSTER (AFFICHE) SVG EMBEDDED DIRECTLY -->
+<div class="hero-banner-container">
+  <!-- POSTER SVG (DISPLAYED ON DESKTOP FOR CLEAN VISUALS) -->
   <svg viewBox="0 0 1000 650" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="background:#090909; font-family:Arial, sans-serif; border-radius:18px; border:1px solid #333; box-shadow:0 12px 40px rgba(0,0,0,0.8);">
     <rect width="1000" height="650" fill="#0c0c0c" rx="18"/>
     <path d="M 480 0 L 1000 0 L 1000 650 L 380 650 Z" fill="#141414"/>
@@ -367,3 +377,4 @@ function useCurrentLocation(isDepart) {
 </script>
 </body>
 </html>
+

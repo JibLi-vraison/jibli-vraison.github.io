@@ -12,28 +12,24 @@
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#090909;color:#fff}a{text-decoration:none;color:inherit}.c{width:92%;max-width:1100px;margin:auto}
 header{position:sticky;top:0;background:#090909ee;border-bottom:1px solid #292929;z-index:5}nav{height:70px;display:flex;align-items:center;justify-content:space-between}.brand{font-size:24px;font-weight:900;font-style:italic}.brand span{color:#ffb900}.links{display:flex;gap:20px;font-size:14px}.btn{display:inline-block;padding:13px 18px;border-radius:11px;font-weight:800;cursor:pointer;border:none}.yellow{background:#ffb900;color:#111}.dark{background:#171717;border:1px solid #555;color:#fff}
 .hero{padding:70px 0;background:radial-gradient(circle at 75% 45%,#ffb90022,transparent 30%)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:45px;align-items:center}h1{font-size:clamp(42px,6vw,70px);line-height:.98;margin:18px 0}h1 span{color:#ffb900}.ey{display:inline-block;color:#ffb900;background:#211b0b;border:1px solid #5d4600;border-radius:30px;padding:7px 13px;font-size:13px;font-weight:800}.hero p{color:#ccc;font-size:18px}.hours{margin:24px 0;padding:16px 20px;border-left:4px solid #ffb900;background:#171717;border-radius:0 12px 12px 0;font-size:15px;line-height:1.5}.hours b{display:block;color:#ffb900;font-size:18px;margin-bottom:4px}.actions{display:flex;gap:10px;flex-wrap:wrap}.poster{width:100%;border-radius:18px;border:1px solid #333}
-section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:center;color:#aaa}.cards,.steps,.why{display:grid;gap:16px}.cards{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:repeat(4,1fr)}.why{grid-template-columns:repeat(4,1fr)}.card,.step,.whyitem,.tarif,.faq details{background:#151515;border:1px solid #2b2b2b;border-radius:17px;padding:24px}.icon{font-size:30px}.card p,.step p,.whyitem small,.answer{color:#aaa}.num{width:38px;height:38px;background:#ffb900;color:#111;border-radius:50%;display:grid;place-items:center;font-weight:900}.whyitem{text-align:center}.whyitem span{font-size:28px}.tarif{max-width:650px;margin:auto;text-align:center}.result{font-size:30px;font-weight:900;color:#ffb900;margin:12px}.cta{background:linear-gradient(135deg,#ffb900,#f08d00);color:#111;border-radius:23px;padding:40px;display:flex;justify-content:space-between;align-items:center;gap:20px}.cta h2{font-size:32px;margin:0}.cta .btn{background:#111;color:#fff}footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}.wa{position:fixed;right:18px;bottom:18px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:28px;z-index:10}
-@media(max-width:800px){.links{display:none}.grid,.cards,.steps,.why{grid-template-columns:1fr}.hero{padding:50px 0}.cta{display:block}.cta .btn{margin-top:20px}}
+section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:center;color:#aaa}.cards,.steps,.why{display:grid;gap:16px}.cards{grid-template-columns:repeat(3,1fr)}.card,.step,.whyitem,.tarif,.faq details{background:#151515;border:1px solid #2b2b2b;border-radius:17px;padding:24px}.icon{font-size:30px}.card p,.step p,.whyitem small,.answer{color:#aaa}.tarif{max-width:650px;margin:auto;text-align:center}.result{font-size:30px;font-weight:900;color:#ffb900;margin:12px}footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}.wa{position:fixed;right:18px;bottom:18px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:28px;z-index:10}
+@media(max-width:800px){.links{display:none}.grid,.cards{grid-template-columns:1fr}.hero{padding:50px 0}}
 
 .search-box { position: relative; width: 100%; text-align: left; }
 .input-group { display: flex; gap: 8px; }
 .search-input { flex: 1; padding: 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 15px; outline: none; }
 .search-input:focus { border-color: #ffb900; }
 .gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 10px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; }
-.gps-btn:hover { background: #ffb900; color: #111; }
 
-.suggestions-list { position: absolute; top: 100%; left: 0; right: 0; background: #1a1a1a; border: 1px solid #444; border-radius: 12px; max-height: 280px; overflow-y: auto; z-index: 1000; display: none; margin: 6px 0 0 0; padding: 0; list-style: none; box-shadow: 0 12px 24px rgba(0,0,0,0.6); }
-.suggestions-list li { padding: 12px 14px; cursor: pointer; color: #fff; border-bottom: 1px solid #2a2a2a; display: flex; align-items: center; gap: 12px; }
-.suggestions-list li:last-child { border-bottom: none; }
-.suggestions-list li:hover { background: #2a2a2a; }
-.suggestions-list li:hover .main-title { color: #ffb900; }
-.suggest-icon { width: 32px; height: 32px; background: #282828; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
-.suggest-info { display: flex; flex-direction: column; gap: 2px; overflow: hidden; }
-.main-title { font-weight: 700; font-size: 15px; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.sub-addr { font-size: 12px; color: #999999; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mode-selector { display: flex; gap: 10px; margin-bottom: 20px; background: #222; padding: 5px; border-radius: 12px; }
+.mode-btn { flex: 1; padding: 10px; border: none; background: transparent; color: #aaa; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+.mode-btn.active { background: #ffb900; color: #111; }
 
-#map { width: 100%; height: 350px; border-radius: 15px; margin-top: 15px; border: 2px solid #ffb900; }
-.map-hint { font-size: 12px; color: #ffb900; margin-top: 8px; display: block; }
+.suggestions-list { position: absolute; top: 100%; left: 0; right: 0; background: #1a1a1a; border: 1px solid #444; border-radius: 12px; max-height: 200px; overflow-y: auto; z-index: 1000; display: none; margin: 6px 0 0 0; padding: 0; list-style: none; }
+.suggestions-list li { padding: 12px; cursor: pointer; color: #fff; border-bottom: 1px solid #2a2a2a; }
+.suggestions-list li:hover { background: #2a2a2a; color: #ffb900; }
+
+#map { width: 100%; height: 300px; border-radius: 15px; margin-top: 15px; border: 2px solid #ffb900; }
 </style>
 </head>
 <body>
@@ -47,68 +43,97 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 </div>
 <div class="actions"><a class="btn yellow" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison.">Commander sur WhatsApp</a><a class="btn dark" href="tel:+212634084543">📞 06 34 08 45 43</a></div></div><div><img class="poster" src="jibli-vraison-affiche.jpg" alt="JibLi-vraison"></div></div></section>
 
-<section id="services"><div class="c"><h2 class="title">Tous vos besoins, une seule livraison</h2><p class="sub">Un service local pensé pour Kénitra.</p><div class="cards">
-<div class="card"><div class="icon">🛒</div><h3>E-commerce</h3><p>Livraison de vos commandes en ligne.</p></div><div class="card"><div class="icon">🍔</div><h3>Restaurants</h3><p>Vos repas livrés rapidement.</p></div><div class="card"><div class="icon">💊</div><h3>Pharmacie</h3><p>Produits de pharmacie selon les conditions applicables.</p></div><div class="card"><div class="icon">🛍️</div><h3>Courses diverses</h3><p>Petits achats et besoins du quotidien.</p></div><div class="card"><div class="icon">📦</div><h3>Petits colis</h3><p>Un service de proximité pour vos petits envois.</p></div><div class="card"><div class="icon">🌙</div><h3>Service nocturne</h3><p>Disponible en soirée et nuit.</p></div>
-</div></div></section>
+<section id="tarifs"><div class="c"><h2 class="title">Commander ma livraison</h2><p class="sub">Choisissez la méthode de calcul du tarif.</p><div class="tarif">
 
-<section id="tarifs"><div class="c"><h2 class="title">Commander ma livraison</h2><p class="sub">Sélectionnez le lieu de départ et d'arrivée sur Kénitra pour calculer le prix.</p><div class="tarif">
-<div style="display:grid;gap:15px;margin-bottom:18px;text-align:left">
-  
-  <div>
-    <label style="font-weight:700;display:block;margin-bottom:5px">🚦🟢 Départ</label>
-    <div class="search-box">
-      <div class="input-group">
-        <input type="text" id="input-depart" class="search-input" placeholder="Ex: Marjane, Gare, Mehdia..." autocomplete="off">
-        <button type="button" class="gps-btn" onclick="useCurrentLocation(true)">🎯 GPS</button>
+<!-- Mode Selector -->
+<div class="mode-selector">
+  <button type="button" class="mode-btn active" id="btn-mode-auto" onclick="switchMode('auto')">🗺️ Par Carte / Adresse</button>
+  <button type="button" class="mode-btn" id="btn-mode-manual" onclick="switchMode('manual')">✏️ الكيلومتراج يدويًا</button>
+</div>
+
+<!-- AUTO MODE FORM -->
+<div id="section-auto">
+  <div style="display:grid;gap:15px;margin-bottom:18px;text-align:left">
+    <div>
+      <label style="font-weight:700;display:block;margin-bottom:5px">🚦🟢 Départ</label>
+      <div class="search-box">
+        <div class="input-group">
+          <input type="text" id="input-depart" class="search-input" placeholder="Ex: Marjane, Gare..." autocomplete="off">
+          <button type="button" class="gps-btn" onclick="useCurrentLocation(true)">🎯 GPS</button>
+        </div>
+        <ul id="list-depart" class="suggestions-list"></ul>
       </div>
-      <ul id="list-depart" class="suggestions-list"></ul>
+    </div>
+
+    <div>
+      <label style="font-weight:700;display:block;margin-bottom:5px">🚦🔴 Destination</label>
+      <div class="search-box">
+        <div class="input-group">
+          <input type="text" id="input-dest" class="search-input" placeholder="Ex: Mehdia, Pharmacie..." autocomplete="off">
+          <button type="button" class="gps-btn" onclick="useCurrentLocation(false)">🎯 GPS</button>
+        </div>
+        <ul id="list-dest" class="suggestions-list"></ul>
+      </div>
     </div>
   </div>
+  <div id="map"></div>
+</div>
 
-  <div>
-    <label style="font-weight:700;display:block;margin-bottom:5px">🚦🔴 Destination</label>
-    <div class="search-box">
-      <div class="input-group">
-        <input type="text" id="input-dest" class="search-input" placeholder="Ex: Mehdia Mall, Pharmacie, Café..." autocomplete="off">
-        <button type="button" class="gps-btn" onclick="useCurrentLocation(false)">🎯 GPS</button>
-      </div>
-      <ul id="list-dest" class="suggestions-list"></ul>
+<!-- MANUAL MODE FORM -->
+<div id="section-manual" style="display:none; text-align:left;">
+  <div style="display:grid;gap:15px;margin-bottom:18px;">
+    <div>
+      <label style="font-weight:700;display:block;margin-bottom:5px">📍 Lieu de départ (Optionnel)</label>
+      <input type="text" id="manual-depart" class="search-input" style="width:100%" placeholder="Ex: Centre ville">
+    </div>
+    <div>
+      <label style="font-weight:700;display:block;margin-bottom:5px">🏁 Lieu d'arrivée (Optionnel)</label>
+      <input type="text" id="manual-dest" class="search-input" style="width:100%" placeholder="Ex: Mehdia">
+    </div>
+    <div>
+      <label style="font-weight:700;display:block;margin-bottom:5px">📏 Distance estimée (en Kilomètres)</label>
+      <input type="number" id="manual-km" class="search-input" style="width:100%" placeholder="Ex: 5" min="1" oninput="calculateManualPrice()">
     </div>
   </div>
-
 </div>
 
 <div class="result" id="result">— DH</div>
-<p id="status" style="color:#aaa;margin-bottom:15px;">Sélectionnez les deux adresses pour afficher le tarif.</p>
+<p id="status" style="color:#aaa;margin-bottom:15px;">Sélectionnez les lieux ou entrez la distance.</p>
 
-<div id="map"></div>
-<span class="map-hint">💡 Vous pouvez cliquer directement sur la carte pour choisir vos points.</span>
-<br>
 <a id="order" class="btn yellow" href="https://wa.me/212634084543" style="width:100%;text-align:center;">Commander sur WhatsApp</a>
-</div></div></section>
-
-<section id="faq"><div class="c"><h2 class="title">Questions fréquentes</h2><div class="faq">
-<details><summary>Comment commander ?</summary><div class="answer">Choisissez le lieu de départ et la destination, puis cliquez sur le bouton WhatsApp.</div></details>
-<details><summary>Où faites-vous les livraisons ?</summary><div class="answer">Le service est destiné aux livraisons à Kénitra.</div></details>
-<details><summary>Comment connaître le prix ?</summary><div class="answer">Le prix est calculé automatiquement en fonction du kilométrage exact.</div></details>
-<details><summary>Quels sont vos horaires ?</summary><div class="answer">Du Lundi au Samedi : 17h00 à 02h00.<br>Le Dimanche : 10h00 à 02h00.</div></details>
 </div></div></section>
 
 <footer><div class="c"><b>JibLi-vraison</b> — Service de coursier à moto à Kénitra. <span style="float:right">© 2026</span></div></footer>
 <a class="wa" href="https://wa.me/212634084543">☏</a>
 
 <script>
+let currentMode = 'auto';
+
+function switchMode(mode) {
+  currentMode = mode;
+  document.getElementById('btn-mode-auto').classList.toggle('active', mode === 'auto');
+  document.getElementById('btn-mode-manual').classList.toggle('active', mode === 'manual');
+  
+  document.getElementById('section-auto').style.display = mode === 'auto' ? 'block' : 'none';
+  document.getElementById('section-manual').style.display = mode === 'manual' ? 'block' : 'none';
+  
+  if(mode === 'manual') {
+    calculateManualPrice();
+  } else {
+    if(depCoord && destCoord) calculateRouteDistance();
+    else {
+      document.getElementById('result').textContent = '— DH';
+      document.getElementById('status').textContent = 'Sélectionnez les deux adresses pour afficher le tarif.';
+    }
+  }
+}
+
+// Leaflet Map Init
 const map = L.map('map').setView([34.2610, -6.5802], 14);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-  attribution: '© OpenStreetMap'
-}).addTo(map);
-
-let depCoord = null, destCoord = null;
-let depName = '', destName = '';
-let depMarker = null, destMarker = null;
-let routePolyline = null;
+let depCoord = null, destCoord = null, depName = '', destName = '';
+let depMarker = null, destMarker = null, routePolyline = null;
 
 function setupSearch(inputId, listId, isDepart) {
   const input = document.getElementById(inputId);
@@ -121,172 +146,98 @@ function setupSearch(inputId, listId, isDepart) {
     if (query.length < 2) { list.style.display = 'none'; return; }
 
     timer = setTimeout(() => {
-      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + ' Kenitra')}&countrycodes=ma&limit=8`;
-
-      fetch(url)
+      fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + ' Kenitra')}&countrycodes=ma&limit=5`)
         .then(res => res.json())
         .then(data => {
           list.innerHTML = '';
           if (!data || data.length === 0) { list.style.display = 'none'; return; }
-
           data.forEach(item => {
             const name = item.display_name.split(',')[0];
-            const subAddress = item.display_name.split(',').slice(1, 4).join(',');
-
             const li = document.createElement('li');
-            li.innerHTML = `
-              <div class="suggest-icon">📍</div>
-              <div class="suggest-info">
-                <span class="main-title">${name}</span>
-                <span class="sub-addr">${subAddress}</span>
-              </div>
-            `;
-            
+            li.textContent = name;
             li.onclick = () => {
               input.value = name;
               list.style.display = 'none';
-              const coords = [parseFloat(item.lat), parseFloat(item.lon)];
-              setPoint(coords, `${name} (${subAddress})`, isDepart);
+              setPoint([parseFloat(item.lat), parseFloat(item.lon)], name, isDepart);
             };
             list.appendChild(li);
           });
-
           list.style.display = 'block';
-        })
-        .catch(() => { list.style.display = 'none'; });
+        });
     }, 200);
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!input.contains(e.target) && !list.contains(e.target)) {
-      list.style.display = 'none';
-    }
   });
 }
 
 setupSearch('input-depart', 'list-depart', true);
 setupSearch('input-dest', 'list-dest', false);
 
-map.on('click', (e) => {
-  const coords = [e.latlng.lat, e.latlng.lng];
-  if (!depCoord) {
-    const name = "Point sur la carte (Départ)";
-    document.getElementById('input-depart').value = name;
-    setPoint(coords, name, true);
-  } else if (!destCoord) {
-    const name = "Point sur la carte (Destination)";
-    document.getElementById('input-dest').value = name;
-    setPoint(coords, name, false);
-  } else {
-    const name = "Point sur la carte (Départ)";
-    document.getElementById('input-depart').value = name;
-    document.getElementById('input-dest').value = "";
-    if (destMarker) map.removeLayer(destMarker);
-    destCoord = null;
-    setPoint(coords, name, true);
-  }
-});
-
-function useCurrentLocation(isDepart) {
-  const inputId = isDepart ? 'input-depart' : 'input-dest';
-  const input = document.getElementById(inputId);
-  
-  if (navigator.geolocation) {
-    input.value = "Localisation GPS...";
-    navigator.geolocation.getCurrentPosition(position => {
-      const coords = [position.coords.latitude, position.coords.longitude];
-      const name = "Ma position exacte (GPS)";
-      input.value = name;
-      setPoint(coords, name, isDepart);
-    }, () => {
-      alert("Veuillez autoriser la géolocalisation sur votre téléphone.");
-      input.value = "";
-    });
-  } else {
-    alert("Géolocalisation non supportée.");
-  }
-}
-
 function setPoint(coords, name, isDepart) {
   if (isDepart) {
-    depCoord = coords;
-    depName = name;
+    depCoord = coords; depName = name;
     if (depMarker) map.removeLayer(depMarker);
-    depMarker = L.marker(coords).addTo(map).bindPopup("Départ").openPopup();
+    depMarker = L.marker(coords).addTo(map);
   } else {
-    destCoord = coords;
-    destName = name;
+    destCoord = coords; destName = name;
     if (destMarker) map.removeLayer(destMarker);
-    destMarker = L.marker(coords).addTo(map).bindPopup("Destination").openPopup();
+    destMarker = L.marker(coords).addTo(map);
   }
-
-  if (depCoord && destCoord) {
-    const bounds = L.latLngBounds([depCoord, destCoord]);
-    map.fitBounds(bounds, { padding: [40, 40] });
-  } else {
-    map.setView(coords, 15);
-  }
-
-  calculateRouteDistance();
+  if (depCoord && destCoord) calculateRouteDistance();
 }
 
 function calculateRouteDistance() {
-  if (!depCoord || !destCoord) return;
-
-  document.getElementById('status').textContent = 'Calcul du trajet en cours...';
-
-  const url = `https://router.project-osrm.org/route/v1/driving/${depCoord[1]},${depCoord[0]};${destCoord[1]},${destCoord[0]}?overview=full&geometries=geojson`;
-
-  fetch(url)
+  fetch(`https://router.project-osrm.org/route/v1/driving/${depCoord[1]},${depCoord[0]};${destCoord[1]},${destCoord[0]}?overview=full&geometries=geojson`)
     .then(res => res.json())
     .then(data => {
       if (data.routes && data.routes.length > 0) {
-        const route = data.routes[0];
-        const distKm = (route.distance / 1000) * 1.025; 
-
+        const distKm = (data.routes[0].distance / 1000) * 1.025;
         if (routePolyline) map.removeLayer(routePolyline);
-        routePolyline = L.geoJSON(route.geometry, {
-          style: { color: '#ffb900', weight: 5, opacity: 0.8 }
-        }).addTo(map);
-
-        map.fitBounds(routePolyline.getBounds(), { padding: [40, 40] });
-        renderPrice(distKm);
-      } else {
-        fallbackAirDistance();
+        routePolyline = L.geoJSON(data.routes[0].geometry, { style: { color: '#ffb900', weight: 5 } }).addTo(map);
+        map.fitBounds(routePolyline.getBounds(), { padding: [30, 30] });
+        renderPrice(distKm, depName, destName, true);
       }
-    })
-    .catch(() => {
-      fallbackAirDistance();
     });
 }
 
-function fallbackAirDistance() {
-  const n = getAirDistance(depCoord, destCoord) * 1.25;
-  renderPrice(n);
+function calculateManualPrice() {
+  const km = parseFloat(document.getElementById('manual-km').value);
+  const dep = document.getElementById('manual-depart').value || "Non spécifié";
+  const dest = document.getElementById('manual-dest').value || "Non spécifié";
+
+  if (!km || km <= 0) {
+    document.getElementById('result').textContent = '— DH';
+    document.getElementById('status').textContent = 'Saisissez un kilométrage valide.';
+    return;
+  }
+  renderPrice(km, dep, dest, false);
 }
 
-function getAirDistance(c1, c2) {
-  const R = 6371;
-  const dLat = (c2[0] - c1[0]) * Math.PI / 180;
-  const dLon = (c2[1] - c1[1]) * Math.PI / 180;
-  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-            Math.cos(c1[0] * Math.PI / 180) * Math.cos(c2[0] * Math.PI / 180) *
-            Math.sin(dLon/2) * Math.sin(dLon/2);
-  return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
-}
-
-function renderPrice(n) {
+function renderPrice(n, dep, dest, isAuto) {
   let price = n <= 4 ? 20 : n < 6 ? 25 : n < 7 ? 26 : n < 8 ? 27 : n < 9 ? 28 : n < 10 ? 29 : 35 + Math.ceil(n - 10) * 2;
-  const shown = n.toFixed(1);
-
+  
   document.getElementById('result').textContent = price + ' DH';
-  document.getElementById('status').textContent = 'Distance estimée par la route : ' + shown + ' km';
+  document.getElementById('status').textContent = 'Distance : ' + n.toFixed(1) + ' km';
 
-  let linkDep = `https://www.google.com/maps?q=${depCoord[0]},${depCoord[1]}`;
-  let linkDest = `https://www.google.com/maps?q=${destCoord[0]},${destCoord[1]}`;
+  let msg = '';
+  if(isAuto) {
+    let linkDep = `https://www.google.com/maps?q=${depCoord[0]},${depCoord[1]}`;
+    let linkDest = `https://www.google.com/maps?q=${destCoord[0]},${destCoord[1]}`;
+    msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${dep}\n🔗 Link : ${linkDep}\n\n🏁 Destination : ${dest}\n🔗 Link : ${linkDest}\n\n📏 Distance : ${n.toFixed(1)} km\n💰 Prix : ${price} DH`;
+  } else {
+    msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison (Saisie Manuel).\n\n📍 Départ : ${dep}\n🏁 Destination : ${dest}\n📏 Distance estimée : ${n} km\n💰 Prix calculé : ${price} DH`;
+  }
 
-  let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${depName}\n🔗 Link : ${linkDep}\n\n🏁 Destination : ${destName}\n🔗 Link : ${linkDest}\n\n📏 Distance : ${shown} km\n💰 Prix estimé : ${price} DH`;
   document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
+}
+
+function useCurrentLocation(isDepart) {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(position => {
+      const coords = [position.coords.latitude, position.coords.longitude];
+      const name = "Ma position exacte (GPS)";
+      document.getElementById(isDepart ? 'input-depart' : 'input-dest').value = name;
+      setPoint(coords, name, isDepart);
+    });
+  }
 }
 </script>
 </body>

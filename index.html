@@ -11,19 +11,19 @@
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#090909;color:#fff}a{text-decoration:none;color:inherit}.c{width:92%;max-width:1100px;margin:auto}
 header{position:sticky;top:0;background:#090909ee;border-bottom:1px solid #292929;z-index:5}nav{height:70px;display:flex;align-items:center;justify-content:space-between}.brand{font-size:24px;font-weight:900;font-style:italic}.brand span{color:#ffb900}.links{display:flex;gap:20px;font-size:14px}.btn{display:inline-block;padding:13px 18px;border-radius:11px;font-weight:800;cursor:pointer;border:none}.yellow{background:#ffb900;color:#111}.dark{background:#171717;border:1px solid #555;color:#fff}
-.hero{padding:70px 0;background:radial-gradient(circle at 75% 45%,#ffb90022,transparent 30%)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:45px;align-items:center}h1{font-size:clamp(42px,6vw,70px);line-height:.98;margin:18px 0}h1 span{color:#ffb900}.ey{display:inline-block;color:#ffb900;background:#211b0b;border:1px solid #5d4600;border-radius:30px;padding:7px 13px;font-size:13px;font-weight:800}.hero p{color:#ccc;font-size:18px}.hours{margin:24px 0;padding:16px 20px;border-left:4px solid #ffb900;background:#171717;border-radius:0 12px 12px 0;font-size:15px;line-height:1.5}.hours b{display:block;color:#ffb900;font-size:18px;margin-bottom:4px}.actions{display:flex;gap:10px;flex-wrap:wrap}.poster{width:100%;border-radius:18px;border:1px solid #333}
-section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:center;color:#aaa}.cards,.steps,.why{display:grid;gap:16px}.cards{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:repeat(4,1fr)}.why{grid-template-columns:repeat(4,1fr)}.card,.step,.whyitem,.tarif,.faq details{background:#151515;border:1px solid #2b2b2b;border-radius:17px;padding:24px}.icon{font-size:30px}.card p,.step p,.whyitem small,.answer{color:#aaa}.num{width:38px;height:38px;background:#ffb900;color:#111;border-radius:50%;display:grid;place-items:center;font-weight:900}.whyitem{text-align:center}.whyitem span{font-size:28px}.tarif{max-width:650px;margin:auto;text-align:center}.result{font-size:30px;font-weight:900;color:#ffb900;margin:12px}.cta{background:linear-gradient(135deg,#ffb900,#f08d00);color:#111;border-radius:23px;padding:40px;display:flex;justify-content:space-between;align-items:center;gap:20px}.cta h2{font-size:32px;margin:0}.cta .btn{background:#111;color:#fff}footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
-.wa{position:fixed;right:20px;bottom:30px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:28px;z-index:99;box-shadow:0 4px 15px rgba(0,0,0,0.5)}
+.hero{padding:40px 0;background:radial-gradient(circle at 50% 30%,#ffb90015,transparent 50%)}
+.poster-container{width:100%;max-width:900px;margin:0 auto 25px auto}
+.hero-actions{display:flex;justify-content:center;gap:15px;flex-wrap:wrap}
 
-/* Responsive adjustments */
-.hero-banner-container { display: block; }
+section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:center;color:#aaa}.cards,.steps,.why{display:grid;gap:16px}.cards{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:repeat(4,1fr)}.why{grid-template-columns:repeat(4,1fr)}.card,.step,.whyitem,.tarif,.faq details{background:#151515;border:1px solid #2b2b2b;border-radius:17px;padding:24px}.icon{font-size:30px}.card p,.step p,.whyitem small,.answer{color:#aaa}.num{width:38px;height:38px;background:#ffb900;color:#111;border-radius:50%;display:grid;place-items:center;font-weight:900}.whyitem{text-align:center}.whyitem span{font-size:28px}.tarif{max-width:650px;margin:auto;text-align:center}.result{font-size:30px;font-weight:900;color:#ffb900;margin:12px}.cta{background:linear-gradient(135deg,#ffb900,#f08d00);color:#111;border-radius:23px;padding:40px;display:flex;justify-content:space-between;align-items:center;gap:20px}.cta h2{font-size:32px;margin:0}.cta .btn{background:#111;color:#fff}footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
+.wa{position:fixed;right:20px;bottom:25px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:28px;z-index:99;box-shadow:0 4px 15px rgba(0,0,0,0.5)}
+
 @media(max-width:800px){
   .links{display:none}
-  .grid,.cards,.steps,.why{grid-template-columns:1fr}
-  .hero{padding:40px 0}
+  .cards,.steps,.why{grid-template-columns:1fr}
+  .hero{padding:20px 0}
   .cta{display:block}
   .cta .btn{margin-top:20px}
-  .hero-banner-container { display: none; } /* Hide heavy SVG Banner on mobile */
 }
 
 .search-box { position: relative; width: 100%; text-align: left; }
@@ -46,90 +46,93 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 <body>
 <header><div class="c"><nav><a class="brand" href="#">JibLi-<span>vraison</span></a><div class="links"><a href="#services">Services</a><a href="#tarifs">Tarifs</a><a href="#comment">Comment ça marche</a><a href="#pourquoi">Pourquoi nous</a><a href="#faq">FAQ</a></div><div style="display:flex;gap:8px;align-items:center"><a class="btn dark" href="mailto:jibli.vraison@gmail.com">Email</a><a class="btn yellow" href="https://wa.me/212634084543">WhatsApp</a></div></nav></div></header>
 
-<section class="hero"><div class="c grid"><div><div class="ey">SERVICE DE COURSIER À MOTO</div><h1>Une livraison.<br><span>Simple. Rapide.</span></h1><p>Vos courses, petits colis, commandes et besoins du quotidien livrés à Kénitra.</p>
-<div class="hours">
-  <b>Disponible à Kénitra</b>
-  Lun - Sam : 17h00 à 02h00<br>
-  Dimanche : 10h00 à 02h00
-</div>
-<div class="actions"><a class="btn yellow" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison.">Commander sur WhatsApp</a><a class="btn dark" href="tel:+212634084543">📞 06 34 08 45 43</a></div></div>
-<div class="hero-banner-container">
-  <!-- POSTER SVG (DISPLAYED ON DESKTOP FOR CLEAN VISUALS) -->
-  <svg viewBox="0 0 1000 650" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="background:#090909; font-family:Arial, sans-serif; border-radius:18px; border:1px solid #333; box-shadow:0 12px 40px rgba(0,0,0,0.8);">
-    <rect width="1000" height="650" fill="#0c0c0c" rx="18"/>
-    <path d="M 480 0 L 1000 0 L 1000 650 L 380 650 Z" fill="#141414"/>
-    <circle cx="750" cy="280" r="220" fill="#ffb900" opacity="0.04"/>
+<section class="hero">
+  <div class="c">
+    <!-- POSTER (AFFICHE) PRINCIPALE -->
+    <div class="poster-container">
+      <svg viewBox="0 0 1000 650" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="background:#090909; font-family:Arial, sans-serif; border-radius:18px; border:1px solid #333; box-shadow:0 12px 40px rgba(0,0,0,0.8);">
+        <rect width="1000" height="650" fill="#0c0c0c" rx="18"/>
+        <path d="M 480 0 L 1000 0 L 1000 650 L 380 650 Z" fill="#141414"/>
+        <circle cx="750" cy="280" r="220" fill="#ffb900" opacity="0.04"/>
 
-    <g transform="translate(45, 55)">
-      <text x="0" y="0" font-weight="900" font-style="italic" font-size="52" fill="#ffffff">JibLi-<tspan fill="#ffb900">vraison</tspan></text>
-      <line x1="0" y1="18" x2="380" y2="18" stroke="#ffb900" stroke-width="4" stroke-linecap="round"/>
-      <text x="0" y="44" font-weight="bold" font-size="16" fill="#aaa" letter-spacing="3">SERVICE DE COURSIER À MOTO</text>
-    </g>
+        <g transform="translate(45, 55)">
+          <text x="0" y="0" font-weight="900" font-style="italic" font-size="52" fill="#ffffff">JibLi-<tspan fill="#ffb900">vraison</tspan></text>
+          <line x1="0" y1="18" x2="380" y2="18" stroke="#ffb900" stroke-width="4" stroke-linecap="round"/>
+          <text x="0" y="44" font-weight="bold" font-size="16" fill="#aaa" letter-spacing="3">SERVICE DE COURSIER À MOTO</text>
+        </g>
 
-    <g transform="translate(45, 145)">
-      <rect width="420" height="135" fill="#ffb900" rx="14"/>
-      <text x="24" y="36" font-weight="900" font-size="18" fill="#111">DISPONIBLE À KÉNITRA</text>
-      <line x1="24" y1="48" x2="396" y2="48" stroke="#111" stroke-width="1.5" opacity="0.3"/>
-      <text x="24" y="80" font-weight="bold" font-size="18" fill="#111">🕒 Lun - Sam : 17h00 à 02h00</text>
-      <text x="24" y="110" font-weight="bold" font-size="18" fill="#111">🕒 Dimanche : 10h00 à 02h00</text>
-    </g>
+        <g transform="translate(45, 145)">
+          <rect width="420" height="135" fill="#ffb900" rx="14"/>
+          <text x="24" y="36" font-weight="900" font-size="18" fill="#111">DISPONIBLE À KÉNITRA</text>
+          <line x1="24" y1="48" x2="396" y2="48" stroke="#111" stroke-width="1.5" opacity="0.3"/>
+          <text x="24" y="80" font-weight="bold" font-size="18" fill="#111">🕒 Lun - Sam : 17h00 à 02h00</text>
+          <text x="24" y="110" font-weight="bold" font-size="18" fill="#111">🕒 Dimanche : 10h00 à 02h00</text>
+        </g>
 
-    <g transform="translate(45, 308)">
-      <rect x="0" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
-      <text x="65" y="32" font-size="22" text-anchor="middle">⚡</text>
-      <text x="65" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">LIVRAISON RAPIDE</text>
+        <g transform="translate(45, 308)">
+          <rect x="0" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
+          <text x="65" y="32" font-size="22" text-anchor="middle">⚡</text>
+          <text x="65" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">LIVRAISON RAPIDE</text>
 
-      <rect x="145" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
-      <text x="210" y="32" font-size="22" text-anchor="middle">🔒</text>
-      <text x="210" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">SÉCURISÉE &amp; FIABLE</text>
+          <rect x="145" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
+          <text x="210" y="32" font-size="22" text-anchor="middle">🔒</text>
+          <text x="210" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">SÉCURISÉE &amp; FIABLE</text>
 
-      <rect x="290" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
-      <text x="355" y="32" font-size="22" text-anchor="middle">🌙</text>
-      <text x="355" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">SERVICE NOCTURNE</text>
-    </g>
+          <rect x="290" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
+          <text x="355" y="32" font-size="22" text-anchor="middle">🌙</text>
+          <text x="355" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">SERVICE NOCTURNE</text>
+        </g>
 
-    <g transform="translate(45, 410)">
-      <text x="0" y="20" font-weight="900" font-size="15" fill="#ffb900" letter-spacing="1">TOUS VOS BESOINS, UNE SEULE LIVRAISON !</text>
-      
-      <g transform="translate(0, 35)">
-        <rect x="0" y="0" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
-        <text x="12" y="26" font-size="16">🛒</text>
-        <text x="38" y="26" font-weight="bold" font-size="13" fill="#eee">E-Commerce</text>
+        <g transform="translate(45, 410)">
+          <text x="0" y="20" font-weight="900" font-size="15" fill="#ffb900" letter-spacing="1">TOUS VOS BESOINS, UNE SEULE LIVRAISON !</text>
+          
+          <g transform="translate(0, 35)">
+            <rect x="0" y="0" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
+            <text x="12" y="26" font-size="16">🛒</text>
+            <text x="38" y="26" font-weight="bold" font-size="13" fill="#eee">E-Commerce</text>
 
-        <rect x="212" y="0" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
-        <text x="224" y="26" font-size="16">🍔</text>
-        <text x="250" y="26" font-weight="bold" font-size="13" fill="#eee">Restaurants</text>
+            <rect x="212" y="0" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
+            <text x="224" y="26" font-size="16">🍔</text>
+            <text x="250" y="26" font-weight="bold" font-size="13" fill="#eee">Restaurants</text>
 
-        <rect x="0" y="50" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
-        <text x="12" y="76" font-size="16">💊</text>
-        <text x="38" y="76" font-weight="bold" font-size="13" fill="#eee">Pharmacie</text>
+            <rect x="0" y="50" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
+            <text x="12" y="76" font-size="16">💊</text>
+            <text x="38" y="76" font-weight="bold" font-size="13" fill="#eee">Pharmacie</text>
 
-        <rect x="212" y="50" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
-        <text x="224" y="76" font-size="16">📦</text>
-        <text x="250" y="76" font-weight="bold" font-size="13" fill="#eee">Petits Colis &amp; Courses</text>
-      </g>
-    </g>
+            <rect x="212" y="50" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
+            <text x="224" y="76" font-size="16">📦</text>
+            <text x="250" y="76" font-weight="bold" font-size="13" fill="#eee">Petits Colis &amp; Courses</text>
+          </g>
+        </g>
 
-    <g transform="translate(520, 100)">
-      <circle cx="210" cy="210" r="170" fill="#1a1a1a" stroke="#ffb900" stroke-width="2" stroke-dasharray="8,8"/>
-      <text x="210" y="250" font-size="180" text-anchor="middle">🛵</text>
-      
-      <g transform="translate(250, 60)">
-        <rect width="110" height="90" fill="#ffb900" rx="12"/>
-        <text x="55" y="38" font-weight="900" font-size="14" fill="#111" text-anchor="middle">JibLi-</text>
-        <text x="55" y="58" font-weight="900" font-size="14" fill="#111" text-anchor="middle">vraison</text>
-        <text x="55" y="78" font-size="16" text-anchor="middle">📍</text>
-      </g>
-    </g>
+        <g transform="translate(520, 100)">
+          <circle cx="210" cy="210" r="170" fill="#1a1a1a" stroke="#ffb900" stroke-width="2" stroke-dasharray="8,8"/>
+          <text x="210" y="250" font-size="180" text-anchor="middle">🛵</text>
+          
+          <g transform="translate(250, 60)">
+            <rect width="110" height="90" fill="#ffb900" rx="12"/>
+            <text x="55" y="38" font-weight="900" font-size="14" fill="#111" text-anchor="middle">JibLi-</text>
+            <text x="55" y="58" font-weight="900" font-size="14" fill="#111" text-anchor="middle">vraison</text>
+            <text x="55" y="78" font-size="16" text-anchor="middle">📍</text>
+          </g>
+        </g>
 
-    <g transform="translate(45, 555)">
-      <rect width="910" height="55" fill="#181818" stroke="#ffb900" stroke-width="2" rx="14"/>
-      <text x="25" y="34" font-weight="bold" font-size="16" fill="#fff">REJOIGNEZ-NOUS DÈS MAINTENANT !</text>
-      <rect x="620" y="10" width="270" height="35" fill="#25d366" rx="8"/>
-      <text x="755" y="33" font-weight="900" font-size="18" fill="#fff" text-anchor="middle">📲 06 34 08 45 43</text>
-    </g>
-  </svg>
-</div></div></section>
+        <g transform="translate(45, 555)">
+          <rect width="910" height="55" fill="#181818" stroke="#ffb900" stroke-width="2" rx="14"/>
+          <text x="25" y="34" font-weight="bold" font-size="16" fill="#fff">REJOIGNEZ-NOUS DÈS MAINTENANT !</text>
+          <rect x="620" y="10" width="270" height="35" fill="#25d366" rx="8"/>
+          <text x="755" y="33" font-weight="900" font-size="18" fill="#fff" text-anchor="middle">📲 06 34 08 45 43</text>
+        </g>
+      </svg>
+    </div>
+
+    <!-- BOUTONS D'ACTION DIRECTE -->
+    <div class="hero-actions">
+      <a class="btn yellow" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison.">Commander sur WhatsApp</a>
+      <a class="btn dark" href="tel:+212634084543">📞 06 34 08 45 43</a>
+    </div>
+  </div>
+</section>
 
 <section id="services"><div class="c"><h2 class="title">Tous vos besoins, une seule livraison</h2><p class="sub">Un service local pensé pour Kénitra.</p><div class="cards">
 <div class="card"><div class="icon">🛒</div><h3>E-commerce</h3><p>Livraison de vos commandes en ligne.</p></div>
@@ -336,7 +339,6 @@ function calculateManualPrice() {
 }
 
 function renderPrice(n, dep, dest, isAuto) {
-  // حالة المسافة التي تتجاوز 15 كلم (Hors Zone)
   if (n > 15) {
     document.getElementById('result').textContent = 'Sur Devis 🏷️';
     document.getElementById('status').innerHTML = `<b style="color:#ffb900">📍 Zone Éloignée (${n.toFixed(1)} km)</b><br>Pour les distances supérieures à 15 km, le tarif est calculé sur mesure.`;
@@ -346,7 +348,6 @@ function renderPrice(n, dep, dest, isAuto) {
     return;
   }
 
-  // الحساب العادي أقل من أو يساوي 15 كلم
   let price = n <= 4 ? 20 : n < 6 ? 25 : n < 7 ? 26 : n < 8 ? 27 : n < 9 ? 28 : n < 10 ? 29 : 35 + Math.ceil(n - 10) * 2;
   
   document.getElementById('result').textContent = price + ' DH';

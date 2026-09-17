@@ -299,8 +299,7 @@ function switchMode(mode) {
   } else {
     if(depCoord && destCoord) calculateRouteDistance();
     else {
-      document.getElementById('result').textContent = '— DH';
-      document.getElementById('status').textContent = 'Sélectionnez les deux adresses pour afficher le tarif.';
+      resetPriceDisplay();
     }
   }
 }
@@ -311,6 +310,27 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 
 
 let depCoord = null, destCoord = null, depName = '', destName = '';
 let depMarker = null, destMarker = null, routePolyline = null;
+let isProgrammaticClose = false;
+
+function resetPriceDisplay() {
+  document.getElementById('result').textContent = '— DH';
+  document.getElementById('status').textContent = 'Sélectionnez les deux adresses pour afficher le tarif.';
+  document.getElementById('order').href = 'https://wa.me/212634084543';
+}
+
+function clearPoint(isDepart) {
+  if (isDepart) {
+    depCoord = null; depName = '';
+    if (depMarker) { map.removeLayer(depMarker); depMarker = null; }
+    document.getElementById('input-depart').value = '';
+  } else {
+    destCoord = null; destName = '';
+    if (destMarker) { map.removeLayer(destMarker); destMarker = null; }
+    document.getElementById('input-dest').value = '';
+  }
+  if (routePolyline) { map.removeLayer(routePolyline); routePolyline = null; }
+  resetPriceDisplay();
+}
 
 map.on('click', function(e) {
   const lat = e.latlng.lat;
@@ -326,7 +346,12 @@ map.on('click', function(e) {
       }
 
       if (!depCoord || (depCoord && destCoord)) {
-        if (destMarker) { map.removeLayer(destMarker); destMarker = null; destCoord = null; }
+        if (destMarker) { 
+          isProgrammaticClose = true;
+          map.removeLayer(destMarker); 
+          destMarker = null; destCoord = null; 
+          isProgrammaticClose = false;
+        }
         if (routePolyline) { map.removeLayer(routePolyline); routePolyline = null; }
         document.getElementById('input-depart').value = name;
         setPoint([lat, lng], name, true);
@@ -337,7 +362,12 @@ map.on('click', function(e) {
     }).catch(() => {
       const name = "Position sélectionnée";
       if (!depCoord || (depCoord && destCoord)) {
-        if (destMarker) { map.removeLayer(destMarker); destMarker = null; destCoord = null; }
+        if (destMarker) { 
+          isProgrammaticClose = true;
+          map.removeLayer(destMarker); 
+          destMarker = null; destCoord = null; 
+          isProgrammaticClose = false;
+        }
         if (routePolyline) { map.removeLayer(routePolyline); routePolyline = null; }
         document.getElementById('input-depart').value = name;
         setPoint([lat, lng], name, true);
@@ -403,12 +433,26 @@ setupSearch('input-dest', 'list-dest', false);
 function setPoint(coords, name, isDepart) {
   if (isDepart) {
     depCoord = coords; depName = name;
-    if (depMarker) map.removeLayer(depMarker);
+    if (depMarker) {
+      isProgrammaticClose = true;
+      map.removeLayer(depMarker);
+      isProgrammaticClose = false;
+    }
     depMarker = L.marker(coords).addTo(map).bindPopup("<b>Départ:</b> " + name).openPopup();
+    depMarker.on('popupclose', function() {
+      if (!isProgrammaticClose) clearPoint(true);
+    });
   } else {
     destCoord = coords; destName = name;
-    if (destMarker) map.removeLayer(destMarker);
+    if (destMarker) {
+      isProgrammaticClose = true;
+      map.removeLayer(destMarker);
+      isProgrammaticClose = false;
+    }
     destMarker = L.marker(coords).addTo(map).bindPopup("<b>Destination:</b> " + name).openPopup();
+    destMarker.on('popupclose', function() {
+      if (!isProgrammaticClose) clearPoint(false);
+    });
   }
   if (depCoord && destCoord) calculateRouteDistance();
 }
@@ -444,7 +488,6 @@ function calculateManualPrice() {
   }
 }
 
-// FIX: ADD LINKS FOR ALL CASES (EVEN > 15 KM)
 function renderPrice(n, dep, dest, isAuto) {
   let linkDep = isAuto && depCoord ? `https://www.google.com/maps?q=${depCoord[0]},${depCoord[1]}` : null;
   let linkDest = isAuto && destCoord ? `https://www.google.com/maps?q=${destCoord[0]},${destCoord[1]}` : null;

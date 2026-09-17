@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="fr">
 <head>
@@ -23,7 +22,7 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 .gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 10px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; }
 
 .mode-selector { display: flex; gap: 10px; margin-bottom: 20px; background: #222; padding: 5px; border-radius: 12px; }
-.mode-btn { flex: 1; padding: 10px; border: none; background: transparent; color: #aaa; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+.mode-btn { flex: 1; padding: 12px 8px; border: none; background: transparent; color: #aaa; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 14px; }
 .mode-btn.active { background: #ffb900; color: #111; }
 
 .suggestions-list { position: absolute; top: 100%; left: 0; right: 0; background: #1a1a1a; border: 1px solid #444; border-radius: 12px; max-height: 200px; overflow-y: auto; z-index: 1000; display: none; margin: 6px 0 0 0; padding: 0; list-style: none; }
@@ -60,12 +59,12 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 <div class="step"><div class="num">4</div><h3>Recevez</h3><p>Votre coursier livre votre commande rapidement.</p></div>
 </div></div></section>
 
-<section id="tarifs"><div class="c"><h2 class="title">Commander ma livraison</h2><p class="sub">Choisissez la méthode de calcul du tarif.</p><div class="tarif">
+<section id="tarifs"><div class="c"><h2 class="title">Commander ma livraison</h2><p class="sub">Choisissez votre méthode préférée pour préciser les détails de livraison.</p><div class="tarif">
 
 <!-- Mode Selector -->
 <div class="mode-selector">
   <button type="button" class="mode-btn active" id="btn-mode-auto" onclick="switchMode('auto')">🗺️ Par Carte / Adresse</button>
-  <button type="button" class="mode-btn" id="btn-mode-manual" onclick="switchMode('manual')">✏️ الكيلومتراج يدويًا</button>
+  <button type="button" class="mode-btn" id="btn-mode-manual" onclick="switchMode('manual')">✍️ Saisie directe des adresses</button>
 </div>
 
 <!-- AUTO MODE FORM -->
@@ -100,22 +99,22 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 <div id="section-manual" style="display:none; text-align:left;">
   <div style="display:grid;gap:15px;margin-bottom:18px;">
     <div>
-      <label style="font-weight:700;display:block;margin-bottom:5px">📍 Lieu de départ (Optionnel)</label>
-      <input type="text" id="manual-depart" class="search-input" style="width:100%" placeholder="Ex: Centre ville">
+      <label style="font-weight:700;display:block;margin-bottom:5px">📍 Lieu de Départ</label>
+      <input type="text" id="manual-depart" class="search-input" style="width:100%" placeholder="Entrez le lieu de départ..." oninput="calculateManualPrice()">
     </div>
     <div>
-      <label style="font-weight:700;display:block;margin-bottom:5px">🏁 Lieu d'arrivée (Optionnel)</label>
-      <input type="text" id="manual-dest" class="search-input" style="width:100%" placeholder="Ex: Mehdia">
+      <label style="font-weight:700;display:block;margin-bottom:5px">🏁 Destination</label>
+      <input type="text" id="manual-dest" class="search-input" style="width:100%" placeholder="Entrez la destination..." oninput="calculateManualPrice()">
     </div>
     <div>
-      <label style="font-weight:700;display:block;margin-bottom:5px">📏 Distance estimée (en Kilomètres)</label>
-      <input type="number" id="manual-km" class="search-input" style="width:100%" placeholder="Ex: 5" min="1" oninput="calculateManualPrice()">
+      <label style="font-weight:700;display:block;margin-bottom:5px">📏 Distance estimée en km (Optionnel)</label>
+      <input type="number" id="manual-km" class="search-input" style="width:100%" placeholder="Exemple : 5" min="1" oninput="calculateManualPrice()">
     </div>
   </div>
 </div>
 
 <div class="result" id="result">— DH</div>
-<p id="status" style="color:#aaa;margin-bottom:15px;">Sélectionnez les lieux ou entrez la distance.</p>
+<p id="status" style="color:#aaa;margin-bottom:15px;">Sélectionnez les lieux ou entrez les informations.</p>
 
 <a id="order" class="btn yellow" href="https://wa.me/212634084543" style="width:100%;text-align:center;">Commander sur WhatsApp</a>
 </div></div></section>
@@ -130,7 +129,7 @@ section{padding:70px 0}.title{text-align:center;font-size:35px}.sub{text-align:c
 <section><div class="c"><div class="cta"><div><h2>Besoin d'une livraison à Kénitra ?</h2><p>Contactez-nous directement sur WhatsApp pour votre commande.</p></div><a class="btn" href="https://wa.me/212634084543">Commander maintenant</a></div></div></section>
 
 <section id="faq"><div class="c"><h2 class="title">Questions fréquentes</h2><div class="faq">
-<details><summary>Comment commander ?</summary><div class="answer">Choisissez le lieu de départ et la destination (ou entrez la distance), puis cliquez sur le bouton WhatsApp.</div></details>
+<details><summary>Comment commander ?</summary><div class="answer">Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.</div></details>
 <details><summary>Où faites-vous les livraisons ?</summary><div class="answer">Le service est destiné aux livraisons à Kénitra et ses environs.</div></details>
 <details><summary>Comment connaître le prix ?</summary><div class="answer">Le prix est calculé automatiquement en fonction du kilométrage exact.</div></details>
 <details><summary>Quels sont vos horaires ?</summary><div class="answer">Du Lundi au Samedi : 17h00 à 02h00.<br>Le Dimanche : 10h00 à 02h00.</div></details>
@@ -232,23 +231,38 @@ function calculateRouteDistance() {
 }
 
 function calculateManualPrice() {
-  const km = parseFloat(document.getElementById('manual-km').value);
+  const kmInput = document.getElementById('manual-km').value;
+  const km = parseFloat(kmInput);
   const dep = document.getElementById('manual-depart').value || "Non spécifié";
   const dest = document.getElementById('manual-dest').value || "Non spécifié";
 
-  if (!km || km <= 0) {
-    document.getElementById('result').textContent = '— DH';
-    document.getElementById('status').textContent = 'Saisissez un kilométrage valide.';
-    return;
+  if (kmInput && km > 0) {
+    renderPrice(km, dep, dest, false);
+  } else {
+    document.getElementById('result').textContent = 'Sur Devis 🏷️';
+    document.getElementById('status').innerHTML = '<span style="color:#ffb900;font-weight:bold;">✍️ Saisie directe des adresses</span><br>Cliquez ci-dessous pour obtenir un devis personnalisé sur WhatsApp.';
+    
+    let msg = `Bonjour JibLi-vraison 👋\nJe souhaite obtenir un devis pour une livraison.\n\n📍 Départ : ${dep}\n🏁 Destination : ${dest}\n\nMerci de me communiquer le tarif.`;
+    document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
   }
-  renderPrice(km, dep, dest, false);
 }
 
 function renderPrice(n, dep, dest, isAuto) {
+  // حالة المسافة التي تتجاوز 15 كلم (Hors Zone)
+  if (n > 15) {
+    document.getElementById('result').textContent = 'Sur Devis 🏷️';
+    document.getElementById('status').innerHTML = `<b style="color:#ffb900">📍 Zone Éloignée (${n.toFixed(1)} km)</b><br>Pour les distances supérieures à 15 km, le tarif est calculé sur mesure.`;
+    
+    let msg = `Bonjour JibLi-vraison 👋\nJe souhaite obtenir un devis personnalisé pour une livraison longue distance.\n\n📍 Départ : ${dep}\n🏁 Destination : ${dest}\n📏 Distance : ${n.toFixed(1)} km\n\nMerci de me communiquer votre meilleur tarif.`;
+    document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
+    return;
+  }
+
+  // الحساب العادي أقل من أو يساوي 15 كلم
   let price = n <= 4 ? 20 : n < 6 ? 25 : n < 7 ? 26 : n < 8 ? 27 : n < 9 ? 28 : n < 10 ? 29 : 35 + Math.ceil(n - 10) * 2;
   
   document.getElementById('result').textContent = price + ' DH';
-  document.getElementById('status').textContent = 'Distance : ' + n.toFixed(1) + ' km';
+  document.getElementById('status').textContent = 'Distance estimée : ' + n.toFixed(1) + ' km';
 
   let msg = '';
   if(isAuto) {
@@ -256,7 +270,7 @@ function renderPrice(n, dep, dest, isAuto) {
     let linkDest = `https://www.google.com/maps?q=${destCoord[0]},${destCoord[1]}`;
     msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${dep}\n🔗 Link : ${linkDep}\n\n🏁 Destination : ${dest}\n🔗 Link : ${linkDest}\n\n📏 Distance : ${n.toFixed(1)} km\n💰 Prix : ${price} DH`;
   } else {
-    msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison (Saisie Manuel).\n\n📍 Départ : ${dep}\n🏁 Destination : ${dest}\n📏 Distance estimée : ${n} km\n💰 Prix calculé : ${price} DH`;
+    msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${dep}\n🏁 Destination : ${dest}\n📏 Distance estimée : ${n} km\n💰 Prix calculé : ${price} DH`;
   }
 
   document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
@@ -275,3 +289,4 @@ function useCurrentLocation(isDepart) {
 </script>
 </body>
 </html>
+

@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="fr">
 <head>
@@ -59,9 +58,13 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 }
 
 .search-box { position: relative; width: 100%; text-align: left; }
+.input-wrapper { position: relative; flex: 1; display: flex; align-items: center; }
 .input-group { display: flex; gap: 8px; position: relative; z-index: 10; }
-.search-input { flex: 1; min-width: 0; padding: 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 15px; outline: none; }
+.search-input { width: 100%; padding: 14px 35px 14px 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 15px; outline: none; }
 .search-input:focus { border-color: #ffb900; }
+.clear-btn { position: absolute; right: 10px; background: none; border: none; color: #888; font-size: 18px; font-weight: bold; cursor: pointer; display: none; padding: 2px 6px; }
+.clear-btn:hover { color: #ffb900; }
+
 .gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 12px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; }
 
 .mode-selector { display: flex; gap: 10px; margin-bottom: 20px; background: #222; padding: 5px; border-radius: 12px; }
@@ -96,7 +99,21 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 .suggestions-list li:last-child { border-bottom: none; }
 .suggestions-list li:hover { background: #2a2a2a; color: #ffb900; }
 
-#map { width: 100%; height: 320px; border-radius: 15px; margin-top: 15px; border: 2px solid #ffb900; z-index: 1; }
+#map { width: 100%; height: 320px; border-radius: 15px; margin-top: 10px; border: 2px solid #ffb900; z-index: 1; }
+
+.map-instructions {
+  background: #1e1b13;
+  border: 1px solid #ffb900;
+  color: #ffb900;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  margin-top: 15px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
 .leaflet-control-layers {
   background: #181818 !important;
@@ -227,7 +244,10 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
       <label style="font-weight:700;display:block;margin-bottom:5px">🚦🟢 Départ</label>
       <div class="search-box">
         <div class="input-group">
-          <input type="text" id="input-depart" class="search-input" placeholder="Ex: Marjane, Gare..." autocomplete="off">
+          <div class="input-wrapper">
+            <input type="text" id="input-depart" class="search-input" placeholder="Ex: Marjane, Gare..." autocomplete="off">
+            <button type="button" class="clear-btn" id="clear-depart" onclick="clearField(true)">✕</button>
+          </div>
           <button type="button" class="gps-btn" onclick="useCurrentLocation(true)">🎯 GPS</button>
         </div>
         <ul id="list-depart" class="suggestions-list"></ul>
@@ -238,15 +258,23 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
       <label style="font-weight:700;display:block;margin-bottom:5px">🚦🔴 Destination</label>
       <div class="search-box">
         <div class="input-group">
-          <input type="text" id="input-dest" class="search-input" placeholder="Ex: Mehdia, Pharmacie..." autocomplete="off">
+          <div class="input-wrapper">
+            <input type="text" id="input-dest" class="search-input" placeholder="Ex: Mehdia, Pharmacie..." autocomplete="off">
+            <button type="button" class="clear-btn" id="clear-dest" onclick="clearField(false)">✕</button>
+          </div>
           <button type="button" class="gps-btn" onclick="useCurrentLocation(false)">🎯 GPS</button>
         </div>
         <ul id="list-dest" class="suggestions-list"></ul>
       </div>
     </div>
   </div>
+
+  <div class="map-instructions">
+    <span>📌</span>
+    <span><b>الخريطة:</b> اضغط مباشرة فوق الخريطة لتحديد مكان <b>الانطلاق</b> ثم اضغط مرة ثانية لتحديد <b>الوجهة</b>.</span>
+  </div>
+
   <div id="map"></div>
-  <p style="font-size:12px;color:#888;margin-top:8px;text-align:left;">💡 <b>Conseil:</b> Vous pouvez changer le style de la carte en haut à droite.</p>
 </div>
 
 <!-- MANUAL MODE FORM -->
@@ -345,6 +373,31 @@ function resetPriceDisplay() {
   document.getElementById('order').href = 'https://wa.me/212634084543';
 }
 
+function clearField(isDepart) {
+  if (isDepart) {
+    document.getElementById('input-depart').value = '';
+    document.getElementById('clear-depart').style.display = 'none';
+    depCoord = null;
+    depName = '';
+    if (depMarker) map.removeLayer(depMarker);
+    depMarker = null;
+  } else {
+    document.getElementById('input-dest').value = '';
+    document.getElementById('clear-dest').style.display = 'none';
+    destCoord = null;
+    destName = '';
+    if (destMarker) map.removeLayer(destMarker);
+    destMarker = null;
+  }
+
+  if (routePolyline) {
+    map.removeLayer(routePolyline);
+    routePolyline = null;
+  }
+
+  resetPriceDisplay();
+}
+
 map.on('click', function(e) {
   const lat = e.latlng.lat;
   const lng = e.latlng.lng;
@@ -360,9 +413,11 @@ map.on('click', function(e) {
 
       if (!depCoord) {
         document.getElementById('input-depart').value = name;
+        document.getElementById('clear-depart').style.display = 'block';
         setPoint([lat, lng], name, true);
       } else if (!destCoord) {
         document.getElementById('input-dest').value = name;
+        document.getElementById('clear-dest').style.display = 'block';
         setPoint([lat, lng], name, false);
       } else {
         if (depMarker) map.removeLayer(depMarker);
@@ -371,16 +426,19 @@ map.on('click', function(e) {
         destCoord = null;
         destMarker = null;
         document.getElementById('input-dest').value = '';
+        document.getElementById('clear-dest').style.display = 'none';
         
         document.getElementById('input-depart').value = name;
+        document.getElementById('clear-depart').style.display = 'block';
         setPoint([lat, lng], name, true);
       }
     });
 });
 
-function setupSearch(inputId, listId, isDepart) {
+function setupSearch(inputId, listId, clearBtnId, isDepart) {
   const input = document.getElementById(inputId);
   const list = document.getElementById(listId);
+  const clearBtn = document.getElementById(clearBtnId);
   let timer;
 
   input.addEventListener('focus', () => {
@@ -392,6 +450,8 @@ function setupSearch(inputId, listId, isDepart) {
   input.addEventListener('input', () => {
     clearTimeout(timer);
     const query = input.value.trim();
+    clearBtn.style.display = query.length > 0 ? 'block' : 'none';
+
     if (query.length < 2) { list.style.display = 'none'; return; }
 
     timer = setTimeout(() => {
@@ -412,6 +472,7 @@ function setupSearch(inputId, listId, isDepart) {
               li.textContent = shortName;
               li.onclick = () => {
                 input.value = shortName;
+                clearBtn.style.display = 'block';
                 list.style.display = 'none';
                 setPoint([parseFloat(item.lat), parseFloat(item.lon)], shortName, isDepart);
               };
@@ -430,8 +491,8 @@ function setupSearch(inputId, listId, isDepart) {
   });
 }
 
-setupSearch('input-depart', 'list-depart', true);
-setupSearch('input-dest', 'list-dest', false);
+setupSearch('input-depart', 'list-depart', 'clear-depart', true);
+setupSearch('input-dest', 'list-dest', 'clear-dest', false);
 
 function setPoint(coords, name, isDepart) {
   if (isDepart) {
@@ -494,6 +555,7 @@ function useCurrentLocation(isDepart) {
       const coords = [position.coords.latitude, position.coords.longitude];
       const name = "Ma position exact (GPS)";
       document.getElementById(isDepart ? 'input-depart' : 'input-dest').value = name;
+      document.getElementById(isDepart ? 'clear-depart' : 'clear-dest').style.display = 'block';
       setPoint(coords, name, isDepart);
     });
   }
@@ -501,3 +563,4 @@ function useCurrentLocation(isDepart) {
 </script>
 </body>
 </html>
+

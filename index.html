@@ -248,16 +248,18 @@ filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
 </g>
 </g>
 
-<!-- Moto Illustration -->
-<g transform="translate(520, 100)">
+<!-- Moto Illustration (Fixé en LTR pour conserver la boîte derrière le scooter) -->
+<g transform="translate(520, 100)" direction="ltr">
 <circle cx="210" cy="210" r="170" fill="#1a1a1a" stroke="#ffb900" stroke-width="2" stroke-dasharray="8,8"/>
-<text x="210" y="250" font-size="180" text-anchor="middle">🛵</text>
+<!-- Scooter vers la gauche -->
+<text x="200" y="250" font-size="180" text-anchor="middle" direction="ltr">🛵</text>
 
-<g transform="translate(155, 10)">
+<!-- Boîte de livraison placée STRICTEMENT DERRIÈRE (à droite) du scooter -->
+<g transform="translate(265, 90)" direction="ltr">
 <rect width="110" height="90" fill="#ffb900" rx="12"/>
 <text x="55" y="38" font-weight="900" font-size="14" fill="#111" text-anchor="middle" direction="ltr">JibLi-</text>
 <text x="55" y="58" font-weight="900" font-size="14" fill="#111" text-anchor="middle" direction="ltr">vraison</text>
-<text x="55" y="78" font-size="16" text-anchor="middle">📍</text>
+<text x="55" y="78" font-size="16" text-anchor="middle" direction="ltr">📍</text>
 </g>
 </g>
 

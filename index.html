@@ -1,1176 +1,553 @@
 <!doctype html>
-<html lang="fr" dir="ltr">
+<html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JibLi-vraison | Service de Coursier à Moto à Kénitra</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JibLi-vraison | Service de livraison</title>
 
-<!-- Google Fonts & FontAwesome Icons -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,800;1,900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Leaflet CSS & JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <style>
-/* ==========================================================================
-   1. RESET & VARIABLES
-   ========================================================================== */
-:root {
-  --primary: #ffb900;
-  --primary-hover: #e0a200;
-  --bg-dark: #0a0a0a;
-  --card-bg: #121212;
-  --card-border: #282828;
-  --text-main: #ffffff;
-  --text-muted: #a0a0a0;
-  --accent-green: #25d366;
-  --font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
-  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#090909;color:#fff;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.c{width:92%;max-width:1100px;margin:auto}
+
+header{position:sticky;top:0;background:#090909ee;border-bottom:1px solid #292929;z-index:999}
+nav{height:70px;display:flex;align-items:center;justify-content:space-between}
+.brand{font-size:24px;font-weight:900;font-style:italic}
+.brand span{color:#ffb900}
+.links{display:flex;gap:20px;font-size:14px}
+.btn{display:inline-block;padding:13px 18px;border-radius:11px;font-weight:800;cursor:pointer;border:none}
+.yellow{background:#ffb900;color:#111}
+.dark{background:#171717;border:1px solid #555;color:#fff}
+
+.hero{padding:40px 0;background:radial-gradient(circle at 50% 30%,#ffb90015,transparent 50%)}
+.poster-container{width:100%;max-width:900px;margin:0 auto 25px auto}
+.hero-actions{display:flex;justify-content:center;gap:15px;flex-wrap:wrap}
+
+section{padding:50px 0}
+.title{text-align:center;font-size:35px}
+.sub{text-align:center;color:#aaa}
+.cards,.steps,.why{display:grid;gap:16px}
+.cards{grid-template-columns:repeat(3,1fr)}
+.steps{grid-template-columns:repeat(4,1fr)}
+.why{grid-template-columns:repeat(4,1fr)}
+.card,.step,.whyitem,.tarif,.faq details{background:#151515;border:1px solid #2b2b2b;border-radius:17px;padding:24px}
+.icon{font-size:30px}
+.card p,.step p,.whyitem small,.answer{color:#aaa}
+.num{width:38px;height:38px;background:#ffb900;color:#111;border-radius:50%;display:grid;place-items:center;font-weight:900}
+.whyitem{text-align:center}
+.whyitem span{font-size:28px}
+.tarif{max-width:650px;margin:auto;text-align:center;padding:20px}
+.result{font-size:32px;font-weight:900;color:#ffb900;margin:12px 0}
+.cta{background:linear-gradient(135deg,#ffb900,#f08d00);color:#111;border-radius:23px;padding:40px;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.cta h2{font-size:32px;margin:0}
+.cta .btn{background:#111;color:#fff}
+footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
+.wa{position:fixed;right:20px;bottom:25px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:28px;z-index:9999;box-shadow:0 4px 15px rgba(0,0,0,0.5)}
+
+@media(max-width:800px){
+  .links{display:none}
+  .cards,.steps,.why{grid-template-columns:1fr}
+  .hero{padding:20px 0}
+  .cta{display:block}
+  .cta .btn{margin-top:20px}
+  .tarif{padding:15px 12px}
 }
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* RECHERCHE ET ENTRÉES */
+.search-box { position: relative; width: 100%; text-align: left; }
+.input-wrapper { position: relative; flex: 1; display: flex; align-items: center; }
+.input-group { display: flex; gap: 8px; position: relative; z-index: 10; }
+.search-input { width: 100%; padding: 14px 35px 14px 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 15px; outline: none; }
+.search-input:focus { border-color: #ffb900; }
+.clear-btn { position: absolute; right: 10px; background: none; border: none; color: #888; font-size: 18px; font-weight: bold; cursor: pointer; display: none; padding: 2px 6px; }
+.clear-btn:hover { color: #ffb900; }
 
-html {
-  scroll-behavior: smooth;
-  font-size: 16px;
-}
+.gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 12px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; }
 
-body {
-  font-family: var(--font-family);
-  background-color: var(--bg-dark);
-  color: var(--text-main);
-  line-height: 1.6;
-  overflow-x: hidden;
-}
+.mode-selector { display: flex; gap: 10px; margin-bottom: 20px; background: #222; padding: 5px; border-radius: 12px; }
+.mode-btn { flex: 1; padding: 12px 8px; border: none; background: transparent; color: #aaa; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 13px; }
+.mode-btn.active { background: #ffb900; color: #111; }
 
-a {
-  text-decoration: none;
-  color: inherit;
-  transition: var(--transition);
+.suggestions-list { 
+  position: absolute; 
+  top: 100%; 
+  left: 0; 
+  right: 0; 
+  background: #1e1e1e; 
+  border: 1px solid #ffb900; 
+  border-radius: 10px; 
+  max-height: 180px; 
+  overflow-y: auto; 
+  z-index: 3000; 
+  display: none; 
+  margin: 4px 0 0 0; 
+  padding: 0; 
+  list-style: none; 
+  box-shadow: 0 8px 20px rgba(0,0,0,0.8);
 }
-
-ul {
-  list-style: none;
+.suggestions-list li { 
+  padding: 12px; 
+  cursor: pointer; 
+  color: #eee; 
+  border-bottom: 1px solid #2e2e2e; 
+  font-size: 13px;
+  line-height: 1.4;
 }
+.suggestions-list li:last-child { border-bottom: none; }
+.suggestions-list li:hover { background: #2a2a2a; color: #ffb900; }
 
-button, input, select, textarea {
-  font-family: inherit;
-}
+/* CARTE STYLE GLOVO */
+.map-wrapper { position: relative; width: 100%; height: 350px; margin-top: 10px; border-radius: 15px; overflow: hidden; border: 2px solid #ffb900; }
+#map { width: 100%; height: 100%; z-index: 1; }
 
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-/* ==========================================================================
-   2. HEADER & NAVIGATION
-   ========================================================================== */
-header {
-  position: sticky;
-  top: 0;
-  background-color: rgba(10, 10, 10, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid #1a1a1a;
+.center-picker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
   z-index: 1000;
-  padding: 15px 0;
-}
-
-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.brand {
-  font-size: 2rem;
-  font-weight: 900;
-  font-style: italic;
-  letter-spacing: -0.5px;
-  color: var(--text-main);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.brand span {
-  color: var(--primary);
-}
-
-.nav-menu {
-  display: flex;
-  align-items: center;
-  gap: 25px;
-}
-
-.nav-link {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.nav-link:hover, .nav-link.active {
-  color: var(--primary);
-}
-
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.lang-selector {
-  background: #1a1a1a;
-  color: var(--primary);
-  border: 1px solid #333;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-weight: 800;
-  cursor: pointer;
-  outline: none;
-  font-size: 0.85rem;
-  transition: var(--transition);
-}
-
-.lang-selector:hover {
-  border-color: var(--primary);
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 12px 24px;
-  border-radius: 12px;
-  font-weight: 800;
-  font-size: 0.95rem;
-  cursor: pointer;
-  border: none;
-  transition: var(--transition);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.btn-yellow {
-  background-color: var(--primary);
-  color: #000;
-}
-
-.btn-yellow:hover {
-  background-color: var(--primary-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(255, 185, 0, 0.3);
-}
-
-.btn-dark {
-  background-color: #181818;
-  border: 1px solid #333;
-  color: var(--text-main);
-}
-
-.btn-dark:hover {
-  background-color: #252525;
-  border-color: #555;
-}
-
-.btn-whatsapp {
-  background-color: var(--accent-green);
-  color: #fff;
-}
-
-.btn-whatsapp:hover {
-  background-color: #1ebd56;
-  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
-}
-
-.mobile-toggle {
-  display: none;
-  font-size: 1.5rem;
-  color: var(--text-main);
-  cursor: pointer;
-}
-
-/* ==========================================================================
-   3. HERO SECTION & MAIN CARD DESIGN (EXACT MATCH)
-   ========================================================================== */
-.hero-section {
-  padding: 50px 0;
-  position: relative;
-}
-
-.main-card {
-  background: var(--card-bg);
-  border: 2px solid var(--card-border);
-  border-radius: 28px;
-  padding: 40px;
-  max-width: 1000px;
-  margin: 0 auto;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.85);
-  position: relative;
-  overflow: hidden;
-}
-
-.main-card::before {
-  content: '';
-  position: absolute;
-  top: -100px;
-  right: -100px;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(255,185,0,0.08) 0%, rgba(0,0,0,0) 70%);
   pointer-events: none;
-}
-
-.card-title {
-  font-size: 2.8rem;
-  font-weight: 900;
-  font-style: italic;
-  margin: 0;
-  color: var(--text-main);
-  line-height: 1;
-}
-
-.card-title span {
-  color: var(--primary);
-}
-
-.card-subtitle {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  letter-spacing: 2.5px;
-  font-weight: 800;
-  margin-top: 6px;
-  margin-bottom: 30px;
-  text-transform: uppercase;
-  border-bottom: 2px solid var(--primary);
-  display: inline-block;
-  padding-bottom: 3px;
-}
-
-.card-content {
-  display: grid;
-  grid-template-columns: 1.25fr 0.75fr;
-  gap: 35px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
-/* Yellow Schedule Box */
-.yellow-box {
-  background: var(--primary);
-  color: #000;
-  border-radius: 16px;
-  padding: 20px 24px;
-  margin-bottom: 25px;
-  box-shadow: 0 10px 25px rgba(255, 185, 0, 0.15);
-}
-
-.yellow-box-title {
-  font-size: 1.05rem;
-  font-weight: 900;
-  margin-bottom: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.time-row {
-  font-size: 1rem;
-  font-weight: 800;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.time-row:last-child {
-  margin-bottom: 0;
-}
-
-.time-row i {
-  font-size: 1.1rem;
-  opacity: 0.8;
-}
-
-/* Feature Badges */
-.badges-row {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 30px;
-}
-
-.badge-item {
-  background: #1a1a1a;
-  border: 1px solid #333;
-  padding: 14px 10px;
-  border-radius: 14px;
-  text-align: center;
-  flex: 1;
-  transition: var(--transition);
-}
-
-.badge-item:hover {
-  border-color: var(--primary);
-  transform: translateY(-3px);
-}
-
-.badge-icon {
-  font-size: 1.2rem;
-  margin-bottom: 6px;
-  color: var(--primary);
-  display: block;
-}
-
-.badge-text {
-  font-size: 0.72rem;
-  font-weight: 900;
-  color: var(--text-main);
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-/* Categories Grid */
-.besoins-header {
-  font-size: 0.9rem;
-  font-weight: 900;
-  color: var(--text-main);
-  margin-bottom: 15px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.categories-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 30px;
-}
-
-.cat-item {
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
-  padding: 12px 16px;
-  border-radius: 12px;
-  font-size: 0.88rem;
-  font-weight: 800;
-  color: var(--text-main);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: var(--transition);
-}
-
-.cat-item:hover {
-  background: #222;
-  border-color: #444;
-}
-
-.cat-item i {
-  color: var(--primary);
-}
-
-/* Illustration / Graphic */
-.illustration-container {
-  position: relative;
-  width: 280px;
-  height: 280px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.dashed-circle {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border: 2px dashed var(--primary);
-  border-radius: 50%;
-  animation: rotateCircle 30s linear infinite;
-}
-
-@keyframes rotateCircle {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.scooter-graphic {
-  font-size: 7.5rem;
-  line-height: 1;
-  filter: drop-shadow(0 15px 15px rgba(0,0,0,0.5));
-}
-
-.location-tag {
-  position: absolute;
-  top: 15px;
-  right: 5px;
-  background: var(--primary);
-  color: #000;
+.picker-card {
+  background: #fff;
+  color: #111;
   padding: 8px 14px;
   border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: 900;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  font-size: 13px;
+  font-weight: bold;
   text-align: center;
-  line-height: 1.2;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  margin-bottom: 6px;
+  pointer-events: auto;
+  cursor: pointer;
+  border: 2px solid #ffb900;
+  transition: transform 0.2s;
 }
+.picker-card:active { transform: scale(0.95); }
+.picker-card span { color: #00a082; display: block; font-size: 11px; margin-top: 2px; text-decoration: underline; }
 
-/* Bottom Action Bar */
-.card-bottom-bar {
-  border: 2px solid var(--primary);
-  border-radius: 50px;
-  padding: 8px 10px 8px 25px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #141414;
-  margin-top: 10px;
-}
-
-.bottom-text {
-  font-size: 0.95rem;
-  font-weight: 900;
-  color: var(--text-main);
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-}
-
-.phone-badge {
-  background: var(--accent-green);
-  color: #fff;
-  padding: 12px 26px;
-  border-radius: 40px;
-  font-weight: 900;
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: var(--transition);
-}
-
-.phone-badge:hover {
-  transform: scale(1.03);
-  background: #1ebd56;
-}
-
-/* ==========================================================================
-   4. SERVICES SECTION
-   ========================================================================== */
-.section {
-  padding: 80px 0;
-  border-bottom: 1px solid #1a1a1a;
-}
-
-.section-title {
-  text-align: center;
-  font-size: 2.2rem;
-  font-weight: 900;
-  margin-bottom: 15px;
-  text-transform: uppercase;
-}
-
-.section-title span {
-  color: var(--primary);
-}
-
-.section-desc {
-  text-align: center;
-  color: var(--text-muted);
-  max-width: 600px;
-  margin: 0 auto 50px auto;
-  font-size: 1rem;
-}
-
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 25px;
-}
-
-.service-card {
-  background: #141414;
-  border: 1px solid #222;
-  border-radius: 20px;
-  padding: 30px;
-  transition: var(--transition);
-}
-
-.service-card:hover {
-  transform: translateY(-8px);
-  border-color: var(--primary);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-}
-
-.service-icon {
-  width: 60px;
-  height: 60px;
-  background: rgba(255, 185, 0, 0.1);
-  color: var(--primary);
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.8rem;
-  margin-bottom: 20px;
-}
-
-.service-title {
-  font-size: 1.2rem;
-  font-weight: 800;
-  margin-bottom: 10px;
-}
-
-.service-body {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-}
-
-/* ==========================================================================
-   5. HOW IT WORKS SECTION
-   ========================================================================== */
-.steps-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 30px;
-  position: relative;
-}
-
-.step-card {
-  background: #141414;
-  border: 1px solid #222;
-  padding: 30px;
-  border-radius: 20px;
-  position: relative;
-  text-align: center;
-}
-
-.step-number {
-  position: absolute;
-  top: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--primary);
-  color: #000;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 900;
-  font-size: 1.1rem;
-}
-
-.step-title {
-  font-size: 1.1rem;
-  font-weight: 800;
-  margin: 15px 0 10px 0;
-}
-
-.step-desc {
-  font-size: 0.88rem;
-  color: var(--text-muted);
-}
-
-/* ==========================================================================
-   6. ORDER / BOOKING FORM SECTION
-   ========================================================================== */
-.order-section {
-  background: #0f0f0f;
-}
-
-.form-container {
-  max-width: 700px;
-  margin: 0 auto;
-  background: #141414;
-  border: 1px solid #252525;
-  border-radius: 24px;
-  padding: 40px;
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-  color: var(--text-muted);
-}
-
-.form-control {
-  width: 100%;
-  padding: 14px 18px;
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 12px;
-  color: #fff;
-  font-size: 0.95rem;
-  outline: none;
-  transition: var(--transition);
-}
-
-.form-control:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(255, 185, 0, 0.15);
-}
-
-textarea.form-control {
-  resize: vertical;
-  min-height: 100px;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-/* ==========================================================================
-   7. FOOTER
-   ========================================================================== */
-footer {
-  background: #050505;
-  padding: 60px 0 20px 0;
-  border-top: 1px solid #1a1a1a;
-}
-
-.footer-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1.5fr;
-  gap: 40px;
-  margin-bottom: 40px;
-}
-
-.footer-brand {
-  font-size: 1.8rem;
-  font-weight: 900;
-  font-style: italic;
-  margin-bottom: 15px;
-}
-
-.footer-brand span {
-  color: var(--primary);
-}
-
-.footer-desc {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  margin-bottom: 20px;
-}
-
-.footer-header {
-  font-size: 1rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  margin-bottom: 20px;
-  color: var(--text-main);
-}
-
-.footer-links li {
-  margin-bottom: 10px;
-}
-
-.footer-links a {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-}
-
-.footer-links a:hover {
-  color: var(--primary);
-}
-
-.contact-info li {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  margin-bottom: 12px;
-}
-
-.contact-info i {
-  color: var(--primary);
-}
-
-.copyright {
-  text-align: center;
-  border-top: 1px solid #181818;
-  padding-top: 25px;
-  color: var(--text-muted);
-  font-size: 0.85rem;
-}
-
-/* ==========================================================================
-   8. RESPONSIVE DESIGN
-   ========================================================================== */
-@media (max-width: 992px) {
-  .card-content {
-    grid-template-columns: 1fr;
-  }
-
-  .illustration-container {
-    order: -1;
-    margin-bottom: 20px;
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .nav-menu {
-    display: none;
-  }
-
-  .mobile-toggle {
-    display: block;
-  }
-
-  .main-card {
-    padding: 25px 20px;
-  }
-
-  .card-title {
-    font-size: 2.2rem;
-  }
-
-  .badges-row {
-    flex-direction: column;
-  }
-
-  .categories-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .card-bottom-bar {
-    flex-direction: column;
-    gap: 15px;
-    border-radius: 24px;
-    padding: 18px;
-    text-align: center;
-  }
-
-  .phone-badge {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr;
-  }
+.picker-pin {
+  font-size: 38px;
+  line-height: 1;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
 }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="container">
-    <nav>
-      <a href="#" class="brand">JibLi-<span>vraison</span></a>
-      
-      <ul class="nav-menu">
-        <li><a href="#hero" class="nav-link active" data-key="nav_home">Accueil</a></li>
-        <li><a href="#services" class="nav-link" data-key="nav_services">Services</a></li>
-        <li><a href="#how" class="nav-link" data-key="nav_how">Comment ça marche</a></li>
-        <li><a href="#order" class="nav-link" data-key="nav_order">Commander</a></li>
-      </ul>
+<header><div class="c"><nav><a class="brand" href="#">JibLi-<span>vraison</span></a><div class="links"><a href="#services">Services</a><a href="#tarifs">Tarifs</a><a href="#comment">Comment ça marche</a><a href="#pourquoi">Pourquoi nous</a><a href="#faq">FAQ</a></div><div style="display:flex;gap:8px;align-items:center"><a class="btn dark" href="mailto:jibli.vraison@gmail.com">Email</a><a class="btn yellow" href="https://wa.me/212634084543">WhatsApp</a></div></nav></div></header>
 
-      <div class="nav-actions">
-        <select class="lang-selector" id="langSelect" onchange="changeLanguage(this.value)">
-          <option value="fr">🇫🇷 FR</option>
-          <option value="ar">🇲🇦 AR</option>
-        </select>
-        <a href="mailto:jibli.vraison@gmail.com" class="btn btn-dark"><i class="fa-solid fa-envelope"></i> Email</a>
-        <a href="https://wa.me/212634084543" target="_blank" class="btn btn-yellow"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
-        <div class="mobile-toggle" onclick="toggleMobileMenu()"><i class="fa-solid fa-bars"></i></div>
-      </div>
-    </nav>
-  </div>
-</header>
+<section class="hero">
+  <div class="c">
+    <div class="poster-container">
+      <svg viewBox="0 0 1000 650" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="background:#090909; font-family:Arial, sans-serif; border-radius:18px; border:1px solid #333; box-shadow:0 12px 40px rgba(0,0,0,0.8);">
+        <rect width="1000" height="650" fill="#0c0c0c" rx="18"/>
+        <path d="M 480 0 L 1000 0 L 1000 650 L 380 650 Z" fill="#141414"/>
+        <circle cx="750" cy="280" r="220" fill="#ffb900" opacity="0.04"/>
 
-<!-- HERO / MAIN CARD SECTION -->
-<section class="hero-section" id="hero">
-  <div class="container">
-    
-    <div class="main-card">
-      <h1 class="card-title">JibLi-<span>vraison</span></h1>
-      <div class="card-subtitle" data-key="subtitle">SERVICE DE COURSIER À MOTO</div>
+        <g transform="translate(45, 55)">
+          <text x="0" y="0" font-weight="900" font-style="italic" font-size="52" fill="#ffffff">JibLi-<tspan fill="#ffb900">vraison</tspan></text>
+          <line x1="0" y1="18" x2="380" y2="18" stroke="#ffb900" stroke-width="4" stroke-linecap="round"/>
+          <text x="0" y="44" font-weight="bold" font-size="16" fill="#aaa" letter-spacing="3">SERVICE DE COURSIER À MOTO</text>
+        </g>
 
-      <div class="card-content">
-        
-        <!-- LEFT COLUMN DATA -->
-        <div>
-          <div class="yellow-box">
-            <div class="yellow-box-title" data-key="dispo_title">
-              <i class="fa-solid fa-location-dot"></i> DISPONIBLE À KÉNITRA
-            </div>
-            <div class="time-row">
-              <i class="fa-regular fa-clock"></i> <span data-key="schedule_1">Lun - Sam : 17h00 à 02h00</span>
-            </div>
-            <div class="time-row">
-              <i class="fa-regular fa-clock"></i> <span data-key="schedule_2">Dimanche : 10h00 à 02h00</span>
-            </div>
-          </div>
+        <g transform="translate(45, 145)">
+          <rect width="420" height="135" fill="#ffb900" rx="14"/>
+          <text x="24" y="36" font-weight="900" font-size="18" fill="#111">DISPONIBLE À KÉNITRA</text>
+          <line x1="24" y1="48" x2="396" y2="48" stroke="#111" stroke-width="1.5" opacity="0.3"/>
+          <text x="24" y="80" font-weight="bold" font-size="18" fill="#111">🕒 Lun - Sam : 17h00 à 02h00</text>
+          <text x="24" y="110" font-weight="bold" font-size="18" fill="#111">🕒 Dimanche : 10h00 à 02h00</text>
+        </g>
 
-          <div class="badges-row">
-            <div class="badge-item">
-              <i class="fa-solid fa-bolt badge-icon"></i>
-              <div class="badge-text" data-key="badge_1">LIVRAISON RAPIDE</div>
-            </div>
-            <div class="badge-item">
-              <i class="fa-solid fa-shield-halved badge-icon"></i>
-              <div class="badge-text" data-key="badge_2">SÉCURISÉE & FIABLE</div>
-            </div>
-            <div class="badge-item">
-              <i class="fa-solid fa-moon badge-icon"></i>
-              <div class="badge-text" data-key="badge_3">SERVICE NOCTURNE</div>
-            </div>
-          </div>
+        <g transform="translate(45, 308)">
+          <rect x="0" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
+          <text x="65" y="32" font-size="22" text-anchor="middle">⚡</text>
+          <text x="65" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">LIVRAISON RAPIDE</text>
 
-          <div class="besoins-header" data-key="besoins_title">TOUS VOS BESOINS, UNE SEULE LIVRAISON !</div>
-          <div class="categories-grid">
-            <div class="cat-item"><i class="fa-solid fa-bag-shopping"></i> <span data-key="cat_1">E-Commerce</span></div>
-            <div class="cat-item"><i class="fa-solid fa-utensils"></i> <span data-key="cat_2">Restaurants</span></div>
-            <div class="cat-item"><i class="fa-solid fa-prescription-bottle-medical"></i> <span data-key="cat_3">Pharmacie</span></div>
-            <div class="cat-item"><i class="fa-solid fa-box-open"></i> <span data-key="cat_4">Petits Colis & Courses</span></div>
-          </div>
-        </div>
+          <rect x="145" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
+          <text x="210" y="32" font-size="22" text-anchor="middle">🔒</text>
+          <text x="210" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">SÉCURISÉE &amp; FIABLE</text>
 
-        <!-- RIGHT COLUMN GRAPHIC -->
-        <div>
-          <div class="illustration-container">
-            <div class="dashed-circle"></div>
-            <div class="scooter-graphic">🛵</div>
-            <div class="location-tag">JibLi-<br>vraison📍</div>
-          </div>
-        </div>
+          <rect x="290" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
+          <text x="355" y="32" font-size="22" text-anchor="middle">🌙</text>
+          <text x="355" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">SERVICE NOCTURNE</text>
+        </g>
 
-      </div>
+        <g transform="translate(45, 410)">
+          <text x="0" y="20" font-weight="900" font-size="15" fill="#ffb900" letter-spacing="1">TOUS VOS BESOINS, UNE SEULE LIVRAISON !</text>
+          
+          <g transform="translate(0, 35)">
+            <rect x="0" y="0" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
+            <text x="12" y="26" font-size="16">🛒</text>
+            <text x="38" y="26" font-weight="bold" font-size="13" fill="#eee">E-Commerce</text>
 
-      <!-- BOTTOM ACTION BAR -->
-      <div class="card-bottom-bar">
-        <div class="bottom-text" data-key="call_to_action">REJOIGNEZ-NOUS DÈS MAINTENANT !</div>
-        <a href="https://wa.me/212634084543" target="_blank" class="phone-badge">
-          <i class="fa-brands fa-whatsapp"></i> 06 34 08 45 43
-        </a>
-      </div>
+            <rect x="212" y="0" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
+            <text x="224" y="26" font-size="16">🍔</text>
+            <text x="250" y="26" font-weight="bold" font-size="13" fill="#eee">Restaurants</text>
 
+            <rect x="0" y="50" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
+            <text x="12" y="76" font-size="16">💊</text>
+            <text x="38" y="76" font-weight="bold" font-size="13" fill="#eee">Pharmacie</text>
+
+            <rect x="212" y="50" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
+            <text x="224" y="76" font-size="16">📦</text>
+            <text x="250" y="76" font-weight="bold" font-size="13" fill="#eee">Petits Colis &amp; Courses</text>
+          </g>
+        </g>
+
+        <g transform="translate(520, 100)">
+          <circle cx="210" cy="210" r="170" fill="#1a1a1a" stroke="#ffb900" stroke-width="2" stroke-dasharray="8,8"/>
+          <text x="210" y="250" font-size="180" text-anchor="middle">🛵</text>
+          
+          <g transform="translate(250, 60)">
+            <rect width="110" height="90" fill="#ffb900" rx="12"/>
+            <text x="55" y="38" font-weight="900" font-size="14" fill="#111" text-anchor="middle">JibLi-</text>
+            <text x="55" y="58" font-weight="900" font-size="14" fill="#111" text-anchor="middle">vraison</text>
+            <text x="55" y="78" font-size="16" text-anchor="middle">📍</text>
+          </g>
+        </g>
+
+        <g transform="translate(45, 555)">
+          <rect width="910" height="55" fill="#181818" stroke="#ffb900" stroke-width="2" rx="14"/>
+          <text x="25" y="34" font-weight="bold" font-size="16" fill="#fff">REJOIGNEZ-NOUS DÈS MAINTENANT !</text>
+          <rect x="620" y="10" width="270" height="35" fill="#25d366" rx="8"/>
+          <text x="755" y="33" font-weight="900" font-size="18" fill="#fff" text-anchor="middle">📲 06 34 08 45 43</text>
+        </g>
+      </svg>
     </div>
 
-  </div>
-</section>
-
-<!-- SERVICES DETAILED SECTION -->
-<section class="section" id="services">
-  <div class="container">
-    <h2 class="section-title" data-key="services_title">Nos <span>Services</span></h2>
-    <p class="section-desc" data-key="services_desc">Nous assurons la livraison rapide et sécurisée de tous vos besoins quotidiens à Kénitra.</p>
-
-    <div class="services-grid">
-      <div class="service-card">
-        <div class="service-icon"><i class="fa-solid fa-cart-shopping"></i></div>
-        <h3 class="service-title" data-key="srv1_t">E-Commerce & Boutiques</h3>
-        <p class="service-body" data-key="srv1_d">Livraison de vos commandes en ligne, vêtements, accessoires directement chez vos clients.</p>
-      </div>
-
-      <div class="service-card">
-        <div class="service-icon"><i class="fa-solid fa-burger"></i></div>
-        <h3 class="service-title" data-key="srv2_t">Repas & Restaurants</h3>
-        <p class="service-body" data-key="srv2_d">Récupération de vos plats préférés dans tous les restaurants de Kénitra, livrés chauds.</p>
-      </div>
-
-      <div class="service-card">
-        <div class="service-icon"><i class="fa-solid fa-pills"></i></div>
-        <h3 class="service-title" data-key="srv3_t">Achats Pharmacie</h3>
-        <p class="service-body" data-key="srv3_d">Achat et livraison express de vos médicaments et produits de santé en urgence jour et nuit.</p>
-      </div>
-
-      <div class="service-card">
-        <div class="service-icon"><i class="fa-solid fa-paper-plane"></i></div>
-        <h3 class="service-title" data-key="srv4_t">Documents & Plis</h3>
-        <p class="service-body" data-key="srv4_d">Transport sécurisé de vos documents administratifs urgents ou petits colis de bureau.</p>
-      </div>
+    <div class="hero-actions">
+      <a class="btn yellow" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison.">Commander sur WhatsApp</a>
+      <a class="btn dark" href="tel:+212634084543">📞 06 34 08 45 43</a>
     </div>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
-<section class="section" id="how">
-  <div class="container">
-    <h2 class="section-title" data-key="how_title">Comment Ça <span>Marche</span></h2>
-    <p class="section-desc" data-key="how_desc">3 étapes simples pour vous faire livrer en un temps record.</p>
+<section id="services"><div class="c"><h2 class="title">Tous vos besoins, une seule livraison</h2><p class="sub">Un service local pensé pour Kénitra.</p><div class="cards">
+<div class="card"><div class="icon">🛒</div><h3>E-commerce</h3><p>Livraison de vos commandes en ligne.</p></div>
+<div class="card"><div class="icon">🍔</div><h3>Restaurants</h3><p>Vos repas livrés rapidement.</p></div>
+<div class="card"><div class="icon">💊</div><h3>Pharmacie</h3><p>Produits de pharmacie selon les conditions applicables.</p></div>
+<div class="card"><div class="icon">🛍️</div><h3>Courses diverses</h3><p>Petits achats et besoins du quotidien.</p></div>
+<div class="card"><div class="icon">📦</div><h3>Petits colis</h3><p>Un service de proximité pour vos petits envois.</p></div>
+<div class="card"><div class="icon">🌙</div><h3>Service nocturne</h3><p>Disponible en soirée et nuit.</p></div>
+</div></div></section>
 
-    <div class="steps-grid">
-      <div class="step-card">
-        <div class="step-number">1</div>
-        <h3 class="step-title" data-key="step1_t">Contactez-nous</h3>
-        <p class="step-desc" data-key="step1_d">Envoyez vos détails par WhatsApp ou via notre formulaire de commande en ligne.</p>
-      </div>
+<section id="comment"><div class="c"><h2 class="title">Comment ça marche ?</h2><p class="sub">Commander en 4 étapes simples.</p><div class="steps">
+<div class="step"><div class="num">1</div><h3>Choisissez</h3><p>Sélectionnez votre départ et votre destination.</p></div>
+<div class="step"><div class="num">2</div><h3>Calculez</h3><p>Le tarif s'affiche automatiquement.</p></div>
+<div class="step"><div class="num">3</div><h3>Envoyez</h3><p>Validez votre demande directement sur WhatsApp.</p></div>
+<div class="step"><div class="num">4</div><h3>Recevez</h3><p>Votre coursier livre votre commande rapidement.</p></div>
+</div></div></section>
 
-      <div class="step-card">
-        <div class="step-number">2</div>
-        <h3 class="step-title" data-key="step2_t">Validation & Prise en charge</h3>
-        <p class="step-desc" data-key="step2_d">Notre coursier récupère votre colis ou effectue votre achat immédiatement.</p>
-      </div>
+<section id="tarifs"><div class="c"><h2 class="title">Commander ma livraison</h2><p class="sub">Choisissez vos adresses sur la carte ou recherchez par nom.</p><div class="tarif">
 
-      <div class="step-card">
-        <div class="step-number">3</div>
-        <h3 class="step-title" data-key="step3_t">Livraison à Domicile</h3>
-        <p class="step-desc" data-key="step3_d">Réceptionnez votre commande rapidement et payez à la livraison.</p>
-      </div>
-    </div>
-  </div>
-</section>
+<div class="mode-selector">
+  <button type="button" class="mode-btn active" id="btn-mode-auto" onclick="switchMode('auto')">🗺️ Par Carte / Recherche</button>
+  <button type="button" class="mode-btn" id="btn-mode-manual" onclick="switchMode('manual')">✍️ Saisie directe</button>
+</div>
 
-<!-- ORDER FORM -->
-<section class="section order-section" id="order">
-  <div class="container">
-    <h2 class="section-title" data-key="order_title">Passer une <span>Commande</span></h2>
-    <p class="section-desc" data-key="order_desc">Remplissez le formulaire ci-dessous pour envoyer directement votre demande via WhatsApp.</p>
-
-    <div class="form-container">
-      <form id="deliveryForm" onsubmit="sendToWhatsApp(event)">
-        <div class="form-row">
-          <div class="form-group">
-            <label data-key="lbl_name">Nom Complet</label>
-            <input type="text" id="custName" class="form-control" placeholder="Ex: Mohamed Alami" required>
+<!-- MODE AUTOMATIQUE & CARTE -->
+<div id="section-auto">
+  <div style="display:grid;gap:15px;margin-bottom:18px;text-align:left">
+    <div>
+      <label style="font-weight:700;display:block;margin-bottom:5px">🚦🟢 Départ</label>
+      <div class="search-box">
+        <div class="input-group">
+          <div class="input-wrapper">
+            <input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare Kenitra, Marjane..." autocomplete="off" oninput="onSearchInput(this.value, true)">
+            <button type="button" class="clear-btn" id="clear-depart" onclick="clearField(true)">✕</button>
           </div>
-          <div class="form-group">
-            <label data-key="lbl_phone">Numéro de Téléphone</label>
-            <input type="tel" id="custPhone" class="form-control" placeholder="Ex: 0612345678" required>
+          <button type="button" class="gps-btn" onclick="useCurrentLocation(true)">🎯 GPS</button>
+        </div>
+        <ul id="list-depart" class="suggestions-list"></ul>
+      </div>
+    </div>
+
+    <div>
+      <label style="font-weight:700;display:block;margin-bottom:5px">🚦🔴 Destination</label>
+      <div class="search-box">
+        <div class="input-group">
+          <div class="input-wrapper">
+            <input type="text" id="input-dest" class="search-input" placeholder="Ex: Mehdia, Café..." autocomplete="off" oninput="onSearchInput(this.value, false)">
+            <button type="button" class="clear-btn" id="clear-dest" onclick="clearField(false)">✕</button>
           </div>
+          <button type="button" class="gps-btn" onclick="useCurrentLocation(false)">🎯 GPS</button>
         </div>
-
-        <div class="form-group">
-          <label data-key="lbl_type">Type de Service</label>
-          <select id="serviceType" class="form-control" required>
-            <option value="E-Commerce">E-Commerce / Shopping</option>
-            <option value="Restaurant">Restaurant / Repas</option>
-            <option value="Pharmacie">Pharmacie</option>
-            <option value="Courses & Colis">Petits Colis & Courses</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label data-key="lbl_address">Adresse de Livraison à Kénitra</label>
-          <input type="text" id="custAddress" class="form-control" placeholder="Ex: Mimosa, Rue 12, N 4" required>
-        </div>
-
-        <div class="form-group">
-          <label data-key="lbl_details">Détails de la Commande</label>
-          <textarea id="orderDetails" class="form-control" placeholder="Décrivez ce que nous devons récupérer ou acheter pour vous..." required></textarea>
-        </div>
-
-        <button type="submit" class="btn btn-whatsapp" style="width:100%; font-size:1.1rem; padding:16px;">
-          <i class="fa-brands fa-whatsapp"></i> <span data-key="btn_submit">Envoyer la commande sur WhatsApp</span>
-        </button>
-      </form>
+        <ul id="list-dest" class="suggestions-list"></ul>
+      </div>
     </div>
   </div>
-</section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div>
-        <div class="footer-brand">JibLi-<span>vraison</span></div>
-        <p class="footer-desc" data-key="footer_desc">Votre partenaire de confiance pour toutes vos livraisons express à moto dans la ville de Kénitra.</p>
+  <div class="map-wrapper">
+    <div id="map"></div>
+    <div class="center-picker">
+      <div class="picker-card" id="picker-card" onclick="confirmCenterPoint()">
+        <div id="picker-address">Déplacez la carte...</div>
+        <span>Utiliser ce point ›</span>
       </div>
-
-      <div>
-        <h4 class="footer-header" data-key="footer_nav">Navigation</h4>
-        <ul class="footer-links">
-          <li><a href="#hero">Accueil</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#how">Comment ça marche</a></li>
-          <li><a href="#order">Commander</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 class="footer-header" data-key="footer_horaires">Horaires</h4>
-        <ul class="footer-links">
-          <li>Lun - Sam: 17h00 - 02h00</li>
-          <li>Dimanche: 10h00 - 02h00</li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 class="footer-header" data-key="footer_contact">Contact</h4>
-        <ul class="contact-info">
-          <li><i class="fa-solid fa-phone"></i> 06 34 08 45 43</li>
-          <li><i class="fa-brands fa-whatsapp"></i> 06 34 08 45 43</li>
-          <li><i class="fa-solid fa-location-dot"></i> Kénitra, Maroc</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="copyright">
-      &copy; 2026 JibLi-vraison. Tous droits réservés.
+      <div class="picker-pin">📍</div>
     </div>
   </div>
-</footer>
+</div>
+
+<!-- MODE SAISIE MANUELLE -->
+<div id="section-manual" style="display:none; text-align:left;">
+  <div style="display:grid;gap:15px;margin-bottom:18px;">
+    <div>
+      <label style="font-weight:700;display:block;margin-bottom:5px">📍 Lieu de Départ</label>
+      <input type="text" id="manual-depart" class="search-input" style="width:100%" placeholder="Entrez le lieu de départ..." oninput="calculateManualPrice()">
+    </div>
+    <div>
+      <label style="font-weight:700;display:block;margin-bottom:5px">🏁 Destination</label>
+      <input type="text" id="manual-dest" class="search-input" style="width:100%" placeholder="Entrez la destination..." oninput="calculateManualPrice()">
+    </div>
+  </div>
+</div>
+
+<div class="result" id="result">— DH</div>
+<p id="status" style="color:#aaa;margin-bottom:15px;">Sélectionnez les lieux pour afficher le tarif.</p>
+
+<a id="order" class="btn yellow" href="https://wa.me/212634084543" style="width:100%;text-align:center;">Commander sur WhatsApp</a>
+</div></div></section>
+
+<section id="pourquoi"><div class="c"><h2 class="title">Pourquoi choisir JibLi-vraison ?</h2><p class="sub">Un service pensé pour vous faciliter la vie.</p><div class="why">
+<div class="whyitem"><span>⚡</span><h3>Rapidité</h3><small>Livraison directe à moto dans Kénitra.</small></div>
+<div class="whyitem"><span>🎯</span><h3>Transparence</h3><small>Calcul clair du tarif avant commande.</small></div>
+<div class="whyitem"><span>📱</span><h3>Simplicité</h3><small>Tout se fait en quelques clics via WhatsApp.</small></div>
+<div class="whyitem"><span>🌙</span><h3>Disponibilité</h3><small>Service disponible jusqu'à 02h00 du matin.</small></div>
+</div></div></section>
+
+<section><div class="c"><div class="cta"><div><h2>Besoin d'une livraison à Kénitra ?</h2><p>Contactez-nous directement sur WhatsApp pour votre commande.</p></div><a class="btn" href="https://wa.me/212634084543">Commander maintenant</a></div></div></section>
+
+<section id="faq"><div class="c"><h2 class="title">Questions fréquentes</h2><div class="faq">
+<details><summary>Comment commander ?</summary><div class="answer">Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.</div></details>
+<details><summary>Où faites-vous les livraisons ?</summary><div class="answer">Le service est destiné aux livraisons à Kénitra et ses environs.</div></details>
+<details><summary>Comment connaître le prix ?</summary><div class="answer">Le prix est calculé automatiquement en fonction du kilométrage exact.</div></details>
+<details><summary>Quels sont vos horaires ?</summary><div class="answer">Du Lundi au Samedi : 17h00 à 02h00.<br>Le Dimanche : 10h00 à 02h00.</div></details>
+</div></div></section>
+
+<footer><div class="c"><b>JibLi-vraison</b> — Service de coursier à moto à Kénitra. <span style="float:right">© 2026</span></div></footer>
+<a class="wa" href="https://wa.me/212634084543">☏</a>
 
 <script>
-/* MULTI-LANGUAGE TRANSLATION DATA */
-const translations = {
-  fr: {
-    nav_home: "Accueil",
-    nav_services: "Services",
-    nav_how: "Comment ça marche",
-    nav_order: "Commander",
-    subtitle: "SERVICE DE COURSIER À MOTO",
-    dispo_title: "DISPONIBLE À KÉNITRA",
-    schedule_1: "Lun - Sam : 17h00 à 02h00",
-    schedule_2: "Dimanche : 10h00 à 02h00",
-    badge_1: "LIVRAISON RAPIDE",
-    badge_2: "SÉCURISÉE & FIABLE",
-    badge_3: "SERVICE NOCTURNE",
-    besoins_title: "TOUS VOS BESOINS, UNE SEULE LIVRAISON !",
-    cat_1: "E-Commerce",
-    cat_2: "Restaurants",
-    cat_3: "Pharmacie",
-    cat_4: "Petits Colis & Courses",
-    call_to_action: "REJOIGNEZ-NOUS DÈS MAINTENANT !",
-    services_title: "Nos Services",
-    services_desc: "Nous assurons la livraison rapide et sécurisée de tous vos besoins quotidiens à Kénitra.",
-    srv1_t: "E-Commerce & Boutiques",
-    srv1_d: "Livraison de vos commandes en ligne, vêtements, accessoires directement chez vos clients.",
-    srv2_t: "Repas & Restaurants",
-    srv2_d: "Récupération de vos plats préférés dans tous les restaurants de Kénitra, livrés chauds.",
-    srv3_t: "Achats Pharmacie",
-    srv3_d: "Achat et livraison express de vos médicaments et produits de santé en urgence jour et nuit.",
-    srv4_t: "Documents & Plis",
-    srv4_d: "Transport sécurisé de vos documents administratifs urgents ou petits colis de bureau.",
-    how_title: "Comment Ça Marche",
-    how_desc: "3 étapes simples pour vous faire livrer en un temps record.",
-    step1_t: "Contactez-nous",
-    step1_d: "Envoyez vos détails par WhatsApp ou via notre formulaire de commande en ligne.",
-    step2_t: "Validation & Prise en charge",
-    step2_d: "Notre coursier récupère votre colis ou effectue votre achat immédiatement.",
-    step3_t: "Livraison à Domicile",
-    step3_d: "Réceptionnez votre commande rapidement et payez à la livraison.",
-    order_title: "Passer une Commande",
-    order_desc: "Remplissez le formulaire ci-dessous pour envoyer directement votre demande via WhatsApp.",
-    lbl_name: "Nom Complet",
-    lbl_phone: "Numéro de Téléphone",
-    lbl_type: "Type de Service",
-    lbl_address: "Adresse de Livraison à Kénitra",
-    lbl_details: "Détails de la Commande",
-    btn_submit: "Envoyer la commande sur WhatsApp",
-    footer_desc: "Votre partenaire de confiance pour toutes vos livraisons express à moto dans la ville de Kénitra.",
-    footer_nav: "Navigation",
-    footer_horaires: "Horaires",
-    footer_contact: "Contact"
-  },
-  ar: {
-    nav_home: "الرئيسية",
-    nav_services: "خدماتنا",
-    nav_how: "كيف نعمل",
-    nav_order: "اطلب الآن",
-    subtitle: "خدمة التوصيل بالدراجة النارية",
-    dispo_title: "متوفر في القنيطرة",
-    schedule_1: "الإثنين - السبت : 17:00 إلى 02:00",
-    schedule_2: "الأحد : 10:00 إلى 02:00",
-    badge_1: "توصيل سريع",
-    badge_2: "آمن وموثوق",
-    badge_3: "خدمة ليلية",
-    besoins_title: "جميع احتياجاتك، في توصيلة واحدة!",
-    cat_1: "التجارة الإلكترونية",
-    cat_2: "المطاعم",
-    cat_3: "الصيدلية",
-    cat_4: "الطرود والأغراض الصغيرة",
-    call_to_action: "انضم إلينا الآن!",
-    services_title: "خدماتنا",
-    services_desc: "نضمن التوصيل السريع والآمن لجميع احتياجاتك اليومية في القنيطرة.",
-    srv1_t: "التجارة الإلكترونية والمتاجر",
-    srv1_d: "توصيل طلباتك عبر الإنترنت، الملابس، والإكسسوارات مباشرة إلى زبنائك.",
-    srv2_t: "الوجبات والمطاعم",
-    srv2_d: "استلام وجباتك المفضلة من جميع مطاعم القنيطرة وتوصيلها ساخنة.",
-    srv3_t: "مقتنيات الصيدلية",
-    srv3_d: "شراء وتوصيل أدویتك ومستلزماتك الطبية بشكل عاجل ليلا ونهارا.",
-    srv4_t: "الوثائق والطرود",
-    srv4_d: "نقل آمن لوثائقك الإدارية العاجلة أو الطرود المكتبية الصغيرة.",
-    how_title: "كيف نعمل",
-    how_desc: "3 خطوات بسيطة للتوصيل في وقت قياسي.",
-    step1_t: "تواصل معنا",
-    step1_d: "أرسل تفاصيل طلبك عبر الواتساب أو من خلال استمارة الطلب.",
-    step2_t: "التأكيد والاستلام",
-    step2_d: "يقوم موزعنا باستلام طلبك أو الشراء فوراً.",
-    step3_t: "التوصيل للمنزل",
-    step3_d: "استلم طلبك بسرعة وادفع عند التسليم.",
-    order_title: "تقديم طلب",
-    order_desc: "املأ الاستمارة أدناه لإرسال طلبك مباشرة عبر الواتساب.",
-    lbl_name: "الاسم الكامل",
-    lbl_phone: "رقم الهاتف",
-    lbl_type: "نوع الخدمة",
-    lbl_address: "عنوان التوصيل في القنيطرة",
-    lbl_details: "تفاصيل الطلب",
-    btn_submit: "إرسال الطلب عبر الواتساب",
-    footer_desc: "شريكك الموثوق لجميع توصيلاتك السريعة بالدراجة النارية في مدينة القنيطرة.",
-    footer_nav: "التنقل",
-    footer_horaires: "أوقات العمل",
-    footer_contact: "الاتصال"
-  }
-};
+let currentMode = 'auto';
+let depCoord = null, destCoord = null, depName = '', destName = '';
+let depMarker = null, destMarker = null, routePolyline = null;
+let currentCenterAddress = '';
+let searchTimeout = null;
 
-function changeLanguage(lang) {
-  const elements = document.querySelectorAll('[data-key]');
-  elements.forEach(el => {
-    const key = el.getAttribute('data-key');
-    if (translations[lang] && translations[lang][key]) {
-      el.textContent = translations[lang][key];
-    }
-  });
+const map = L.map('map').setView([34.2610, -6.5802], 14);
 
-  if (lang === 'ar') {
-    document.documentElement.setAttribute('dir', 'rtl');
-    document.documentElement.setAttribute('lang', 'ar');
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
+  maxZoom: 19,
+  attribution: '© OpenStreetMap'
+}).addTo(map);
+
+// Geocoding inverse lors du déplacement de la carte (Style Glovo)
+let moveTimer;
+map.on('move', () => {
+  document.getElementById('picker-address').textContent = 'Chargement...';
+  clearTimeout(moveTimer);
+  moveTimer = setTimeout(() => {
+    const center = map.getCenter();
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${center.lat}&lon=${center.lng}`)
+      .then(res => res.json())
+      .then(data => {
+        if(data && data.display_name) {
+          let parts = data.display_name.split(',');
+          currentCenterAddress = parts.slice(0, 3).join(', ').trim();
+          document.getElementById('picker-address').textContent = currentCenterAddress;
+        } else {
+          currentCenterAddress = "Point sur la carte";
+          document.getElementById('picker-address').textContent = currentCenterAddress;
+        }
+      });
+  }, 300);
+});
+
+function confirmCenterPoint() {
+  const center = map.getCenter();
+  const coords = [center.lat, center.lng];
+
+  if (!depCoord) {
+    document.getElementById('input-depart').value = currentCenterAddress;
+    document.getElementById('clear-depart').style.display = 'block';
+    setPoint(coords, currentCenterAddress, true);
+  } else if (!destCoord) {
+    document.getElementById('input-dest').value = currentCenterAddress;
+    document.getElementById('clear-dest').style.display = 'block';
+    setPoint(coords, currentCenterAddress, false);
   } else {
-    document.documentElement.setAttribute('dir', 'ltr');
-    document.documentElement.setAttribute('lang', 'fr');
+    clearField(false);
+    document.getElementById('input-depart').value = currentCenterAddress;
+    document.getElementById('clear-depart').style.display = 'block';
+    setPoint(coords, currentCenterAddress, true);
   }
 }
 
-function sendToWhatsApp(e) {
-  e.preventDefault();
-  const name = document.getElementById('custName').value;
-  const phone = document.getElementById('custPhone').value;
-  const service = document.getElementById('serviceType').value;
-  const address = document.getElementById('custAddress').value;
-  const details = document.getElementById('orderDetails').value;
+// Recherche automatique via l'API Nominatim
+function onSearchInput(query, isDepart) {
+  let clearBtn = document.getElementById(isDepart ? 'clear-depart' : 'clear-dest');
+  clearBtn.style.display = query.length > 0 ? 'block' : 'none';
 
-  const text = `*Commande JibLi-vraison*%0A` +
-               `👤 *Nom:* ${name}%0A` +
-               `📞 *Téléphone:* ${phone}%0A` +
-               `🛠️ *Service:* ${service}%0A` +
-               `📍 *Adresse:* ${address}%0A` +
-               `📝 *Détails:* ${details}`;
+  clearTimeout(searchTimeout);
+  if (query.trim().length < 2) {
+    document.getElementById(isDepart ? 'list-depart' : 'list-dest').style.display = 'none';
+    return;
+  }
 
-  window.open(`https://wa.me/212634084543?text=${text}`, '_blank');
+  searchTimeout = setTimeout(() => {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=ma&limit=5`;
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        let listId = isDepart ? 'list-depart' : 'list-dest';
+        let list = document.getElementById(listId);
+        list.innerHTML = '';
+
+        if(data.length === 0) {
+          list.style.display = 'none';
+          return;
+        }
+
+        data.forEach(place => {
+          let li = document.createElement('li');
+          let shortName = place.display_name.split(',').slice(0, 3).join(',');
+          li.textContent = shortName;
+
+          li.onclick = () => {
+            let coords = [parseFloat(place.lat), parseFloat(place.lon)];
+            let inputId = isDepart ? 'input-depart' : 'input-dest';
+            document.getElementById(inputId).value = shortName;
+            list.style.display = 'none';
+
+            setPoint(coords, shortName, isDepart);
+            map.setView(coords, 16);
+          };
+          list.appendChild(li);
+        });
+
+        list.style.display = 'block';
+      });
+  }, 350);
+}
+
+function useCurrentLocation(isDepart) {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(position => {
+      const coords = [position.coords.latitude, position.coords.longitude];
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${coords[0]}&lon=${coords[1]}`)
+        .then(res => res.json())
+        .then(data => {
+          let name = data.display_name ? data.display_name.split(',').slice(0, 2).join(',') : "Position Actuelle";
+          document.getElementById(isDepart ? 'input-depart' : 'input-dest').value = name;
+          document.getElementById(isDepart ? 'clear-depart' : 'clear-dest').style.display = 'block';
+          setPoint(coords, name, isDepart);
+          map.setView(coords, 16);
+        });
+    }, () => alert("Impossible de récupérer la position GPS."));
+  }
+}
+
+function clearField(isDepart) {
+  if (isDepart) {
+    document.getElementById('input-depart').value = '';
+    document.getElementById('clear-depart').style.display = 'none';
+    document.getElementById('list-depart').style.display = 'none';
+    depCoord = null; depName = '';
+    if (depMarker) map.removeLayer(depMarker);
+    depMarker = null;
+  } else {
+    document.getElementById('input-dest').value = '';
+    document.getElementById('clear-dest').style.display = 'none';
+    document.getElementById('list-dest').style.display = 'none';
+    destCoord = null; destName = '';
+    if (destMarker) map.removeLayer(destMarker);
+    destMarker = null;
+  }
+  if (routePolyline) { map.removeLayer(routePolyline); routePolyline = null; }
+  resetPriceDisplay();
+}
+
+function setPoint(coords, name, isDepart) {
+  if (isDepart) {
+    depCoord = coords; depName = name;
+    if (depMarker) map.removeLayer(depMarker);
+    depMarker = L.marker(coords).addTo(map).bindPopup("<b>Départ:</b> " + name);
+  } else {
+    destCoord = coords; destName = name;
+    if (destMarker) map.removeLayer(destMarker);
+    destMarker = L.marker(coords).addTo(map).bindPopup("<b>Destination:</b> " + name);
+  }
+
+  if (depCoord && destCoord) {
+    calculateRouteDistance();
+  }
+}
+
+function calculateRouteDistance() {
+  fetch(`https://router.project-osrm.org/route/v1/driving/${depCoord[1]},${depCoord[0]};${destCoord[1]},${destCoord[0]}?overview=full&geometries=geojson`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.routes && data.routes.length > 0) {
+        const distKm = (data.routes[0].distance / 1000) * 1.025;
+        if (routePolyline) map.removeLayer(routePolyline);
+        routePolyline = L.geoJSON(data.routes[0].geometry, { style: { color: '#ffb900', weight: 5 } }).addTo(map);
+        map.fitBounds(routePolyline.getBounds(), { padding: [40, 40] });
+        renderPrice(distKm, depName, destName);
+      }
+    });
+}
+
+function renderPrice(n, dep, dest) {
+  let price = n <= 4 ? 20 : n < 6 ? 25 : n < 7 ? 26 : n < 8 ? 27 : n < 9 ? 28 : n < 10 ? 29 : 35 + Math.ceil(n - 10) * 2;
+  document.getElementById('result').textContent = price + ' DH';
+  document.getElementById('status').textContent = 'Distance : ' + n.toFixed(1) + ' km';
+
+  let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${dep}\n🏁 Destination : ${dest}\n📏 Distance : ${n.toFixed(1)} km\n💰 Prix : ${price} DH`;
+  document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
+}
+
+function resetPriceDisplay() {
+  document.getElementById('result').textContent = '— DH';
+  document.getElementById('status').textContent = 'Sélectionnez les deux adresses pour afficher le tarif.';
+}
+
+function switchMode(mode) {
+  currentMode = mode;
+  document.getElementById('btn-mode-auto').classList.toggle('active', mode === 'auto');
+  document.getElementById('btn-mode-manual').classList.toggle('active', mode === 'manual');
+  document.getElementById('section-auto').style.display = mode === 'auto' ? 'block' : 'none';
+  document.getElementById('section-manual').style.display = mode === 'manual' ? 'block' : 'none';
+
+  if (mode === 'manual') calculateManualPrice();
+  else if (depCoord && destCoord) calculateRouteDistance();
+  else resetPriceDisplay();
+}
+
+function calculateManualPrice() {
+  let dep = document.getElementById('manual-depart').value.trim();
+  let dest = document.getElementById('manual-dest').value.trim();
+
+  if (dep && dest) {
+    document.getElementById('result').textContent = 'Sur devis';
+    document.getElementById('status').textContent = 'Saisie manuelle effectuée.';
+
+    let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${dep}\n🏁 Destination : ${dest}`;
+    document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
+  } else {
+    resetPriceDisplay();
+  }
 }
 </script>
-
 </body>
 </html>
 

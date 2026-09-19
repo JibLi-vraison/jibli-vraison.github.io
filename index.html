@@ -349,12 +349,12 @@ filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
 <div id="section-manual" style="display:none;">
 <div style="display:grid;gap:15px;margin-bottom:18px;">
 <div>
-<label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dep-m">📍 Lieu de Départ (Optionnel)</label>
-<input type="text" id="manual-depart" class="search-input" style="width:100%" placeholder="Ex: Gare Kenitra..." oninput="calculateManualPrice()">
+<label style="font-weight:700;display:block;margin-bottom:5px" id="lbl-dep-m" data-key="lbl-dep-m">📍 Lien de départ (Optionnel)</label>
+<input type="text" id="manual-depart" class="search-input" style="width:100%" placeholder="Coller le lien de départ..." oninput="calculateManualPrice()">
 </div>
 <div>
-<label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dest-m">🏁 Destination (Optionnel)</label>
-<input type="text" id="manual-dest" class="search-input" style="width:100%" placeholder="Ex: Mehdia..." oninput="calculateManualPrice()">
+<label style="font-weight:700;display:block;margin-bottom:5px" id="lbl-dest-m" data-key="lbl-dest-m">🏁 Lien de destination (Optionnel)</label>
+<input type="text" id="manual-dest" class="search-input" style="width:100%" placeholder="Coller le lien de destination..." oninput="calculateManualPrice()">
 </div>
 <div>
 <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dist-m">📏 Distance estimée (en km)</label>
@@ -416,7 +416,7 @@ fr: {
 "m-auto": "🗺️ Par Carte / Recherche", "m-manual": "✍️ Saisie directe",
 "lbl-dep": "🚦🟢 Départ", "lbl-dest": "🚦🔴 Destination",
 "map-moving": "Déplacez la carte...", "map-use": "Utiliser ce point ›",
-"lbl-dep-m": "📍 Lieu de Départ (Optionnel)", "lbl-dest-m": "🏁 Destination (Optionnel)", "lbl-dist-m": "📏 Distance estimée (en km)",
+"lbl-dep-m": "📍 Lien de départ (Optionnel)", "lbl-dest-m": "🏁 Lien de destination (Optionnel)", "lbl-dist-m": "📏 Distance estimée (en km)",
 "status-default": "Sélectionnez les lieux ou entrez la distance pour afficher le tarif.",
 "why-title": "Pourquoi choisir JibLi-vraison ?", "why-sub": "Un service pensé pour vous faciliter la vie.",
 "why-1-t": "Rapidité", "why-1-d": "Livraison directe à moto dans Kénitra.",
@@ -464,7 +464,7 @@ ar: {
 "m-auto": "🗺️ عبر الخريطة / البحث", "m-manual": "✍️ إدخال مباشر",
 "lbl-dep": "🚦🟢 مكان الانطلاق", "lbl-dest": "🚦🔴 الوجهة",
 "map-moving": "حرك الخريطة...", "map-use": "استخدم هذه النقطة ›",
-"lbl-dep-m": "📍 مكان الانطلاق (اختياري)", "lbl-dest-m": "🏁 الوجهة (اختياري)", "lbl-dist-m": "📏 المسافة التقديرية (بالكيلومتر)",
+"lbl-dep-m": "📍 رابط مكان الانطلاق (اختياري)", "lbl-dest-m": "🏁 رابط الوجهة (اختياري)", "lbl-dist-m": "📏 المسافة التقديرية (بالكيلومتر)",
 "status-default": "حدد الأماكن أو أدخل المسافة لعرض السعر.",
 "why-title": "لماذا تختار JibLi-vraison؟", "why-sub": "خدمة مصممة لتسهيل حياتك.",
 "why-1-t": "السرعة", "why-1-d": "توصيل مباشر بالدراجة النارية بالقنيطرة.",
@@ -512,7 +512,7 @@ dar: {
 "m-auto": "🗺️ الخريطة والبحث", "m-manual": "✍️ كتب بيديك",
 "lbl-dep": "🚦🟢 منين نجيبو (المنطلق)", "lbl-dest": "🚦🔴 فين ندبو (الوجهة)",
 "map-moving": "حرك الخريطة...", "map-use": "استعمل هاد البلاصة ›",
-"lbl-dep-m": "📍 منين نجيبو (اختياري)", "lbl-dest-m": "🏁 فين نديو (اختياري)", "lbl-dist-m": "📏 الكيلومتراج التقديري (بـ Km)",
+"lbl-dep-m": "📍 ليان ديال المنطلق (اختياري)", "lbl-dest-m": "🏁 ليان ديال الوجهة (اختياري)", "lbl-dist-m": "📏 الكيلومتراج التقديري (بـ Km)",
 "status-default": "عزل البلايص أو كتب الكيلومتراج باش يبان لك الثمن.",
 "why-title": "علاش تختار JibLi-vraison؟", "why-sub": "خدمة مصاوبة باش تسهل عليك الحياة.",
 "why-1-t": "السرعة", "why-1-d": "توصيل ديريكت بالموطور ف القنيطرة.",
@@ -559,6 +559,21 @@ if (dict[key]) {
 el.innerHTML = dict[key];
 }
 });
+
+// Update placeholders for inputs in manual mode depending on language
+const depInput = document.getElementById('manual-depart');
+const destInput = document.getElementById('manual-dest');
+
+if (lang === 'fr') {
+depInput.placeholder = "Coller le lien de départ...";
+destInput.placeholder = "Coller le lien de destination...";
+} else if (lang === 'ar') {
+depInput.placeholder = "الصق رابط مكان الانطلاق...";
+destInput.placeholder = "الصق رابط الوجهة...";
+} else if (lang === 'dar') {
+depInput.placeholder = "صقس الليان ديال المنطلق...";
+destInput.placeholder = "صقس الليان ديال الوجهة...";
+}
 
 if (currentMode === 'manual') calculateManualPrice();
 else if (depCoord && destCoord) calculateRouteDistance();

@@ -5,10 +5,6 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>JibLi-vraison | Service de livraison</title>
 
-<!-- Leaflet CSS & JS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:#090909;color:#fff;overflow-x:hidden}
@@ -24,12 +20,10 @@ nav{height:70px;display:flex;align-items:center;justify-content:space-between;ga
 .yellow{background:#ffb900;color:#111}
 .dark{background:#171717;border:1px solid #555;color:#fff}
 
-/* FIX RTL POUR LES NUMÉROS ET SVG */
-.phone-num, .poster-container, .leaflet-container, #map {
+.phone-num, .poster-container, #map {
   direction: ltr !important;
 }
 
-/* SELECTEUR DE LANGUE COMPACT */
 .lang-select {
   background: #171717;
   color: #ffb900;
@@ -79,15 +73,11 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
   .brand{font-size:18px}
 }
 
-/* RECHERCHE ET ENTRÉES */
 .search-box { position: relative; width: 100%; text-align: initial; }
 .input-wrapper { position: relative; flex: 1; display: flex; align-items: center; }
 .input-group { display: flex; gap: 8px; position: relative; z-index: 10; }
-.search-input { width: 100%; padding: 14px 35px 14px 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 15px; outline: none; }
+.search-input { width: 100%; padding: 14px 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 15px; outline: none; }
 .search-input:focus { border-color: #ffb900; }
-.clear-btn { position: absolute; right: 10px; background: none; border: none; color: #888; font-size: 18px; font-weight: bold; cursor: pointer; display: none; padding: 2px 6px; }
-html[dir="rtl"] .clear-btn { right: auto; left: 10px; }
-.clear-btn:hover { color: #ffb900; }
 
 .gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 12px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; }
 
@@ -95,73 +85,30 @@ html[dir="rtl"] .clear-btn { right: auto; left: 10px; }
 .mode-btn { flex: 1; padding: 12px 8px; border: none; background: transparent; color: #aaa; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 13px; }
 .mode-btn.active { background: #ffb900; color: #111; }
 
-.suggestions-list { 
-  position: absolute; 
-  top: 100%; 
-  left: 0; 
-  right: 0; 
-  background: #1e1e1e; 
-  border: 1px solid #ffb900; 
-  border-radius: 10px; 
-  max-height: 180px; 
-  overflow-y: auto; 
-  z-index: 3000; 
-  display: none; 
-  margin: 4px 0 0 0; 
-  padding: 0; 
-  list-style: none; 
-  box-shadow: 0 8px 20px rgba(0,0,0,0.8);
-}
-.suggestions-list li { 
-  padding: 12px; 
-  cursor: pointer; 
-  color: #eee; 
-  border-bottom: 1px solid #2e2e2e; 
-  font-size: 13px;
-  line-height: 1.4;
-  text-align: start;
-}
-.suggestions-list li:last-child { border-bottom: none; }
-.suggestions-list li:hover { background: #2a2a2a; color: #ffb900; }
-
-/* CARTE STYLE GLOVO */
 .map-wrapper { position: relative; width: 100%; height: 350px; margin-top: 10px; border-radius: 15px; overflow: hidden; border: 2px solid #ffb900; }
-#map { width: 100%; height: 100%; z-index: 1; }
+#map { width: 100%; height: 100%; }
 
-.center-picker {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -100%);
-  z-index: 1000;
-  pointer-events: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* Style des suggestions Google Places */
+.pac-container {
+  background-color: #1e1e1e !important;
+  border: 1px solid #ffb900 !important;
+  border-radius: 8px !important;
+  font-family: Arial, sans-serif !important;
 }
-
-.picker-card {
-  background: #fff;
-  color: #111;
-  padding: 8px 14px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-  font-size: 13px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 6px;
-  pointer-events: auto;
-  cursor: pointer;
-  border: 2px solid #ffb900;
-  transition: transform 0.2s;
+.pac-item {
+  color: #fff !important;
+  border-top: 1px solid #333 !important;
+  padding: 8px !important;
+  cursor: pointer !important;
 }
-.picker-card:active { transform: scale(0.95); }
-.picker-card span { color: #00a082; display: block; font-size: 11px; margin-top: 2px; text-decoration: underline; }
-
-.picker-pin {
-  font-size: 38px;
-  line-height: 1;
-  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
+.pac-item:hover {
+  background-color: #2a2a2a !important;
+}
+.pac-item-query {
+  color: #ffb900 !important;
+}
+.pac-matched {
+  color: #ffb900 !important;
 }
 </style>
 </head>
@@ -175,110 +122,6 @@ html[dir="rtl"] .clear-btn { right: auto; left: 10px; }
 </select>
 <a class="btn dark" href="mailto:jibli.vraison@gmail.com">Email</a><a class="btn yellow" href="https://wa.me/212634084543">WhatsApp</a></div></nav></div></header>
 
-<section class="hero">
-  <div class="c">
-    <div class="poster-container">
-      <svg viewBox="0 0 1000 650" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="background:#090909; font-family:Arial, sans-serif; border-radius:18px; border:1px solid #333; box-shadow:0 12px 40px rgba(0,0,0,0.8);">
-        <rect width="1000" height="650" fill="#0c0c0c" rx="18"/>
-        <path d="M 480 0 L 1000 0 L 1000 650 L 380 650 Z" fill="#141414"/>
-        <circle cx="750" cy="280" r="220" fill="#ffb900" opacity="0.04"/>
-
-        <g transform="translate(45, 55)">
-          <text x="0" y="0" font-weight="900" font-style="italic" font-size="52" fill="#ffffff">JibLi-<tspan fill="#ffb900">vraison</tspan></text>
-          <line x1="0" y1="18" x2="380" y2="18" stroke="#ffb900" stroke-width="4" stroke-linecap="round"/>
-          <text x="0" y="44" font-weight="bold" font-size="16" fill="#aaa" letter-spacing="3">SERVICE DE COURSIER À MOTO</text>
-        </g>
-
-        <g transform="translate(45, 145)">
-          <rect width="420" height="135" fill="#ffb900" rx="14"/>
-          <text x="24" y="36" font-weight="900" font-size="18" fill="#111">DISPONIBLE À KÉNITRA</text>
-          <line x1="24" y1="48" x2="396" y2="48" stroke="#111" stroke-width="1.5" opacity="0.3"/>
-          <text x="24" y="80" font-weight="bold" font-size="18" fill="#111">🕒 Lun - Sam : 17h00 à 02h00</text>
-          <text x="24" y="110" font-weight="bold" font-size="18" fill="#111">🕒 Dimanche : 10h00 à 02h00</text>
-        </g>
-
-        <g transform="translate(45, 308)">
-          <rect x="0" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
-          <text x="65" y="32" font-size="22" text-anchor="middle">⚡</text>
-          <text x="65" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">LIVRAISON RAPIDE</text>
-
-          <rect x="145" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
-          <text x="210" y="32" font-size="22" text-anchor="middle">🔒</text>
-          <text x="210" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">SÉCURISÉE &amp; FIABLE</text>
-
-          <rect x="290" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
-          <text x="355" y="32" font-size="22" text-anchor="middle">🌙</text>
-          <text x="355" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">SERVICE NOCTURNE</text>
-        </g>
-
-        <g transform="translate(45, 410)">
-          <text x="0" y="20" font-weight="900" font-size="15" fill="#ffb900" letter-spacing="1">TOUS VOS BESOINS, UNE SEULE LIVRAISON !</text>
-          
-          <g transform="translate(0, 35)">
-            <rect x="0" y="0" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
-            <text x="12" y="26" font-size="16">🛒</text>
-            <text x="38" y="26" font-weight="bold" font-size="13" fill="#eee">E-Commerce</text>
-
-            <rect x="212" y="0" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
-            <text x="224" y="26" font-size="16">🍔</text>
-            <text x="250" y="26" font-weight="bold" font-size="13" fill="#eee">Restaurants</text>
-
-            <rect x="0" y="50" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
-            <text x="12" y="76" font-size="16">💊</text>
-            <text x="38" y="76" font-weight="bold" font-size="13" fill="#eee">Pharmacie</text>
-
-            <rect x="212" y="50" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
-            <text x="224" y="26" font-size="16">📦</text>
-            <text x="250" y="26" font-weight="bold" font-size="13" fill="#eee">Petits Colis &amp; Courses</text>
-          </g>
-        </g>
-
-        <g transform="translate(520, 100)">
-          <circle cx="210" cy="210" r="170" fill="#1a1a1a" stroke="#ffb900" stroke-width="2" stroke-dasharray="8,8"/>
-          <text x="210" y="250" font-size="180" text-anchor="middle">🛵</text>
-          
-          <g transform="translate(250, 60)">
-            <rect width="110" height="90" fill="#ffb900" rx="12"/>
-            <text x="55" y="38" font-weight="900" font-size="14" fill="#111" text-anchor="middle">JibLi-</text>
-            <text x="55" y="58" font-weight="900" font-size="14" fill="#111" text-anchor="middle">vraison</text>
-            <text x="55" y="78" font-size="16" text-anchor="middle">📍</text>
-          </g>
-        </g>
-
-        <a href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison." target="_blank" style="cursor:pointer">
-          <g transform="translate(45, 555)">
-            <rect width="910" height="55" fill="#181818" stroke="#ffb900" stroke-width="2" rx="14"/>
-            <text x="25" y="34" font-weight="bold" font-size="16" fill="#fff">REJOIGNEZ-NOUS DÈS MAINTENANT !</text>
-            <rect x="620" y="10" width="270" height="35" fill="#25d366" rx="8"/>
-            <text x="755" y="33" font-weight="900" font-size="18" fill="#fff" text-anchor="middle">📲 06 34 08 45 43</text>
-          </g>
-        </a>
-      </svg>
-    </div>
-
-    <div class="hero-actions">
-      <a class="btn yellow" id="btn-hero-wa" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison." data-key="btn-wa">Commander sur WhatsApp</a>
-      <a class="btn dark phone-num" href="tel:+212634084543">📞 06 34 08 45 43</a>
-    </div>
-  </div>
-</section>
-
-<section id="services"><div class="c"><h2 class="title" data-key="srv-title">Tous vos besoins, une seule livraison</h2><p class="sub" data-key="srv-sub">Un service local pensé pour Kénitra.</p><div class="cards">
-<div class="card"><div class="icon">🛒</div><h3 data-key="srv-1-t">E-commerce</h3><p data-key="srv-1-d">Livraison de vos commandes en ligne.</p></div>
-<div class="card"><div class="icon">🍔</div><h3 data-key="srv-2-t">Restaurants</h3><p data-key="srv-2-d">Vos repas livrés rapidement.</p></div>
-<div class="card"><div class="icon">💊</div><h3 data-key="srv-3-t">Pharmacie</h3><p data-key="srv-3-d">Produits de pharmacie selon les conditions applicables.</p></div>
-<div class="card"><div class="icon">🛍️</div><h3 data-key="srv-4-t">Courses diverses</h3><p data-key="srv-4-d">Petits achats et besoins du quotidien.</p></div>
-<div class="card"><div class="icon">📦</div><h3 data-key="srv-5-t">Petits colis</h3><p data-key="srv-5-d">Un service de proximité pour vos petits envois.</p></div>
-<div class="card"><div class="icon">🌙</div><h3 data-key="srv-6-t">Service nocturne</h3><p data-key="srv-6-d">Disponible en soirée et nuit.</p></div>
-</div></div></section>
-
-<section id="comment"><div class="c"><h2 class="title" data-key="how-title">Comment ça marche ?</h2><p class="sub" data-key="how-sub">Commander en 4 étapes simples.</p><div class="steps">
-<div class="step"><div class="num">1</div><h3 data-key="step-1-t">Choisissez</h3><p data-key="step-1-d">Sélectionnez votre départ et votre destination.</p></div>
-<div class="step"><div class="num">2</div><h3 data-key="step-2-t">Calculez</h3><p data-key="step-2-d">Le tarif s'affiche automatiquement.</p></div>
-<div class="step"><div class="num">3</div><h3 data-key="step-3-t">Envoyez</h3><p data-key="step-3-d">Validez votre demande directement sur WhatsApp.</p></div>
-<div class="step"><div class="num">4</div><h3 data-key="step-4-t">Recevez</h3><p data-key="step-4-d">Votre coursier livre votre commande rapidement.</p></div>
-</div></div></section>
-
 <section id="tarifs"><div class="c"><h2 class="title" data-key="tarif-title">Commander ma livraison</h2><p class="sub" data-key="tarif-sub">Choisissez vos adresses sur la carte ou recherchez par nom.</p><div class="tarif">
 
 <div class="mode-selector">
@@ -286,7 +129,7 @@ html[dir="rtl"] .clear-btn { right: auto; left: 10px; }
   <button type="button" class="mode-btn" id="btn-mode-manual" onclick="switchMode('manual')" data-key="m-manual">✍️ Saisie directe</button>
 </div>
 
-<!-- MODE AUTOMATIQUE & CARTE -->
+<!-- MODE AUTOMATIQUE & CARTE GOOGLE -->
 <div id="section-auto">
   <div style="display:grid;gap:15px;margin-bottom:18px;text-align:start;">
     <div>
@@ -294,12 +137,10 @@ html[dir="rtl"] .clear-btn { right: auto; left: 10px; }
       <div class="search-box">
         <div class="input-group">
           <div class="input-wrapper">
-            <input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare Kenitra, Marjane..." autocomplete="off" oninput="onSearchInput(this.value, true)">
-            <button type="button" class="clear-btn" id="clear-depart" onclick="clearField(true)">✕</button>
+            <input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare Kenitra, Marjane..." autocomplete="off">
           </div>
           <button type="button" class="gps-btn" onclick="useCurrentLocation(true)">🎯 GPS</button>
         </div>
-        <ul id="list-depart" class="suggestions-list"></ul>
       </div>
     </div>
 
@@ -308,25 +149,16 @@ html[dir="rtl"] .clear-btn { right: auto; left: 10px; }
       <div class="search-box">
         <div class="input-group">
           <div class="input-wrapper">
-            <input type="text" id="input-dest" class="search-input" placeholder="Ex: Mehdia, Café..." autocomplete="off" oninput="onSearchInput(this.value, false)">
-            <button type="button" class="clear-btn" id="clear-dest" onclick="clearField(false)">✕</button>
+            <input type="text" id="input-dest" class="search-input" placeholder="Ex: Mehdia, Café..." autocomplete="off">
           </div>
           <button type="button" class="gps-btn" onclick="useCurrentLocation(false)">🎯 GPS</button>
         </div>
-        <ul id="list-dest" class="suggestions-list"></ul>
       </div>
     </div>
   </div>
 
   <div class="map-wrapper">
     <div id="map"></div>
-    <div class="center-picker">
-      <div class="picker-card" id="picker-card" onclick="confirmCenterPoint()">
-        <div id="picker-address" data-key="map-moving">Déplacez la carte...</div>
-        <span data-key="map-use">Utiliser ce point ›</span>
-      </div>
-      <div class="picker-pin">📍</div>
-    </div>
   </div>
 </div>
 
@@ -354,338 +186,135 @@ html[dir="rtl"] .clear-btn { right: auto; left: 10px; }
 <a id="order" class="btn yellow" href="https://wa.me/212634084543" style="width:100%;text-align:center;" data-key="btn-wa">Commander sur WhatsApp</a>
 </div></div></section>
 
-<section id="pourquoi"><div class="c"><h2 class="title" data-key="why-title">Pourquoi choisir JibLi-vraison ?</h2><p class="sub" data-key="why-sub">Un service pensé pour vous faciliter la vie.</p><div class="why">
-<div class="whyitem"><span>⚡</span><h3 data-key="why-1-t">Rapidité</h3><small data-key="why-1-d">Livraison directe à moto dans Kénitra.</small></div>
-<div class="whyitem"><span>🎯</span><h3 data-key="why-2-t">Transparence</h3><small data-key="why-2-d">Calcul clair du tarif avant commande.</small></div>
-<div class="whyitem"><span>📱</span><h3 data-key="why-3-t">Simplicité</h3><small data-key="why-3-d">Tout se fait en quelques clics via WhatsApp.</small></div>
-<div class="whyitem"><span>🌙</span><h3 data-key="why-4-t">Disponibilité</h3><small data-key="why-4-d">Service disponible jusqu'à 02h00 du matin.</small></div>
-</div></div></section>
-
-<section><div class="c"><div class="cta"><div><h2 data-key="cta-t">Besoin d'une livraison à Kénitra ?</h2><p data-key="cta-d">Contactez-nous directement sur WhatsApp pour votre commande.</p></div><a class="btn" href="https://wa.me/212634084543" data-key="cta-b">Commander maintenant</a></div></div></section>
-
-<section id="faq"><div class="c"><h2 class="title">FAQ</h2><div class="faq">
-<details><summary data-key="faq-1-q">Comment commander ?</summary><div class="answer" data-key="faq-1-a">Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.</div></details>
-<details><summary data-key="faq-2-q">Où faites-vous les livraisons ?</summary><div class="answer" data-key="faq-2-a">Le service est destiné aux livraisons à Kénitra et ses environs.</div></details>
-<details><summary data-key="faq-3-q">Comment connaître le prix ?</summary><div class="answer" data-key="faq-3-a">Le prix est calculé automatiquement en fonction du kilométrage exact.</div></details>
-<details><summary data-key="faq-4-q">Quels sont vos horaires ?</summary><div class="answer" data-key="faq-4-a">Du Lundi au Samedi : 17h00 à 02h00.<br>Le Dimanche : 10h00 à 02h00.</div></details>
-</div></div></section>
-
-<footer><div class="c"><b>JibLi-vraison</b> — <span data-key="footer-text">Service de coursier à moto à Kénitra.</span> <span style="float:right">© 2026</span></div></footer>
-<a class="wa" href="https://wa.me/212634084543">☏</a>
+<!-- GOOGLE MAPS SCRIPT AVEC VOTRE CLÉ API -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMGZwRva0eYjD8ZJ2Ql8r9P4Dgm0qNYLY&libraries=places&callback=initMap" async defer></script>
 
 <script>
+let map, directionsService, directionsRenderer;
+let depPlace = null, destPlace = null;
 let currentMode = 'auto';
-let depCoord = null, destCoord = null, depName = '', destName = '';
-let depMarker = null, destMarker = null, routePolyline = null;
-let currentCenterAddress = '';
-let searchTimeout = null;
 let currentLang = 'fr';
 
 const translations = {
-  fr: {
-    "nav-services": "Services", "nav-tarifs": "Tarifs", "nav-comment": "Comment ça marche", "nav-pourquoi": "Pourquoi nous", "nav-faq": "FAQ",
-    "btn-wa": "Commander sur WhatsApp", "srv-title": "Tous vos besoins, une seule livraison", "srv-sub": "Un service local pensé pour Kénitra.",
-    "srv-1-t": "E-commerce", "srv-1-d": "Livraison de vos commandes en ligne.",
-    "srv-2-t": "Restaurants", "srv-2-d": "Vos repas livrés rapidement.",
-    "srv-3-t": "Pharmacie", "srv-3-d": "Produits de pharmacie selon les conditions applicables.",
-    "srv-4-t": "Courses diverses", "srv-4-d": "Petits achats et besoins du quotidien.",
-    "srv-5-t": "Petits colis", "srv-5-d": "Un service de proximité pour vos petits envois.",
-    "srv-6-t": "Service nocturne", "srv-6-d": "Disponible en soirée et nuit.",
-    "how-title": "Comment ça marche ?", "how-sub": "Commander en 4 étapes simples.",
-    "step-1-t": "Choisissez", "step-1-d": "Sélectionnez votre départ et votre destination.",
-    "step-2-t": "Calculez", "step-2-d": "Le tarif s'affiche automatiquement.",
-    "step-3-t": "Envoyez", "step-3-d": "Validez votre demande directement sur WhatsApp.",
-    "step-4-t": "Recevez", "step-4-d": "Votre coursier livre votre commande rapidement.",
-    "tarif-title": "Commander ma livraison", "tarif-sub": "Choisissez vos adresses sur la carte ou recherchez par nom.",
-    "m-auto": "🗺️ Par Carte / Recherche", "m-manual": "✍️ Saisie directe",
-    "lbl-dep": "🚦🟢 Départ", "lbl-dest": "🚦🔴 Destination",
-    "map-moving": "Déplacez la carte...", "map-use": "Utiliser ce point ›",
-    "lbl-dep-m": "📍 Lieu de Départ (Optionnel)", "lbl-dest-m": "🏁 Destination (Optionnel)", "lbl-dist-m": "📏 Distance estimée (en km)",
-    "status-default": "Sélectionnez les lieux ou entrez la distance pour afficher le tarif.",
-    "why-title": "Pourquoi choisir JibLi-vraison ?", "why-sub": "Un service pensé pour vous faciliter la vie.",
-    "why-1-t": "Rapidité", "why-1-d": "Livraison directe à moto dans Kénitra.",
-    "why-2-t": "Transparence", "why-2-d": "Calcul clair du tarif avant commande.",
-    "why-3-t": "Simplicité", "why-3-d": "Tout se fait en quelques clics via WhatsApp.",
-    "why-4-t": "Disponibilité", "why-4-d": "Service disponible jusqu'à 02h00 du matin.",
-    "cta-t": "Besoin d'une livraison à Kénitra ?", "cta-d": "Contactez-nous directement sur WhatsApp pour votre commande.", "cta-b": "Commander maintenant",
-    "faq-1-q": "Comment commander ?", "faq-1-a": "Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.",
-    "faq-2-q": "Où faites-vous les livraisons ?", "faq-2-a": "Le service est destiné aux livraisons à Kénitra et ses environs.",
-    "faq-3-q": "Comment connaître le prix ?", "faq-3-a": "Le prix est calculé automatiquement en fonction du kilométrage exact.",
-    "faq-4-q": "Quels sont vos horaires ?", "faq-4-a": "Du Lundi au Samedi : 17h00 à 02h00.<br>Le Dimanche : 10h00 à 02h00.",
-    "footer-text": "Service de coursier à moto à Kénitra."
-  },
-  ar: {
-    "nav-services": "الخدمات", "nav-tarifs": "الأسعار", "nav-comment": "كيف نشتغل", "nav-pourquoi": "لماذا نحن", "nav-faq": "أسئلة شائعة",
-    "btn-wa": "اطلب عبر واتساب", "srv-title": "جميع احتياجاتك، توصيلة واحدة", "srv-sub": "خدمة محلية مصممة لمدينة القنيطرة.",
-    "srv-1-t": "التجارة الإلكترونية", "srv-1-d": "توصيل طلباتك عبر الإنترنت.",
-    "srv-2-t": "المطاعم", "srv-2-d": "توصيل وجباتك بسرعة.",
-    "srv-3-t": "الصيدلية", "srv-3-d": "منتجات الصيدلية حسب الشروط.",
-    "srv-4-t": "المشتريات", "srv-4-d": "مشترياتك وااحتياجاتك اليومية.",
-    "srv-5-t": "الطرود الصغيرة", "srv-5-d": "خدمة توصيل سريعة لطرودك.",
-    "srv-6-t": "الخدمة الليلية", "srv-6-d": "متوفرون طيلة المساء والليل.",
-    "how-title": "كيف تعمل الخدمة؟", "how-sub": "اطلب في 4 خطوات بسيطة.",
-    "step-1-t": "اختر", "step-1-d": "حدد مكان الانطلاق والوجهة.",
-    "step-2-t": "احسب", "step-2-d": "يظهر السعر تلقائياً.",
-    "step-3-t": "أرسل", "step-3-d": "أكد طلبك عبر الواتساب.",
-    "step-4-t": "استلم", "step-4-d": "سائقنا يوصل طلبك بسرعة.",
-    "tarif-title": "طلب التوصيل", "tarif-sub": "اختر العناوين من الخريطة أو ابحث بالاسم.",
-    "m-auto": "🗺️ عبر الخريطة / البحث", "m-manual": "✍️ إدخال مباشر",
-    "lbl-dep": "🚦🟢 مكان الانطلاق", "lbl-dest": "🚦🔴 الوجهة",
-    "map-moving": "حرك الخريطة...", "map-use": "استخدم هذه النقطة ›",
-    "lbl-dep-m": "📍 مكان الانطلاق (اختياري)", "lbl-dest-m": "🏁 الوجهة (اختياري)", "lbl-dist-m": "📏 المسافة التقديرية (بالكيلومتر)",
-    "status-default": "حدد الأماكن أو أدخل المسافة لعرض السعر.",
-    "why-title": "لماذا تختار جيب لي-فريزون؟", "why-sub": "خدمة مصممة لتسهيل حياتك.",
-    "why-1-t": "السرعة", "why-1-d": "توصيل مباشر بالدراجة النارية بالقنيطرة.",
-    "why-2-t": "الشفافية", "why-2-d": "حساب واضح للسعر قبل الطلب.",
-    "why-3-t": "السهولة", "why-3-d": "كل شيء بنقرات بسيطة عبر الواتساب.",
-    "why-4-t": "التوفر", "why-4-d": "الخدمة متوفرة حتى 02:00 صباحاً.",
-    "cta-t": "تحتاج توصيلة بالقنيطرة؟", "cta-d": "تواصل معنا مباشرة عبر الواتساب لطلبك.", "cta-b": "اطلب الآن",
-    "faq-1-q": "كيف أطلب؟", "faq-1-a": "اختر مكان الانطلاق والوجهة ثم اضغط على زر الواتساب.",
-    "faq-2-q": "أين تقومون بالتوصيل؟", "faq-2-a": "الخدمة مخصصة للتوصيل بالقنيطرة والنواحي.",
-    "faq-3-q": "كيف أعرف السعر؟", "faq-3-a": "يتم حساب السعر تلقائياً حسب المسافة بالضبط.",
-    "faq-4-q": "ما هي أوقات العمل؟", "faq-4-a": "من الإثنين إلى السبت: 17:00 إلى 02:00.<br>الأحد: 10:00 إلى 02:00.",
-    "footer-text": "خدمة التوصيل بالدراجات النارية بالقنيطرة."
-  },
-  dar: {
-    "nav-services": "الخدمات", "nav-tarifs": "الأثمنة", "nav-comment": "كيفاش كانديرو", "nav-pourquoi": "علاش إحنا", "nav-faq": "الأسئلة",
-    "btn-wa": "طلب ف الواتساب", "srv-title": "كاع احتياجاتك ف تسخيرة وحدة", "srv-sub": "خدمة محلية مصاوبة للقنيطرة.",
-    "srv-1-t": "إيكوميرس", "srv-1-d": "التوصيل ديال السلعة أونلاين.",
-    "srv-2-t": "المطاعم", "srv-2-d": "ماكلتك توصلك سخونة وبسرعة.",
-    "srv-3-t": "الفارماسي", "srv-3-d": "دواك والدوايات حسب الشروط.",
-    "srv-4-t": "السخرة والتسوق", "srv-4-d": "السخرة والحاجات ديال كل نهار.",
-    "srv-5-t": "البروات والكراتن", "srv-5-d": "توصيل سريع للكراتن والسلعة الصغيرة.",
-    "srv-6-t": "الخدمة بالليل", "srv-6-d": "خدامين معاك ف العشية وبالليل.",
-    "how-title": "كيفاش كانديرو؟", "how-sub": "طلب ف 4 د الخطوات سهلة.",
-    "step-1-t": "عزل", "step-1-d": "حدد منين نجيبوا وفين ندوا.",
-    "step-2-t": "حسب", "step-2-d": "الثمن كايطلع ليك أوتوماتيك.",
-    "step-3-t": "صيفط", "step-3-d": "أكد الطلب ديريكت ف الواتساب.",
-    "step-4-t": "شد السخرة", "step-4-d": "الكورسي ديالنا يجيبها لك دغيا.",
-    "tarif-title": "طلب التوصيل ديالك", "tarif-sub": "عزل البلايص ف الخريطة أو قلب بالسمية.",
-    "m-auto": "🗺️ الخريطة والبحث", "m-manual": "✍️ كتب بيديك",
-    "lbl-dep": "🚦🟢 منين نجيبو (المنطلق)", "lbl-dest": "🚦🔴 فين ندبو (الوجهة)",
-    "map-moving": "حرك الخريطة...", "map-use": "استعمل هاد البلاصة ›",
-    "lbl-dep-m": "📍 منين نجيبو (اختياري)", "lbl-dest-m": "🏁 فين نديو (اختياري)", "lbl-dist-m": "📏 الكيلومتراج التقديري (بـ Km)",
-    "status-default": "عزل البلايص أو كتب الكيلومتراج باش يبان لك الثمن.",
-    "why-title": "علاش تختار جيب لي-فريزون؟", "why-sub": "خدمة مصاوبة باش تسهل عليك الحياة.",
-    "why-1-t": "السرعة", "why-1-d": "توصيل ديريكت بالموطور ف القنيطرة.",
-    "why-2-t": "الشفافية", "why-2-d": "الثمن باين ومحسوب قبل ما تطلب.",
-    "why-3-t": "السهولية", "why-3-d": "كولشي ف جوج كليكات ف الواتساب.",
-    "why-4-t": "ديما كاينين", "why-4-d": "خدامين معاك حتى لـ 02:00 د الليل.",
-    "cta-t": "محتاج تسخيرة ف القنيطرة؟", "cta-d": "تواصل معانا ديريكت ف الواتساب وتوصلك سخرتك.", "cta-b": "اطلب دابا",
-    "faq-1-q": "كيفاش نطلب؟", "faq-1-a": "عزل البلاصة ديال البدية والنهاية ثم برك على بوطون الواتساب.",
-    "faq-2-q": "فين كتوصيلو؟", "faq-2-a": "الخدمة مخصصة للتوصيل ف القنيطرة والنواحي.",
-    "faq-3-q": "كيفاش نعرف الثمن؟", "faq-3-a": "الثمن كايتحسب أوتوماتيك على حساب الكيلومتراج ضبط.",
-    "faq-4-q": "وقتاش خدامين؟", "faq-4-a": "من الاثنين للسبت: 17:00 حتى لـ 02:00 د الليل.<br>الحد: 10:00 حتى لـ 02:00.",
-    "footer-text": "خدمة التوصيل بالموطور ف القنيطرة."
-  }
+  fr: { "tarif-title": "Commander ma livraison", "m-auto": "🗺️ Par Carte / Recherche", "m-manual": "✍️ Saisie directe", "lbl-dep": "🚦🟢 Départ", "lbl-dest": "🚦🔴 Destination", "btn-wa": "Commander sur WhatsApp", "status-default": "Sélectionnez les lieux ou entrez la distance pour afficher le tarif." },
+  ar: { "tarif-title": "طلب التوصيل", "m-auto": "🗺️ عبر الخريطة / البحث", "m-manual": "✍️ إدخال مباشر", "lbl-dep": "🚦🟢 مكان الانطلاق", "lbl-dest": "🚦🔴 الوجهة", "btn-wa": "اطلب عبر واتساب", "status-default": "حدد الأماكن أو أدخل المسافة لعرض السعر." },
+  dar: { "tarif-title": "طلب التوصيل ديالك", "m-auto": "🗺️ الخريطة والبحث", "m-manual": "✍️ كتب بيديك", "lbl-dep": "🚦🟢 منين نجيبو", "lbl-dest": "🚦🔴 فين ندبو", "btn-wa": "طلب ف الواتساب", "status-default": "عزل البلايص أو كتب الكيلومتراج باش يبان لك الثمن." }
 };
 
-function changeLanguage(lang) {
-  currentLang = lang;
-  const htmlRoot = document.getElementById('html-root');
-  if (lang === 'ar' || lang === 'dar') {
-    htmlRoot.setAttribute('dir', 'rtl');
-  } else {
-    htmlRoot.setAttribute('dir', 'ltr');
-  }
+function initMap() {
+  const kenitra = { lat: 34.2610, lng: -6.5802 };
+  map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 13,
+    center: kenitra,
+    disableDefaultUI: false
+  });
 
-  const dict = translations[lang];
-  document.querySelectorAll('[data-key]').forEach(el => {
-    const key = el.getAttribute('data-key');
-    if (dict[key]) {
-      el.innerHTML = dict[key];
+  directionsService = new google.maps.DirectionsService();
+  directionsRenderer = new google.maps.DirectionsRenderer({ map: map });
+
+  const options = {
+    componentRestrictions: { country: "ma" }
+  };
+
+  const inputDep = document.getElementById("input-depart");
+  const inputDest = document.getElementById("input-dest");
+
+  const autocompleteDep = new google.maps.places.Autocomplete(inputDep, options);
+  const autocompleteDest = new google.maps.places.Autocomplete(inputDest, options);
+
+  autocompleteDep.addListener("place_changed", () => {
+    depPlace = autocompleteDep.getPlace();
+    if (depPlace.geometry) {
+      calculateGoogleRoute();
     }
   });
 
-  if (map) {
-    setTimeout(() => { map.invalidateSize(); }, 200);
-  }
-
-  if (currentMode === 'manual') calculateManualPrice();
-  else if (depCoord && destCoord) calculateRouteDistance();
-  else resetPriceDisplay();
+  autocompleteDest.addListener("place_changed", () => {
+    destPlace = autocompleteDest.getPlace();
+    if (destPlace.geometry) {
+      calculateGoogleRoute();
+    }
+  });
 }
 
-const map = L.map('map').setView([34.2610, -6.5802], 14);
+function calculateGoogleRoute() {
+  if (!depPlace || !destPlace) return;
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
-  maxZoom: 19,
-  attribution: '© OpenStreetMap'
-}).addTo(map);
-
-let moveTimer;
-map.on('move', () => {
-  document.getElementById('picker-address').textContent = translations[currentLang]["map-moving"];
-  clearTimeout(moveTimer);
-  moveTimer = setTimeout(() => {
-    const center = map.getCenter();
-    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${center.lat}&lon=${center.lng}`)
-      .then(res => res.json())
-      .then(data => {
-        if(data && data.display_name) {
-          let parts = data.display_name.split(',');
-          currentCenterAddress = parts.slice(0, 3).join(', ').trim();
-          document.getElementById('picker-address').textContent = currentCenterAddress;
-        } else {
-          currentCenterAddress = "Point sur la carte";
-          document.getElementById('picker-address').textContent = currentCenterAddress;
-        }
-      });
-  }, 300);
-});
-
-function confirmCenterPoint() {
-  const center = map.getCenter();
-  const coords = [center.lat, center.lng];
-
-  if (!depCoord) {
-    document.getElementById('input-depart').value = currentCenterAddress;
-    document.getElementById('clear-depart').style.display = 'block';
-    setPoint(coords, currentCenterAddress, true);
-  } else if (!destCoord) {
-    document.getElementById('input-dest').value = currentCenterAddress;
-    document.getElementById('clear-dest').style.display = 'block';
-    setPoint(coords, currentCenterAddress, false);
-  } else {
-    clearField(false);
-    document.getElementById('input-depart').value = currentCenterAddress;
-    document.getElementById('clear-depart').style.display = 'block';
-    setPoint(coords, currentCenterAddress, true);
-  }
-}
-
-function onSearchInput(query, isDepart) {
-  let clearBtn = document.getElementById(isDepart ? 'clear-depart' : 'clear-dest');
-  clearBtn.style.display = query.length > 0 ? 'block' : 'none';
-
-  clearTimeout(searchTimeout);
-  if (query.trim().length < 2) {
-    document.getElementById(isDepart ? 'list-depart' : 'list-dest').style.display = 'none';
-    return;
-  }
-
-  searchTimeout = setTimeout(() => {
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=ma&limit=5`;
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        let listId = isDepart ? 'list-depart' : 'list-dest';
-        let list = document.getElementById(listId);
-        list.innerHTML = '';
-
-        if(data.length === 0) {
-          list.style.display = 'none';
-          return;
-        }
-
-        data.forEach(place => {
-          let li = document.createElement('li');
-          let shortName = place.display_name.split(',').slice(0, 3).join(',');
-          li.textContent = shortName;
-
-          li.onclick = () => {
-            let coords = [parseFloat(place.lat), parseFloat(place.lon)];
-            let inputId = isDepart ? 'input-depart' : 'input-dest';
-            document.getElementById(inputId).value = shortName;
-            list.style.display = 'none';
-
-            setPoint(coords, shortName, isDepart);
-            map.setView(coords, 16);
-          };
-          list.appendChild(li);
-        });
-
-        list.style.display = 'block';
-      });
-  }, 350);
-}
-
-function useCurrentLocation(isDepart) {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(position => {
-      const coords = [position.coords.latitude, position.coords.longitude];
-      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${coords[0]}&lon=${coords[1]}`)
-        .then(res => res.json())
-        .then(data => {
-          let name = data.display_name ? data.display_name.split(',').slice(0, 2).join(',') : "Position Actuelle";
-          document.getElementById(isDepart ? 'input-depart' : 'input-dest').value = name;
-          document.getElementById(isDepart ? 'clear-depart' : 'clear-dest').style.display = 'block';
-          setPoint(coords, name, isDepart);
-          map.setView(coords, 16);
-        });
-    }, () => alert("Impossible de récupérer la position GPS."));
-  }
-}
-
-function clearField(isDepart) {
-  if (isDepart) {
-    document.getElementById('input-depart').value = '';
-    document.getElementById('clear-depart').style.display = 'none';
-    document.getElementById('list-depart').style.display = 'none';
-    depCoord = null; depName = '';
-    if (depMarker) map.removeLayer(depMarker);
-    depMarker = null;
-  } else {
-    document.getElementById('input-dest').value = '';
-    document.getElementById('clear-dest').style.display = 'none';
-    document.getElementById('list-dest').style.display = 'none';
-    destCoord = null; destName = '';
-    if (destMarker) map.removeLayer(destMarker);
-    destMarker = null;
-  }
-  if (routePolyline) { map.removeLayer(routePolyline); routePolyline = null; }
-  resetPriceDisplay();
-}
-
-function setPoint(coords, name, isDepart) {
-  if (isDepart) {
-    depCoord = coords; depName = name;
-    if (depMarker) map.removeLayer(depMarker);
-    depMarker = L.marker(coords).addTo(map).bindPopup("<b>Départ:</b> " + name);
-  } else {
-    destCoord = coords; destName = name;
-    if (destMarker) map.removeLayer(destMarker);
-    destMarker = L.marker(coords).addTo(map).bindPopup("<b>Destination:</b> " + name);
-  }
-
-  if (depCoord && destCoord) {
-    calculateRouteDistance();
-  }
-}
-
-function calculateRouteDistance() {
-  fetch(`https://router.project-osrm.org/route/v1/driving/${depCoord[1]},${depCoord[0]};${destCoord[1]},${destCoord[0]}?overview=full&geometries=geojson`)
-    .then(res => res.json())
-    .then(data => {
-      if (data.routes && data.routes.length > 0) {
-        const distKm = (data.routes[0].distance / 1000) * 1.025;
-        if (routePolyline) map.removeLayer(routePolyline);
-        routePolyline = L.geoJSON(data.routes[0].geometry, { style: { color: '#ffb900', weight: 5 } }).addTo(map);
-        map.fitBounds(routePolyline.getBounds(), { padding: [40, 40] });
-        renderPrice(distKm, depName, destName);
+  directionsService.route(
+    {
+      origin: depPlace.geometry.location,
+      destination: destPlace.geometry.location,
+      travelMode: google.maps.TravelMode.DRIVING
+    },
+    (response, status) => {
+      if (status === "OK") {
+        directionsRenderer.setDirections(response);
+        const route = response.routes[0].legs[0];
+        const distKm = route.distance.value / 1000;
+        
+        const depLat = depPlace.geometry.location.lat();
+        const depLng = depPlace.geometry.location.lng();
+        const destLat = destPlace.geometry.location.lat();
+        const destLng = destPlace.geometry.location.lng();
+        
+        renderPrice(distKm, depPlace.name || depPlace.formatted_address, destPlace.name || destPlace.formatted_address, depLat, depLng, destLat, destLng);
       }
-    });
+    }
+  );
 }
 
 function getPriceFromKm(n) {
   return n <= 4 ? 20 : n < 6 ? 25 : n < 7 ? 26 : n < 8 ? 27 : n < 9 ? 28 : n < 10 ? 29 : 35 + Math.ceil(n - 10) * 2;
 }
 
-function renderPrice(n, dep, dest) {
+function renderPrice(n, dep, dest, depLat, depLng, destLat, destLng) {
   let price = getPriceFromKm(n);
   document.getElementById('result').textContent = price + ' DH';
   document.getElementById('status').textContent = 'Distance : ' + n.toFixed(1) + ' km';
 
-  let depLink = depCoord ? `https://www.google.com/maps?q=${depCoord[0]},${depCoord[1]}` : '';
-  let destLink = destCoord ? `https://www.google.com/maps?q=${destCoord[0]},${destCoord[1]}` : '';
+  let mapLink = `https://www.google.com/maps/dir/?api=1&origin=${depLat},${depLng}&destination=${destLat},${destLng}&travelmode=driving`;
 
-  let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${dep}\n🔗 Lien Maps : ${depLink}\n\n🏁 Destination : ${dest}\n🔗 Lien Maps : ${destLink}\n\n📏 Distance : ${n.toFixed(1)} km\n💰 Prix : ${price} DH`;
+  let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${dep}\n🏁 Destination : ${dest}\n📏 Distance : ${n.toFixed(1)} km\n💰 Prix : ${price} DH\n\n🗺️ Trajet Google Maps :\n${mapLink}`;
   document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
 }
 
-function resetPriceDisplay() {
-  document.getElementById('result').textContent = '— DH';
-  document.getElementById('status').textContent = translations[currentLang]["status-default"];
+function calculateManualPrice() {
+  const distVal = parseFloat(document.getElementById('manual-dist').value);
+  const depVal = document.getElementById('manual-depart').value || 'Non spécifié';
+  const destVal = document.getElementById('manual-dest').value || 'Non spécifié';
+
+  if (!isNaN(distVal) && distVal > 0) {
+    let price = getPriceFromKm(distVal);
+    document.getElementById('result').textContent = price + ' DH';
+    document.getElementById('status').textContent = 'Distance saisie : ' + distVal.toFixed(1) + ' km';
+
+    let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${depVal}\n🏁 Destination : ${destVal}\n📏 Distance : ${distVal.toFixed(1)} km\n💰 Prix : ${price} DH`;
+    document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
+  } else {
+    document.getElementById('result').textContent = '— DH';
+    document.getElementById('status').textContent = 'Entrez une distance valide.';
+  }
+}
+
+function useCurrentLocation(isDepart) {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(position => {
+      const pos = { lat: position.coords.latitude, lng: position.coords.longitude };
+      const geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ location: pos }, (results, status) => {
+        if (status === "OK" && results[0]) {
+          if (isDepart) {
+            depPlace = { geometry: { location: new google.maps.LatLng(pos.lat, pos.lng) }, formatted_address: results[0].formatted_address, name: "Ma position GPS" };
+            document.getElementById("input-depart").value = results[0].formatted_address;
+          } else {
+            destPlace = { geometry: { location: new google.maps.LatLng(pos.lat, pos.lng) }, formatted_address: results[0].formatted_address, name: "Ma position GPS" };
+            document.getElementById("input-dest").value = results[0].formatted_address;
+          }
+          calculateGoogleRoute();
+        }
+      });
+    });
+  }
 }
 
 function switchMode(mode) {
@@ -694,31 +323,16 @@ function switchMode(mode) {
   document.getElementById('btn-mode-manual').classList.toggle('active', mode === 'manual');
   document.getElementById('section-auto').style.display = mode === 'auto' ? 'block' : 'none';
   document.getElementById('section-manual').style.display = mode === 'manual' ? 'block' : 'none';
-
-  if (mode === 'manual') calculateManualPrice();
-  else if (depCoord && destCoord) calculateRouteDistance();
-  else resetPriceDisplay();
 }
 
-function calculateManualPrice() {
-  let dep = document.getElementById('manual-depart').value.trim();
-  let dest = document.getElementById('manual-dest').value.trim();
-  let distInput = document.getElementById('manual-dist').value;
-
-  if (distInput && !isNaN(distInput) && parseFloat(distInput) > 0) {
-    let n = parseFloat(distInput);
-    let price = getPriceFromKm(n);
-
-    document.getElementById('result').textContent = price + ' DH';
-    document.getElementById('status').textContent = 'Distance : ' + n.toFixed(1) + ' km';
-
-    let depTxt = dep ? dep : 'Non spécifié';
-    let destTxt = dest ? dest : 'Non spécifié';
-
-    let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${depTxt}\n🏁 Destination : ${destTxt}\n📏 Distance : ${n.toFixed(1)} km\n💰 Prix : ${price} DH`;
-    document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
-  } else {
-    resetPriceDisplay();
+function changeLanguage(lang) {
+  currentLang = lang;
+  document.getElementById('html-root').setAttribute('dir', lang === 'fr' ? 'ltr' : 'rtl');
+  
+  const dict = translations[lang] || translations.fr;
+  for (let key in dict) {
+    let el = document.querySelector(`[data-key="${key}"]`);
+    if (el) el.textContent = dict[key];
   }
 }
 </script>

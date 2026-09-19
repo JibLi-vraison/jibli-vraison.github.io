@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="fr" dir="ltr">
 <head>
@@ -24,7 +23,6 @@ nav{height:70px;display:flex;align-items:center;justify-content:space-between}
 .yellow{background:#ffb900;color:#111}
 .dark{background:#171717;border:1px solid #555;color:#fff}
 
-/* Lang Switcher Select */
 .lang-select {
   background: #171717;
   color: #ffb900;
@@ -36,11 +34,65 @@ nav{height:70px;display:flex;align-items:center;justify-content:space-between}
   outline: none;
 }
 
-.hero{padding:30px 0 40px 0;background:radial-gradient(circle at 50% 30%,#ffb90015,transparent 50%)}
-.hero-actions{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin-top:25px}
+.hero{padding:25px 0 35px 0;background:radial-gradient(circle at 50% 30%,#ffb90015,transparent 50%)}
 
-section{padding:40px 0}
-.title{text-align:center;font-size:32px;margin-bottom:8px}
+/* HERO CARD DESIGN */
+.hero-card {
+  background: #121212;
+  border: 1px solid #ffb90055;
+  border-radius: 20px;
+  padding: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  max-width: 850px;
+  margin: 0 auto 25px auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.hero-info { flex: 1; text-align: left; }
+html[dir="rtl"] .hero-info { text-align: right; }
+
+.badge-location {
+  display: inline-block;
+  background: #ffb90022;
+  color: #ffb900;
+  border: 1px solid #ffb900;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.schedule-box {
+  background: #1a1a1a;
+  border-left: 3px solid #ffb900;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 13px;
+  color: #ddd;
+}
+html[dir="rtl"] .schedule-box {
+  border-left: none;
+  border-right: 3px solid #ffb900;
+}
+
+.hero-img {
+  text-align: center;
+  flex: 0 0 200px;
+}
+
+.hero-img img {
+  width: 100%;
+  max-width: 180px;
+  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
+}
+
+section{padding:35px 0}
+.title{text-align:center;font-size:30px;margin-bottom:8px}
 .sub{text-align:center;color:#aaa;margin-top:0;margin-bottom:25px}
 .cards,.steps,.why{display:grid;gap:16px}
 .cards{grid-template-columns:repeat(3,1fr)}
@@ -54,10 +106,10 @@ section{padding:40px 0}
 .whyitem span{font-size:28px}
 .tarif{max-width:650px;margin:auto;text-align:center;padding:20px}
 .result{font-size:32px;font-weight:900;color:#ffb900;margin:12px 0}
-.cta{background:linear-gradient(135deg,#ffb900,#f08d00);color:#111;border-radius:23px;padding:40px;display:flex;justify-content:space-between;align-items:center;gap:20px}
-.cta h2{font-size:32px;margin:0}
+.cta{background:linear-gradient(135deg,#ffb900,#f08d00);color:#111;border-radius:23px;padding:35px;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.cta h2{font-size:28px;margin:0}
 .cta .btn{background:#111;color:#fff}
-footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
+footer{padding:25px 0;border-top:1px solid #292929;color:#aaa}
 .wa{position:fixed;right:20px;bottom:25px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:28px;z-index:9999;box-shadow:0 4px 15px rgba(0,0,0,0.5)}
 html[dir="rtl"] .wa { right: auto; left: 20px; }
 
@@ -65,19 +117,21 @@ html[dir="rtl"] .wa { right: auto; left: 20px; }
 .glovo-categories-container {
   width: 100%;
   max-width: 850px;
-  margin: 10px auto 20px auto;
+  margin: 10px auto;
 }
 
 @media(max-width:800px){
   .links{display:none}
   .cards,.steps,.why{grid-template-columns:1fr}
-  .hero{padding:20px 0}
+  .hero-card { flex-direction: column; text-align: center; }
+  .hero-info { text-align: center; }
+  html[dir="rtl"] .hero-info { text-align: center; }
   .cta{display:block}
   .cta .btn{margin-top:20px}
   .tarif{padding:15px 12px}
 }
 
-/* RECHERCHE ET ENTRÉES */
+/* RECHERCHE ET MAP */
 .search-box { position: relative; width: 100%; text-align: left; }
 html[dir="rtl"] .search-box { text-align: right; }
 .input-wrapper { position: relative; flex: 1; display: flex; align-items: center; }
@@ -95,72 +149,18 @@ html[dir="rtl"] .clear-btn { right: auto; left: 10px; }
 .mode-btn.active { background: #ffb900; color: #111; }
 
 .suggestions-list { 
-  position: absolute; 
-  top: 100%; 
-  left: 0; 
-  right: 0; 
-  background: #1e1e1e; 
-  border: 1px solid #ffb900; 
-  border-radius: 10px; 
-  max-height: 180px; 
-  overflow-y: auto; 
-  z-index: 3000; 
-  display: none; 
-  margin: 4px 0 0 0; 
-  padding: 0; 
-  list-style: none; 
-  box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+  position: absolute; top: 100%; left: 0; right: 0; background: #1e1e1e; border: 1px solid #ffb900; border-radius: 10px; max-height: 180px; overflow-y: auto; z-index: 3000; display: none; margin: 4px 0 0 0; padding: 0; list-style: none; box-shadow: 0 8px 20px rgba(0,0,0,0.8);
 }
-.suggestions-list li { 
-  padding: 12px; 
-  cursor: pointer; 
-  color: #eee; 
-  border-bottom: 1px solid #2e2e2e; 
-  font-size: 13px;
-  line-height: 1.4;
-}
-.suggestions-list li:last-child { border-bottom: none; }
+.suggestions-list li { padding: 12px; cursor: pointer; color: #eee; border-bottom: 1px solid #2e2e2e; font-size: 13px; line-height: 1.4; }
 .suggestions-list li:hover { background: #2a2a2a; color: #ffb900; }
 
-/* MAP */
 .map-wrapper { position: relative; width: 100%; height: 350px; margin-top: 10px; border-radius: 15px; overflow: hidden; border: 2px solid #ffb900; }
 #map { width: 100%; height: 100%; z-index: 1; }
 
-.center-picker {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -100%);
-  z-index: 1000;
-  pointer-events: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.picker-card {
-  background: #fff;
-  color: #111;
-  padding: 8px 14px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-  font-size: 13px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 6px;
-  pointer-events: auto;
-  cursor: pointer;
-  border: 2px solid #ffb900;
-  transition: transform 0.2s;
-}
-.picker-card:active { transform: scale(0.95); }
+.center-picker { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 1000; pointer-events: none; display: flex; flex-direction: column; align-items: center; }
+.picker-card { background: #fff; color: #111; padding: 8px 14px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); font-size: 13px; font-weight: bold; text-align: center; margin-bottom: 6px; pointer-events: auto; cursor: pointer; border: 2px solid #ffb900; }
 .picker-card span { color: #00a082; display: block; font-size: 11px; margin-top: 2px; text-decoration: underline; }
-
-.picker-pin {
-  font-size: 38px;
-  line-height: 1;
-  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
-}
+.picker-pin { font-size: 38px; line-height: 1; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5)); }
 </style>
 </head>
 <body>
@@ -177,7 +177,6 @@ html[dir="rtl"] .clear-btn { right: auto; left: 10px; }
         <a href="#faq" data-i18n="nav_faq">FAQ</a>
       </div>
       <div style="display:flex;gap:8px;align-items:center">
-        <!-- LANG SWITCHER -->
         <select class="lang-select" onchange="changeLanguage(this.value)">
           <option value="fr" selected>🇫🇷 FR</option>
           <option value="ar">🇲🇦 العَرَبِيّة</option>
@@ -191,6 +190,26 @@ html[dir="rtl"] .clear-btn { right: auto; left: 10px; }
 
 <section class="hero">
   <div class="c">
+
+    <!-- BANNER POSTER AVEC MOTOR & HORAIRES -->
+    <div class="hero-card">
+      <div class="hero-info">
+        <span class="badge-location" data-i18n="hero_badge">📍 DISPONIBLE À KÉNITRA</span>
+        <h2 style="margin:5px 0 10px 0; font-size:24px;" data-i18n="hero_title">Service de coursier à moto</h2>
+        <div class="schedule-box">
+          <div data-i18n="hero_schedule_1"><b>Lun - Sam:</b> 17h00 à 02h00</div>
+          <div data-i18n="hero_schedule_2" style="margin-top:4px;"><b>Dimanche:</b> 10h00 à 02h00</div>
+        </div>
+      </div>
+      <div class="hero-img">
+        <svg width="150" height="120" viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="80" r="70" fill="#ffb900" opacity="0.1"/>
+          <text x="100" y="95" font-size="80" text-anchor="middle">🛵</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- CATEGORIES -->
     <div class="glovo-categories-container">
       <svg viewBox="0 0 1000 620" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="background:#111; border-radius:20px; border:2px solid #ffb90033; box-shadow:0 10px 30px rgba(0,0,0,0.6);">
         <circle cx="500" cy="310" r="400" fill="#ffb900" opacity="0.05"/>
@@ -224,9 +243,9 @@ html[dir="rtl"] .clear-btn { right: auto; left: 10px; }
         <g transform="translate(380, 320)">
           <circle cx="120" cy="110" r="115" fill="#ffb900" opacity="0.15"/>
           <circle cx="120" cy="110" r="100" fill="#1a1a1a" stroke="#ffb900" stroke-width="4"/>
-          <text x="120" y="125" font-size="70" text-anchor="middle">💄🟢</text>
-          <rect x="0" y="185" width="240" height="52" rx="26" fill="#111" stroke="#ffb900" stroke-width="2"/>
-          <text id="cat-4" x="120" y="218" font-weight="900" font-size="16" fill="#ffffff" text-anchor="middle">Parapharmacie & Beauté</text>
+          <text x="120" y="125" font-size="70" text-anchor="middle">💊🟢</text>
+          <rect x="20" y="185" width="200" height="46" rx="23" fill="#111" stroke="#ffb900" stroke-width="2"/>
+          <text id="cat-4" x="120" y="215" font-weight="900" font-size="18" fill="#ffffff" text-anchor="middle">Parapharmacies</text>
         </g>
 
         <g transform="translate(710, 320)">
@@ -239,7 +258,7 @@ html[dir="rtl"] .clear-btn { right: auto; left: 10px; }
       </svg>
     </div>
 
-    <div class="hero-actions">
+    <div style="text-align:center;margin-top:20px;">
       <a class="btn yellow" href="https://wa.me/212634084543" data-i18n="hero_cta">Commander via WhatsApp</a>
     </div>
   </div>
@@ -402,6 +421,10 @@ const translations = {
     nav_faq: "FAQ",
     btn_email: "Email",
     btn_whatsapp: "WhatsApp",
+    hero_badge: "📍 DISPONIBLE À KÉNITRA",
+    hero_title: "Service de coursier à moto",
+    hero_schedule_1: "<b>Lun - Sam:</b> 17h00 à 02h00",
+    hero_schedule_2: "<b>Dimanche:</b> 10h00 à 02h00",
     hero_cta: "Commander via WhatsApp",
     srv_title: "Tous vos besoins, une seule livraison",
     srv_sub: "Un service local conçu pour la ville de Kénitra.",
@@ -444,7 +467,7 @@ const translations = {
     faq_3_q: "Comment le prix est-il calculé ?", faq_3_a: "Le prix est calculé automatiquement en fonction des kilomètres parcourus.",
     faq_4_q: "Quels sont les horaires de travail ?", faq_4_a: "Du Lundi au Samedi: 17h00 à 02h00.<br>Dimanche: 10h00 à 02h00.",
     footer_text: "Service de livraison rapide à Kénitra.",
-    cat_1: "Restaurants", cat_2: "Courses", cat_3: "Boutiques", cat_4: "Parapharmacie & Beauté", cat_5: "Service Coursier",
+    cat_1: "Restaurants", cat_2: "Courses", cat_3: "Boutiques", cat_4: "Parapharmacies", cat_5: "Service Coursier",
     dh: "DH",
     agreed: "Sur accord"
   },
@@ -456,13 +479,17 @@ const translations = {
     nav_faq: "الأسئلة الشائعة",
     btn_email: "البريد الإلكتروني",
     btn_whatsapp: "واتساب",
+    hero_badge: "📍 متوفر في القنيطرة",
+    hero_title: "خدمة توصيل بالدراجة النارية",
+    hero_schedule_1: "<b>من الإثنين إلى السبت:</b> 17:00 إلى 02:00",
+    hero_schedule_2: "<b>الأحد:</b> 10:00 إلى 02:00",
     hero_cta: "الطلب عبر واتساب",
     srv_title: "كل احتياجاتك في توصيلة واحدة",
     srv_sub: "خدمة محليّة مصممة لمدينة القنيطرة.",
     srv_1_t: "التجارة الإلكترونية", srv_1_d: "توصيل طلبياتك عبر الإنترنت بسرعة.",
     srv_2_t: "المطاعم", srv_2_d: "وجباتك المفضلة تصلك ساخنة.",
     srv_3_t: "الصيدلية", srv_3_d: "توصيل المستلزمات والمنتجات الصيدلانية.",
-    srv_4_t: "مشتريات متنوعة", srv_4_d: "أغراضك واحتياجاتك اليومية.",
+    srv_4_t: "مشتريات متنوعة", srv_4_d: "أغراضك وااحتياجاتك اليومية.",
     srv_5_t: "طرد صغير", srv_5_d: "خدمة توصيل سريعة للأغراض الشخصية.",
     srv_6_t: "خدمة ليلية", srv_6_d: "متوفرون خلال الفترة المسائية والليلية.",
     how_title: "كيف تعمل الخدمة؟",
@@ -498,7 +525,7 @@ const translations = {
     faq_3_q: "كيف يتم معرفة السعر؟", faq_3_a: "يتم حساب الثمن أوتوماتيكياً بناءً على الكيلومترات المقطوعة.",
     faq_4_q: "ما هي أوقات العمل؟", faq_4_a: "من الإثنين إلى السبت: 17:00 إلى 02:00 صباحاً.<br>الأحد: 10:00 صباحاً إلى 02:00 صباحاً.",
     footer_text: "خدمة التوصيل السريع بالقنيطرة.",
-    cat_1: "مطاعم", cat_2: "المشتريات", cat_3: "متاجر", cat_4: "شبه صيدلية وتجميل", cat_5: "خدمة التوصيل السريع",
+    cat_1: "مطاعم", cat_2: "المشتريات", cat_3: "متاجر", cat_4: "شبه صيدلية", cat_5: "خدمة التوصيل السريع",
     dh: "درهم",
     agreed: "حسب الاتفاق"
   }
@@ -518,7 +545,6 @@ function changeLanguage(lang) {
     }
   });
 
-  // Update SVG banners text
   document.getElementById('cat-1').textContent = translations[lang].cat_1;
   document.getElementById('cat-2').textContent = translations[lang].cat_2;
   document.getElementById('cat-3').textContent = translations[lang].cat_3;
@@ -746,3 +772,4 @@ function calculateManualPrice() {
 </script>
 </body>
 </html>
+

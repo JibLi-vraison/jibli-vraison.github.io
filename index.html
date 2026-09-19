@@ -17,7 +17,7 @@ a{text-decoration:none;color:inherit}
 
 header{position:sticky;top:0;background:#090909ee;border-bottom:1px solid #292929;z-index:999}
 nav{height:70px;display:flex;align-items:center;justify-content:space-between;gap:5px}
-.brand{font-size:20px;font-weight:900;font-style:italic;white-space:nowrap}
+.brand{font-size:20px;font-weight:900;font-style:italic;white-space:nowrap;direction:ltr}
 .brand span{color:#ffb900}
 .links{display:flex;gap:20px;font-size:14px}
 .btn{display:inline-block;padding:10px 14px;border-radius:11px;font-weight:800;cursor:pointer;border:none;font-size:13px;white-space:nowrap}
@@ -188,62 +188,67 @@ filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
 <section class="hero">
 <div class="c">
 <div class="poster-container">
-<!-- Force LTR sur le poster SVG pour éviter l'inversion f RTL -->
-<svg viewBox="0 0 1000 650" width="100%" height="100%" dir="ltr" xmlns="http://www.w3.org/2000/svg" style="background:#090909; font-family:Arial, sans-serif; border-radius:18px; border:1px solid #333; box-shadow:0 12px 40px rgba(0,0,0,0.8); direction: ltr; text-anchor: start;">
+<!-- POSTER SVG -->
+<svg viewBox="0 0 1000 650" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="background:#090909; font-family:Arial, sans-serif; border-radius:18px; border:1px solid #333; box-shadow:0 12px 40px rgba(0,0,0,0.8);">
 <rect width="1000" height="650" fill="#0c0c0c" rx="18"/>
 <path d="M 480 0 L 1000 0 L 1000 650 L 380 650 Z" fill="#141414"/>
 <circle cx="750" cy="280" r="220" fill="#ffb900" opacity="0.04"/>
 
+<!-- Header Brand -->
 <g transform="translate(45, 50)">
-<text x="0" y="0" font-weight="900" font-style="italic" font-size="52" fill="#ffffff" direction="ltr">JibLi-<tspan fill="#ffb900">vraison</tspan></text>
+<text x="0" y="0" font-weight="900" font-style="italic" font-size="52" fill="#ffffff" direction="ltr" text-anchor="start">JibLi-<tspan fill="#ffb900">vraison</tspan></text>
 <line x1="0" y1="18" x2="380" y2="18" stroke="#ffb900" stroke-width="4" stroke-linecap="round"/>
-<text x="0" y="44" font-weight="bold" font-size="16" fill="#aaa" letter-spacing="3" direction="ltr">SERVICE DE COURSIER À MOTO</text>
+<text x="0" y="44" id="svg-sub" font-weight="bold" font-size="16" fill="#aaa" letter-spacing="2" data-key="svg-sub">SERVICE DE COURSIER À MOTO</text>
 </g>
 
+<!-- Zone Disponibilité -->
 <g transform="translate(45, 140)">
 <rect width="420" height="125" fill="#ffb900" rx="14"/>
-<text x="24" y="34" font-weight="900" font-size="18" fill="#111" direction="ltr">DISPONIBLE À KÉNITRA</text>
+<text x="24" y="34" id="svg-disp-title" font-weight="900" font-size="18" fill="#111" data-key="svg-disp-title">DISPONIBLE À KÉNITRA</text>
 <line x1="24" y1="46" x2="396" y2="46" stroke="#111" stroke-width="1.5" opacity="0.3"/>
-<text x="24" y="76" font-weight="bold" font-size="16" fill="#111" direction="ltr">🕒 Lun - Sam : 17h00 à 02h00</text>
-<text x="24" y="104" font-weight="bold" font-size="16" fill="#111" direction="ltr">🕒 Dimanche : 10h00 à 02h00</text>
+<text x="24" y="76" id="svg-disp-1" font-weight="bold" font-size="15" fill="#111" data-key="svg-disp-1">🕒 Lun - Sam : 17h00 à 02h00</text>
+<text x="24" y="104" id="svg-disp-2" font-weight="bold" font-size="15" fill="#111" data-key="svg-disp-2">🕒 Dimanche : 10h00 à 02h00</text>
 </g>
 
+<!-- Badges -->
 <g transform="translate(45, 290)">
 <rect x="0" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
-<text x="65" y="32" font-size="22" text-anchor="middle">⚡</text>
-<text x="65" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">LIVRAISON RAPIDE</text>
+<text x="65" y="30" font-size="20" text-anchor="middle">⚡</text>
+<text x="65" y="52" id="svg-badge-1" font-weight="bold" font-size="11" fill="#fff" text-anchor="middle" data-key="svg-badge-1">LIVRAISON RAPIDE</text>
 
 <rect x="145" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
-<text x="210" y="32" font-size="22" text-anchor="middle">🔒</text>
-<text x="210" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">SÉCURISÉE &amp; FIABLE</text>
+<text x="210" y="30" font-size="20" text-anchor="middle">🔒</text>
+<text x="210" y="52" id="svg-badge-2" font-weight="bold" font-size="11" fill="#fff" text-anchor="middle" data-key="svg-badge-2">SÉCURISÉE &amp; FIABLE</text>
 
 <rect x="290" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
-<text x="355" y="32" font-size="22" text-anchor="middle">🌙</text>
-<text x="355" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">SERVICE NOCTURNE</text>
+<text x="355" y="30" font-size="20" text-anchor="middle">🌙</text>
+<text x="355" y="52" id="svg-badge-3" font-weight="bold" font-size="11" fill="#fff" text-anchor="middle" data-key="svg-badge-3">SERVICE NOCTURNE</text>
 </g>
 
+<!-- Services Grid -->
 <g transform="translate(45, 390)">
-<text x="0" y="20" font-weight="900" font-size="15" fill="#ffb900" letter-spacing="1" direction="ltr">TOUS VOS BESOINS, UNE SEULE LIVRAISON !</text>
+<text x="0" y="20" id="svg-serv-head" font-weight="900" font-size="15" fill="#ffb900" letter-spacing="1" data-key="svg-serv-head">TOUS VOS BESOINS, UNE SEULE LIVRAISON !</text>
 
 <g transform="translate(0, 35)">
 <rect x="0" y="0" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
 <text x="12" y="26" font-size="16">🛒</text>
-<text x="38" y="26" font-weight="bold" font-size="13" fill="#eee" direction="ltr">E-Commerce</text>
+<text x="38" y="26" id="svg-s1" font-weight="bold" font-size="13" fill="#eee" data-key="svg-s1">E-Commerce</text>
 
 <rect x="212" y="0" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
 <text x="224" y="26" font-size="16">🍔</text>
-<text x="250" y="26" font-weight="bold" font-size="13" fill="#eee" direction="ltr">Restaurants</text>
+<text x="250" y="26" id="svg-s2" font-weight="bold" font-size="13" fill="#eee" data-key="svg-s2">Restaurants</text>
 
 <rect x="0" y="50" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
 <text x="12" y="76" font-size="16">💊</text>
-<text x="38" y="76" font-weight="bold" font-size="13" fill="#eee" direction="ltr">Pharmacie</text>
+<text x="38" y="76" id="svg-s3" font-weight="bold" font-size="13" fill="#eee" data-key="svg-s3">Pharmacie</text>
 
 <rect x="212" y="50" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
 <text x="224" y="76" font-size="16">📦</text>
-<text x="250" y="76" font-weight="bold" font-size="12" fill="#eee" direction="ltr">Petits Colis &amp; Courses</text>
+<text x="250" y="76" id="svg-s4" font-weight="bold" font-size="11" fill="#eee" data-key="svg-s4">Petits Colis &amp; Courses</text>
 </g>
 </g>
 
+<!-- Moto Illustration -->
 <g transform="translate(520, 100)">
 <circle cx="210" cy="210" r="170" fill="#1a1a1a" stroke="#ffb900" stroke-width="2" stroke-dasharray="8,8"/>
 <text x="210" y="250" font-size="180" text-anchor="middle">🛵</text>
@@ -256,10 +261,11 @@ filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
 </g>
 </g>
 
+<!-- Banner Bottom -->
 <a href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison." target="_blank" style="cursor:pointer">
 <g transform="translate(45, 555)">
 <rect width="910" height="55" fill="#181818" stroke="#ffb900" stroke-width="2" rx="14"/>
-<text x="25" y="34" font-weight="bold" font-size="16" fill="#fff" direction="ltr">REJOIGNEZ-NOUS DÈS MAINTENANT !</text>
+<text x="25" y="34" id="svg-cta" font-weight="bold" font-size="16" fill="#fff" data-key="svg-cta">REJOIGNEZ-NOUS DÈS MAINTENANT !</text>
 <rect x="620" y="10" width="270" height="35" fill="#25d366" rx="8"/>
 <text x="755" y="33" font-weight="900" font-size="18" fill="#fff" text-anchor="middle" direction="ltr">📲 06 34 08 45 43</text>
 </g>
@@ -419,7 +425,22 @@ fr: {
 "faq-2-q": "Où faites-vous les livraisons ?", "faq-2-a": "Le service est destiné aux livraisons à Kénitra et ses environs.",
 "faq-3-q": "Comment connaître le prix ?", "faq-3-a": "Le prix est calculé automatiquement en fonction du kilométrage exact.",
 "faq-4-q": "Quels sont vos horaires ?", "faq-4-a": "Du Lundi au Samedi : 17h00 à 02h00.<br>Le Dimanche : 10h00 à 02h00.",
-"footer-text": "Service de coursier à moto à Kénitra."
+"footer-text": "Service de coursier à moto à Kénitra.",
+
+/* SVG Traduction FR */
+"svg-sub": "SERVICE DE COURSIER À MOTO",
+"svg-disp-title": "DISPONIBLE À KÉNITRA",
+"svg-disp-1": "🕒 Lun - Sam : 17h00 à 02h00",
+"svg-disp-2": "🕒 Dimanche : 10h00 à 02h00",
+"svg-badge-1": "LIVRAISON RAPIDE",
+"svg-badge-2": "SÉCURISÉE & FIABLE",
+"svg-badge-3": "SERVICE NOCTURNE",
+"svg-serv-head": "TOUS VOS BESOINS, UNE SEULE LIVRAISON !",
+"svg-s1": "E-Commerce",
+"svg-s2": "Restaurants",
+"svg-s3": "Pharmacie",
+"svg-s4": "Petits Colis & Courses",
+"svg-cta": "REJOIGNEZ-NOUS DÈS MAINTENANT !"
 },
 ar: {
 "nav-services": "الخدمات", "nav-tarifs": "الأسعار", "nav-comment": "كيف نشتغل", "nav-pourquoi": "لماذا نحن", "nav-faq": "أسئلة شائعة",
@@ -451,7 +472,22 @@ ar: {
 "faq-2-q": "أين تقومون بالتوصيل؟", "faq-2-a": "الخدمة مخصصة للتوصيل بالقنيطرة والنواحي.",
 "faq-3-q": "كيف أعرف السعر؟", "faq-3-a": "يتم حساب السعر تلقائياً حسب المسافة بالضبط.",
 "faq-4-q": "ما هي أوقات العمل؟", "faq-4-a": "من الإثنين إلى السبت: 17:00 إلى 02:00.<br>الأحد: 10:00 إلى 02:00.",
-"footer-text": "خدمة التوصيل بالدراجات النارية بالقنيطرة."
+"footer-text": "خدمة التوصيل بالدراجات النارية بالقنيطرة.",
+
+/* SVG Traduction AR */
+"svg-sub": "خدمة التوصيل بالدراجة النارية",
+"svg-disp-title": "متوفر في القنيطرة",
+"svg-disp-1": "🕒 الإثنين - السبت : من 17:00 إلى 02:00",
+"svg-disp-2": "🕒 الأحد : من 10:00 إلى 02:00",
+"svg-badge-1": "توصيل سريع",
+"svg-badge-2": "آمن وموثوق",
+"svg-badge-3": "خدمة ليلية",
+"svg-serv-head": "كل احتياجاتك في توصيلة واحدة!",
+"svg-s1": "التجارة الإلكترونية",
+"svg-s2": "المطاعم",
+"svg-s3": "الصيدلية",
+"svg-s4": "الطرود الصغيرة والسخرة",
+"svg-cta": "انضم إلينا الآن!"
 },
 dar: {
 "nav-services": "الخدمات", "nav-tarifs": "الأثمنة", "nav-comment": "كيفاش كانديرو", "nav-pourquoi": "علاش إحنا", "nav-faq": "الأسئلة",
@@ -483,7 +519,22 @@ dar: {
 "faq-2-q": "فين كتوصيلو؟", "faq-2-a": "الخدمة مخصصة للتوصيل ف القنيطرة والنواحي.",
 "faq-3-q": "كيفاش نعرف الثمن؟", "faq-3-a": "الثمن كايتحسب أوتوماتيك على حساب الكيلومتراج ضبط.",
 "faq-4-q": "وقتاش خدامين؟", "faq-4-a": "من الاثنين للسبت: 17:00 حتى لـ 02:00 د الليل.<br>الحد: 10:00 حتى لـ 02:00.",
-"footer-text": "خدمة التوصيل بالموطور ف القنيطرة."
+"footer-text": "خدمة التوصيل بالموطور ف القنيطرة.",
+
+/* SVG Traduction DAR */
+"svg-sub": "خدمة التوصيل بالموطور ف القنيطرة",
+"svg-disp-title": "متوفرين ف القنيطرة",
+"svg-disp-1": "🕒 الاثنين - السبت : من 17:00 لـ 02:00",
+"svg-disp-2": "🕒 الحد : من 10:00 لـ 02:00",
+"svg-badge-1": "توصيل سريع",
+"svg-badge-2": "مضمون وموثوق",
+"svg-badge-3": "خدامين بالليل",
+"svg-serv-head": "كاع تسخيرتك ف توصيلة وحدة!",
+"svg-s1": "إيكوميرس",
+"svg-s2": "المطاعم",
+"svg-s3": "الفارماسي",
+"svg-s4": "السلعة والسخرة الصغيرة",
+"svg-cta": "تواصل معانا دابا!"
 }
 };
 

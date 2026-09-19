@@ -1,860 +1,1176 @@
 <!doctype html>
 <html lang="fr" dir="ltr">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>JibLi-vraison | Service de livraison</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JibLi-vraison | Service de Coursier à Moto à Kénitra</title>
 
-<!-- Leaflet CSS & JS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Google Fonts & FontAwesome Icons -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,800;1,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#090909;color:#fff;overflow-x:hidden}
-a{text-decoration:none;color:inherit}
-.c{width:92%;max-width:1100px;margin:auto}
+/* ==========================================================================
+   1. RESET & VARIABLES
+   ========================================================================== */
+:root {
+  --primary: #ffb900;
+  --primary-hover: #e0a200;
+  --bg-dark: #0a0a0a;
+  --card-bg: #121212;
+  --card-border: #282828;
+  --text-main: #ffffff;
+  --text-muted: #a0a0a0;
+  --accent-green: #25d366;
+  --font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
 
-header{position:sticky;top:0;background:#090909ee;border-bottom:1px solid #292929;z-index:999}
-nav{height:70px;display:flex;align-items:center;justify-content:space-between}
-.brand{font-size:24px;font-weight:900;font-style:italic;white-space:nowrap}
-.brand span{color:#ffb900}
-.links{display:flex;gap:20px;font-size:14px}
-.btn{display:inline-block;padding:9px 14px;border-radius:10px;font-weight:800;cursor:pointer;border:none;font-size:13px}
-.yellow{background:#ffb900;color:#111}
-.dark{background:#171717;border:1px solid #555;color:#fff}
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-/* L-ICONE TA3 LA LANGUE SGHIRA */
-.lang-select {
-  background: #171717;
-  color: #ffb900;
-  border: 1px solid #ffb900;
-  padding: 5px 8px;
-  border-radius: 6px;
-  font-weight: bold;
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition);
+}
+
+ul {
+  list-style: none;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ==========================================================================
+   2. HEADER & NAVIGATION
+   ========================================================================== */
+header {
+  position: sticky;
+  top: 0;
+  background-color: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #1a1a1a;
+  z-index: 1000;
+  padding: 15px 0;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  font-size: 2rem;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -0.5px;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.brand span {
+  color: var(--primary);
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.nav-link {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--primary);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.lang-selector {
+  background: #1a1a1a;
+  color: var(--primary);
+  border: 1px solid #333;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 800;
   cursor: pointer;
   outline: none;
-  font-size: 11px;
+  font-size: 0.85rem;
+  transition: var(--transition);
 }
 
-.hero{padding:25px 0 35px 0;background:radial-gradient(circle at 50% 30%,#ffb90015,transparent 50%)}
+.lang-selector:hover {
+  border-color: var(--primary);
+}
 
-/* MAIN CARD CONTAINER (DISPONIBLE À KÉNITRA) */
-.hero-banner-card {
-  background: #111111;
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  transition: var(--transition);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-yellow {
+  background-color: var(--primary);
+  color: #000;
+}
+
+.btn-yellow:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 185, 0, 0.3);
+}
+
+.btn-dark {
+  background-color: #181818;
   border: 1px solid #333;
-  border-radius: 20px;
-  padding: 25px;
-  max-width: 850px;
-  margin: 0 auto;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  color: var(--text-main);
 }
 
-.hero-header-title {
-  font-size: 32px;
-  font-weight: 900;
-  margin: 0 0 4px 0;
+.btn-dark:hover {
+  background-color: #252525;
+  border-color: #555;
+}
+
+.btn-whatsapp {
+  background-color: var(--accent-green);
   color: #fff;
 }
-.hero-header-title span { color: #ffb900; }
 
-.hero-subtitle {
-  color: #888;
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-weight: 700;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #222;
-  padding-bottom: 10px;
+.btn-whatsapp:hover {
+  background-color: #1ebd56;
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
 }
 
-.hero-grid {
+.mobile-toggle {
+  display: none;
+  font-size: 1.5rem;
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   3. HERO SECTION & MAIN CARD DESIGN (EXACT MATCH)
+   ========================================================================== */
+.hero-section {
+  padding: 50px 0;
+  position: relative;
+}
+
+.main-card {
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: 28px;
+  padding: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.85);
+  position: relative;
+  overflow: hidden;
+}
+
+.main-card::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255,185,0,0.08) 0%, rgba(0,0,0,0) 70%);
+  pointer-events: none;
+}
+
+.card-title {
+  font-size: 2.8rem;
+  font-weight: 900;
+  font-style: italic;
+  margin: 0;
+  color: var(--text-main);
+  line-height: 1;
+}
+
+.card-title span {
+  color: var(--primary);
+}
+
+.card-subtitle {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  letter-spacing: 2.5px;
+  font-weight: 800;
+  margin-top: 6px;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--primary);
+  display: inline-block;
+  padding-bottom: 3px;
+}
+
+.card-content {
   display: grid;
-  grid-template-columns: 1fr 220px;
-  gap: 20px;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 35px;
   align-items: center;
 }
 
-.badge-box {
-  background: #ffb900;
-  color: #111;
+/* Yellow Schedule Box */
+.yellow-box {
+  background: var(--primary);
+  color: #000;
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 25px;
+  box-shadow: 0 10px 25px rgba(255, 185, 0, 0.15);
+}
+
+.yellow-box-title {
+  font-size: 1.05rem;
   font-weight: 900;
-  padding: 8px 15px;
-  border-radius: 8px;
-  font-size: 13px;
-  display: inline-block;
   margin-bottom: 12px;
-}
-
-.time-list {
-  font-size: 13px;
-  color: #ddd;
-  line-height: 1.8;
-  margin-bottom: 15px;
-}
-
-.feature-badges {
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   display: flex;
+  align-items: center;
   gap: 8px;
-  margin-bottom: 20px;
 }
 
-.feat-item {
-  background: #1c1c1c;
+.time-row {
+  font-size: 1rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.time-row:last-child {
+  margin-bottom: 0;
+}
+
+.time-row i {
+  font-size: 1.1rem;
+  opacity: 0.8;
+}
+
+/* Feature Badges */
+.badges-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.badge-item {
+  background: #1a1a1a;
   border: 1px solid #333;
-  padding: 8px 10px;
-  border-radius: 8px;
-  font-size: 10px;
-  font-weight: 700;
+  padding: 14px 10px;
+  border-radius: 14px;
   text-align: center;
   flex: 1;
+  transition: var(--transition);
 }
-.feat-item span { display: block; font-size: 14px; margin-bottom: 2px; }
 
-.besoins-title {
-  font-size: 11px;
+.badge-item:hover {
+  border-color: var(--primary);
+  transform: translateY(-3px);
+}
+
+.badge-icon {
+  font-size: 1.2rem;
+  margin-bottom: 6px;
+  color: var(--primary);
+  display: block;
+}
+
+.badge-text {
+  font-size: 0.72rem;
   font-weight: 900;
-  color: #ffb900;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
-.besoins-grid {
+/* Categories Grid */
+.besoins-header {
+  font-size: 0.9rem;
+  font-weight: 900;
+  color: var(--text-main);
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.categories-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 30px;
 }
 
-.besoin-tag {
-  background: #181818;
+.cat-item {
+  background: #1a1a1a;
   border: 1px solid #2a2a2a;
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  color: #ccc;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.hero-footer-bar {
-  border: 1px solid #ffb90066;
-  border-radius: 30px;
-  padding: 6px 6px 6px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #151515;
-}
-
-.hero-footer-bar span {
-  font-size: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 0.88rem;
   font-weight: 800;
-  letter-spacing: 1px;
-}
-
-.phone-pill {
-  background: #25d366;
-  color: #fff;
-  padding: 8px 18px;
-  border-radius: 20px;
-  font-weight: 900;
-  font-size: 14px;
+  color: var(--text-main);
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
+  transition: var(--transition);
 }
 
-.hero-img-circle {
+.cat-item:hover {
+  background: #222;
+  border-color: #444;
+}
+
+.cat-item i {
+  color: var(--primary);
+}
+
+/* Illustration / Graphic */
+.illustration-container {
   position: relative;
-  width: 210px;
-  height: 210px;
-  margin: auto;
+  width: 280px;
+  height: 280px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.circle-bg {
+.dashed-circle {
   position: absolute;
   width: 100%;
   height: 100%;
-  border: 2px dashed #ffb90088;
+  border: 2px dashed var(--primary);
   border-radius: 50%;
+  animation: rotateCircle 30s linear infinite;
 }
 
-.scooter-emoji {
-  font-size: 100px;
-  filter: drop-shadow(0 10px 10px rgba(0,0,0,0.5));
+@keyframes rotateCircle {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-.tag-pin {
+.scooter-graphic {
+  font-size: 7.5rem;
+  line-height: 1;
+  filter: drop-shadow(0 15px 15px rgba(0,0,0,0.5));
+}
+
+.location-tag {
   position: absolute;
-  top: 30px;
-  right: 10px;
-  background: #ffb900;
-  color: #111;
-  padding: 5px 10px;
-  border-radius: 8px;
-  font-size: 11px;
+  top: 15px;
+  right: 5px;
+  background: var(--primary);
+  color: #000;
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-size: 0.8rem;
   font-weight: 900;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  line-height: 1.2;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
-section{padding:35px 0}
-.title{text-align:center;font-size:30px;margin-bottom:8px}
-.sub{text-align:center;color:#aaa;margin-top:0;margin-bottom:25px}
-.cards,.steps,.why{display:grid;gap:16px}
-.cards{grid-template-columns:repeat(3,1fr)}
-.steps{grid-template-columns:repeat(4,1fr)}
-.why{grid-template-columns:repeat(4,1fr)}
-.card,.step,.whyitem,.tarif,.faq details{background:#151515;border:1px solid #2b2b2b;border-radius:17px;padding:24px}
-.icon{font-size:30px}
-.card p,.step p,.whyitem small,.answer{color:#aaa}
-.num{width:38px;height:38px;background:#ffb900;color:#111;border-radius:50%;display:grid;place-items:center;font-weight:900}
-.whyitem{text-align:center}
-.whyitem span{font-size:28px}
-.tarif{max-width:650px;margin:auto;text-align:center;padding:20px}
-.result{font-size:32px;font-weight:900;color:#ffb900;margin:12px 0}
-.cta{background:linear-gradient(135deg,#ffb900,#f08d00);color:#111;border-radius:23px;padding:35px;display:flex;justify-content:space-between;align-items:center;gap:20px}
-.cta h2{font-size:28px;margin:0}
-.cta .btn{background:#111;color:#fff}
-footer{padding:25px 0;border-top:1px solid #292929;color:#aaa}
-.wa{position:fixed;right:20px;bottom:25px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:28px;z-index:9999;box-shadow:0 4px 15px rgba(0,0,0,0.5)}
-html[dir="rtl"] .wa { right: auto; left: 20px; }
-
-@media(max-width:800px){
-  .links{display:none}
-  .cards,.steps,.why{grid-template-columns:1fr}
-  .hero-grid { grid-template-columns: 1fr; text-align: center; }
-  .feature-badges { flex-wrap: wrap; }
-  .besoins-grid { grid-template-columns: 1fr; }
-  .hero-footer-bar { flex-direction: column; gap: 10px; border-radius: 15px; padding: 12px; }
-  .cta{display:block}
-  .cta .btn{margin-top:20px}
-  .tarif{padding:15px 12px}
+/* Bottom Action Bar */
+.card-bottom-bar {
+  border: 2px solid var(--primary);
+  border-radius: 50px;
+  padding: 8px 10px 8px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #141414;
+  margin-top: 10px;
 }
 
-/* RECHERCHE ET MAP */
-.search-box { position: relative; width: 100%; text-align: left; }
-html[dir="rtl"] .search-box { text-align: right; }
-.input-wrapper { position: relative; flex: 1; display: flex; align-items: center; }
-.input-group { display: flex; gap: 8px; position: relative; z-index: 10; }
-.search-input { width: 100%; padding: 14px 14px 14px 35px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 15px; outline: none; }
-.search-input:focus { border-color: #ffb900; }
-.clear-btn { position: absolute; right: 10px; background: none; border: none; color: #888; font-size: 18px; font-weight: bold; cursor: pointer; display: none; padding: 2px 6px; }
-html[dir="rtl"] .clear-btn { right: auto; left: 10px; }
-.clear-btn:hover { color: #ffb900; }
-
-.gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 12px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; }
-
-.mode-selector { display: flex; gap: 10px; margin-bottom: 20px; background: #222; padding: 5px; border-radius: 12px; }
-.mode-btn { flex: 1; padding: 12px 8px; border: none; background: transparent; color: #aaa; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 13px; }
-.mode-btn.active { background: #ffb900; color: #111; }
-
-.suggestions-list { 
-  position: absolute; top: 100%; left: 0; right: 0; background: #1e1e1e; border: 1px solid #ffb900; border-radius: 10px; max-height: 180px; overflow-y: auto; z-index: 3000; display: none; margin: 4px 0 0 0; padding: 0; list-style: none; box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+.bottom-text {
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: var(--text-main);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
-.suggestions-list li { padding: 12px; cursor: pointer; color: #eee; border-bottom: 1px solid #2e2e2e; font-size: 13px; line-height: 1.4; }
-.suggestions-list li:hover { background: #2a2a2a; color: #ffb900; }
 
-.map-wrapper { position: relative; width: 100%; height: 350px; margin-top: 10px; border-radius: 15px; overflow: hidden; border: 2px solid #ffb900; }
-#map { width: 100%; height: 100%; z-index: 1; }
+.phone-badge {
+  background: var(--accent-green);
+  color: #fff;
+  padding: 12px 26px;
+  border-radius: 40px;
+  font-weight: 900;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: var(--transition);
+}
 
-.center-picker { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%); z-index: 1000; pointer-events: none; display: flex; flex-direction: column; align-items: center; }
-.picker-card { background: #fff; color: #111; padding: 8px 14px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); font-size: 13px; font-weight: bold; text-align: center; margin-bottom: 6px; pointer-events: auto; cursor: pointer; border: 2px solid #ffb900; }
-.picker-card span { color: #00a082; display: block; font-size: 11px; margin-top: 2px; text-decoration: underline; }
-.picker-pin { font-size: 38px; line-height: 1; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5)); }
+.phone-badge:hover {
+  transform: scale(1.03);
+  background: #1ebd56;
+}
+
+/* ==========================================================================
+   4. SERVICES SECTION
+   ========================================================================== */
+.section {
+  padding: 80px 0;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+
+.section-title span {
+  color: var(--primary);
+}
+
+.section-desc {
+  text-align: center;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto 50px auto;
+  font-size: 1rem;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+}
+
+.service-card {
+  background: #141414;
+  border: 1px solid #222;
+  border-radius: 20px;
+  padding: 30px;
+  transition: var(--transition);
+}
+
+.service-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--primary);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+}
+
+.service-icon {
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 185, 0, 0.1);
+  color: var(--primary);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.service-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.service-body {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   5. HOW IT WORKS SECTION
+   ========================================================================== */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+  position: relative;
+}
+
+.step-card {
+  background: #141414;
+  border: 1px solid #222;
+  padding: 30px;
+  border-radius: 20px;
+  position: relative;
+  text-align: center;
+}
+
+.step-number {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: #000;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 1.1rem;
+}
+
+.step-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin: 15px 0 10px 0;
+}
+
+.step-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   6. ORDER / BOOKING FORM SECTION
+   ========================================================================== */
+.order-section {
+  background: #0f0f0f;
+}
+
+.form-container {
+  max-width: 700px;
+  margin: 0 auto;
+  background: #141414;
+  border: 1px solid #252525;
+  border-radius: 24px;
+  padding: 40px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  color: var(--text-muted);
+}
+
+.form-control {
+  width: 100%;
+  padding: 14px 18px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: var(--transition);
+}
+
+.form-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(255, 185, 0, 0.15);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* ==========================================================================
+   7. FOOTER
+   ========================================================================== */
+footer {
+  background: #050505;
+  padding: 60px 0 20px 0;
+  border-top: 1px solid #1a1a1a;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.footer-brand {
+  font-size: 1.8rem;
+  font-weight: 900;
+  font-style: italic;
+  margin-bottom: 15px;
+}
+
+.footer-brand span {
+  color: var(--primary);
+}
+
+.footer-desc {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.footer-header {
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  color: var(--text-main);
+}
+
+.footer-links li {
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.footer-links a:hover {
+  color: var(--primary);
+}
+
+.contact-info li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+}
+
+.contact-info i {
+  color: var(--primary);
+}
+
+.copyright {
+  text-align: center;
+  border-top: 1px solid #181818;
+  padding-top: 25px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* ==========================================================================
+   8. RESPONSIVE DESIGN
+   ========================================================================== */
+@media (max-width: 992px) {
+  .card-content {
+    grid-template-columns: 1fr;
+  }
+
+  .illustration-container {
+    order: -1;
+    margin-bottom: 20px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none;
+  }
+
+  .mobile-toggle {
+    display: block;
+  }
+
+  .main-card {
+    padding: 25px 20px;
+  }
+
+  .card-title {
+    font-size: 2.2rem;
+  }
+
+  .badges-row {
+    flex-direction: column;
+  }
+
+  .categories-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-bottom-bar {
+    flex-direction: column;
+    gap: 15px;
+    border-radius: 24px;
+    padding: 18px;
+    text-align: center;
+  }
+
+  .phone-badge {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <header>
-  <div class="c">
+  <div class="container">
     <nav>
-      <a class="brand" href="#">JibLi-<span>vraison</span></a>
-      <div class="links">
-        <a href="#services" data-i18n="nav_services">Services</a>
-        <a href="#tarifs" data-i18n="nav_tarifs">Tarifs</a>
-        <a href="#comment" data-i18n="nav_how">Comment ça marche</a>
-        <a href="#pourquoi" data-i18n="nav_why">Pourquoi nous</a>
-        <a href="#faq" data-i18n="nav_faq">FAQ</a>
-      </div>
-      <div style="display:flex;gap:6px;align-items:center">
-        <select class="lang-select" onchange="changeLanguage(this.value)">
-          <option value="fr" selected>🇫🇷 FR</option>
+      <a href="#" class="brand">JibLi-<span>vraison</span></a>
+      
+      <ul class="nav-menu">
+        <li><a href="#hero" class="nav-link active" data-key="nav_home">Accueil</a></li>
+        <li><a href="#services" class="nav-link" data-key="nav_services">Services</a></li>
+        <li><a href="#how" class="nav-link" data-key="nav_how">Comment ça marche</a></li>
+        <li><a href="#order" class="nav-link" data-key="nav_order">Commander</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <select class="lang-selector" id="langSelect" onchange="changeLanguage(this.value)">
+          <option value="fr">🇫🇷 FR</option>
           <option value="ar">🇲🇦 AR</option>
         </select>
-        <a class="btn dark" href="mailto:jibli.vraison@gmail.com" data-i18n="btn_email">Email</a>
-        <a class="btn yellow" href="https://wa.me/212634084543" data-i18n="btn_whatsapp">WhatsApp</a>
+        <a href="mailto:jibli.vraison@gmail.com" class="btn btn-dark"><i class="fa-solid fa-envelope"></i> Email</a>
+        <a href="https://wa.me/212634084543" target="_blank" class="btn btn-yellow"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+        <div class="mobile-toggle" onclick="toggleMobileMenu()"><i class="fa-solid fa-bars"></i></div>
       </div>
     </nav>
   </div>
 </header>
 
-<section class="hero">
-  <div class="c">
+<!-- HERO / MAIN CARD SECTION -->
+<section class="hero-section" id="hero">
+  <div class="container">
+    
+    <div class="main-card">
+      <h1 class="card-title">JibLi-<span>vraison</span></h1>
+      <div class="card-subtitle" data-key="subtitle">SERVICE DE COURSIER À MOTO</div>
 
-    <!-- MAIN POSTER CARD (DISPONIBLE À KÉNITRA) -->
-    <div class="hero-banner-card">
-      <h1 class="hero-header-title">JibLi-<span>vraison</span></h1>
-      <div class="hero-subtitle" data-i18n="banner_sub">SERVICE DE COURSIER À MOTO</div>
-
-      <div class="hero-grid">
+      <div class="card-content">
+        
+        <!-- LEFT COLUMN DATA -->
         <div>
-          <div class="badge-box" data-i18n="hero_badge">DISPONIBLE À KÉNITRA</div>
-
-          <div class="time-list">
-            <div data-i18n="hero_schedule_1">🕒 <b>Lun - Sam :</b> 17h00 à 02h00</div>
-            <div data-i18n="hero_schedule_2">🕒 <b>Dimanche :</b> 10h00 à 02h00</div>
+          <div class="yellow-box">
+            <div class="yellow-box-title" data-key="dispo_title">
+              <i class="fa-solid fa-location-dot"></i> DISPONIBLE À KÉNITRA
+            </div>
+            <div class="time-row">
+              <i class="fa-regular fa-clock"></i> <span data-key="schedule_1">Lun - Sam : 17h00 à 02h00</span>
+            </div>
+            <div class="time-row">
+              <i class="fa-regular fa-clock"></i> <span data-key="schedule_2">Dimanche : 10h00 à 02h00</span>
+            </div>
           </div>
 
-          <div class="feature-badges">
-            <div class="feat-item"><span>⚡</span><div data-i18n="feat_1">LIVRAISON RAPIDE</div></div>
-            <div class="feat-item"><span>🔒</span><div data-i18n="feat_2">SÉCURISÉE & FIABLE</div></div>
-            <div class="feat-item"><span>🌙</span><div data-i18n="feat_3">SERVICE NOCTURNE</div></div>
+          <div class="badges-row">
+            <div class="badge-item">
+              <i class="fa-solid fa-bolt badge-icon"></i>
+              <div class="badge-text" data-key="badge_1">LIVRAISON RAPIDE</div>
+            </div>
+            <div class="badge-item">
+              <i class="fa-solid fa-shield-halved badge-icon"></i>
+              <div class="badge-text" data-key="badge_2">SÉCURISÉE & FIABLE</div>
+            </div>
+            <div class="badge-item">
+              <i class="fa-solid fa-moon badge-icon"></i>
+              <div class="badge-text" data-key="badge_3">SERVICE NOCTURNE</div>
+            </div>
           </div>
 
-          <div class="besoins-title" data-i18n="besoins_title">TOUS VOS BESOINS, UNE SEULE LIVRAISON !</div>
-          <div class="besoins-grid">
-            <div class="besoin-tag"><span>💻</span> E-Commerce</div>
-            <div class="besoin-tag"><span>🍔</span> Restaurants</div>
-            <div class="besoin-tag"><span>💊</span> Pharmacie</div>
-            <div class="besoin-tag"><span>📦</span> Petits Colis & Courses</div>
+          <div class="besoins-header" data-key="besoins_title">TOUS VOS BESOINS, UNE SEULE LIVRAISON !</div>
+          <div class="categories-grid">
+            <div class="cat-item"><i class="fa-solid fa-bag-shopping"></i> <span data-key="cat_1">E-Commerce</span></div>
+            <div class="cat-item"><i class="fa-solid fa-utensils"></i> <span data-key="cat_2">Restaurants</span></div>
+            <div class="cat-item"><i class="fa-solid fa-prescription-bottle-medical"></i> <span data-key="cat_3">Pharmacie</span></div>
+            <div class="cat-item"><i class="fa-solid fa-box-open"></i> <span data-key="cat_4">Petits Colis & Courses</span></div>
           </div>
         </div>
 
+        <!-- RIGHT COLUMN GRAPHIC -->
         <div>
-          <div class="hero-img-circle">
-            <div class="circle-bg"></div>
-            <div class="scooter-emoji">🛵</div>
-            <div class="tag-pin">JibLi-<br>vraison📍</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="hero-footer-bar">
-        <span data-i18n="footer_join">REJOIGNEZ-NOUS DÈS MAINTENANT !</span>
-        <div class="phone-pill">📲 06 34 08 45 43</div>
-      </div>
-    </div>
-
-    <div style="text-align:center;margin-top:20px;">
-      <a class="btn yellow" href="https://wa.me/212634084543" style="font-size:18px;padding:15px 30px;border-radius:15px;" data-i18n="hero_cta">Commander sur WhatsApp</a>
-    </div>
-  </div>
-</section>
-
-<section id="services">
-  <div class="c">
-    <h2 class="title" data-i18n="srv_title">Tous vos besoins, une seule livraison</h2>
-    <p class="sub" data-i18n="srv_sub">Un service local conçu pour la ville de Kénitra.</p>
-    <div class="cards">
-      <div class="card"><div class="icon">🛒</div><h3 data-i18n="srv_1_t">E-Commerce</h3><p data-i18n="srv_1_d">Livraison rapide de vos commandes en ligne.</p></div>
-      <div class="card"><div class="icon">🍔</div><h3 data-i18n="srv_2_t">Restaurants</h3><p data-i18n="srv_2_d">Vos plats préférés livrés chauds.</p></div>
-      <div class="card"><div class="icon">💊</div><h3 data-i18n="srv_3_t">Pharmacie</h3><p data-i18n="srv_3_d">Livraison de vos besoins parapharmaceutiques.</p></div>
-      <div class="card"><div class="icon">🛍️</div><h3 data-i18n="srv_4_t">Courses diverses</h3><p data-i18n="srv_4_d">Vos achats et besoins quotidiens.</p></div>
-      <div class="card"><div class="icon">📦</div><h3 data-i18n="srv_5_t">Petit colis</h3><p data-i18n="srv_5_d">Service express pour documents et objets.</p></div>
-      <div class="card"><div class="icon">🌙</div><h3 data-i18n="srv_6_t">Service Nocturne</h3><p data-i18n="srv_6_d">Disponible tard en soirée et la nuit.</p></div>
-    </div>
-  </div>
-</section>
-
-<section id="comment">
-  <div class="c">
-    <h2 class="title" data-i18n="how_title">Comment ça marche ?</h2>
-    <p class="sub" data-i18n="how_sub">Commandez votre livraison en 4 étapes simples.</p>
-    <div class="steps">
-      <div class="step"><div class="num">1</div><h3 data-i18n="how_1_t">Choisissez le lieu</h3><p data-i18n="how_1_d">Sélectionnez le départ et la destination.</p></div>
-      <div class="step"><div class="num">2</div><h3 data-i18n="how_2_t">Calculez le prix</h3><p data-i18n="how_2_d">Le tarif s'affiche instantanément.</p></div>
-      <div class="step"><div class="num">3</div><h3 data-i18n="how_3_t">Envoyez la demande</h3><p data-i18n="how_3_d">Confirmez votre course directement sur WhatsApp.</p></div>
-      <div class="step"><div class="num">4</div><h3 data-i18n="how_4_t">Recevez votre colis</h3><p data-i18n="how_4_d">Le coursier arrive dans les plus brefs délais.</p></div>
-    </div>
-  </div>
-</section>
-
-<section id="tarifs">
-  <div class="c">
-    <h2 class="title" data-i18n="calc_title">Calculer le tarif de livraison</h2>
-    <p class="sub" data-i18n="calc_sub">Sélectionnez sur la carte ou recherchez par nom de quartier.</p>
-    <div class="tarif">
-
-      <div class="mode-selector">
-        <button type="button" class="mode-btn active" id="btn-mode-auto" onclick="switchMode('auto')" data-i18n="mode_auto">🗺️ Carte / Recherche</button>
-        <button type="button" class="mode-btn" id="btn-mode-manual" onclick="switchMode('manual')" data-i18n="mode_manual">✍️ Saisie manuelle</button>
-      </div>
-
-      <!-- MODE AUTOMATIQUE -->
-      <div id="section-auto">
-        <div style="display:grid;gap:15px;margin-bottom:18px;">
-          <div>
-            <label style="font-weight:700;display:block;margin-bottom:5px" data-i18n="label_dep">🚦🟢 Point de départ</label>
-            <div class="search-box">
-              <div class="input-group">
-                <div class="input-wrapper">
-                  <input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare Kénitra, Marjane..." autocomplete="off" oninput="onSearchInput(this.value, true)">
-                  <button type="button" class="clear-btn" id="clear-depart" onclick="clearField(true)">✕</button>
-                </div>
-                <button type="button" class="gps-btn" onclick="useCurrentLocation(true)">🎯 GPS</button>
-              </div>
-              <ul id="list-depart" class="suggestions-list"></ul>
-            </div>
-          </div>
-
-          <div>
-            <label style="font-weight:700;display:block;margin-bottom:5px" data-i18n="label_dest">🚦🔴 Point d'arrivée</label>
-            <div class="search-box">
-              <div class="input-group">
-                <div class="input-wrapper">
-                  <input type="text" id="input-dest" class="search-input" placeholder="Ex: Mehdia, Café..." autocomplete="off" oninput="onSearchInput(this.value, false)">
-                  <button type="button" class="clear-btn" id="clear-dest" onclick="clearField(false)">✕</button>
-                </div>
-                <button type="button" class="gps-btn" onclick="useCurrentLocation(false)">🎯 GPS</button>
-              </div>
-              <ul id="list-dest" class="suggestions-list"></ul>
-            </div>
+          <div class="illustration-container">
+            <div class="dashed-circle"></div>
+            <div class="scooter-graphic">🛵</div>
+            <div class="location-tag">JibLi-<br>vraison📍</div>
           </div>
         </div>
 
-        <div class="map-wrapper">
-          <div id="map"></div>
-          <div class="center-picker">
-            <div class="picker-card" id="picker-card" onclick="confirmCenterPoint()">
-              <div id="picker-address" data-i18n="map_move">Déplacez la carte...</div>
-              <span data-i18n="map_use_point">Utiliser ce point ›</span>
-            </div>
-            <div class="picker-pin">📍</div>
+      </div>
+
+      <!-- BOTTOM ACTION BAR -->
+      <div class="card-bottom-bar">
+        <div class="bottom-text" data-key="call_to_action">REJOIGNEZ-NOUS DÈS MAINTENANT !</div>
+        <a href="https://wa.me/212634084543" target="_blank" class="phone-badge">
+          <i class="fa-brands fa-whatsapp"></i> 06 34 08 45 43
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- SERVICES DETAILED SECTION -->
+<section class="section" id="services">
+  <div class="container">
+    <h2 class="section-title" data-key="services_title">Nos <span>Services</span></h2>
+    <p class="section-desc" data-key="services_desc">Nous assurons la livraison rapide et sécurisée de tous vos besoins quotidiens à Kénitra.</p>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+        <h3 class="service-title" data-key="srv1_t">E-Commerce & Boutiques</h3>
+        <p class="service-body" data-key="srv1_d">Livraison de vos commandes en ligne, vêtements, accessoires directement chez vos clients.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon"><i class="fa-solid fa-burger"></i></div>
+        <h3 class="service-title" data-key="srv2_t">Repas & Restaurants</h3>
+        <p class="service-body" data-key="srv2_d">Récupération de vos plats préférés dans tous les restaurants de Kénitra, livrés chauds.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon"><i class="fa-solid fa-pills"></i></div>
+        <h3 class="service-title" data-key="srv3_t">Achats Pharmacie</h3>
+        <p class="service-body" data-key="srv3_d">Achat et livraison express de vos médicaments et produits de santé en urgence jour et nuit.</p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon"><i class="fa-solid fa-paper-plane"></i></div>
+        <h3 class="service-title" data-key="srv4_t">Documents & Plis</h3>
+        <p class="service-body" data-key="srv4_d">Transport sécurisé de vos documents administratifs urgents ou petits colis de bureau.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="container">
+    <h2 class="section-title" data-key="how_title">Comment Ça <span>Marche</span></h2>
+    <p class="section-desc" data-key="how_desc">3 étapes simples pour vous faire livrer en un temps record.</p>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h3 class="step-title" data-key="step1_t">Contactez-nous</h3>
+        <p class="step-desc" data-key="step1_d">Envoyez vos détails par WhatsApp ou via notre formulaire de commande en ligne.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h3 class="step-title" data-key="step2_t">Validation & Prise en charge</h3>
+        <p class="step-desc" data-key="step2_d">Notre coursier récupère votre colis ou effectue votre achat immédiatement.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h3 class="step-title" data-key="step3_t">Livraison à Domicile</h3>
+        <p class="step-desc" data-key="step3_d">Réceptionnez votre commande rapidement et payez à la livraison.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ORDER FORM -->
+<section class="section order-section" id="order">
+  <div class="container">
+    <h2 class="section-title" data-key="order_title">Passer une <span>Commande</span></h2>
+    <p class="section-desc" data-key="order_desc">Remplissez le formulaire ci-dessous pour envoyer directement votre demande via WhatsApp.</p>
+
+    <div class="form-container">
+      <form id="deliveryForm" onsubmit="sendToWhatsApp(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label data-key="lbl_name">Nom Complet</label>
+            <input type="text" id="custName" class="form-control" placeholder="Ex: Mohamed Alami" required>
+          </div>
+          <div class="form-group">
+            <label data-key="lbl_phone">Numéro de Téléphone</label>
+            <input type="tel" id="custPhone" class="form-control" placeholder="Ex: 0612345678" required>
           </div>
         </div>
-      </div>
 
-      <!-- MODE MANUEL -->
-      <div id="section-manual" style="display:none;">
-        <div style="display:grid;gap:15px;margin-bottom:18px;">
-          <div>
-            <label style="font-weight:700;display:block;margin-bottom:5px" data-i18n="label_dep_man">📍 Lieu de départ</label>
-            <input type="text" id="manual-depart" class="search-input" style="width:100%" placeholder="Entrez le lieu de départ..." oninput="calculateManualPrice()">
-          </div>
-          <div>
-            <label style="font-weight:700;display:block;margin-bottom:5px" data-i18n="label_dest_man">🏁 Lieu d'arrivée</label>
-            <input type="text" id="manual-dest" class="search-input" style="width:100%" placeholder="Entrez le lieu d'arrivée..." oninput="calculateManualPrice()">
-          </div>
+        <div class="form-group">
+          <label data-key="lbl_type">Type de Service</label>
+          <select id="serviceType" class="form-control" required>
+            <option value="E-Commerce">E-Commerce / Shopping</option>
+            <option value="Restaurant">Restaurant / Repas</option>
+            <option value="Pharmacie">Pharmacie</option>
+            <option value="Courses & Colis">Petits Colis & Courses</option>
+          </select>
         </div>
-      </div>
 
-      <div class="result" id="result">— DH</div>
-      <p id="status" style="color:#aaa;margin-bottom:15px;" data-i18n="status_initial">Définissez les deux points pour afficher le prix.</p>
+        <div class="form-group">
+          <label data-key="lbl_address">Adresse de Livraison à Kénitra</label>
+          <input type="text" id="custAddress" class="form-control" placeholder="Ex: Mimosa, Rue 12, N 4" required>
+        </div>
 
-      <a id="order" class="btn yellow" href="https://wa.me/212634084543" style="width:100%;text-align:center;" data-i18n="btn_order_wa">Commander via WhatsApp</a>
+        <div class="form-group">
+          <label data-key="lbl_details">Détails de la Commande</label>
+          <textarea id="orderDetails" class="form-control" placeholder="Décrivez ce que nous devons récupérer ou acheter pour vous..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-whatsapp" style="width:100%; font-size:1.1rem; padding:16px;">
+          <i class="fa-brands fa-whatsapp"></i> <span data-key="btn_submit">Envoyer la commande sur WhatsApp</span>
+        </button>
+      </form>
     </div>
   </div>
 </section>
 
-<section id="pourquoi">
-  <div class="c">
-    <h2 class="title" data-i18n="why_title">Pourquoi choisir JibLi-vraison ?</h2>
-    <p class="sub" data-i18n="why_sub">Un service conçu pour vous faire gagner du temps.</p>
-    <div class="why">
-      <div class="whyitem"><span>⚡</span><h3 data-i18n="why_1_t">Rapidité</h3><small data-i18n="why_1_d">Livraison directe en moto dans tout Kénitra.</small></div>
-      <div class="whyitem"><span>🎯</span><h3 data-i18n="why_2_t">Transparence</h3><small data-i18n="why_2_d">Calcul de prix clair avant la commande.</small></div>
-      <div class="whyitem"><span>📱</span><h3 data-i18n="why_3_t">Simplicité</h3><small data-i18n="why_3_d">Tout se fait en quelques clics via WhatsApp.</small></div>
-      <div class="whyitem"><span>🌙</span><h3 data-i18n="why_4_t">Disponibilité</h3><small data-i18n="why_4_d">Service disponible jusqu'à 02:00 du matin.</small></div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="c">
-    <div class="cta">
-      <div>
-        <h2 data-i18n="cta_title">Besoin d'une livraison à Kénitra ?</h2>
-        <p data-i18n="cta_sub">Contactez-nous directement sur WhatsApp pour confirmer votre course.</p>
-      </div>
-      <a class="btn" href="https://wa.me/212634084543" data-i18n="cta_btn">Commander maintenant</a>
-    </div>
-  </div>
-</section>
-
-<section id="faq">
-  <div class="c">
-    <h2 class="title" data-i18n="faq_title">Foire Aux Questions</h2>
-    <div class="faq">
-      <details><summary data-i18n="faq_1_q">Comment passer une commande ?</summary><div class="answer" data-i18n="faq_1_a">Sélectionnez le point de départ et d'arrivée (ou saisissez l'adresse), puis cliquez sur le bouton WhatsApp.</div></details>
-      <details><summary data-i18n="faq_2_q">Quelles sont les zones couvertes ?</summary><div class="answer" data-i18n="faq_2_a">Le service est actuellement disponible dans toute la ville de Kénitra et ses environs.</div></details>
-      <details><summary data-i18n="faq_3_q">Comment le prix est-il calculé ?</summary><div class="answer" data-i18n="faq_3_a">Le prix est calculé automatiquement en fonction des kilomètres parcourus.</div></details>
-      <details><summary data-i18n="faq_4_q">Quels sont les horaires de travail ?</summary><div class="answer" data-i18n="faq_4_a">Du Lundi au Samedi: 17h00 à 02h00.<br>Dimanche: 10h00 à 02h00.</div></details>
-    </div>
-  </div>
-</section>
-
+<!-- FOOTER -->
 <footer>
-  <div class="c"><b>JibLi-vraison</b> — <span data-i18n="footer_text">Service de livraison rapide à Kénitra.</span> <span style="float:right">© 2026</span></div>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">JibLi-<span>vraison</span></div>
+        <p class="footer-desc" data-key="footer_desc">Votre partenaire de confiance pour toutes vos livraisons express à moto dans la ville de Kénitra.</p>
+      </div>
+
+      <div>
+        <h4 class="footer-header" data-key="footer_nav">Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="#hero">Accueil</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#how">Comment ça marche</a></li>
+          <li><a href="#order">Commander</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-header" data-key="footer_horaires">Horaires</h4>
+        <ul class="footer-links">
+          <li>Lun - Sam: 17h00 - 02h00</li>
+          <li>Dimanche: 10h00 - 02h00</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-header" data-key="footer_contact">Contact</h4>
+        <ul class="contact-info">
+          <li><i class="fa-solid fa-phone"></i> 06 34 08 45 43</li>
+          <li><i class="fa-brands fa-whatsapp"></i> 06 34 08 45 43</li>
+          <li><i class="fa-solid fa-location-dot"></i> Kénitra, Maroc</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="copyright">
+      &copy; 2026 JibLi-vraison. Tous droits réservés.
+    </div>
+  </div>
 </footer>
-<a class="wa" href="https://wa.me/212634084543">☏</a>
 
 <script>
+/* MULTI-LANGUAGE TRANSLATION DATA */
 const translations = {
   fr: {
+    nav_home: "Accueil",
     nav_services: "Services",
-    nav_tarifs: "Tarifs",
     nav_how: "Comment ça marche",
-    nav_why: "Pourquoi nous",
-    nav_faq: "FAQ",
-    btn_email: "Email",
-    btn_whatsapp: "WhatsApp",
-    banner_sub: "SERVICE DE COURSIER À MOTO",
-    hero_badge: "DISPONIBLE À KÉNITRA",
-    hero_schedule_1: "🕒 <b>Lun - Sam :</b> 17h00 à 02h00",
-    hero_schedule_2: "🕒 <b>Dimanche :</b> 10h00 à 02h00",
-    feat_1: "LIVRAISON RAPIDE",
-    feat_2: "SÉCURISÉE & FIABLE",
-    feat_3: "SERVICE NOCTURNE",
+    nav_order: "Commander",
+    subtitle: "SERVICE DE COURSIER À MOTO",
+    dispo_title: "DISPONIBLE À KÉNITRA",
+    schedule_1: "Lun - Sam : 17h00 à 02h00",
+    schedule_2: "Dimanche : 10h00 à 02h00",
+    badge_1: "LIVRAISON RAPIDE",
+    badge_2: "SÉCURISÉE & FIABLE",
+    badge_3: "SERVICE NOCTURNE",
     besoins_title: "TOUS VOS BESOINS, UNE SEULE LIVRAISON !",
-    footer_join: "REJOIGNEZ-NOUS DÈS MAINTENANT !",
-    hero_cta: "Commander sur WhatsApp",
-    srv_title: "Tous vos besoins, une seule livraison",
-    srv_sub: "Un service local conçu pour la ville de Kénitra.",
-    srv_1_t: "E-Commerce", srv_1_d: "Livraison rapide de vos commandes en ligne.",
-    srv_2_t: "Restaurants", srv_2_d: "Vos plats préférés livrés chauds.",
-    srv_3_t: "Pharmacie", srv_3_d: "Livraison de vos besoins parapharmaceutiques.",
-    srv_4_t: "Courses diverses", srv_4_d: "Vos achats et besoins quotidiens.",
-    srv_5_t: "Petit colis", srv_5_d: "Service express pour documents et objets.",
-    srv_6_t: "Service Nocturne", srv_6_d: "Disponible tard en soirée et la nuit.",
-    how_title: "Comment ça marche ?",
-    how_sub: "Commandez votre livraison en 4 étapes simples.",
-    how_1_t: "Choisissez le lieu", how_1_d: "Sélectionnez le départ et la destination.",
-    how_2_t: "Calculez le prix", how_2_d: "Le tarif s'affiche instantanément.",
-    how_3_t: "Envoyez la demande", how_3_d: "Confirmez votre course directement sur WhatsApp.",
-    how_4_t: "Recevez votre colis", how_4_d: "Le coursier arrive dans les plus brefs délais.",
-    calc_title: "Calculer le tarif de livraison",
-    calc_sub: "Sélectionnez sur la carte ou recherchez par nom de quartier.",
-    mode_auto: "🗺️ Carte / Recherche",
-    mode_manual: "✍️ Saisie manuelle",
-    label_dep: "🚦🟢 Point de départ",
-    label_dest: "🚦🔴 Point d'arrivée",
-    label_dep_man: "📍 Lieu de départ",
-    label_dest_man: "🏁 Lieu d'arrivée",
-    map_move: "Déplacez la carte...",
-    map_use_point: "Utiliser ce point ›",
-    status_initial: "Définissez les deux points pour afficher le prix.",
-    btn_order_wa: "Commander via WhatsApp",
-    why_title: "Pourquoi choisir JibLi-vraison ?",
-    why_sub: "Un service conçu pour vous faire gagner du temps.",
-    why_1_t: "Rapidité", why_1_d: "Livraison directe en moto dans tout Kénitra.",
-    why_2_t: "Transparence", why_2_d: "Calcul de prix clair avant la commande.",
-    why_3_t: "Simplicité", why_3_d: "Tout se fait en quelques clics via WhatsApp.",
-    why_4_t: "Disponibilité", why_4_d: "Service disponible jusqu'à 02:00 du matin.",
-    cta_title: "Besoin d'une livraison à Kénitra ?",
-    cta_sub: "Contactez-nous directement sur WhatsApp pour confirmer votre course.",
-    cta_btn: "Commander maintenant",
-    faq_title: "Foire Aux Questions",
-    faq_1_q: "Comment passer une commande ?", faq_1_a: "Sélectionnez le point de départ et d'arrivée (ou saisissez l'adresse), puis cliquez sur le bouton WhatsApp.",
-    faq_2_q: "Quelles sont les zones couvertes ?", faq_2_a: "Le service est actuellement disponible dans toute la ville de Kénitra et ses environs.",
-    faq_3_q: "Comment le prix est-il calculé ?", faq_3_a: "Le prix est calculé automatiquement en fonction des kilomètres parcourus.",
-    faq_4_q: "Quels sont les horaires de travail ?", faq_4_a: "Du Lundi au Samedi: 17h00 à 02h00.<br>Dimanche: 10h00 à 02h00.",
-    footer_text: "Service de livraison rapide à Kénitra.",
-    dh: "DH",
-    agreed: "Sur accord"
+    cat_1: "E-Commerce",
+    cat_2: "Restaurants",
+    cat_3: "Pharmacie",
+    cat_4: "Petits Colis & Courses",
+    call_to_action: "REJOIGNEZ-NOUS DÈS MAINTENANT !",
+    services_title: "Nos Services",
+    services_desc: "Nous assurons la livraison rapide et sécurisée de tous vos besoins quotidiens à Kénitra.",
+    srv1_t: "E-Commerce & Boutiques",
+    srv1_d: "Livraison de vos commandes en ligne, vêtements, accessoires directement chez vos clients.",
+    srv2_t: "Repas & Restaurants",
+    srv2_d: "Récupération de vos plats préférés dans tous les restaurants de Kénitra, livrés chauds.",
+    srv3_t: "Achats Pharmacie",
+    srv3_d: "Achat et livraison express de vos médicaments et produits de santé en urgence jour et nuit.",
+    srv4_t: "Documents & Plis",
+    srv4_d: "Transport sécurisé de vos documents administratifs urgents ou petits colis de bureau.",
+    how_title: "Comment Ça Marche",
+    how_desc: "3 étapes simples pour vous faire livrer en un temps record.",
+    step1_t: "Contactez-nous",
+    step1_d: "Envoyez vos détails par WhatsApp ou via notre formulaire de commande en ligne.",
+    step2_t: "Validation & Prise en charge",
+    step2_d: "Notre coursier récupère votre colis ou effectue votre achat immédiatement.",
+    step3_t: "Livraison à Domicile",
+    step3_d: "Réceptionnez votre commande rapidement et payez à la livraison.",
+    order_title: "Passer une Commande",
+    order_desc: "Remplissez le formulaire ci-dessous pour envoyer directement votre demande via WhatsApp.",
+    lbl_name: "Nom Complet",
+    lbl_phone: "Numéro de Téléphone",
+    lbl_type: "Type de Service",
+    lbl_address: "Adresse de Livraison à Kénitra",
+    lbl_details: "Détails de la Commande",
+    btn_submit: "Envoyer la commande sur WhatsApp",
+    footer_desc: "Votre partenaire de confiance pour toutes vos livraisons express à moto dans la ville de Kénitra.",
+    footer_nav: "Navigation",
+    footer_horaires: "Horaires",
+    footer_contact: "Contact"
   },
   ar: {
-    nav_services: "الخدمات",
-    nav_tarifs: "الأسعار",
+    nav_home: "الرئيسية",
+    nav_services: "خدماتنا",
     nav_how: "كيف نعمل",
-    nav_why: "لماذا نحن",
-    nav_faq: "الأسئلة الشائعة",
-    btn_email: "البريد الإلكتروني",
-    btn_whatsapp: "واتساب",
-    banner_sub: "خدمة توصيل بالدراجة النارية",
-    hero_badge: "متوفر في القنيطرة",
-    hero_schedule_1: "🕒 <b>من الإثنين إلى السبت :</b> 17:00 إلى 02:00",
-    hero_schedule_2: "🕒 <b>الأحد :</b> 10:00 إلى 02:00",
-    feat_1: "توصيل سريع",
-    feat_2: "آمن وموثوق",
-    feat_3: "خدمة ليلية",
-    besoins_title: "كل احتياجاتك في توصيلة واحدة !",
-    footer_join: "انضم إلينا الآن !",
-    hero_cta: "الطلب عبر واتساب",
-    srv_title: "كل احتياجاتك في توصيلة واحدة",
-    srv_sub: "خدمة محليّة مصممة لمدينة القنيطرة.",
-    srv_1_t: "التجارة الإلكترونية", srv_1_d: "توصيل طلبياتك عبر الإنترنت بسرعة.",
-    srv_2_t: "المطاعم", srv_2_d: "وجباتك المفضلة تصلك ساخنة.",
-    srv_3_t: "الصيدلية", srv_3_d: "توصيل المستلزمات والمنتجات الصيدلانية.",
-    srv_4_t: "مشتريات متنوعة", srv_4_d: "أغراضك وااحتياجاتك اليومية.",
-    srv_5_t: "طرد صغير", srv_5_d: "خدمة توصيل سريعة للأغراض الشخصية.",
-    srv_6_t: "خدمة ليلية", srv_6_d: "متوفرون خلال الفترة المسائية والليلية.",
-    how_title: "كيف تعمل الخدمة؟",
-    how_sub: "اطلب توصيلتك في 4 خطوات بسيطة.",
-    how_1_t: "حدد المكان", how_1_d: "اختر نقطة الانطلاق والوجهة.",
-    how_2_t: "احسب السعر", how_2_d: "يظهر لك السعر المباشر تلقائياً.",
-    how_3_t: "أرسل الطلب", how_3_d: "أكد طلبك مباشرة عبر واتساب.",
-    how_4_t: "استلم شحنتك", how_4_d: "يصلك السائق في أسرع وقت ممكن.",
-    calc_title: "حساب سعر التوصيل",
-    calc_sub: "اختر المواقع على الخريطة أو ابحث باسم المنطقة.",
-    mode_auto: "🗺️ عبر الخريطة / البحث",
-    mode_manual: "✍️ كتابة مباشرة",
-    label_dep: "🚦🟢 نقطة الانطلاق",
-    label_dest: "🚦🔴 نقطة الوصول",
-    label_dep_man: "📍 مكان الانطلاق",
-    label_dest_man: "🏁 وجهة التوصيل",
-    map_move: "حرّك الخريطة...",
-    map_use_point: "استخدم هذه النقطة ›",
-    status_initial: "حدد النقطتين لإظهار الثمن.",
-    btn_order_wa: "الطلب عبر واتساب",
-    why_title: "لماذا اختار JibLi-vraison؟",
-    why_sub: "خدمة مصممة لتوفير وقتك وراحتك.",
-    why_1_t: "السرعة", why_1_d: "توصيل مباشر بالدراجة النارية داخل القنيطرة.",
-    why_2_t: "الشفافية", why_2_d: "حساب واضح للسعر قبل الطلب.",
-    why_3_t: "السهولة", why_3_d: "كل شيء يتم في لحظات عبر واتساب.",
-    why_4_t: "الاستمرارية", why_4_d: "خدمة متوفرة إلى غاية 02:00 صباحاً.",
-    cta_title: "تحتاج توصيل داخل القنيطرة؟",
-    cta_sub: "تواصل معنا مباشرة عبر واتساب لتأكيد طلبك.",
-    cta_btn: "اطلب الآن",
-    faq_title: "الأسئلة الشائعة",
-    faq_1_q: "كيف أقوم بالطلب؟", faq_1_a: "اختر نقطة الانطلاق والوصول (أو اكتب العنوان)، ثم اضغط على زر واتساب.",
-    faq_2_q: "ما هي مناطق التوصيل؟", faq_2_a: "الخدمة متوفرة حالياً داخل مدينة القنيطرة والنواحي.",
-    faq_3_q: "كيف يتم معرفة السعر؟", faq_3_a: "يتم حساب الثمن أوتوماتيكياً بناءً على الكيلومترات المقطوعة.",
-    faq_4_q: "ما هي أوقات العمل؟", faq_4_a: "من الإثنين إلى السبت: 17:00 إلى 02:00 صباحاً.<br>الأحد: 10:00 صباحاً إلى 02:00 صباحاً.",
-    footer_text: "خدمة التوصيل السريع بالقنيطرة.",
-    dh: "درهم",
-    agreed: "حسب الاتفاق"
+    nav_order: "اطلب الآن",
+    subtitle: "خدمة التوصيل بالدراجة النارية",
+    dispo_title: "متوفر في القنيطرة",
+    schedule_1: "الإثنين - السبت : 17:00 إلى 02:00",
+    schedule_2: "الأحد : 10:00 إلى 02:00",
+    badge_1: "توصيل سريع",
+    badge_2: "آمن وموثوق",
+    badge_3: "خدمة ليلية",
+    besoins_title: "جميع احتياجاتك، في توصيلة واحدة!",
+    cat_1: "التجارة الإلكترونية",
+    cat_2: "المطاعم",
+    cat_3: "الصيدلية",
+    cat_4: "الطرود والأغراض الصغيرة",
+    call_to_action: "انضم إلينا الآن!",
+    services_title: "خدماتنا",
+    services_desc: "نضمن التوصيل السريع والآمن لجميع احتياجاتك اليومية في القنيطرة.",
+    srv1_t: "التجارة الإلكترونية والمتاجر",
+    srv1_d: "توصيل طلباتك عبر الإنترنت، الملابس، والإكسسوارات مباشرة إلى زبنائك.",
+    srv2_t: "الوجبات والمطاعم",
+    srv2_d: "استلام وجباتك المفضلة من جميع مطاعم القنيطرة وتوصيلها ساخنة.",
+    srv3_t: "مقتنيات الصيدلية",
+    srv3_d: "شراء وتوصيل أدویتك ومستلزماتك الطبية بشكل عاجل ليلا ونهارا.",
+    srv4_t: "الوثائق والطرود",
+    srv4_d: "نقل آمن لوثائقك الإدارية العاجلة أو الطرود المكتبية الصغيرة.",
+    how_title: "كيف نعمل",
+    how_desc: "3 خطوات بسيطة للتوصيل في وقت قياسي.",
+    step1_t: "تواصل معنا",
+    step1_d: "أرسل تفاصيل طلبك عبر الواتساب أو من خلال استمارة الطلب.",
+    step2_t: "التأكيد والاستلام",
+    step2_d: "يقوم موزعنا باستلام طلبك أو الشراء فوراً.",
+    step3_t: "التوصيل للمنزل",
+    step3_d: "استلم طلبك بسرعة وادفع عند التسليم.",
+    order_title: "تقديم طلب",
+    order_desc: "املأ الاستمارة أدناه لإرسال طلبك مباشرة عبر الواتساب.",
+    lbl_name: "الاسم الكامل",
+    lbl_phone: "رقم الهاتف",
+    lbl_type: "نوع الخدمة",
+    lbl_address: "عنوان التوصيل في القنيطرة",
+    lbl_details: "تفاصيل الطلب",
+    btn_submit: "إرسال الطلب عبر الواتساب",
+    footer_desc: "شريكك الموثوق لجميع توصيلاتك السريعة بالدراجة النارية في مدينة القنيطرة.",
+    footer_nav: "التنقل",
+    footer_horaires: "أوقات العمل",
+    footer_contact: "الاتصال"
   }
 };
 
-let currentLang = 'fr';
-
 function changeLanguage(lang) {
-  currentLang = lang;
-  document.documentElement.lang = lang;
-  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (translations[lang][key]) {
-      el.innerHTML = translations[lang][key];
+  const elements = document.querySelectorAll('[data-key]');
+  elements.forEach(el => {
+    const key = el.getAttribute('data-key');
+    if (translations[lang] && translations[lang][key]) {
+      el.textContent = translations[lang][key];
     }
   });
 
-  if (depCoord && destCoord) calculateRouteDistance();
-  else if (currentMode === 'manual') calculateManualPrice();
-  else resetPriceDisplay();
-}
-
-let currentMode = 'auto';
-let depCoord = null, destCoord = null, depName = '', destName = '';
-let depMarker = null, destMarker = null, routePolyline = null;
-let currentCenterAddress = '';
-let searchTimeout = null;
-
-const map = L.map('map').setView([34.2610, -6.5802], 14);
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
-  maxZoom: 19,
-  attribution: '© OpenStreetMap'
-}).addTo(map);
-
-let moveTimer;
-map.on('move', () => {
-  document.getElementById('picker-address').textContent = currentLang === 'fr' ? 'Chargement...' : 'جاري التحميل...';
-  clearTimeout(moveTimer);
-  moveTimer = setTimeout(() => {
-    const center = map.getCenter();
-    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${center.lat}&lon=${center.lng}`)
-      .then(res => res.json())
-      .then(data => {
-        if(data && data.display_name) {
-          let parts = data.display_name.split(',');
-          currentCenterAddress = parts.slice(0, 3).join(', ').trim();
-          document.getElementById('picker-address').textContent = currentCenterAddress;
-        } else {
-          currentCenterAddress = currentLang === 'fr' ? "Point sur la carte" : "نقطة على الخريطة";
-          document.getElementById('picker-address').textContent = currentCenterAddress;
-        }
-      });
-  }, 300);
-});
-
-function confirmCenterPoint() {
-  const center = map.getCenter();
-  const coords = [center.lat, center.lng];
-
-  if (!depCoord) {
-    document.getElementById('input-depart').value = currentCenterAddress;
-    document.getElementById('clear-depart').style.display = 'block';
-    setPoint(coords, currentCenterAddress, true);
-  } else if (!destCoord) {
-    document.getElementById('input-dest').value = currentCenterAddress;
-    document.getElementById('clear-dest').style.display = 'block';
-    setPoint(coords, currentCenterAddress, false);
+  if (lang === 'ar') {
+    document.documentElement.setAttribute('dir', 'rtl');
+    document.documentElement.setAttribute('lang', 'ar');
   } else {
-    clearField(false);
-    document.getElementById('input-depart').value = currentCenterAddress;
-    document.getElementById('clear-depart').style.display = 'block';
-    setPoint(coords, currentCenterAddress, true);
+    document.documentElement.setAttribute('dir', 'ltr');
+    document.documentElement.setAttribute('lang', 'fr');
   }
 }
 
-function onSearchInput(query, isDepart) {
-  let clearBtn = document.getElementById(isDepart ? 'clear-depart' : 'clear-dest');
-  clearBtn.style.display = query.length > 0 ? 'block' : 'none';
+function sendToWhatsApp(e) {
+  e.preventDefault();
+  const name = document.getElementById('custName').value;
+  const phone = document.getElementById('custPhone').value;
+  const service = document.getElementById('serviceType').value;
+  const address = document.getElementById('custAddress').value;
+  const details = document.getElementById('orderDetails').value;
 
-  clearTimeout(searchTimeout);
-  if (query.trim().length < 2) {
-    document.getElementById(isDepart ? 'list-depart' : 'list-dest').style.display = 'none';
-    return;
-  }
+  const text = `*Commande JibLi-vraison*%0A` +
+               `👤 *Nom:* ${name}%0A` +
+               `📞 *Téléphone:* ${phone}%0A` +
+               `🛠️ *Service:* ${service}%0A` +
+               `📍 *Adresse:* ${address}%0A` +
+               `📝 *Détails:* ${details}`;
 
-  searchTimeout = setTimeout(() => {
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=ma&limit=5`;
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        let listId = isDepart ? 'list-depart' : 'list-dest';
-        let list = document.getElementById(listId);
-        list.innerHTML = '';
-
-        if(data.length === 0) {
-          list.style.display = 'none';
-          return;
-        }
-
-        data.forEach(place => {
-          let li = document.createElement('li');
-          let shortName = place.display_name.split(',').slice(0, 3).join(',');
-          li.textContent = shortName;
-
-          li.onclick = () => {
-            let coords = [parseFloat(place.lat), parseFloat(place.lon)];
-            let inputId = isDepart ? 'input-depart' : 'input-dest';
-            document.getElementById(inputId).value = shortName;
-            list.style.display = 'none';
-
-            setPoint(coords, shortName, isDepart);
-            map.setView(coords, 16);
-          };
-          list.appendChild(li);
-        });
-
-        list.style.display = 'block';
-      });
-  }, 350);
-}
-
-function useCurrentLocation(isDepart) {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(position => {
-      const coords = [position.coords.latitude, position.coords.longitude];
-      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${coords[0]}&lon=${coords[1]}`)
-        .then(res => res.json())
-        .then(data => {
-          let name = data.display_name ? data.display_name.split(',').slice(0, 2).join(',') : (currentLang === 'fr' ? "Ma position" : "الموقع الحالي");
-          document.getElementById(isDepart ? 'input-depart' : 'input-dest').value = name;
-          document.getElementById(isDepart ? 'clear-depart' : 'clear-dest').style.display = 'block';
-          setPoint(coords, name, isDepart);
-          map.setView(coords, 16);
-        });
-    }, () => alert(currentLang === 'fr' ? "Impossible d'obtenir votre position GPS." : "تعذر تحديد موقع GPS الخاص بك."));
-  }
-}
-
-function clearField(isDepart) {
-  if (isDepart) {
-    document.getElementById('input-depart').value = '';
-    document.getElementById('clear-depart').style.display = 'none';
-    document.getElementById('list-depart').style.display = 'none';
-    depCoord = null; depName = '';
-    if (depMarker) map.removeLayer(depMarker);
-    depMarker = null;
-  } else {
-    document.getElementById('input-dest').value = '';
-    document.getElementById('clear-dest').style.display = 'none';
-    document.getElementById('list-dest').style.display = 'none';
-    destCoord = null; destName = '';
-    if (destMarker) map.removeLayer(destMarker);
-    destMarker = null;
-  }
-  if (routePolyline) { map.removeLayer(routePolyline); routePolyline = null; }
-  resetPriceDisplay();
-}
-
-function setPoint(coords, name, isDepart) {
-  if (isDepart) {
-    depCoord = coords; depName = name;
-    if (depMarker) map.removeLayer(depMarker);
-    depMarker = L.marker(coords).addTo(map).bindPopup("<b>" + (currentLang === 'fr' ? 'Départ:' : 'الإنطلاق:') + "</b> " + name);
-  } else {
-    destCoord = coords; destName = name;
-    if (destMarker) map.removeLayer(destMarker);
-    destMarker = L.marker(coords).addTo(map).bindPopup("<b>" + (currentLang === 'fr' ? 'Arrivée:' : 'الوصول:') + "</b> " + name);
-  }
-
-  if (depCoord && destCoord) {
-    calculateRouteDistance();
-  }
-}
-
-function calculateRouteDistance() {
-  fetch(`https://router.project-osrm.org/route/v1/driving/${depCoord[1]},${depCoord[0]};${destCoord[1]},${destCoord[0]}?overview=full&geometries=geojson`)
-    .then(res => res.json())
-    .then(data => {
-      if (data.routes && data.routes.length > 0) {
-        const distKm = (data.routes[0].distance / 1000) * 1.025;
-        if (routePolyline) map.removeLayer(routePolyline);
-        routePolyline = L.geoJSON(data.routes[0].geometry, { style: { color: '#ffb900', weight: 5 } }).addTo(map);
-        map.fitBounds(routePolyline.getBounds(), { padding: [40, 40] });
-        renderPrice(distKm, depName, destName);
-      }
-    });
-}
-
-function renderPrice(n, dep, dest) {
-  let price = n <= 4 ? 20 : n < 6 ? 25 : n < 7 ? 26 : n < 8 ? 27 : n < 9 ? 28 : n < 10 ? 29 : 35 + Math.ceil(n - 10) * 2;
-  document.getElementById('result').textContent = price + ' ' + translations[currentLang].dh;
-  document.getElementById('status').textContent = (currentLang === 'fr' ? 'Distance: ' : 'المسافة: ') + n.toFixed(1) + ' km';
-
-  let msg = currentLang === 'fr' 
-    ? `Bonjour JibLi-vraison 👋\nJe souhaite demander une livraison.\n\n📍 Départ: ${dep}\n🏁 Arrivée: ${dest}\n📏 Distance: ${n.toFixed(1)} km\n💰 Prix: ${price} DH`
-    : `السلام عليكم JibLi-vraison 👋\nأريد طلب توصيل.\n\n📍 الانطلاق: ${dep}\n🏁 الوصول: ${dest}\n📏 المسافة: ${n.toFixed(1)} كلم\n💰 السعر: ${price} درهم`;
-
-  document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
-}
-
-function resetPriceDisplay() {
-  document.getElementById('result').textContent = '— ' + translations[currentLang].dh;
-  document.getElementById('status').textContent = translations[currentLang].status_initial;
-}
-
-function switchMode(mode) {
-  currentMode = mode;
-  document.getElementById('btn-mode-auto').classList.toggle('active', mode === 'auto');
-  document.getElementById('btn-mode-manual').classList.toggle('active', mode === 'manual');
-  document.getElementById('section-auto').style.display = mode === 'auto' ? 'block' : 'none';
-  document.getElementById('section-manual').style.display = mode === 'manual' ? 'block' : 'none';
-
-  if (mode === 'manual') calculateManualPrice();
-  else if (depCoord && destCoord) calculateRouteDistance();
-  else resetPriceDisplay();
-}
-
-function calculateManualPrice() {
-  let dep = document.getElementById('manual-depart').value.trim();
-  let dest = document.getElementById('manual-dest').value.trim();
-
-  if (dep && dest) {
-    document.getElementById('result').textContent = translations[currentLang].agreed;
-    document.getElementById('status').textContent = currentLang === 'fr' ? 'Adresses saisies manuellement.' : 'تم إدخال العناوين يدوياً.';
-
-    let msg = currentLang === 'fr'
-      ? `Bonjour JibLi-vraison 👋\nJe souhaite demander une livraison.\n\n📍 Départ: ${dep}\n🏁 Arrivée: ${dest}`
-      : `السلام عليكم JibLi-vraison 👋\nأريد طلب توصيل.\n\n📍 الانطلاق: ${dep}\n🏁 الوصول: ${dest}`;
-
-    document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
-  } else {
-    resetPriceDisplay();
-  }
+  window.open(`https://wa.me/212634084543?text=${text}`, '_blank');
 }
 </script>
+
 </body>
 </html>
 

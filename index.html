@@ -1,12 +1,12 @@
-
 <!doctype html>
 <html lang="fr" id="html-root">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>JibLi-vraison | Service de livraison</title> 
 
-<!-- Google Maps JS API with Places library -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMGZwRva0eYjD8ZJ2Ql8r9P4Dgm0qNYLY&libraries=places"></script>
+<!-- Leaflet CSS & JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script> 
 
 <style>
 *{box-sizing:border-box}
@@ -87,6 +87,34 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 .mode-btn { flex: 1; padding: 12px 8px; border: none; background: transparent; color: #aaa; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 13px; }
 .mode-btn.active { background: #ffb900; color: #111; } 
 
+.suggestions-list { 
+  position: absolute; 
+  top: 100%; 
+  left: 0; 
+  right: 0; 
+  background: #1e1e1e; 
+  border: 1px solid #ffb900; 
+  border-radius: 10px; 
+  max-height: 180px; 
+  overflow-y: auto; 
+  z-index: 3000; 
+  display: none; 
+  margin: 4px 0 0 0; 
+  padding: 0; 
+  list-style: none; 
+  box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+}
+.suggestions-list li { 
+  padding: 12px; 
+  cursor: pointer; 
+  color: #eee; 
+  border-bottom: 1px solid #2e2e2e; 
+  font-size: 13px;
+  line-height: 1.4;
+}
+.suggestions-list li:last-child { border-bottom: none; }
+.suggestions-list li:hover { background: #2a2a2a; color: #ffb900; } 
+
 /* CARTE STYLE GLOVO */
 .map-wrapper { position: relative; width: 100%; height: 350px; margin-top: 10px; border-radius: 15px; overflow: hidden; border: 2px solid #ffb900; }
 #map { width: 100%; height: 100%; z-index: 1; } 
@@ -125,25 +153,6 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
   font-size: 38px;
   line-height: 1;
   filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
-}
-
-/* FIX Google Places Autocomplete dropdown z-index */
-.pac-container {
-  z-index: 10000 !important;
-  background-color: #1e1e1e !important;
-  border: 1px solid #ffb900 !important;
-  border-radius: 8px !important;
-  color: #fff !important;
-}
-.pac-item {
-  color: #fff !important;
-  border-top: 1px solid #2e2e2e !important;
-}
-.pac-item-query {
-  color: #ffb900 !important;
-}
-.pac-matched {
-  color: #ffb900 !important;
 }
 </style>
 </head>
@@ -276,11 +285,12 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
       <div class="search-box">
         <div class="input-group">
           <div class="input-wrapper">
-            <input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare Kenitra, Marjane..." autocomplete="off">
+            <input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare Kenitra, Marjane..." autocomplete="off" oninput="onSearchInput(this.value, true)">
             <button type="button" class="clear-btn" id="clear-depart" onclick="clearField(true)">✕</button>
           </div>
           <button type="button" class="gps-btn" onclick="useCurrentLocation(true)">🎯 GPS</button>
         </div>
+        <ul id="list-depart" class="suggestions-list"></ul>
       </div>
     </div> 
 
@@ -289,11 +299,12 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
       <div class="search-box">
         <div class="input-group">
           <div class="input-wrapper">
-            <input type="text" id="input-dest" class="search-input" placeholder="Ex: Mehdia, Café..." autocomplete="off">
+            <input type="text" id="input-dest" class="search-input" placeholder="Ex: Mehdia, Café..." autocomplete="off" oninput="onSearchInput(this.value, false)">
             <button type="button" class="clear-btn" id="clear-dest" onclick="clearField(false)">✕</button>
           </div>
           <button type="button" class="gps-btn" onclick="useCurrentLocation(false)">🎯 GPS</button>
         </div>
+        <ul id="list-dest" class="suggestions-list"></ul>
       </div>
     </div>
   </div> 
@@ -354,13 +365,18 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 <a class="wa" href="https://wa.me/212634084543">☏</a> 
 
 <script>
+// ==================== LES CLÉS API ====================
+// Ila 3ndek clé API dial LocationIQ wla Mapbox t9der tdzidhomen hnaya:
+const LOCATIONIQ_API_KEY = "YOUR_LOCATIONIQ_API_KEY"; // Ila bghiti LocationIQ Geocoding
+const MAPBOX_API_KEY = "YOUR_MAPBOX_API_KEY";         // Ila bghiti Mapbox Tiles / Routing
+// ======================================================
+
 let currentMode = 'auto';
 let depCoord = null, destCoord = null, depName = '', destName = '';
-let depMarker = null, destMarker = null;
+let depMarker = null, destMarker = null, routePolyline = null;
 let currentCenterAddress = '';
+let searchTimeout = null;
 let currentLang = 'fr'; 
-
-let map, geocoder, directionsService, directionsRenderer;
 
 const translations = {
   fr: {
@@ -386,7 +402,7 @@ const translations = {
     "why-title": "Pourquoi choisir JibLi-vraison ?", "why-sub": "Un service pensé pour vous faciliter la vie.",
     "why-1-t": "Rapidité", "why-1-d": "Livraison directe à moto dans Kénitra.",
     "why-2-t": "Transparence", "why-2-d": "Calcul clair du tarif avant commande.",
-    "why-3-t": "Simplicité", "why-3-d": "Tout se fait en quelques clics via WhatsApp.",
+    "why-3-3": "Simplicité", "why-3-d": "Tout se fait en quelques clics via WhatsApp.",
     "why-4-t": "Disponibilité", "why-4-d": "Service disponible jusqu'à 02h00 du matin.",
     "cta-t": "Besoin d'une livraison à Kénitra ?", "cta-d": "Contactez-nous directement sur WhatsApp pour votre commande.", "cta-b": "Commander maintenant",
     "faq-1-q": "Comment commander ?", "faq-1-a": "Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.",
@@ -483,79 +499,52 @@ function changeLanguage(lang) {
   else resetPriceDisplay();
 } 
 
-function initMap() {
-  const kenitra = { lat: 34.2610, lng: -6.5802 };
-  
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: kenitra,
-    zoom: 14,
-    disableDefaultUI: true,
-    zoomControl: true
-  });
+const map = L.map('map').setView([34.2610, -6.5802], 14); 
 
-  geocoder = new google.maps.Geocoder();
-  directionsService = new google.maps.DirectionsService();
-  directionsRenderer = new google.maps.DirectionsRenderer({
-    map: map,
-    suppressMarkers: true,
-    polylineOptions: { strokeColor: '#ffb900', strokeWeight: 5 }
-  });
+// TileLayer d-OpenStreetMap (Free بدون حاجة ل-Clé API)
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
+  maxZoom: 19,
+  attribution: '© OpenStreetMap'
+}).addTo(map); 
 
-  // Center picker reverse geocoding
-  let moveTimer;
-  map.addListener('idle', () => {
-    document.getElementById('picker-address').textContent = translations[currentLang]["map-moving"];
-    clearTimeout(moveTimer);
-    moveTimer = setTimeout(() => {
-      const center = map.getCenter();
-      geocoder.geocode({ location: center }, (results, status) => {
-        if (status === 'OK' && results[0]) {
-          let parts = results[0].formatted_address.split(',');
+let moveTimer;
+map.on('move', () => {
+  document.getElementById('picker-address').textContent = translations[currentLang]["map-moving"];
+  clearTimeout(moveTimer);
+  moveTimer = setTimeout(() => {
+    const center = map.getCenter();
+    
+    // Reverse Geocoding via Nominatim (Gratuit)
+    let geocodeUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${center.lat}&lon=${center.lng}`;
+    
+    // Ila bghiti t-khdem b LocationIQ API Key
+    if(LOCATIONIQ_API_KEY && LOCATIONIQ_API_KEY !== "YOUR_LOCATIONIQ_API_KEY") {
+      geocodeUrl = `https://us1.locationiq.com/v1/reverse.php?key=${LOCATIONIQ_API_KEY}&lat=${center.lat}&lon=${center.lng}&format=json`;
+    }
+
+    fetch(geocodeUrl)
+      .then(res => res.json())
+      .then(data => {
+        let name = data.display_name;
+        if(data && name) {
+          let parts = name.split(',');
           currentCenterAddress = parts.slice(0, 3).join(', ').trim();
           document.getElementById('picker-address').textContent = currentCenterAddress;
         } else {
           currentCenterAddress = "Point sur la carte";
           document.getElementById('picker-address').textContent = currentCenterAddress;
         }
+      })
+      .catch(() => {
+        currentCenterAddress = "Point sur la carte";
+        document.getElementById('picker-address').textContent = currentCenterAddress;
       });
-    }, 300);
-  });
-
-  // Google Places Autocomplete Setup
-  const defaultBounds = {
-    north: 34.35, south: 34.15,
-    east: -6.45, west: -6.70
-  };
-  const options = {
-    bounds: defaultBounds,
-    componentRestrictions: { country: 'ma' },
-    fields: ['formatted_address', 'geometry', 'name']
-  };
-
-  const inputDep = document.getElementById('input-depart');
-  const autoDep = new google.maps.places.Autocomplete(inputDep, options);
-  autoDep.addListener('place_changed', () => {
-    const place = autoDep.getPlace();
-    if (!place.geometry) return;
-    document.getElementById('clear-depart').style.display = 'block';
-    setPoint({ lat: place.geometry.location.lat(), lng: place.geometry.location.lng() }, place.name || place.formatted_address, true);
-  });
-
-  const inputDest = document.getElementById('input-dest');
-  const autoDest = new google.maps.places.Autocomplete(inputDest, options);
-  autoDest.addListener('place_changed', () => {
-    const place = autoDest.getPlace();
-    if (!place.geometry) return;
-    document.getElementById('clear-dest').style.display = 'block';
-    setPoint({ lat: place.geometry.location.lat(), lng: place.geometry.location.lng() }, place.name || place.formatted_address, false);
-  });
-}
-
-window.onload = initMap;
+  }, 300);
+}); 
 
 function confirmCenterPoint() {
   const center = map.getCenter();
-  const coords = { lat: center.lat(), lng: center.lng() }; 
+  const coords = [center.lat, center.lng]; 
 
   if (!depCoord) {
     document.getElementById('input-depart').value = currentCenterAddress;
@@ -573,18 +562,71 @@ function confirmCenterPoint() {
   }
 } 
 
+function onSearchInput(query, isDepart) {
+  let clearBtn = document.getElementById(isDepart ? 'clear-depart' : 'clear-dest');
+  clearBtn.style.display = query.length > 0 ? 'block' : 'none'; 
+
+  clearTimeout(searchTimeout);
+  if (query.trim().length < 2) {
+    document.getElementById(isDepart ? 'list-depart' : 'list-dest').style.display = 'none';
+    return;
+  } 
+
+  searchTimeout = setTimeout(() => {
+    let searchUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=ma&limit=5`;
+    
+    // Ila bghiti tkhdem b LocationIQ API Key
+    if(LOCATIONIQ_API_KEY && LOCATIONIQ_API_KEY !== "YOUR_LOCATIONIQ_API_KEY") {
+      searchUrl = `https://api.locationiq.com/v1/search.php?key=${LOCATIONIQ_API_KEY}&q=${encodeURIComponent(query)}&countrycodes=ma&format=json&limit=5`;
+    }
+
+    fetch(searchUrl)
+      .then(res => res.json())
+      .then(data => {
+        let listId = isDepart ? 'list-depart' : 'list-dest';
+        let list = document.getElementById(listId);
+        list.innerHTML = ''; 
+
+        if(!data || data.length === 0) {
+          list.style.display = 'none';
+          return;
+        } 
+
+        data.forEach(place => {
+          let li = document.createElement('li');
+          let shortName = place.display_name.split(',').slice(0, 3).join(',');
+          li.textContent = shortName; 
+
+          li.onclick = () => {
+            let coords = [parseFloat(place.lat), parseFloat(place.lon)];
+            let inputId = isDepart ? 'input-depart' : 'input-dest';
+            document.getElementById(inputId).value = shortName;
+            list.style.display = 'none'; 
+
+            setPoint(coords, shortName, isDepart);
+            map.setView(coords, 16);
+          };
+          list.appendChild(li);
+        }); 
+
+        list.style.display = 'block';
+      });
+  }, 350);
+} 
+
 function useCurrentLocation(isDepart) {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(position => {
-      const coords = { lat: position.coords.latitude, lng: position.coords.longitude };
-      geocoder.geocode({ location: coords }, (results, status) => {
-        let name = (status === 'OK' && results[0]) ? results[0].formatted_address.split(',').slice(0, 2).join(',') : "Position Actuelle";
-        document.getElementById(isDepart ? 'input-depart' : 'input-dest').value = name;
-        document.getElementById(isDepart ? 'clear-depart' : 'clear-dest').style.display = 'block';
-        setPoint(coords, name, isDepart);
-        map.setCenter(coords);
-        map.setZoom(16);
-      });
+      const coords = [position.coords.latitude, position.coords.longitude];
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${coords[0]}&lon=${coords[1]}`)
+        .then(res => res.json())
+        .then(data => {
+          let name = data.display_name ? data.display_name.split(',').slice(0, 2).join(',') : "Position Actuelle";
+          document.getElementById(isDepart ? 'input-depart' : 'input-dest').value = name;
+          document.getElementById(isDepart ? 'clear-depart' : 'clear-dest').style.display = 'block';
+          setPoint(coords, name, isDepart);
+          map.setView(coords, 16);
+        });
     }, () => alert("Impossible de récupérer la position GPS."));
   }
 } 
@@ -593,39 +635,31 @@ function clearField(isDepart) {
   if (isDepart) {
     document.getElementById('input-depart').value = '';
     document.getElementById('clear-depart').style.display = 'none';
+    document.getElementById('list-depart').style.display = 'none';
     depCoord = null; depName = '';
-    if (depMarker) depMarker.setMap(null);
+    if (depMarker) map.removeLayer(depMarker);
     depMarker = null;
   } else {
     document.getElementById('input-dest').value = '';
     document.getElementById('clear-dest').style.display = 'none';
+    document.getElementById('list-dest').style.display = 'none';
     destCoord = null; destName = '';
-    if (destMarker) destMarker.setMap(null);
+    if (destMarker) map.removeLayer(destMarker);
     destMarker = null;
   }
-  directionsRenderer.setDirections({ routes: [] });
+  if (routePolyline) { map.removeLayer(routePolyline); routePolyline = null; }
   resetPriceDisplay();
 } 
 
 function setPoint(coords, name, isDepart) {
   if (isDepart) {
     depCoord = coords; depName = name;
-    if (depMarker) depMarker.setMap(null);
-    depMarker = new google.maps.Marker({
-      position: coords,
-      map: map,
-      title: "Départ: " + name,
-      icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png'
-    });
+    if (depMarker) map.removeLayer(depMarker);
+    depMarker = L.marker(coords).addTo(map).bindPopup("<b>Départ:</b> " + name);
   } else {
     destCoord = coords; destName = name;
-    if (destMarker) destMarker.setMap(null);
-    destMarker = new google.maps.Marker({
-      position: coords,
-      map: map,
-      title: "Destination: " + name,
-      icon: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png'
-    });
+    if (destMarker) map.removeLayer(destMarker);
+    destMarker = L.marker(coords).addTo(map).bindPopup("<b>Destination:</b> " + name);
   } 
 
   if (depCoord && destCoord) {
@@ -634,18 +668,17 @@ function setPoint(coords, name, isDepart) {
 } 
 
 function calculateRouteDistance() {
-  directionsService.route({
-    origin: depCoord,
-    destination: destCoord,
-    travelMode: google.maps.TravelMode.DRIVING
-  }, (response, status) => {
-    if (status === 'OK') {
-      directionsRenderer.setDirections(response);
-      const distMeters = response.routes[0].legs[0].distance.value;
-      const distKm = (distMeters / 1000) * 1.025;
-      renderPrice(distKm, depName, destName);
-    }
-  });
+  fetch(`https://router.project-osrm.org/route/v1/driving/${depCoord[1]},${depCoord[0]};${destCoord[1]},${destCoord[0]}?overview=full&geometries=geojson`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.routes && data.routes.length > 0) {
+        const distKm = (data.routes[0].distance / 1000) * 1.025;
+        if (routePolyline) map.removeLayer(routePolyline);
+        routePolyline = L.geoJSON(data.routes[0].geometry, { style: { color: '#ffb900', weight: 5 } }).addTo(map);
+        map.fitBounds(routePolyline.getBounds(), { padding: [40, 40] });
+        renderPrice(distKm, depName, destName);
+      }
+    });
 } 
 
 function getPriceFromKm(n) {
@@ -657,8 +690,8 @@ function renderPrice(n, dep, dest) {
   document.getElementById('result').textContent = price + ' DH';
   document.getElementById('status').textContent = 'Distance : ' + n.toFixed(1) + ' km'; 
 
-  let depLink = depCoord ? `https://www.google.com/maps?q=${depCoord.lat},${depCoord.lng}` : '';
-  let destLink = destCoord ? `https://www.google.com/maps?q=${destCoord.lat},${destCoord.lng}` : ''; 
+  let depLink = depCoord ? `https://www.google.com/maps?q=${depCoord[0]},${depCoord[1]}` : '';
+  let destLink = destCoord ? `https://www.google.com/maps?q=${destCoord[0]},${destCoord[1]}` : ''; 
 
   let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${dep}\n🔗 Lien Maps : ${depLink}\n\n🏁 Destination : ${dest}\n🔗 Lien Maps : ${destLink}\n\n📏 Distance : ${n.toFixed(1)} km\n💰 Prix : ${price} DH`;
   document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
@@ -684,20 +717,23 @@ function switchMode(mode) {
 function calculateManualPrice() {
   let dep = document.getElementById('manual-depart').value.trim();
   let dest = document.getElementById('manual-dest').value.trim();
-  let distVal = parseFloat(document.getElementById('manual-dist').value); 
+  let distVal = parseFloat(document.getElementById('manual-dist').value);
 
-  if (isNaN(distVal) || distVal <= 0) {
+  if (!isNaN(distVal) && distVal > 0) {
+    let price = getPriceFromKm(distVal);
+    document.getElementById('result').textContent = price + ' DH';
+    document.getElementById('status').textContent = 'Distance estimée : ' + distVal.toFixed(1) + ' km';
+
+    let depText = dep ? dep : "Non spécifié";
+    let destText = dest ? dest : "Non spécifié";
+
+    let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison (Saisie directe).\n\n📍 Départ : ${depText}\n🏁 Destination : ${destText}\n📏 Distance estimée : ${distVal.toFixed(1)} km\n💰 Prix estimé : ${price} DH`;
+    document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
+  } else {
     resetPriceDisplay();
-    return;
-  } 
-
-  let price = getPriceFromKm(distVal);
-  document.getElementById('result').textContent = price + ' DH';
-  document.getElementById('status').textContent = 'Distance estimée : ' + distVal.toFixed(1) + ' km'; 
-
-  let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${dep || 'Non spécifié'}\n🏁 Destination : ${dest || 'Non spécifiée'}\n📏 Distance estimée : ${distVal.toFixed(1)} km\n💰 Prix estimé : ${price} DH`;
-  document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
+  }
 }
 </script>
 </body>
 </html>
+

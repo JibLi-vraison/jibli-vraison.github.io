@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="fr" id="html-root">
 <head>
@@ -16,23 +15,26 @@ a{text-decoration:none;color:inherit}
 .c{width:92%;max-width:1100px;margin:auto}
 
 header{position:sticky;top:0;background:#090909ee;border-bottom:1px solid #292929;z-index:999}
-nav{height:70px;display:flex;align-items:center;justify-content:space-between}
-.brand{font-size:24px;font-weight:900;font-style:italic}
+nav{height:70px;display:flex;align-items:center;justify-content:space-between;gap:5px}
+.brand{font-size:20px;font-weight:900;font-style:italic;white-space:nowrap}
 .brand span{color:#ffb900}
 .links{display:flex;gap:20px;font-size:14px}
-.btn{display:inline-block;padding:13px 18px;border-radius:11px;font-weight:800;cursor:pointer;border:none}
+.btn{display:inline-block;padding:10px 14px;border-radius:11px;font-weight:800;cursor:pointer;border:none;font-size:13px;white-space:nowrap}
 .yellow{background:#ffb900;color:#111}
 .dark{background:#171717;border:1px solid #555;color:#fff}
 
+/* SELECTEUR DE LANGUE COMPACT */
 .lang-select {
   background: #171717;
   color: #ffb900;
   border: 1px solid #ffb900;
-  padding: 6px 10px;
-  border-radius: 8px;
+  padding: 4px 6px;
+  border-radius: 6px;
   font-weight: bold;
+  font-size: 11px;
   cursor: pointer;
   outline: none;
+  max-width: 75px;
 }
 
 .hero{padding:40px 0;background:radial-gradient(circle at 50% 30%,#ffb90015,transparent 50%)}
@@ -67,6 +69,7 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
   .cta{display:block}
   .cta .btn{margin-top:20px}
   .tarif{padding:15px 12px}
+  .brand{font-size:18px}
 }
 
 /* RECHERCHE ET ENTRÉES */
@@ -155,11 +158,11 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 </head>
 <body>
 
-<header><div class="c"><nav><a class="brand" href="#">JibLi-<span>vraison</span></a><div class="links"><a href="#services" data-key="nav-services">Services</a><a href="#tarifs" data-key="nav-tarifs">Tarifs</a><a href="#comment" data-key="nav-comment">Comment ça marche</a><a href="#pourquoi" data-key="nav-pourquoi">Pourquoi nous</a><a href="#faq" data-key="nav-faq">FAQ</a></div><div style="display:flex;gap:8px;align-items:center">
+<header><div class="c"><nav><a class="brand" href="#">JibLi-<span>vraison</span></a><div class="links"><a href="#services" data-key="nav-services">Services</a><a href="#tarifs" data-key="nav-tarifs">Tarifs</a><a href="#comment" data-key="nav-comment">Comment ça marche</a><a href="#pourquoi" data-key="nav-pourquoi">Pourquoi nous</a><a href="#faq" data-key="nav-faq">FAQ</a></div><div style="display:flex;gap:5px;align-items:center">
 <select class="lang-select" onchange="changeLanguage(this.value)">
   <option value="fr">🇫🇷 FR</option>
-  <option value="ar">🇲🇦 العربية</option>
-  <option value="dar">🗣️ Darija</option>
+  <option value="ar">🇲🇦 AR</option>
+  <option value="dar">🗣️ DAR</option>
 </select>
 <a class="btn dark" href="mailto:jibli.vraison@gmail.com">Email</a><a class="btn yellow" href="https://wa.me/212634084543">WhatsApp</a></div></nav></div></header>
 
@@ -320,16 +323,16 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 <div id="section-manual" style="display:none; text-align:left;">
   <div style="display:grid;gap:15px;margin-bottom:18px;">
     <div>
-      <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dep-m">📍 Lieu de Départ</label>
-      <input type="text" id="manual-depart" class="search-input" style="width:100%" placeholder="Entrez le lieu de départ..." oninput="calculateManualPrice()">
+      <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dep-m">📍 Lieu de Départ (Optionnel)</label>
+      <input type="text" id="manual-depart" class="search-input" style="width:100%" placeholder="Ex: Gare Kenitra..." oninput="calculateManualPrice()">
     </div>
     <div>
-      <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dest-m">🏁 Destination</label>
-      <input type="text" id="manual-dest" class="search-input" style="width:100%" placeholder="Entrez la destination..." oninput="calculateManualPrice()">
+      <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dest-m">🏁 Destination (Optionnel)</label>
+      <input type="text" id="manual-dest" class="search-input" style="width:100%" placeholder="Ex: Mehdia..." oninput="calculateManualPrice()">
     </div>
     <div>
       <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dist-m">📏 Distance estimée (en km)</label>
-      <input type="number" id="manual-dist" class="search-input" style="width:100%" placeholder="Ex: 5.5" step="0.1" min="0" oninput="calculateManualPrice()">
+      <input type="number" id="manual-dist" class="search-input" style="width:100%" placeholder="Ex: 6" step="0.1" min="0" oninput="calculateManualPrice()">
     </div>
   </div>
 </div>
@@ -386,8 +389,8 @@ const translations = {
     "m-auto": "🗺️ Par Carte / Recherche", "m-manual": "✍️ Saisie directe",
     "lbl-dep": "🚦🟢 Départ", "lbl-dest": "🚦🔴 Destination",
     "map-moving": "Déplacez la carte...", "map-use": "Utiliser ce point ›",
-    "lbl-dep-m": "📍 Lieu de Départ", "lbl-dest-m": "🏁 Destination", "lbl-dist-m": "📏 Distance estimée (en km)",
-    "status-default": "Sélectionnez les lieux pour afficher le tarif.",
+    "lbl-dep-m": "📍 Lieu de Départ (Optionnel)", "lbl-dest-m": "🏁 Destination (Optionnel)", "lbl-dist-m": "📏 Distance estimée (en km)",
+    "status-default": "Sélectionnez les lieux ou entrez la distance pour afficher le tarif.",
     "why-title": "Pourquoi choisir JibLi-vraison ?", "why-sub": "Un service pensé pour vous faciliter la vie.",
     "why-1-t": "Rapidité", "why-1-d": "Livraison directe à moto dans Kénitra.",
     "why-2-t": "Transparence", "why-2-d": "Calcul clair du tarif avant commande.",
@@ -418,8 +421,8 @@ const translations = {
     "m-auto": "🗺️ عبر الخريطة / البحث", "m-manual": "✍️ إدخال مباشر",
     "lbl-dep": "🚦🟢 مكان الانطلاق", "lbl-dest": "🚦🔴 الوجهة",
     "map-moving": "حرك الخريطة...", "map-use": "استخدم هذه النقطة ›",
-    "lbl-dep-m": "📍 مكان الانطلاق", "lbl-dest-m": "🏁 الوجهة", "lbl-dist-m": "📏 المسافة التقديرية (بالكيلومتر)",
-    "status-default": "حدد الأماكن لعرض السعر.",
+    "lbl-dep-m": "📍 مكان الانطلاق (اختياري)", "lbl-dest-m": "🏁 الوجهة (اختياري)", "lbl-dist-m": "📏 المسافة التقديرية (بالكيلومتر)",
+    "status-default": "حدد الأماكن أو أدخل المسافة لعرض السعر.",
     "why-title": "لماذا تختار جيب لي-فريزون؟", "why-sub": "خدمة مصممة لتسهيل حياتك.",
     "why-1-t": "السرعة", "why-1-d": "توصيل مباشر بالدراجة النارية بالقنيطرة.",
     "why-2-t": "الشفافية", "why-2-d": "حساب واضح للسعر قبل الطلب.",
@@ -450,8 +453,8 @@ const translations = {
     "m-auto": "🗺️ الخريطة والبحث", "m-manual": "✍️ كتب بيديك",
     "lbl-dep": "🚦🟢 منين نجيبو (المنطلق)", "lbl-dest": "🚦🔴 فين ندبو (الوجهة)",
     "map-moving": "حرك الخريطة...", "map-use": "استعمل هاد البلاصة ›",
-    "lbl-dep-m": "📍 منين نجيبو", "lbl-dest-m": "🏁 فين نديو", "lbl-dist-m": "📏 الكيلومتراج التقديري (بـ Km)",
-    "status-default": "عزل البلايص باش يبان لك الثمن.",
+    "lbl-dep-m": "📍 منين نجيبو (اختياري)", "lbl-dest-m": "🏁 فين نديو (اختياري)", "lbl-dist-m": "📏 الكيلومتراج التقديري (بـ Km)",
+    "status-default": "عزل البلايص أو كتب الكيلومتراج باش يبان لك الثمن.",
     "why-title": "علاش تختار جيب لي-فريزون؟", "why-sub": "خدمة مصاوبة باش تسهل عليك الحياة.",
     "why-1-t": "السرعة", "why-1-d": "توصيل ديريكت بالموطور ف القنيطرة.",
     "why-2-t": "الشفافية", "why-2-d": "الثمن باين ومحسوب قبل ما تطلب.",
@@ -684,23 +687,18 @@ function calculateManualPrice() {
   let dest = document.getElementById('manual-dest').value.trim();
   let distInput = document.getElementById('manual-dist').value;
 
-  if (dep && dest) {
-    if (distInput && !isNaN(distInput) && parseFloat(distInput) > 0) {
-      let n = parseFloat(distInput);
-      let price = getPriceFromKm(n);
+  if (distInput && !isNaN(distInput) && parseFloat(distInput) > 0) {
+    let n = parseFloat(distInput);
+    let price = getPriceFromKm(n);
 
-      document.getElementById('result').textContent = price + ' DH';
-      document.getElementById('status').textContent = 'Distance saisie : ' + n.toFixed(1) + ' km';
+    document.getElementById('result').textContent = price + ' DH';
+    document.getElementById('status').textContent = 'Distance : ' + n.toFixed(1) + ' km';
 
-      let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${dep}\n🏁 Destination : ${dest}\n📏 Distance : ${n.toFixed(1)} km\n💰 Prix : ${price} DH`;
-      document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
-    } else {
-      document.getElementById('result').textContent = 'Sur devis';
-      document.getElementById('status').textContent = 'Saisie manuelle sans kilométrage précis.';
+    let depTxt = dep ? dep : 'Non spécifié';
+    let destTxt = dest ? dest : 'Non spécifié';
 
-      let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${dep}\n🏁 Destination : ${dest}`;
-      document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
-    }
+    let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${depTxt}\n🏁 Destination : ${destTxt}\n📏 Distance : ${n.toFixed(1)} km\n💰 Prix : ${price} DH`;
+    document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
   } else {
     resetPriceDisplay();
   }
@@ -708,3 +706,4 @@ function calculateManualPrice() {
 </script>
 </body>
 </html>
+

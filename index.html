@@ -188,30 +188,30 @@ filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
 <section class="hero">
 <div class="c">
 <div class="poster-container">
-<!-- POSTER SVG -->
-<svg viewBox="0 0 1000 650" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="background:#090909; font-family:Arial, sans-serif; border-radius:18px; border:1px solid #333; box-shadow:0 12px 40px rgba(0,0,0,0.8);">
+<!-- POSTER SVG FIXÉ EN LTR POUR ÉVITER TOUT DÉCALAGE -->
+<svg viewBox="0 0 1000 650" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="background:#090909; font-family:Arial, sans-serif; border-radius:18px; border:1px solid #333; box-shadow:0 12px 40px rgba(0,0,0,0.8); direction: ltr;">
 <rect width="1000" height="650" fill="#0c0c0c" rx="18"/>
 <path d="M 480 0 L 1000 0 L 1000 650 L 380 650 Z" fill="#141414"/>
 <circle cx="750" cy="280" r="220" fill="#ffb900" opacity="0.04"/>
 
 <!-- Header Brand -->
-<g transform="translate(45, 50)">
-<text x="0" y="0" font-weight="900" font-style="italic" font-size="52" fill="#ffffff" direction="ltr" text-anchor="start">JibLi-<tspan fill="#ffb900">vraison</tspan></text>
+<g transform="translate(45, 50)" style="direction: ltr;">
+<text x="0" y="0" font-weight="900" font-style="italic" font-size="52" fill="#ffffff" text-anchor="start">JibLi-<tspan fill="#ffb900">vraison</tspan></text>
 <line x1="0" y1="18" x2="380" y2="18" stroke="#ffb900" stroke-width="4" stroke-linecap="round"/>
-<text x="0" y="44" id="svg-sub" font-weight="bold" font-size="16" fill="#aaa" letter-spacing="2" data-key="svg-sub">SERVICE DE COURSIER À MOTO</text>
+<text x="0" y="44" id="svg-sub" font-weight="bold" font-size="15" fill="#aaa" letter-spacing="1" text-anchor="start" data-key="svg-sub">SERVICE DE COURSIER À MOTO</text>
 </g>
 
 <!-- Zone Disponibilité -->
-<g transform="translate(45, 140)">
+<g transform="translate(45, 140)" style="direction: ltr;">
 <rect width="420" height="125" fill="#ffb900" rx="14"/>
-<text x="24" y="34" id="svg-disp-title" font-weight="900" font-size="18" fill="#111" data-key="svg-disp-title">DISPONIBLE À KÉNITRA</text>
+<text x="24" y="34" id="svg-disp-title" font-weight="900" font-size="18" fill="#111" text-anchor="start" data-key="svg-disp-title">DISPONIBLE À KÉNITRA</text>
 <line x1="24" y1="46" x2="396" y2="46" stroke="#111" stroke-width="1.5" opacity="0.3"/>
-<text x="24" y="76" id="svg-disp-1" font-weight="bold" font-size="15" fill="#111" data-key="svg-disp-1">🕒 Lun - Sam : 17h00 à 02h00</text>
-<text x="24" y="104" id="svg-disp-2" font-weight="bold" font-size="15" fill="#111" data-key="svg-disp-2">🕒 Dimanche : 10h00 à 02h00</text>
+<text x="24" y="76" id="svg-disp-1" font-weight="bold" font-size="14" fill="#111" text-anchor="start" data-key="svg-disp-1">🕒 Lun - Sam : 17h00 à 02h00</text>
+<text x="24" y="104" id="svg-disp-2" font-weight="bold" font-size="14" fill="#111" text-anchor="start" data-key="svg-disp-2">🕒 Dimanche : 10h00 à 02h00</text>
 </g>
 
 <!-- Badges -->
-<g transform="translate(45, 290)">
+<g transform="translate(45, 290)" style="direction: ltr;">
 <rect x="0" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
 <text x="65" y="30" font-size="20" text-anchor="middle">⚡</text>
 <text x="65" y="52" id="svg-badge-1" font-weight="bold" font-size="11" fill="#fff" text-anchor="middle" data-key="svg-badge-1">LIVRAISON RAPIDE</text>
@@ -226,50 +226,50 @@ filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
 </g>
 
 <!-- Services Grid -->
-<g transform="translate(45, 390)">
-<text x="0" y="20" id="svg-serv-head" font-weight="900" font-size="15" fill="#ffb900" letter-spacing="1" data-key="svg-serv-head">TOUS VOS BESOINS, UNE SEULE LIVRAISON !</text>
+<g transform="translate(45, 390)" style="direction: ltr;">
+<text x="0" y="20" id="svg-serv-head" font-weight="900" font-size="14" fill="#ffb900" letter-spacing="1" text-anchor="start" data-key="svg-serv-head">TOUS VOS BESOINS, UNE SEULE LIVRAISON !</text>
 
 <g transform="translate(0, 35)">
 <rect x="0" y="0" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
-<text x="12" y="26" font-size="16">🛒</text>
-<text x="38" y="26" id="svg-s1" font-weight="bold" font-size="13" fill="#eee" data-key="svg-s1">E-Commerce</text>
+<text x="12" y="26" font-size="16" text-anchor="start">🛒</text>
+<text x="38" y="26" id="svg-s1" font-weight="bold" font-size="12" fill="#eee" text-anchor="start" data-key="svg-s1">E-Commerce</text>
 
 <rect x="212" y="0" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
-<text x="224" y="26" font-size="16">🍔</text>
-<text x="250" y="26" id="svg-s2" font-weight="bold" font-size="13" fill="#eee" data-key="svg-s2">Restaurants</text>
+<text x="224" y="26" font-size="16" text-anchor="start">🍔</text>
+<text x="250" y="26" id="svg-s2" font-weight="bold" font-size="12" fill="#eee" text-anchor="start" data-key="svg-s2">Restaurants</text>
 
 <rect x="0" y="50" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
-<text x="12" y="76" font-size="16">💊</text>
-<text x="38" y="76" id="svg-s3" font-weight="bold" font-size="13" fill="#eee" data-key="svg-s3">Pharmacie</text>
+<text x="12" y="76" font-size="16" text-anchor="start">💊</text>
+<text x="38" y="76" id="svg-s3" font-weight="bold" font-size="12" fill="#eee" text-anchor="start" data-key="svg-s3">Pharmacie</text>
 
 <rect x="212" y="50" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
-<text x="224" y="76" font-size="16">📦</text>
-<text x="250" y="76" id="svg-s4" font-weight="bold" font-size="11" fill="#eee" data-key="svg-s4">Petits Colis &amp; Courses</text>
+<text x="224" y="76" font-size="16" text-anchor="start">📦</text>
+<text x="250" y="76" id="svg-s4" font-weight="bold" font-size="11" fill="#eee" text-anchor="start" data-key="svg-s4">Petits Colis &amp; Courses</text>
 </g>
 </g>
 
-<!-- Moto Illustration (Fixé en LTR pour conserver la boîte derrière le scooter) -->
-<g transform="translate(520, 100)" direction="ltr">
+<!-- Moto Illustration -->
+<g transform="translate(520, 100)" style="direction: ltr;">
 <circle cx="210" cy="210" r="170" fill="#1a1a1a" stroke="#ffb900" stroke-width="2" stroke-dasharray="8,8"/>
-<!-- Scooter vers la gauche -->
-<text x="200" y="250" font-size="180" text-anchor="middle" direction="ltr">🛵</text>
+<!-- Scooter -->
+<text x="200" y="250" font-size="180" text-anchor="middle">🛵</text>
 
-<!-- Boîte de livraison placée STRICTEMENT DERRIÈRE (à droite) du scooter -->
-<g transform="translate(265, 90)" direction="ltr">
+<!-- Boîte de livraison fixée derrière le scooter -->
+<g transform="translate(265, 90)">
 <rect width="110" height="90" fill="#ffb900" rx="12"/>
-<text x="55" y="38" font-weight="900" font-size="14" fill="#111" text-anchor="middle" direction="ltr">JibLi-</text>
-<text x="55" y="58" font-weight="900" font-size="14" fill="#111" text-anchor="middle" direction="ltr">vraison</text>
-<text x="55" y="78" font-size="16" text-anchor="middle" direction="ltr">📍</text>
+<text x="55" y="38" font-weight="900" font-size="14" fill="#111" text-anchor="middle">JibLi-</text>
+<text x="55" y="58" font-weight="900" font-size="14" fill="#111" text-anchor="middle">vraison</text>
+<text x="55" y="78" font-size="16" text-anchor="middle">📍</text>
 </g>
 </g>
 
 <!-- Banner Bottom -->
 <a href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison." target="_blank" style="cursor:pointer">
-<g transform="translate(45, 555)">
+<g transform="translate(45, 555)" style="direction: ltr;">
 <rect width="910" height="55" fill="#181818" stroke="#ffb900" stroke-width="2" rx="14"/>
-<text x="25" y="34" id="svg-cta" font-weight="bold" font-size="16" fill="#fff" data-key="svg-cta">REJOIGNEZ-NOUS DÈS MAINTENANT !</text>
+<text x="25" y="34" id="svg-cta" font-weight="bold" font-size="15" fill="#fff" text-anchor="start" data-key="svg-cta">REJOIGNEZ-NOUS DÈS MAINTENANT !</text>
 <rect x="620" y="10" width="270" height="35" fill="#25d366" rx="8"/>
-<text x="755" y="33" font-weight="900" font-size="18" fill="#fff" text-anchor="middle" direction="ltr">📲 06 34 08 45 43</text>
+<text x="755" y="33" font-weight="900" font-size="18" fill="#fff" text-anchor="middle">📲 06 34 08 45 43</text>
 </g>
 </a>
 </svg>

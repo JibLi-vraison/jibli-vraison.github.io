@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="fr" id="html-root">
 <head>
@@ -16,12 +17,17 @@ a{text-decoration:none;color:inherit}
 
 header{position:sticky;top:0;background:#090909ee;border-bottom:1px solid #292929;z-index:999}
 nav{height:70px;display:flex;align-items:center;justify-content:space-between;gap:5px}
-.brand{font-size:20px;font-weight:900;font-style:italic;white-space:nowrap}
+.brand{font-size:20px;font-weight:900;font-style:italic;white-space:nowrap;direction:ltr !important;}
 .brand span{color:#ffb900}
 .links{display:flex;gap:20px;font-size:14px}
 .btn{display:inline-block;padding:10px 14px;border-radius:11px;font-weight:800;cursor:pointer;border:none;font-size:13px;white-space:nowrap}
 .yellow{background:#ffb900;color:#111}
 .dark{background:#171717;border:1px solid #555;color:#fff}
+
+/* FIX RTL POUR LES NUMÉROS ET SVG */
+.phone-num, .poster-container, .leaflet-container, #map {
+  direction: ltr !important;
+}
 
 /* SELECTEUR DE LANGUE COMPACT */
 .lang-select {
@@ -35,6 +41,7 @@ nav{height:70px;display:flex;align-items:center;justify-content:space-between;ga
   cursor: pointer;
   outline: none;
   max-width: 75px;
+  direction: ltr !important;
 }
 
 .hero{padding:40px 0;background:radial-gradient(circle at 50% 30%,#ffb90015,transparent 50%)}
@@ -55,7 +62,7 @@ section{padding:50px 0}
 .whyitem{text-align:center}
 .whyitem span{font-size:28px}
 .tarif{max-width:650px;margin:auto;text-align:center;padding:20px}
-.result{font-size:32px;font-weight:900;color:#ffb900;margin:12px 0}
+.result{font-size:32px;font-weight:900;color:#ffb900;margin:12px 0;direction:ltr !important;}
 .cta{background:linear-gradient(135deg,#ffb900,#f08d00);color:#111;border-radius:23px;padding:40px;display:flex;justify-content:space-between;align-items:center;gap:20px}
 .cta h2{font-size:32px;margin:0}
 .cta .btn{background:#111;color:#fff}
@@ -73,12 +80,13 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 }
 
 /* RECHERCHE ET ENTRÉES */
-.search-box { position: relative; width: 100%; text-align: left; }
+.search-box { position: relative; width: 100%; text-align: initial; }
 .input-wrapper { position: relative; flex: 1; display: flex; align-items: center; }
 .input-group { display: flex; gap: 8px; position: relative; z-index: 10; }
 .search-input { width: 100%; padding: 14px 35px 14px 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 15px; outline: none; }
 .search-input:focus { border-color: #ffb900; }
 .clear-btn { position: absolute; right: 10px; background: none; border: none; color: #888; font-size: 18px; font-weight: bold; cursor: pointer; display: none; padding: 2px 6px; }
+html[dir="rtl"] .clear-btn { right: auto; left: 10px; }
 .clear-btn:hover { color: #ffb900; }
 
 .gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 12px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; }
@@ -111,6 +119,7 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
   border-bottom: 1px solid #2e2e2e; 
   font-size: 13px;
   line-height: 1.4;
+  text-align: start;
 }
 .suggestions-list li:last-child { border-bottom: none; }
 .suggestions-list li:hover { background: #2a2a2a; color: #ffb900; }
@@ -249,7 +258,7 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 
     <div class="hero-actions">
       <a class="btn yellow" id="btn-hero-wa" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison." data-key="btn-wa">Commander sur WhatsApp</a>
-      <a class="btn dark" href="tel:+212634084543">📞 06 34 08 45 43</a>
+      <a class="btn dark phone-num" href="tel:+212634084543">📞 06 34 08 45 43</a>
     </div>
   </div>
 </section>
@@ -279,7 +288,7 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 
 <!-- MODE AUTOMATIQUE & CARTE -->
 <div id="section-auto">
-  <div style="display:grid;gap:15px;margin-bottom:18px;text-align:left">
+  <div style="display:grid;gap:15px;margin-bottom:18px;text-align:start;">
     <div>
       <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dep">🚦🟢 Départ</label>
       <div class="search-box">
@@ -322,7 +331,7 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 </div>
 
 <!-- MODE SAISIE MANUELLE -->
-<div id="section-manual" style="display:none; text-align:left;">
+<div id="section-manual" style="display:none; text-align:start;">
   <div style="display:grid;gap:15px;margin-bottom:18px;">
     <div>
       <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dep-m">📍 Lieu de Départ (Optionnel)</label>
@@ -487,6 +496,10 @@ function changeLanguage(lang) {
       el.innerHTML = dict[key];
     }
   });
+
+  if (map) {
+    setTimeout(() => { map.invalidateSize(); }, 200);
+  }
 
   if (currentMode === 'manual') calculateManualPrice();
   else if (depCoord && destCoord) calculateRouteDistance();
@@ -711,4 +724,3 @@ function calculateManualPrice() {
 </script>
 </body>
 </html>
-

@@ -16,22 +16,24 @@ a{text-decoration:none;color:inherit}
 
 header{position:sticky;top:0;background:#090909ee;border-bottom:1px solid #292929;z-index:999}
 nav{height:70px;display:flex;align-items:center;justify-content:space-between}
-.brand{font-size:24px;font-weight:900;font-style:italic}
+.brand{font-size:24px;font-weight:900;font-style:italic;white-space:nowrap}
 .brand span{color:#ffb900}
 .links{display:flex;gap:20px;font-size:14px}
-.btn{display:inline-block;padding:11px 16px;border-radius:11px;font-weight:800;cursor:pointer;border:none}
+.btn{display:inline-block;padding:9px 14px;border-radius:10px;font-weight:800;cursor:pointer;border:none;font-size:13px}
 .yellow{background:#ffb900;color:#111}
 .dark{background:#171717;border:1px solid #555;color:#fff}
 
+/* L-ICONE TA3 LA LANGUE SGHIRA */
 .lang-select {
   background: #171717;
   color: #ffb900;
   border: 1px solid #ffb900;
-  padding: 8px 12px;
-  border-radius: 8px;
+  padding: 5px 8px;
+  border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
   outline: none;
+  font-size: 11px;
 }
 
 .hero{padding:25px 0 35px 0;background:radial-gradient(circle at 50% 30%,#ffb90015,transparent 50%)}
@@ -43,7 +45,7 @@ nav{height:70px;display:flex;align-items:center;justify-content:space-between}
   border-radius: 20px;
   padding: 25px;
   max-width: 850px;
-  margin: 0 auto 20px auto;
+  margin: 0 auto;
   box-shadow: 0 10px 30px rgba(0,0,0,0.8);
 }
 
@@ -201,13 +203,6 @@ nav{height:70px;display:flex;align-items:center;justify-content:space-between}
   box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
 
-/* GLOVO CATEGORIES MINI BANNER */
-.glovo-categories-container {
-  width: 100%;
-  max-width: 850px;
-  margin: 0 auto;
-}
-
 section{padding:35px 0}
 .title{text-align:center;font-size:30px;margin-bottom:8px}
 .sub{text-align:center;color:#aaa;margin-top:0;margin-bottom:25px}
@@ -287,10 +282,10 @@ html[dir="rtl"] .clear-btn { right: auto; left: 10px; }
         <a href="#pourquoi" data-i18n="nav_why">Pourquoi nous</a>
         <a href="#faq" data-i18n="nav_faq">FAQ</a>
       </div>
-      <div style="display:flex;gap:8px;align-items:center">
+      <div style="display:flex;gap:6px;align-items:center">
         <select class="lang-select" onchange="changeLanguage(this.value)">
           <option value="fr" selected>🇫🇷 FR</option>
-          <option value="ar">🇲🇦 العَرَبِيّة</option>
+          <option value="ar">🇲🇦 AR</option>
         </select>
         <a class="btn dark" href="mailto:jibli.vraison@gmail.com" data-i18n="btn_email">Email</a>
         <a class="btn yellow" href="https://wa.me/212634084543" data-i18n="btn_whatsapp">WhatsApp</a>
@@ -344,55 +339,6 @@ html[dir="rtl"] .clear-btn { right: auto; left: 10px; }
         <span data-i18n="footer_join">REJOIGNEZ-NOUS DÈS MAINTENANT !</span>
         <div class="phone-pill">📲 06 34 08 45 43</div>
       </div>
-    </div>
-
-    <!-- GLOVO MINI BANNER (CATEGORIES) -->
-    <div class="glovo-categories-container">
-      <svg viewBox="0 0 1000 580" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="background:#111; border-radius:20px; border:2px solid #ffb90033; box-shadow:0 10px 30px rgba(0,0,0,0.6);">
-        <circle cx="500" cy="290" r="380" fill="#ffb900" opacity="0.05"/>
-
-        <!-- ROW 1 -->
-        <g transform="translate(200, 30)">
-          <circle cx="120" cy="100" r="100" fill="#ffb900" opacity="0.15"/>
-          <circle cx="120" cy="100" r="88" fill="#1a1a1a" stroke="#ffb900" stroke-width="3"/>
-          <text x="120" y="112" font-size="65" text-anchor="middle">🍜🍔</text>
-          <rect x="20" y="165" width="200" height="42" rx="21" fill="#111" stroke="#ffb900" stroke-width="2"/>
-          <text id="cat-1" x="120" y="192" font-weight="900" font-size="18" fill="#ffffff" text-anchor="middle">Restaurants</text>
-        </g>
-
-        <g transform="translate(560, 30)">
-          <circle cx="120" cy="100" r="100" fill="#ffb900" opacity="0.15"/>
-          <circle cx="120" cy="100" r="88" fill="#1a1a1a" stroke="#ffb900" stroke-width="3"/>
-          <text x="120" y="112" font-size="65" text-anchor="middle">🛒🥦</text>
-          <rect x="20" y="165" width="200" height="42" rx="21" fill="#111" stroke="#ffb900" stroke-width="2"/>
-          <text id="cat-2" x="120" y="192" font-weight="900" font-size="18" fill="#ffffff" text-anchor="middle">Courses</text>
-        </g>
-
-        <!-- ROW 2 -->
-        <g transform="translate(50, 290)">
-          <circle cx="120" cy="100" r="100" fill="#ffb900" opacity="0.15"/>
-          <circle cx="120" cy="100" r="88" fill="#1a1a1a" stroke="#ffb900" stroke-width="3"/>
-          <text x="120" y="112" font-size="65" text-anchor="middle">🛍️🛍️</text>
-          <rect x="20" y="165" width="200" height="42" rx="21" fill="#111" stroke="#ffb900" stroke-width="2"/>
-          <text id="cat-3" x="120" y="192" font-weight="900" font-size="18" fill="#ffffff" text-anchor="middle">Boutiques</text>
-        </g>
-
-        <g transform="translate(380, 290)">
-          <circle cx="120" cy="100" r="100" fill="#ffb900" opacity="0.15"/>
-          <circle cx="120" cy="100" r="88" fill="#1a1a1a" stroke="#ffb900" stroke-width="3"/>
-          <text x="120" y="112" font-size="60" text-anchor="middle">💊🟢</text>
-          <rect x="20" y="165" width="200" height="42" rx="21" fill="#111" stroke="#ffb900" stroke-width="2"/>
-          <text id="cat-4" x="120" y="192" font-weight="900" font-size="17" fill="#ffffff" text-anchor="middle">Parapharmacies</text>
-        </g>
-
-        <g transform="translate(710, 290)">
-          <circle cx="120" cy="100" r="100" fill="#ffb900" opacity="0.15"/>
-          <circle cx="120" cy="100" r="88" fill="#1a1a1a" stroke="#ffb900" stroke-width="3"/>
-          <text x="120" y="112" font-size="65" text-anchor="middle">🛵📦</text>
-          <rect x="10" y="165" width="220" height="46" rx="23" fill="#111" stroke="#ffb900" stroke-width="2"/>
-          <text id="cat-5" x="120" y="194" font-weight="900" font-size="15" fill="#ffffff" text-anchor="middle">Service Coursier</text>
-        </g>
-      </svg>
     </div>
 
     <div style="text-align:center;margin-top:20px;">
@@ -609,7 +555,6 @@ const translations = {
     faq_3_q: "Comment le prix est-il calculé ?", faq_3_a: "Le prix est calculé automatiquement en fonction des kilomètres parcourus.",
     faq_4_q: "Quels sont les horaires de travail ?", faq_4_a: "Du Lundi au Samedi: 17h00 à 02h00.<br>Dimanche: 10h00 à 02h00.",
     footer_text: "Service de livraison rapide à Kénitra.",
-    cat_1: "Restaurants", cat_2: "Courses", cat_3: "Boutiques", cat_4: "Parapharmacies", cat_5: "Service Coursier",
     dh: "DH",
     agreed: "Sur accord"
   },
@@ -672,7 +617,6 @@ const translations = {
     faq_3_q: "كيف يتم معرفة السعر؟", faq_3_a: "يتم حساب الثمن أوتوماتيكياً بناءً على الكيلومترات المقطوعة.",
     faq_4_q: "ما هي أوقات العمل؟", faq_4_a: "من الإثنين إلى السبت: 17:00 إلى 02:00 صباحاً.<br>الأحد: 10:00 صباحاً إلى 02:00 صباحاً.",
     footer_text: "خدمة التوصيل السريع بالقنيطرة.",
-    cat_1: "مطاعم", cat_2: "المشتريات", cat_3: "متاجر", cat_4: "شبه صيدلية", cat_5: "خدمة التوصيل السريع",
     dh: "درهم",
     agreed: "حسب الاتفاق"
   }
@@ -691,12 +635,6 @@ function changeLanguage(lang) {
       el.innerHTML = translations[lang][key];
     }
   });
-
-  document.getElementById('cat-1').textContent = translations[lang].cat_1;
-  document.getElementById('cat-2').textContent = translations[lang].cat_2;
-  document.getElementById('cat-3').textContent = translations[lang].cat_3;
-  document.getElementById('cat-4').textContent = translations[lang].cat_4;
-  document.getElementById('cat-5').textContent = translations[lang].cat_5;
 
   if (depCoord && destCoord) calculateRouteDistance();
   else if (currentMode === 'manual') calculateManualPrice();

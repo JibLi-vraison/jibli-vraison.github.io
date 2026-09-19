@@ -1,25 +1,32 @@
-
 <!doctype html>
 <html lang="fr" id="html-root">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>JibLi-vraison | Service de livraison</title> 
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JibLi-vraison | Service de livraison</title>
+
+<!-- Leaflet CSS & JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:#090909;color:#fff;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
-.c{width:92%;max-width:1100px;margin:auto} 
+.c{width:92%;max-width:1100px;margin:auto}
 
 header{position:sticky;top:0;background:#090909ee;border-bottom:1px solid #292929;z-index:999}
 nav{height:70px;display:flex;align-items:center;justify-content:space-between;gap:5px}
-.brand{font-size:20px;font-weight:900;font-style:italic;white-space:nowrap}
+.brand{font-size:20px;font-weight:900;font-style:italic;white-space:nowrap;direction:ltr !important;}
 .brand span{color:#ffb900}
 .links{display:flex;gap:20px;font-size:14px}
 .btn{display:inline-block;padding:10px 14px;border-radius:11px;font-weight:800;cursor:pointer;border:none;font-size:13px;white-space:nowrap}
 .yellow{background:#ffb900;color:#111}
-.dark{background:#171717;border:1px solid #555;color:#fff} 
+.dark{background:#171717;border:1px solid #555;color:#fff}
+
+/* FIX RTL POUR LES NUMÉROS ET SVG */
+.phone-num, .poster-container, .leaflet-container, #map {
+  direction: ltr !important;
+}
 
 /* SELECTEUR DE LANGUE COMPACT */
 .lang-select {
@@ -33,11 +40,12 @@ nav{height:70px;display:flex;align-items:center;justify-content:space-between;ga
   cursor: pointer;
   outline: none;
   max-width: 75px;
-} 
+  direction: ltr !important;
+}
 
 .hero{padding:40px 0;background:radial-gradient(circle at 50% 30%,#ffb90015,transparent 50%)}
 .poster-container{width:100%;max-width:900px;margin:0 auto 25px auto}
-.hero-actions{display:flex;justify-content:center;gap:15px;flex-wrap:wrap} 
+.hero-actions{display:flex;justify-content:center;gap:15px;flex-wrap:wrap}
 
 section{padding:50px 0}
 .title{text-align:center;font-size:35px}
@@ -53,12 +61,12 @@ section{padding:50px 0}
 .whyitem{text-align:center}
 .whyitem span{font-size:28px}
 .tarif{max-width:650px;margin:auto;text-align:center;padding:20px}
-.result{font-size:32px;font-weight:900;color:#ffb900;margin:12px 0}
+.result{font-size:32px;font-weight:900;color:#ffb900;margin:12px 0;direction:ltr !important;}
 .cta{background:linear-gradient(135deg,#ffb900,#f08d00);color:#111;border-radius:23px;padding:40px;display:flex;justify-content:space-between;align-items:center;gap:20px}
 .cta h2{font-size:32px;margin:0}
 .cta .btn{background:#111;color:#fff}
 footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
-.wa{position:fixed;right:20px;bottom:25px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:28px;z-index:9999;box-shadow:0 4px 15px rgba(0,0,0,0.5)} 
+.wa{position:fixed;right:20px;bottom:25px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:28px;z-index:9999;box-shadow:0 4px 15px rgba(0,0,0,0.5)}
 
 @media(max-width:800px){
   .links{display:none}
@@ -68,50 +76,95 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
   .cta .btn{margin-top:20px}
   .tarif{padding:15px 12px}
   .brand{font-size:18px}
-} 
+}
 
 /* RECHERCHE ET ENTRÉES */
-.search-box { position: relative; width: 100%; text-align: left; }
+.search-box { position: relative; width: 100%; text-align: initial; }
 .input-wrapper { position: relative; flex: 1; display: flex; align-items: center; }
 .input-group { display: flex; gap: 8px; position: relative; z-index: 10; }
 .search-input { width: 100%; padding: 14px 35px 14px 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 15px; outline: none; }
 .search-input:focus { border-color: #ffb900; }
 .clear-btn { position: absolute; right: 10px; background: none; border: none; color: #888; font-size: 18px; font-weight: bold; cursor: pointer; display: none; padding: 2px 6px; }
-.clear-btn:hover { color: #ffb900; } 
+html[dir="rtl"] .clear-btn { right: auto; left: 10px; }
+.clear-btn:hover { color: #ffb900; }
 
-.gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 12px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; } 
+.gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 12px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; }
 
 .mode-selector { display: flex; gap: 10px; margin-bottom: 20px; background: #222; padding: 5px; border-radius: 12px; }
 .mode-btn { flex: 1; padding: 12px 8px; border: none; background: transparent; color: #aaa; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 13px; }
-.mode-btn.active { background: #ffb900; color: #111; } 
+.mode-btn.active { background: #ffb900; color: #111; }
 
-/* STYLE POUR GOOGLE PLACES AUTOCOMPLETE */
-.pac-container {
-  background-color: #1e1e1e !important;
-  border: 1px solid #ffb900 !important;
-  border-radius: 10px !important;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.8) !important;
-  font-family: Arial, sans-serif !important;
-  z-index: 9999 !important;
+.suggestions-list { 
+  position: absolute; 
+  top: 100%; 
+  left: 0; 
+  right: 0; 
+  background: #1e1e1e; 
+  border: 1px solid #ffb900; 
+  border-radius: 10px; 
+  max-height: 180px; 
+  overflow-y: auto; 
+  z-index: 3000; 
+  display: none; 
+  margin: 4px 0 0 0; 
+  padding: 0; 
+  list-style: none; 
+  box-shadow: 0 8px 20px rgba(0,0,0,0.8);
 }
-.pac-item {
-  color: #eee !important;
-  padding: 10px !important;
-  border-bottom: 1px solid #2e2e2e !important;
-  font-size: 13px !important;
-  cursor: pointer !important;
+.suggestions-list li { 
+  padding: 12px; 
+  cursor: pointer; 
+  color: #eee; 
+  border-bottom: 1px solid #2e2e2e; 
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: start;
 }
-.pac-item:hover { background-color: #2a2a2a !important; color: #ffb900 !important; }
-.pac-item-query { color: #ffb900 !important; font-size: 14px !important; }
-.pac-matched { color: #ffb900 !important; font-weight: bold !important; }
-.pac-icon { display: none !important; }
+.suggestions-list li:last-child { border-bottom: none; }
+.suggestions-list li:hover { background: #2a2a2a; color: #ffb900; }
 
-/* CARTE GOOGLE MAPS */
+/* CARTE STYLE GLOVO */
 .map-wrapper { position: relative; width: 100%; height: 350px; margin-top: 10px; border-radius: 15px; overflow: hidden; border: 2px solid #ffb900; }
-#map { width: 100%; height: 100%; } 
+#map { width: 100%; height: 100%; z-index: 1; }
+
+.center-picker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  z-index: 1000;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.picker-card {
+  background: #fff;
+  color: #111;
+  padding: 8px 14px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  font-size: 13px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 6px;
+  pointer-events: auto;
+  cursor: pointer;
+  border: 2px solid #ffb900;
+  transition: transform 0.2s;
+}
+.picker-card:active { transform: scale(0.95); }
+.picker-card span { color: #00a082; display: block; font-size: 11px; margin-top: 2px; text-decoration: underline; }
+
+.picker-pin {
+  font-size: 38px;
+  line-height: 1;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
+}
 </style>
 </head>
-<body> 
+<body>
 
 <header><div class="c"><nav><a class="brand" href="#">JibLi-<span>vraison</span></a><div class="links"><a href="#services" data-key="nav-services">Services</a><a href="#tarifs" data-key="nav-tarifs">Tarifs</a><a href="#comment" data-key="nav-comment">Comment ça marche</a><a href="#pourquoi" data-key="nav-pourquoi">Pourquoi nous</a><a href="#faq" data-key="nav-faq">FAQ</a></div><div style="display:flex;gap:5px;align-items:center">
 <select class="lang-select" onchange="changeLanguage(this.value)">
@@ -119,7 +172,7 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
   <option value="ar">🇲🇦 AR</option>
   <option value="dar">🗣️ DAR</option>
 </select>
-<a class="btn dark" href="mailto:jibli.vraison@gmail.com">Email</a><a class="btn yellow" href="https://wa.me/212634084543">WhatsApp</a></div></nav></div></header> 
+<a class="btn dark" href="mailto:jibli.vraison@gmail.com">Email</a><a class="btn yellow" href="https://wa.me/212634084543">WhatsApp</a></div></nav></div></header>
 
 <section class="hero">
   <div class="c">
@@ -127,13 +180,13 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
       <svg viewBox="0 0 1000 650" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="background:#090909; font-family:Arial, sans-serif; border-radius:18px; border:1px solid #333; box-shadow:0 12px 40px rgba(0,0,0,0.8);">
         <rect width="1000" height="650" fill="#0c0c0c" rx="18"/>
         <path d="M 480 0 L 1000 0 L 1000 650 L 380 650 Z" fill="#141414"/>
-        <circle cx="750" cy="280" r="220" fill="#ffb900" opacity="0.04"/> 
+        <circle cx="750" cy="280" r="220" fill="#ffb900" opacity="0.04"/>
 
         <g transform="translate(45, 55)">
           <text x="0" y="0" font-weight="900" font-style="italic" font-size="52" fill="#ffffff">JibLi-<tspan fill="#ffb900">vraison</tspan></text>
           <line x1="0" y1="18" x2="380" y2="18" stroke="#ffb900" stroke-width="4" stroke-linecap="round"/>
           <text x="0" y="44" font-weight="bold" font-size="16" fill="#aaa" letter-spacing="3">SERVICE DE COURSIER À MOTO</text>
-        </g> 
+        </g>
 
         <g transform="translate(45, 145)">
           <rect width="420" height="135" fill="#ffb900" rx="14"/>
@@ -141,21 +194,21 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
           <line x1="24" y1="48" x2="396" y2="48" stroke="#111" stroke-width="1.5" opacity="0.3"/>
           <text x="24" y="80" font-weight="bold" font-size="18" fill="#111">🕒 Lun - Sam : 17h00 à 02h00</text>
           <text x="24" y="110" font-weight="bold" font-size="18" fill="#111">🕒 Dimanche : 10h00 à 02h00</text>
-        </g> 
+        </g>
 
         <g transform="translate(45, 308)">
           <rect x="0" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
           <text x="65" y="32" font-size="22" text-anchor="middle">⚡</text>
-          <text x="65" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">LIVRAISON RAPIDE</text> 
+          <text x="65" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">LIVRAISON RAPIDE</text>
 
           <rect x="145" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
           <text x="210" y="32" font-size="22" text-anchor="middle">🔒</text>
-          <text x="210" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">SÉCURISÉE &amp; FIABLE</text> 
+          <text x="210" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">SÉCURISÉE &amp; FIABLE</text>
 
           <rect x="290" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
           <text x="355" y="32" font-size="22" text-anchor="middle">🌙</text>
           <text x="355" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">SERVICE NOCTURNE</text>
-        </g> 
+        </g>
 
         <g transform="translate(45, 410)">
           <text x="0" y="20" font-weight="900" font-size="15" fill="#ffb900" letter-spacing="1">TOUS VOS BESOINS, UNE SEULE LIVRAISON !</text>
@@ -163,21 +216,21 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
           <g transform="translate(0, 35)">
             <rect x="0" y="0" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
             <text x="12" y="26" font-size="16">🛒</text>
-            <text x="38" y="26" font-weight="bold" font-size="13" fill="#eee">E-Commerce</text> 
+            <text x="38" y="26" font-weight="bold" font-size="13" fill="#eee">E-Commerce</text>
 
             <rect x="212" y="0" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
             <text x="224" y="26" font-size="16">🍔</text>
-            <text x="250" y="26" font-weight="bold" font-size="13" fill="#eee">Restaurants</text> 
+            <text x="250" y="26" font-weight="bold" font-size="13" fill="#eee">Restaurants</text>
 
             <rect x="0" y="50" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
             <text x="12" y="76" font-size="16">💊</text>
-            <text x="38" y="76" font-weight="bold" font-size="13" fill="#eee">Pharmacie</text> 
+            <text x="38" y="76" font-weight="bold" font-size="13" fill="#eee">Pharmacie</text>
 
             <rect x="212" y="50" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
             <text x="224" y="26" font-size="16">📦</text>
             <text x="250" y="26" font-weight="bold" font-size="13" fill="#eee">Petits Colis &amp; Courses</text>
           </g>
-        </g> 
+        </g>
 
         <g transform="translate(520, 100)">
           <circle cx="210" cy="210" r="170" fill="#1a1a1a" stroke="#ffb900" stroke-width="2" stroke-dasharray="8,8"/>
@@ -189,7 +242,7 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
             <text x="55" y="58" font-weight="900" font-size="14" fill="#111" text-anchor="middle">vraison</text>
             <text x="55" y="78" font-size="16" text-anchor="middle">📍</text>
           </g>
-        </g> 
+        </g>
 
         <a href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison." target="_blank" style="cursor:pointer">
           <g transform="translate(45, 555)">
@@ -200,14 +253,14 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
           </g>
         </a>
       </svg>
-    </div> 
+    </div>
 
     <div class="hero-actions">
       <a class="btn yellow" id="btn-hero-wa" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison." data-key="btn-wa">Commander sur WhatsApp</a>
-      <a class="btn dark" href="tel:+212634084543">📞 06 34 08 45 43</a>
+      <a class="btn dark phone-num" href="tel:+212634084543">📞 06 34 08 45 43</a>
     </div>
   </div>
-</section> 
+</section>
 
 <section id="services"><div class="c"><h2 class="title" data-key="srv-title">Tous vos besoins, une seule livraison</h2><p class="sub" data-key="srv-sub">Un service local pensé pour Kénitra.</p><div class="cards">
 <div class="card"><div class="icon">🛒</div><h3 data-key="srv-1-t">E-commerce</h3><p data-key="srv-1-d">Livraison de vos commandes en ligne.</p></div>
@@ -216,59 +269,68 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 <div class="card"><div class="icon">🛍️</div><h3 data-key="srv-4-t">Courses diverses</h3><p data-key="srv-4-d">Petits achats et besoins du quotidien.</p></div>
 <div class="card"><div class="icon">📦</div><h3 data-key="srv-5-t">Petits colis</h3><p data-key="srv-5-d">Un service de proximité pour vos petits envois.</p></div>
 <div class="card"><div class="icon">🌙</div><h3 data-key="srv-6-t">Service nocturne</h3><p data-key="srv-6-d">Disponible en soirée et nuit.</p></div>
-</div></div></section> 
+</div></div></section>
 
 <section id="comment"><div class="c"><h2 class="title" data-key="how-title">Comment ça marche ?</h2><p class="sub" data-key="how-sub">Commander en 4 étapes simples.</p><div class="steps">
 <div class="step"><div class="num">1</div><h3 data-key="step-1-t">Choisissez</h3><p data-key="step-1-d">Sélectionnez votre départ et votre destination.</p></div>
 <div class="step"><div class="num">2</div><h3 data-key="step-2-t">Calculez</h3><p data-key="step-2-d">Le tarif s'affiche automatiquement.</p></div>
 <div class="step"><div class="num">3</div><h3 data-key="step-3-t">Envoyez</h3><p data-key="step-3-d">Validez votre demande directement sur WhatsApp.</p></div>
 <div class="step"><div class="num">4</div><h3 data-key="step-4-t">Recevez</h3><p data-key="step-4-d">Votre coursier livre votre commande rapidement.</p></div>
-</div></div></section> 
+</div></div></section>
 
-<section id="tarifs"><div class="c"><h2 class="title" data-key="tarif-title">Commander ma livraison</h2><p class="sub" data-key="tarif-sub">Choisissez vos adresses sur la carte ou recherchez par nom.</p><div class="tarif"> 
+<section id="tarifs"><div class="c"><h2 class="title" data-key="tarif-title">Commander ma livraison</h2><p class="sub" data-key="tarif-sub">Choisissez vos adresses sur la carte ou recherchez par nom.</p><div class="tarif">
 
 <div class="mode-selector">
   <button type="button" class="mode-btn active" id="btn-mode-auto" onclick="switchMode('auto')" data-key="m-auto">🗺️ Par Carte / Recherche</button>
   <button type="button" class="mode-btn" id="btn-mode-manual" onclick="switchMode('manual')" data-key="m-manual">✍️ Saisie directe</button>
-</div> 
+</div>
 
-<!-- MODE AUTOMATIQUE & CARTE GOOGLE MAPS -->
+<!-- MODE AUTOMATIQUE & CARTE -->
 <div id="section-auto">
-  <div style="display:grid;gap:15px;margin-bottom:18px;text-align:left">
+  <div style="display:grid;gap:15px;margin-bottom:18px;text-align:start;">
     <div>
       <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dep">🚦🟢 Départ</label>
       <div class="search-box">
         <div class="input-group">
           <div class="input-wrapper">
-            <input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare Kenitra, Marjane..." autocomplete="off">
+            <input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare Kenitra, Marjane..." autocomplete="off" oninput="onSearchInput(this.value, true)">
             <button type="button" class="clear-btn" id="clear-depart" onclick="clearField(true)">✕</button>
           </div>
           <button type="button" class="gps-btn" onclick="useCurrentLocation(true)">🎯 GPS</button>
         </div>
+        <ul id="list-depart" class="suggestions-list"></ul>
       </div>
-    </div> 
+    </div>
 
     <div>
       <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dest">🚦🔴 Destination</label>
       <div class="search-box">
         <div class="input-group">
           <div class="input-wrapper">
-            <input type="text" id="input-dest" class="search-input" placeholder="Ex: Mehdia, Café..." autocomplete="off">
+            <input type="text" id="input-dest" class="search-input" placeholder="Ex: Mehdia, Café..." autocomplete="off" oninput="onSearchInput(this.value, false)">
             <button type="button" class="clear-btn" id="clear-dest" onclick="clearField(false)">✕</button>
           </div>
           <button type="button" class="gps-btn" onclick="useCurrentLocation(false)">🎯 GPS</button>
         </div>
+        <ul id="list-dest" class="suggestions-list"></ul>
       </div>
     </div>
-  </div> 
+  </div>
 
   <div class="map-wrapper">
     <div id="map"></div>
+    <div class="center-picker">
+      <div class="picker-card" id="picker-card" onclick="confirmCenterPoint()">
+        <div id="picker-address" data-key="map-moving">Déplacez la carte...</div>
+        <span data-key="map-use">Utiliser ce point ›</span>
+      </div>
+      <div class="picker-pin">📍</div>
+    </div>
   </div>
-</div> 
+</div>
 
 <!-- MODE SAISIE MANUELLE -->
-<div id="section-manual" style="display:none; text-align:left;">
+<div id="section-manual" style="display:none; text-align:start;">
   <div style="display:grid;gap:15px;margin-bottom:18px;">
     <div>
       <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dep-m">📍 Lieu de Départ (Optionnel)</label>
@@ -283,43 +345,40 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
       <input type="number" id="manual-dist" class="search-input" style="width:100%" placeholder="Ex: 6" step="0.1" min="0" oninput="calculateManualPrice()">
     </div>
   </div>
-</div> 
+</div>
 
 <div class="result" id="result">— DH</div>
-<p id="status" style="color:#aaa;margin-bottom:15px;" data-key="status-default">Sélectionnez les lieux pour afficher le tarif.</p> 
+<p id="status" style="color:#aaa;margin-bottom:15px;" data-key="status-default">Sélectionnez les lieux pour afficher le tarif.</p>
 
 <a id="order" class="btn yellow" href="https://wa.me/212634084543" style="width:100%;text-align:center;" data-key="btn-wa">Commander sur WhatsApp</a>
-</div></div></section> 
+</div></div></section>
 
 <section id="pourquoi"><div class="c"><h2 class="title" data-key="why-title">Pourquoi choisir JibLi-vraison ?</h2><p class="sub" data-key="why-sub">Un service pensé pour vous faciliter la vie.</p><div class="why">
 <div class="whyitem"><span>⚡</span><h3 data-key="why-1-t">Rapidité</h3><small data-key="why-1-d">Livraison directe à moto dans Kénitra.</small></div>
 <div class="whyitem"><span>🎯</span><h3 data-key="why-2-t">Transparence</h3><small data-key="why-2-d">Calcul clair du tarif avant commande.</small></div>
 <div class="whyitem"><span>📱</span><h3 data-key="why-3-t">Simplicité</h3><small data-key="why-3-d">Tout se fait en quelques clics via WhatsApp.</small></div>
 <div class="whyitem"><span>🌙</span><h3 data-key="why-4-t">Disponibilité</h3><small data-key="why-4-d">Service disponible jusqu'à 02h00 du matin.</small></div>
-</div></div></section> 
+</div></div></section>
 
-<section><div class="c"><div class="cta"><div><h2 data-key="cta-t">Besoin d'une livraison à Kénitra ?</h2><p data-key="cta-d">Contactez-nous directement sur WhatsApp pour votre commande.</p></div><a class="btn" href="https://wa.me/212634084543" data-key="cta-b">Commander maintenant</a></div></div></section> 
+<section><div class="c"><div class="cta"><div><h2 data-key="cta-t">Besoin d'une livraison à Kénitra ?</h2><p data-key="cta-d">Contactez-nous directement sur WhatsApp pour votre commande.</p></div><a class="btn" href="https://wa.me/212634084543" data-key="cta-b">Commander maintenant</a></div></div></section>
 
 <section id="faq"><div class="c"><h2 class="title">FAQ</h2><div class="faq">
 <details><summary data-key="faq-1-q">Comment commander ?</summary><div class="answer" data-key="faq-1-a">Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.</div></details>
 <details><summary data-key="faq-2-q">Où faites-vous les livraisons ?</summary><div class="answer" data-key="faq-2-a">Le service est destiné aux livraisons à Kénitra et ses environs.</div></details>
 <details><summary data-key="faq-3-q">Comment connaître le prix ?</summary><div class="answer" data-key="faq-3-a">Le prix est calculé automatiquement en fonction du kilométrage exact.</div></details>
 <details><summary data-key="faq-4-q">Quels sont vos horaires ?</summary><div class="answer" data-key="faq-4-a">Du Lundi au Samedi : 17h00 à 02h00.<br>Le Dimanche : 10h00 à 02h00.</div></details>
-</div></div></section> 
+</div></div></section>
 
 <footer><div class="c"><b>JibLi-vraison</b> — <span data-key="footer-text">Service de coursier à moto à Kénitra.</span> <span style="float:right">© 2026</span></div></footer>
-<a class="wa" href="https://wa.me/212634084543">☏</a> 
-
-<!-- SCRIPT GOOGLE MAPS API AVEC VOTRE CLE ET PLACES/GEOMETRY -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCICjKzDyiMVvHFctAr7Dik9sR-jIiaZ0k&libraries=places,geometry&callback=initMap" async defer></script>
+<a class="wa" href="https://wa.me/212634084543">☏</a>
 
 <script>
 let currentMode = 'auto';
-let map, geocoder;
 let depCoord = null, destCoord = null, depName = '', destName = '';
 let depMarker = null, destMarker = null, routePolyline = null;
-let activeInput = 'depart';
-let currentLang = 'fr'; 
+let currentCenterAddress = '';
+let searchTimeout = null;
+let currentLang = 'fr';
 
 const translations = {
   fr: {
@@ -339,6 +398,7 @@ const translations = {
     "tarif-title": "Commander ma livraison", "tarif-sub": "Choisissez vos adresses sur la carte ou recherchez par nom.",
     "m-auto": "🗺️ Par Carte / Recherche", "m-manual": "✍️ Saisie directe",
     "lbl-dep": "🚦🟢 Départ", "lbl-dest": "🚦🔴 Destination",
+    "map-moving": "Déplacez la carte...", "map-use": "Utiliser ce point ›",
     "lbl-dep-m": "📍 Lieu de Départ (Optionnel)", "lbl-dest-m": "🏁 Destination (Optionnel)", "lbl-dist-m": "📏 Distance estimée (en km)",
     "status-default": "Sélectionnez les lieux ou entrez la distance pour afficher le tarif.",
     "why-title": "Pourquoi choisir JibLi-vraison ?", "why-sub": "Un service pensé pour vous faciliter la vie.",
@@ -370,6 +430,7 @@ const translations = {
     "tarif-title": "طلب التوصيل", "tarif-sub": "اختر العناوين من الخريطة أو ابحث بالاسم.",
     "m-auto": "🗺️ عبر الخريطة / البحث", "m-manual": "✍️ إدخال مباشر",
     "lbl-dep": "🚦🟢 مكان الانطلاق", "lbl-dest": "🚦🔴 الوجهة",
+    "map-moving": "حرك الخريطة...", "map-use": "استخدم هذه النقطة ›",
     "lbl-dep-m": "📍 مكان الانطلاق (اختياري)", "lbl-dest-m": "🏁 الوجهة (اختياري)", "lbl-dist-m": "📏 المسافة التقديرية (بالكيلومتر)",
     "status-default": "حدد الأماكن أو أدخل المسافة لعرض السعر.",
     "why-title": "لماذا تختار جيب لي-فريزون؟", "why-sub": "خدمة مصممة لتسهيل حياتك.",
@@ -401,6 +462,7 @@ const translations = {
     "tarif-title": "طلب التوصيل ديالك", "tarif-sub": "عزل البلايص ف الخريطة أو قلب بالسمية.",
     "m-auto": "🗺️ الخريطة والبحث", "m-manual": "✍️ كتب بيديك",
     "lbl-dep": "🚦🟢 منين نجيبو (المنطلق)", "lbl-dest": "🚦🔴 فين ندبو (الوجهة)",
+    "map-moving": "حرك الخريطة...", "map-use": "استعمل هاد البلاصة ›",
     "lbl-dep-m": "📍 منين نجيبو (اختياري)", "lbl-dest-m": "🏁 فين نديو (اختياري)", "lbl-dist-m": "📏 الكيلومتراج التقديري (بـ Km)",
     "status-default": "عزل البلايص أو كتب الكيلومتراج باش يبان لك الثمن.",
     "why-title": "علاش تختار جيب لي-فريزون؟", "why-sub": "خدمة مصاوبة باش تسهل عليك الحياة.",
@@ -415,7 +477,7 @@ const translations = {
     "faq-4-q": "وقتاش خدامين؟", "faq-4-a": "من الاثنين للسبت: 17:00 حتى لـ 02:00 د الليل.<br>الحد: 10:00 حتى لـ 02:00.",
     "footer-text": "خدمة التوصيل بالموطور ف القنيطرة."
   }
-}; 
+};
 
 function changeLanguage(lang) {
   currentLang = lang;
@@ -424,7 +486,7 @@ function changeLanguage(lang) {
     htmlRoot.setAttribute('dir', 'rtl');
   } else {
     htmlRoot.setAttribute('dir', 'ltr');
-  } 
+  }
 
   const dict = translations[lang];
   document.querySelectorAll('[data-key]').forEach(el => {
@@ -432,154 +494,124 @@ function changeLanguage(lang) {
     if (dict[key]) {
       el.innerHTML = dict[key];
     }
-  }); 
+  });
+
+  if (map) {
+    setTimeout(() => { map.invalidateSize(); }, 200);
+  }
 
   if (currentMode === 'manual') calculateManualPrice();
   else if (depCoord && destCoord) calculateRouteDistance();
   else resetPriceDisplay();
-} 
+}
 
-function initMap() {
-  const kenitra = { lat: 34.2610, lng: -6.5802 };
+const map = L.map('map').setView([34.2610, -6.5802], 14);
 
-  map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 14,
-    center: kenitra,
-    disableDefaultUI: false,
-    zoomControl: true,
-    styles: [
-      { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
-      { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
-      { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
-      { featureType: "road", elementType: "geometry", stylers: [{ color: "#38414e" }] },
-      { featureType: "road", elementType: "geometry.stroke", stylers: [{ color: "#212a37" }] },
-      { featureType: "road", elementType: "labels.text.fill", stylers: [{ color: "#9ca5b3" }] },
-      { featureType: "water", elementType: "geometry", stylers: [{ color: "#17263c" }] }
-    ]
-  });
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
+  maxZoom: 19,
+  attribution: '© OpenStreetMap'
+}).addTo(map);
 
-  geocoder = new google.maps.Geocoder();
+let moveTimer;
+map.on('move', () => {
+  document.getElementById('picker-address').textContent = translations[currentLang]["map-moving"];
+  clearTimeout(moveTimer);
+  moveTimer = setTimeout(() => {
+    const center = map.getCenter();
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${center.lat}&lon=${center.lng}`)
+      .then(res => res.json())
+      .then(data => {
+        if(data && data.display_name) {
+          let parts = data.display_name.split(',');
+          currentCenterAddress = parts.slice(0, 3).join(', ').trim();
+          document.getElementById('picker-address').textContent = currentCenterAddress;
+        } else {
+          currentCenterAddress = "Point sur la carte";
+          document.getElementById('picker-address').textContent = currentCenterAddress;
+        }
+      });
+  }, 300);
+});
 
-  const kenitraBounds = new google.maps.LatLngBounds(
-    new google.maps.LatLng(34.1800, -6.6800),
-    new google.maps.LatLng(34.3400, -6.4800)
-  );
+function confirmCenterPoint() {
+  const center = map.getCenter();
+  const coords = [center.lat, center.lng];
 
-  // AUTOCOMPLETE GOOGLE PLACES DEPART
-  const depInput = document.getElementById("input-depart");
-  const autocompleteDep = new google.maps.places.Autocomplete(depInput, {
-    bounds: kenitraBounds,
-    componentRestrictions: { country: "ma" },
-    fields: ["geometry", "formatted_address", "name"]
-  });
-
-  autocompleteDep.addListener("place_changed", () => {
-    const place = autocompleteDep.getPlace();
-    if (!place.geometry || !place.geometry.location) return;
-    const name = place.formatted_address || place.name;
+  if (!depCoord) {
+    document.getElementById('input-depart').value = currentCenterAddress;
     document.getElementById('clear-depart').style.display = 'block';
-    setPoint(place.geometry.location, name, true);
-    map.setCenter(place.geometry.location);
-  });
-
-  // AUTOCOMPLETE GOOGLE PLACES DESTINATION
-  const destInput = document.getElementById("input-dest");
-  const autocompleteDest = new google.maps.places.Autocomplete(destInput, {
-    bounds: kenitraBounds,
-    componentRestrictions: { country: "ma" },
-    fields: ["geometry", "formatted_address", "name"]
-  });
-
-  autocompleteDest.addListener("place_changed", () => {
-    const place = autocompleteDest.getPlace();
-    if (!place.geometry || !place.geometry.location) return;
-    const name = place.formatted_address || place.name;
+    setPoint(coords, currentCenterAddress, true);
+  } else if (!destCoord) {
+    document.getElementById('input-dest').value = currentCenterAddress;
     document.getElementById('clear-dest').style.display = 'block';
-    setPoint(place.geometry.location, name, false);
-    map.setCenter(place.geometry.location);
-  });
-
-  depInput.addEventListener('focus', () => activeInput = 'depart');
-  destInput.addEventListener('focus', () => activeInput = 'dest');
-
-  map.addListener("click", (e) => {
-    geocodePosition(e.latLng, activeInput === 'depart');
-  });
-}
-
-function geocodePosition(latLng, isDepart) {
-  geocoder.geocode({ location: latLng }, (results, status) => {
-    let name = (status === "OK" && results[0]) ? results[0].formatted_address.split(',').slice(0, 3).join(',') : `${latLng.lat().toFixed(4)}, ${latLng.lng().toFixed(4)}`;
-    document.getElementById(isDepart ? 'input-depart' : 'input-dest').value = name;
-    document.getElementById(isDepart ? 'clear-depart' : 'clear-dest').style.display = 'block';
-    setPoint(latLng, name, isDepart);
-  });
-}
-
-function setPoint(location, name, isDepart) {
-  if (isDepart) {
-    depCoord = location; depName = name;
-    if (depMarker) depMarker.setMap(null);
-    depMarker = new google.maps.Marker({
-      position: location,
-      map: map,
-      title: "Départ",
-      icon: "https://maps.google.com/mapfiles/ms/icons/green-dot.png"
-    });
+    setPoint(coords, currentCenterAddress, false);
   } else {
-    destCoord = location; destName = name;
-    if (destMarker) destMarker.setMap(null);
-    destMarker = new google.maps.Marker({
-      position: location,
-      map: map,
-      title: "Destination",
-      icon: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
-    });
-  }
-
-  if (depCoord && destCoord) {
-    calculateRouteDistance();
+    clearField(false);
+    document.getElementById('input-depart').value = currentCenterAddress;
+    document.getElementById('clear-depart').style.display = 'block';
+    setPoint(coords, currentCenterAddress, true);
   }
 }
 
-function calculateRouteDistance() {
-  const lat1 = typeof depCoord.lat === 'function' ? depCoord.lat() : depCoord.lat;
-  const lng1 = typeof depCoord.lng === 'function' ? depCoord.lng() : depCoord.lng;
-  const lat2 = typeof destCoord.lat === 'function' ? destCoord.lat() : destCoord.lat;
-  const lng2 = typeof destCoord.lng === 'function' ? destCoord.lng() : destCoord.lng;
+function onSearchInput(query, isDepart) {
+  let clearBtn = document.getElementById(isDepart ? 'clear-depart' : 'clear-dest');
+  clearBtn.style.display = query.length > 0 ? 'block' : 'none';
 
-  // Tracé ligne entre les points
-  if (routePolyline) routePolyline.setMap(null);
-  routePolyline = new google.maps.Polyline({
-    path: [{ lat: lat1, lng: lng1 }, { lat: lat2, lng: lng2 }],
-    geodesic: true,
-    strokeColor: "#ffb900",
-    strokeOpacity: 0.8,
-    strokeWeight: 5,
-    map: map
-  });
+  clearTimeout(searchTimeout);
+  if (query.trim().length < 2) {
+    document.getElementById(isDepart ? 'list-depart' : 'list-dest').style.display = 'none';
+    return;
+  }
 
-  const bounds = new google.maps.LatLngBounds();
-  bounds.extend({ lat: lat1, lng: lng1 });
-  bounds.extend({ lat: lat2, lng: lng2 });
-  map.fitBounds(bounds);
+  searchTimeout = setTimeout(() => {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=ma&limit=5`;
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        let listId = isDepart ? 'list-depart' : 'list-dest';
+        let list = document.getElementById(listId);
+        list.innerHTML = '';
 
-  // Calcul distance exacte
-  const p1 = new google.maps.LatLng(lat1, lng1);
-  const p2 = new google.maps.LatLng(lat2, lng2);
-  const distMeters = google.maps.geometry.spherical.computeDistanceBetween(p1, p2);
-  const distKm = (distMeters / 1000) * 1.25; // Facteur route estimé
+        if(data.length === 0) {
+          list.style.display = 'none';
+          return;
+        }
 
-  renderPrice(distKm, depName, destName, lat1, lng1, lat2, lng2);
+        data.forEach(place => {
+          let li = document.createElement('li');
+          let shortName = place.display_name.split(',').slice(0, 3).join(',');
+          li.textContent = shortName;
+
+          li.onclick = () => {
+            let coords = [parseFloat(place.lat), parseFloat(place.lon)];
+            let inputId = isDepart ? 'input-depart' : 'input-dest';
+            document.getElementById(inputId).value = shortName;
+            list.style.display = 'none';
+
+            setPoint(coords, shortName, isDepart);
+            map.setView(coords, 16);
+          };
+          list.appendChild(li);
+        });
+
+        list.style.display = 'block';
+      });
+  }, 350);
 }
 
 function useCurrentLocation(isDepart) {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(position => {
-      const pos = { lat: position.coords.latitude, lng: position.coords.longitude };
-      map.setCenter(pos);
-      map.setZoom(16);
-      geocodePosition(pos, isDepart);
+      const coords = [position.coords.latitude, position.coords.longitude];
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${coords[0]}&lon=${coords[1]}`)
+        .then(res => res.json())
+        .then(data => {
+          let name = data.display_name ? data.display_name.split(',').slice(0, 2).join(',') : "Position Actuelle";
+          document.getElementById(isDepart ? 'input-depart' : 'input-dest').value = name;
+          document.getElementById(isDepart ? 'clear-depart' : 'clear-dest').style.display = 'block';
+          setPoint(coords, name, isDepart);
+          map.setView(coords, 16);
+        });
     }, () => alert("Impossible de récupérer la position GPS."));
   }
 }
@@ -588,67 +620,101 @@ function clearField(isDepart) {
   if (isDepart) {
     document.getElementById('input-depart').value = '';
     document.getElementById('clear-depart').style.display = 'none';
+    document.getElementById('list-depart').style.display = 'none';
     depCoord = null; depName = '';
-    if (depMarker) depMarker.setMap(null);
+    if (depMarker) map.removeLayer(depMarker);
     depMarker = null;
   } else {
     document.getElementById('input-dest').value = '';
     document.getElementById('clear-dest').style.display = 'none';
+    document.getElementById('list-dest').style.display = 'none';
     destCoord = null; destName = '';
-    if (destMarker) destMarker.setMap(null);
+    if (destMarker) map.removeLayer(destMarker);
     destMarker = null;
   }
-  if (routePolyline) { routePolyline.setMap(null); routePolyline = null; }
+  if (routePolyline) { map.removeLayer(routePolyline); routePolyline = null; }
   resetPriceDisplay();
+}
+
+function setPoint(coords, name, isDepart) {
+  if (isDepart) {
+    depCoord = coords; depName = name;
+    if (depMarker) map.removeLayer(depMarker);
+    depMarker = L.marker(coords).addTo(map).bindPopup("<b>Départ:</b> " + name);
+  } else {
+    destCoord = coords; destName = name;
+    if (destMarker) map.removeLayer(destMarker);
+    destMarker = L.marker(coords).addTo(map).bindPopup("<b>Destination:</b> " + name);
+  }
+
+  if (depCoord && destCoord) {
+    calculateRouteDistance();
+  }
+}
+
+function calculateRouteDistance() {
+  fetch(`https://router.project-osrm.org/route/v1/driving/${depCoord[1]},${depCoord[0]};${destCoord[1]},${destCoord[0]}?overview=full&geometries=geojson`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.routes && data.routes.length > 0) {
+        const distKm = (data.routes[0].distance / 1000) * 1.025;
+        if (routePolyline) map.removeLayer(routePolyline);
+        routePolyline = L.geoJSON(data.routes[0].geometry, { style: { color: '#ffb900', weight: 5 } }).addTo(map);
+        map.fitBounds(routePolyline.getBounds(), { padding: [40, 40] });
+        renderPrice(distKm, depName, destName);
+      }
+    });
 }
 
 function getPriceFromKm(n) {
   return n <= 4 ? 20 : n < 6 ? 25 : n < 7 ? 26 : n < 8 ? 27 : n < 9 ? 28 : n < 10 ? 29 : 35 + Math.ceil(n - 10) * 2;
-} 
+}
 
-function renderPrice(n, dep, dest, lat1, lng1, lat2, lng2) {
+function renderPrice(n, dep, dest) {
   let price = getPriceFromKm(n);
   document.getElementById('result').textContent = price + ' DH';
-  document.getElementById('status').textContent = 'Distance : ' + n.toFixed(1) + ' km'; 
+  document.getElementById('status').textContent = 'Distance : ' + n.toFixed(1) + ' km';
 
-  let depLink = lat1 ? `https://www.google.com/maps?q=${lat1},${lng1}` : '';
-  let destLink = lat2 ? `https://www.google.com/maps?q=${lat2},${lng2}` : ''; 
+  let depLink = depCoord ? `https://www.google.com/maps?q=${depCoord[0]},${depCoord[1]}` : '';
+  let destLink = destCoord ? `https://www.google.com/maps?q=${destCoord[0]},${destCoord[1]}` : '';
 
   let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${dep}\n🔗 Lien Maps : ${depLink}\n\n🏁 Destination : ${dest}\n🔗 Lien Maps : ${destLink}\n\n📏 Distance : ${n.toFixed(1)} km\n💰 Prix : ${price} DH`;
   document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
-} 
+}
 
 function resetPriceDisplay() {
   document.getElementById('result').textContent = '— DH';
   document.getElementById('status').textContent = translations[currentLang]["status-default"];
-} 
+}
 
 function switchMode(mode) {
   currentMode = mode;
   document.getElementById('btn-mode-auto').classList.toggle('active', mode === 'auto');
   document.getElementById('btn-mode-manual').classList.toggle('active', mode === 'manual');
   document.getElementById('section-auto').style.display = mode === 'auto' ? 'block' : 'none';
-  document.getElementById('section-manual').style.display = mode === 'manual' ? 'block' : 'none'; 
+  document.getElementById('section-manual').style.display = mode === 'manual' ? 'block' : 'none';
 
   if (mode === 'manual') calculateManualPrice();
   else if (depCoord && destCoord) calculateRouteDistance();
   else resetPriceDisplay();
-} 
+}
 
 function calculateManualPrice() {
   let dep = document.getElementById('manual-depart').value.trim();
   let dest = document.getElementById('manual-dest').value.trim();
-  let distVal = parseFloat(document.getElementById('manual-dist').value);
+  let distInput = document.getElementById('manual-dist').value;
 
-  if (!isNaN(distVal) && distVal > 0) {
-    let price = getPriceFromKm(distVal);
+  if (distInput && !isNaN(distInput) && parseFloat(distInput) > 0) {
+    let n = parseFloat(distInput);
+    let price = getPriceFromKm(n);
+
     document.getElementById('result').textContent = price + ' DH';
-    document.getElementById('status').textContent = 'Distance estimée : ' + distVal.toFixed(1) + ' km';
+    document.getElementById('status').textContent = 'Distance : ' + n.toFixed(1) + ' km';
 
-    let depText = dep ? dep : "Non spécifié";
-    let destText = dest ? dest : "Non spécifié";
+    let depTxt = dep ? dep : 'Non spécifié';
+    let destTxt = dest ? dest : 'Non spécifié';
 
-    let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison (Saisie directe).\n\n📍 Départ : ${depText}\n🏁 Destination : ${destText}\n📏 Distance estimée : ${distVal.toFixed(1)} km\n💰 Prix estimé : ${price} DH`;
+    let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${depTxt}\n🏁 Destination : ${destTxt}\n📏 Distance : ${n.toFixed(1)} km\n💰 Prix : ${price} DH`;
     document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
   } else {
     resetPriceDisplay();

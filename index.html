@@ -1,5 +1,6 @@
+
 <!doctype html>
-<html lang="fr">
+<html lang="fr" id="html-root">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>JibLi-vraison | Service de livraison</title>
@@ -22,6 +23,17 @@ nav{height:70px;display:flex;align-items:center;justify-content:space-between}
 .btn{display:inline-block;padding:13px 18px;border-radius:11px;font-weight:800;cursor:pointer;border:none}
 .yellow{background:#ffb900;color:#111}
 .dark{background:#171717;border:1px solid #555;color:#fff}
+
+.lang-select {
+  background: #171717;
+  color: #ffb900;
+  border: 1px solid #ffb900;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+}
 
 .hero{padding:40px 0;background:radial-gradient(circle at 50% 30%,#ffb90015,transparent 50%)}
 .poster-container{width:100%;max-width:900px;margin:0 auto 25px auto}
@@ -143,7 +155,13 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 </head>
 <body>
 
-<header><div class="c"><nav><a class="brand" href="#">JibLi-<span>vraison</span></a><div class="links"><a href="#services">Services</a><a href="#tarifs">Tarifs</a><a href="#comment">Comment ça marche</a><a href="#pourquoi">Pourquoi nous</a><a href="#faq">FAQ</a></div><div style="display:flex;gap:8px;align-items:center"><a class="btn dark" href="mailto:jibli.vraison@gmail.com">Email</a><a class="btn yellow" href="https://wa.me/212634084543">WhatsApp</a></div></nav></div></header>
+<header><div class="c"><nav><a class="brand" href="#">JibLi-<span>vraison</span></a><div class="links"><a href="#services" data-key="nav-services">Services</a><a href="#tarifs" data-key="nav-tarifs">Tarifs</a><a href="#comment" data-key="nav-comment">Comment ça marche</a><a href="#pourquoi" data-key="nav-pourquoi">Pourquoi nous</a><a href="#faq" data-key="nav-faq">FAQ</a></div><div style="display:flex;gap:8px;align-items:center">
+<select class="lang-select" onchange="changeLanguage(this.value)">
+  <option value="fr">🇫🇷 FR</option>
+  <option value="ar">🇲🇦 العربية</option>
+  <option value="dar">🗣️ Darija</option>
+</select>
+<a class="btn dark" href="mailto:jibli.vraison@gmail.com">Email</a><a class="btn yellow" href="https://wa.me/212634084543">WhatsApp</a></div></nav></div></header>
 
 <section class="hero">
   <div class="c">
@@ -225,40 +243,40 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
     </div>
 
     <div class="hero-actions">
-      <a class="btn yellow" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison.">Commander sur WhatsApp</a>
+      <a class="btn yellow" id="btn-hero-wa" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison." data-key="btn-wa">Commander sur WhatsApp</a>
       <a class="btn dark" href="tel:+212634084543">📞 06 34 08 45 43</a>
     </div>
   </div>
 </section>
 
-<section id="services"><div class="c"><h2 class="title">Tous vos besoins, une seule livraison</h2><p class="sub">Un service local pensé pour Kénitra.</p><div class="cards">
-<div class="card"><div class="icon">🛒</div><h3>E-commerce</h3><p>Livraison de vos commandes en ligne.</p></div>
-<div class="card"><div class="icon">🍔</div><h3>Restaurants</h3><p>Vos repas livrés rapidement.</p></div>
-<div class="card"><div class="icon">💊</div><h3>Pharmacie</h3><p>Produits de pharmacie selon les conditions applicables.</p></div>
-<div class="card"><div class="icon">🛍️</div><h3>Courses diverses</h3><p>Petits achats et besoins du quotidien.</p></div>
-<div class="card"><div class="icon">📦</div><h3>Petits colis</h3><p>Un service de proximité pour vos petits envois.</p></div>
-<div class="card"><div class="icon">🌙</div><h3>Service nocturne</h3><p>Disponible en soirée et nuit.</p></div>
+<section id="services"><div class="c"><h2 class="title" data-key="srv-title">Tous vos besoins, une seule livraison</h2><p class="sub" data-key="srv-sub">Un service local pensé pour Kénitra.</p><div class="cards">
+<div class="card"><div class="icon">🛒</div><h3 data-key="srv-1-t">E-commerce</h3><p data-key="srv-1-d">Livraison de vos commandes en ligne.</p></div>
+<div class="card"><div class="icon">🍔</div><h3 data-key="srv-2-t">Restaurants</h3><p data-key="srv-2-d">Vos repas livrés rapidement.</p></div>
+<div class="card"><div class="icon">💊</div><h3 data-key="srv-3-t">Pharmacie</h3><p data-key="srv-3-d">Produits de pharmacie selon les conditions applicables.</p></div>
+<div class="card"><div class="icon">🛍️</div><h3 data-key="srv-4-t">Courses diverses</h3><p data-key="srv-4-d">Petits achats et besoins du quotidien.</p></div>
+<div class="card"><div class="icon">📦</div><h3 data-key="srv-5-t">Petits colis</h3><p data-key="srv-5-d">Un service de proximité pour vos petits envois.</p></div>
+<div class="card"><div class="icon">🌙</div><h3 data-key="srv-6-t">Service nocturne</h3><p data-key="srv-6-d">Disponible en soirée et nuit.</p></div>
 </div></div></section>
 
-<section id="comment"><div class="c"><h2 class="title">Comment ça marche ?</h2><p class="sub">Commander en 4 étapes simples.</p><div class="steps">
-<div class="step"><div class="num">1</div><h3>Choisissez</h3><p>Sélectionnez votre départ et votre destination.</p></div>
-<div class="step"><div class="num">2</div><h3>Calculez</h3><p>Le tarif s'affiche automatiquement.</p></div>
-<div class="step"><div class="num">3</div><h3>Envoyez</h3><p>Validez votre demande directement sur WhatsApp.</p></div>
-<div class="step"><div class="num">4</div><h3>Recevez</h3><p>Votre coursier livre votre commande rapidement.</p></div>
+<section id="comment"><div class="c"><h2 class="title" data-key="how-title">Comment ça marche ?</h2><p class="sub" data-key="how-sub">Commander en 4 étapes simples.</p><div class="steps">
+<div class="step"><div class="num">1</div><h3 data-key="step-1-t">Choisissez</h3><p data-key="step-1-d">Sélectionnez votre départ et votre destination.</p></div>
+<div class="step"><div class="num">2</div><h3 data-key="step-2-t">Calculez</h3><p data-key="step-2-d">Le tarif s'affiche automatiquement.</p></div>
+<div class="step"><div class="num">3</div><h3 data-key="step-3-t">Envoyez</h3><p data-key="step-3-d">Validez votre demande directement sur WhatsApp.</p></div>
+<div class="step"><div class="num">4</div><h3 data-key="step-4-t">Recevez</h3><p data-key="step-4-d">Votre coursier livre votre commande rapidement.</p></div>
 </div></div></section>
 
-<section id="tarifs"><div class="c"><h2 class="title">Commander ma livraison</h2><p class="sub">Choisissez vos adresses sur la carte ou recherchez par nom.</p><div class="tarif">
+<section id="tarifs"><div class="c"><h2 class="title" data-key="tarif-title">Commander ma livraison</h2><p class="sub" data-key="tarif-sub">Choisissez vos adresses sur la carte ou recherchez par nom.</p><div class="tarif">
 
 <div class="mode-selector">
-  <button type="button" class="mode-btn active" id="btn-mode-auto" onclick="switchMode('auto')">🗺️ Par Carte / Recherche</button>
-  <button type="button" class="mode-btn" id="btn-mode-manual" onclick="switchMode('manual')">✍️ Saisie directe</button>
+  <button type="button" class="mode-btn active" id="btn-mode-auto" onclick="switchMode('auto')" data-key="m-auto">🗺️ Par Carte / Recherche</button>
+  <button type="button" class="mode-btn" id="btn-mode-manual" onclick="switchMode('manual')" data-key="m-manual">✍️ Saisie directe</button>
 </div>
 
 <!-- MODE AUTOMATIQUE & CARTE -->
 <div id="section-auto">
   <div style="display:grid;gap:15px;margin-bottom:18px;text-align:left">
     <div>
-      <label style="font-weight:700;display:block;margin-bottom:5px">🚦🟢 Départ</label>
+      <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dep">🚦🟢 Départ</label>
       <div class="search-box">
         <div class="input-group">
           <div class="input-wrapper">
@@ -272,7 +290,7 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
     </div>
 
     <div>
-      <label style="font-weight:700;display:block;margin-bottom:5px">🚦🔴 Destination</label>
+      <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dest">🚦🔴 Destination</label>
       <div class="search-box">
         <div class="input-group">
           <div class="input-wrapper">
@@ -290,8 +308,8 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
     <div id="map"></div>
     <div class="center-picker">
       <div class="picker-card" id="picker-card" onclick="confirmCenterPoint()">
-        <div id="picker-address">Déplacez la carte...</div>
-        <span>Utiliser ce point ›</span>
+        <div id="picker-address" data-key="map-moving">Déplacez la carte...</div>
+        <span data-key="map-use">Utiliser ce point ›</span>
       </div>
       <div class="picker-pin">📍</div>
     </div>
@@ -302,39 +320,43 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 <div id="section-manual" style="display:none; text-align:left;">
   <div style="display:grid;gap:15px;margin-bottom:18px;">
     <div>
-      <label style="font-weight:700;display:block;margin-bottom:5px">📍 Lieu de Départ</label>
+      <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dep-m">📍 Lieu de Départ</label>
       <input type="text" id="manual-depart" class="search-input" style="width:100%" placeholder="Entrez le lieu de départ..." oninput="calculateManualPrice()">
     </div>
     <div>
-      <label style="font-weight:700;display:block;margin-bottom:5px">🏁 Destination</label>
+      <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dest-m">🏁 Destination</label>
       <input type="text" id="manual-dest" class="search-input" style="width:100%" placeholder="Entrez la destination..." oninput="calculateManualPrice()">
+    </div>
+    <div>
+      <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dist-m">📏 Distance estimée (en km)</label>
+      <input type="number" id="manual-dist" class="search-input" style="width:100%" placeholder="Ex: 5.5" step="0.1" min="0" oninput="calculateManualPrice()">
     </div>
   </div>
 </div>
 
 <div class="result" id="result">— DH</div>
-<p id="status" style="color:#aaa;margin-bottom:15px;">Sélectionnez les lieux pour afficher le tarif.</p>
+<p id="status" style="color:#aaa;margin-bottom:15px;" data-key="status-default">Sélectionnez les lieux pour afficher le tarif.</p>
 
-<a id="order" class="btn yellow" href="https://wa.me/212634084543" style="width:100%;text-align:center;">Commander sur WhatsApp</a>
+<a id="order" class="btn yellow" href="https://wa.me/212634084543" style="width:100%;text-align:center;" data-key="btn-wa">Commander sur WhatsApp</a>
 </div></div></section>
 
-<section id="pourquoi"><div class="c"><h2 class="title">Pourquoi choisir JibLi-vraison ?</h2><p class="sub">Un service pensé pour vous faciliter la vie.</p><div class="why">
-<div class="whyitem"><span>⚡</span><h3>Rapidité</h3><small>Livraison directe à moto dans Kénitra.</small></div>
-<div class="whyitem"><span>🎯</span><h3>Transparence</h3><small>Calcul clair du tarif avant commande.</small></div>
-<div class="whyitem"><span>📱</span><h3>Simplicité</h3><small>Tout se fait en quelques clics via WhatsApp.</small></div>
-<div class="whyitem"><span>🌙</span><h3>Disponibilité</h3><small>Service disponible jusqu'à 02h00 du matin.</small></div>
+<section id="pourquoi"><div class="c"><h2 class="title" data-key="why-title">Pourquoi choisir JibLi-vraison ?</h2><p class="sub" data-key="why-sub">Un service pensé pour vous faciliter la vie.</p><div class="why">
+<div class="whyitem"><span>⚡</span><h3 data-key="why-1-t">Rapidité</h3><small data-key="why-1-d">Livraison directe à moto dans Kénitra.</small></div>
+<div class="whyitem"><span>🎯</span><h3 data-key="why-2-t">Transparence</h3><small data-key="why-2-d">Calcul clair du tarif avant commande.</small></div>
+<div class="whyitem"><span>📱</span><h3 data-key="why-3-t">Simplicité</h3><small data-key="why-3-d">Tout se fait en quelques clics via WhatsApp.</small></div>
+<div class="whyitem"><span>🌙</span><h3 data-key="why-4-t">Disponibilité</h3><small data-key="why-4-d">Service disponible jusqu'à 02h00 du matin.</small></div>
 </div></div></section>
 
-<section><div class="c"><div class="cta"><div><h2>Besoin d'une livraison à Kénitra ?</h2><p>Contactez-nous directement sur WhatsApp pour votre commande.</p></div><a class="btn" href="https://wa.me/212634084543">Commander maintenant</a></div></div></section>
+<section><div class="c"><div class="cta"><div><h2 data-key="cta-t">Besoin d'une livraison à Kénitra ?</h2><p data-key="cta-d">Contactez-nous directement sur WhatsApp pour votre commande.</p></div><a class="btn" href="https://wa.me/212634084543" data-key="cta-b">Commander maintenant</a></div></div></section>
 
-<section id="faq"><div class="c"><h2 class="title">Questions fréquentes</h2><div class="faq">
-<details><summary>Comment commander ?</summary><div class="answer">Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.</div></details>
-<details><summary>Où faites-vous les livraisons ?</summary><div class="answer">Le service est destiné aux livraisons à Kénitra et ses environs.</div></details>
-<details><summary>Comment connaître le prix ?</summary><div class="answer">Le prix est calculé automatiquement en fonction du kilométrage exact.</div></details>
-<details><summary>Quels sont vos horaires ?</summary><div class="answer">Du Lundi au Samedi : 17h00 à 02h00.<br>Le Dimanche : 10h00 à 02h00.</div></details>
+<section id="faq"><div class="c"><h2 class="title">FAQ</h2><div class="faq">
+<details><summary data-key="faq-1-q">Comment commander ?</summary><div class="answer" data-key="faq-1-a">Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.</div></details>
+<details><summary data-key="faq-2-q">Où faites-vous les livraisons ?</summary><div class="answer" data-key="faq-2-a">Le service est destiné aux livraisons à Kénitra et ses environs.</div></details>
+<details><summary data-key="faq-3-q">Comment connaître le prix ?</summary><div class="answer" data-key="faq-3-a">Le prix est calculé automatiquement en fonction du kilométrage exact.</div></details>
+<details><summary data-key="faq-4-q">Quels sont vos horaires ?</summary><div class="answer" data-key="faq-4-a">Du Lundi au Samedi : 17h00 à 02h00.<br>Le Dimanche : 10h00 à 02h00.</div></details>
 </div></div></section>
 
-<footer><div class="c"><b>JibLi-vraison</b> — Service de coursier à moto à Kénitra. <span style="float:right">© 2026</span></div></footer>
+<footer><div class="c"><b>JibLi-vraison</b> — <span data-key="footer-text">Service de coursier à moto à Kénitra.</span> <span style="float:right">© 2026</span></div></footer>
 <a class="wa" href="https://wa.me/212634084543">☏</a>
 
 <script>
@@ -343,6 +365,128 @@ let depCoord = null, destCoord = null, depName = '', destName = '';
 let depMarker = null, destMarker = null, routePolyline = null;
 let currentCenterAddress = '';
 let searchTimeout = null;
+let currentLang = 'fr';
+
+const translations = {
+  fr: {
+    "nav-services": "Services", "nav-tarifs": "Tarifs", "nav-comment": "Comment ça marche", "nav-pourquoi": "Pourquoi nous", "nav-faq": "FAQ",
+    "btn-wa": "Commander sur WhatsApp", "srv-title": "Tous vos besoins, une seule livraison", "srv-sub": "Un service local pensé pour Kénitra.",
+    "srv-1-t": "E-commerce", "srv-1-d": "Livraison de vos commandes en ligne.",
+    "srv-2-t": "Restaurants", "srv-2-d": "Vos repas livrés rapidement.",
+    "srv-3-t": "Pharmacie", "srv-3-d": "Produits de pharmacie selon les conditions applicables.",
+    "srv-4-t": "Courses diverses", "srv-4-d": "Petits achats et besoins du quotidien.",
+    "srv-5-t": "Petits colis", "srv-5-d": "Un service de proximité pour vos petits envois.",
+    "srv-6-t": "Service nocturne", "srv-6-d": "Disponible en soirée et nuit.",
+    "how-title": "Comment ça marche ?", "how-sub": "Commander en 4 étapes simples.",
+    "step-1-t": "Choisissez", "step-1-d": "Sélectionnez votre départ et votre destination.",
+    "step-2-t": "Calculez", "step-2-d": "Le tarif s'affiche automatiquement.",
+    "step-3-t": "Envoyez", "step-3-d": "Validez votre demande directement sur WhatsApp.",
+    "step-4-t": "Recevez", "step-4-d": "Votre coursier livre votre commande rapidement.",
+    "tarif-title": "Commander ma livraison", "tarif-sub": "Choisissez vos adresses sur la carte ou recherchez par nom.",
+    "m-auto": "🗺️ Par Carte / Recherche", "m-manual": "✍️ Saisie directe",
+    "lbl-dep": "🚦🟢 Départ", "lbl-dest": "🚦🔴 Destination",
+    "map-moving": "Déplacez la carte...", "map-use": "Utiliser ce point ›",
+    "lbl-dep-m": "📍 Lieu de Départ", "lbl-dest-m": "🏁 Destination", "lbl-dist-m": "📏 Distance estimée (en km)",
+    "status-default": "Sélectionnez les lieux pour afficher le tarif.",
+    "why-title": "Pourquoi choisir JibLi-vraison ?", "why-sub": "Un service pensé pour vous faciliter la vie.",
+    "why-1-t": "Rapidité", "why-1-d": "Livraison directe à moto dans Kénitra.",
+    "why-2-t": "Transparence", "why-2-d": "Calcul clair du tarif avant commande.",
+    "why-3-t": "Simplicité", "why-3-d": "Tout se fait en quelques clics via WhatsApp.",
+    "why-4-t": "Disponibilité", "why-4-d": "Service disponible jusqu'à 02h00 du matin.",
+    "cta-t": "Besoin d'une livraison à Kénitra ?", "cta-d": "Contactez-nous directement sur WhatsApp pour votre commande.", "cta-b": "Commander maintenant",
+    "faq-1-q": "Comment commander ?", "faq-1-a": "Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.",
+    "faq-2-q": "Où faites-vous les livraisons ?", "faq-2-a": "Le service est destiné aux livraisons à Kénitra et ses environs.",
+    "faq-3-q": "Comment connaître le prix ?", "faq-3-a": "Le prix est calculé automatiquement en fonction du kilométrage exact.",
+    "faq-4-q": "Quels sont vos horaires ?", "faq-4-a": "Du Lundi au Samedi : 17h00 à 02h00.<br>Le Dimanche : 10h00 à 02h00.",
+    "footer-text": "Service de coursier à moto à Kénitra."
+  },
+  ar: {
+    "nav-services": "الخدمات", "nav-tarifs": "الأسعار", "nav-comment": "كيف نشتغل", "nav-pourquoi": "لماذا نحن", "nav-faq": "أسئلة شائعة",
+    "btn-wa": "اطلب عبر واتساب", "srv-title": "جميع احتياجاتك، توصيلة واحدة", "srv-sub": "خدمة محلية مصممة لمدينة القنيطرة.",
+    "srv-1-t": "التجارة الإلكترونية", "srv-1-d": "توصيل طلباتك عبر الإنترنت.",
+    "srv-2-t": "المطاعم", "srv-2-d": "توصيل وجباتك بسرعة.",
+    "srv-3-t": "الصيدلية", "srv-3-d": "منتجات الصيدلية حسب الشروط.",
+    "srv-4-t": "المشتريات", "srv-4-d": "مشترياتك واحتياجاتك اليومية.",
+    "srv-5-t": "الطرود الصغيرة", "srv-5-d": "خدمة توصيل سريعة لطرودك.",
+    "srv-6-t": "الخدمة الليلية", "srv-6-d": "متوفرون طيلة المساء والليل.",
+    "how-title": "كيف تعمل الخدمة؟", "how-sub": "اطلب في 4 خطوات بسيطة.",
+    "step-1-t": "اختر", "step-1-d": "حدد مكان الانطلاق والوجهة.",
+    "step-2-t": "احسب", "step-2-d": "يظهر السعر تلقائياً.",
+    "step-3-t": "أرسل", "step-3-d": "أكد طلبك عبر الواتساب.",
+    "step-4-t": "استلم", "step-4-d": "سائقنا يوصل طلبك بسرعة.",
+    "tarif-title": "طلب التوصيل", "tarif-sub": "اختر العناوين من الخريطة أو ابحث بالاسم.",
+    "m-auto": "🗺️ عبر الخريطة / البحث", "m-manual": "✍️ إدخال مباشر",
+    "lbl-dep": "🚦🟢 مكان الانطلاق", "lbl-dest": "🚦🔴 الوجهة",
+    "map-moving": "حرك الخريطة...", "map-use": "استخدم هذه النقطة ›",
+    "lbl-dep-m": "📍 مكان الانطلاق", "lbl-dest-m": "🏁 الوجهة", "lbl-dist-m": "📏 المسافة التقديرية (بالكيلومتر)",
+    "status-default": "حدد الأماكن لعرض السعر.",
+    "why-title": "لماذا تختار جيب لي-فريزون؟", "why-sub": "خدمة مصممة لتسهيل حياتك.",
+    "why-1-t": "السرعة", "why-1-d": "توصيل مباشر بالدراجة النارية بالقنيطرة.",
+    "why-2-t": "الشفافية", "why-2-d": "حساب واضح للسعر قبل الطلب.",
+    "why-3-t": "السهولة", "why-3-d": "كل شيء بنقرات بسيطة عبر الواتساب.",
+    "why-4-t": "التوفر", "why-4-d": "الخدمة متوفرة حتى 02:00 صباحاً.",
+    "cta-t": "تحتاج توصيلة بالقنيطرة؟", "cta-d": "تواصل معنا مباشرة عبر الواتساب لطلبك.", "cta-b": "اطلب الآن",
+    "faq-1-q": "كيف أطلب؟", "faq-1-a": "اختر مكان الانطلاق والوجهة ثم اضغط على زر الواتساب.",
+    "faq-2-q": "أين تقومون بالتوصيل؟", "faq-2-a": "الخدمة مخصصة للتوصيل بالقنيطرة والنواحي.",
+    "faq-3-q": "كيف أعرف السعر؟", "faq-3-a": "يتم حساب السعر تلقائياً حسب المسافة بالضبط.",
+    "faq-4-q": "ما هي أوقات العمل؟", "faq-4-a": "من الإثنين إلى السبت: 17:00 إلى 02:00.<br>الأحد: 10:00 إلى 02:00.",
+    "footer-text": "خدمة التوصيل بالدراجات النارية بالقنيطرة."
+  },
+  dar: {
+    "nav-services": "الخدمات", "nav-tarifs": "الأثمنة", "nav-comment": "كيفاش كانديرو", "nav-pourquoi": "علاش إحنا", "nav-faq": "الأسئلة",
+    "btn-wa": "طلب ف الواتساب", "srv-title": "كاع احتياجاتك ف تسخيرة وحدة", "srv-sub": "خدمة محلية مصاوبة للقنيطرة.",
+    "srv-1-t": "إيكوميرس", "srv-1-d": "التوصيل ديال السلعة أونلاين.",
+    "srv-2-t": "المطاعم", "srv-2-d": "ماكلتك توصلك سخونة وبسرعة.",
+    "srv-3-t": "الفارماسي", "srv-3-d": "دواك والدوايات حسب الشروط.",
+    "srv-4-t": "السخرة والتسوق", "srv-4-d": "السخرة والحاجات ديال كل نهار.",
+    "srv-5-t": "البروات والكراتن", "srv-5-d": "توصيل سريع للكراتن والسلعة الصغيرة.",
+    "srv-6-t": "الخدمة بالليل", "srv-6-d": "خدامين معاك ف العشية وبالليل.",
+    "how-title": "كيفاش كانديرو؟", "how-sub": "طلب ف 4 د الخطوات سهلة.",
+    "step-1-t": "عزل", "step-1-d": "حدد منين نجيبوا وفين ندوا.",
+    "step-2-t": "حسب", "step-2-d": "الثمن كايطلع ليك أوتوماتيك.",
+    "step-3-t": "صيفط", "step-3-d": "أكد الطلب ديريكت ف الواتساب.",
+    "step-4-t": "شد السخرة", "step-4-d": "الكورسي ديالنا يجيبها لك دغيا.",
+    "tarif-title": "طلب التوصيل ديالك", "tarif-sub": "عزل البلايص ف الخريطة أو قلب بالسمية.",
+    "m-auto": "🗺️ الخريطة والبحث", "m-manual": "✍️ كتب بيديك",
+    "lbl-dep": "🚦🟢 منين نجيبو (المنطلق)", "lbl-dest": "🚦🔴 فين ندبو (الوجهة)",
+    "map-moving": "حرك الخريطة...", "map-use": "استعمل هاد البلاصة ›",
+    "lbl-dep-m": "📍 منين نجيبو", "lbl-dest-m": "🏁 فين نديو", "lbl-dist-m": "📏 الكيلومتراج التقديري (بـ Km)",
+    "status-default": "عزل البلايص باش يبان لك الثمن.",
+    "why-title": "علاش تختار جيب لي-فريزون؟", "why-sub": "خدمة مصاوبة باش تسهل عليك الحياة.",
+    "why-1-t": "السرعة", "why-1-d": "توصيل ديريكت بالموطور ف القنيطرة.",
+    "why-2-t": "الشفافية", "why-2-d": "الثمن باين ومحسوب قبل ما تطلب.",
+    "why-3-t": "السهولية", "why-3-d": "كولشي ف جوج كليكات ف الواتساب.",
+    "why-4-t": "ديما كاينين", "why-4-d": "خدامين معاك حتى لـ 02:00 د الليل.",
+    "cta-t": "محتاج تسخيرة ف القنيطرة؟", "cta-d": "تواصل معانا ديريكت ف الواتساب وتوصلك سخرتك.", "cta-b": "اطلب دابا",
+    "faq-1-q": "كيفاش نطلب؟", "faq-1-a": "عزل البلاصة ديال البدية والنهاية ثم برك على بوطون الواتساب.",
+    "faq-2-q": "فين كتوصيلو؟", "faq-2-a": "الخدمة مخصصة للتوصيل ف القنيطرة والنواحي.",
+    "faq-3-q": "كيفاش نعرف الثمن؟", "faq-3-a": "الثمن كايتحسب أوتوماتيك على حساب الكيلومتراج ضبط.",
+    "faq-4-q": "وقتاش خدامين؟", "faq-4-a": "من الاثنين للسبت: 17:00 حتى لـ 02:00 د الليل.<br>الحد: 10:00 حتى لـ 02:00.",
+    "footer-text": "خدمة التوصيل بالموطور ف القنيطرة."
+  }
+};
+
+function changeLanguage(lang) {
+  currentLang = lang;
+  const htmlRoot = document.getElementById('html-root');
+  if (lang === 'ar' || lang === 'dar') {
+    htmlRoot.setAttribute('dir', 'rtl');
+  } else {
+    htmlRoot.setAttribute('dir', 'ltr');
+  }
+
+  const dict = translations[lang];
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const key = el.getAttribute('data-key');
+    if (dict[key]) {
+      el.innerHTML = dict[key];
+    }
+  });
+
+  if (currentMode === 'manual') calculateManualPrice();
+  else if (depCoord && destCoord) calculateRouteDistance();
+  else resetPriceDisplay();
+}
 
 const map = L.map('map').setView([34.2610, -6.5802], 14);
 
@@ -351,10 +495,9 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap'
 }).addTo(map);
 
-// Geocoding inverse lors du déplacement de la carte (Style Glovo)
 let moveTimer;
 map.on('move', () => {
-  document.getElementById('picker-address').textContent = 'Chargement...';
+  document.getElementById('picker-address').textContent = translations[currentLang]["map-moving"];
   clearTimeout(moveTimer);
   moveTimer = setTimeout(() => {
     const center = map.getCenter();
@@ -393,7 +536,6 @@ function confirmCenterPoint() {
   }
 }
 
-// Recherche automatique via l'API Nominatim
 function onSearchInput(query, isDepart) {
   let clearBtn = document.getElementById(isDepart ? 'clear-depart' : 'clear-dest');
   clearBtn.style.display = query.length > 0 ? 'block' : 'none';
@@ -507,8 +649,12 @@ function calculateRouteDistance() {
     });
 }
 
+function getPriceFromKm(n) {
+  return n <= 4 ? 20 : n < 6 ? 25 : n < 7 ? 26 : n < 8 ? 27 : n < 9 ? 28 : n < 10 ? 29 : 35 + Math.ceil(n - 10) * 2;
+}
+
 function renderPrice(n, dep, dest) {
-  let price = n <= 4 ? 20 : n < 6 ? 25 : n < 7 ? 26 : n < 8 ? 27 : n < 9 ? 28 : n < 10 ? 29 : 35 + Math.ceil(n - 10) * 2;
+  let price = getPriceFromKm(n);
   document.getElementById('result').textContent = price + ' DH';
   document.getElementById('status').textContent = 'Distance : ' + n.toFixed(1) + ' km';
 
@@ -518,7 +664,7 @@ function renderPrice(n, dep, dest) {
 
 function resetPriceDisplay() {
   document.getElementById('result').textContent = '— DH';
-  document.getElementById('status').textContent = 'Sélectionnez les deux adresses pour afficher le tarif.';
+  document.getElementById('status').textContent = translations[currentLang]["status-default"];
 }
 
 function switchMode(mode) {
@@ -536,13 +682,25 @@ function switchMode(mode) {
 function calculateManualPrice() {
   let dep = document.getElementById('manual-depart').value.trim();
   let dest = document.getElementById('manual-dest').value.trim();
+  let distInput = document.getElementById('manual-dist').value;
 
   if (dep && dest) {
-    document.getElementById('result').textContent = 'Sur devis';
-    document.getElementById('status').textContent = 'Saisie manuelle effectuée.';
+    if (distInput && !isNaN(distInput) && parseFloat(distInput) > 0) {
+      let n = parseFloat(distInput);
+      let price = getPriceFromKm(n);
 
-    let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${dep}\n🏁 Destination : ${dest}`;
-    document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
+      document.getElementById('result').textContent = price + ' DH';
+      document.getElementById('status').textContent = 'Distance saisie : ' + n.toFixed(1) + ' km';
+
+      let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${dep}\n🏁 Destination : ${dest}\n📏 Distance : ${n.toFixed(1)} km\n💰 Prix : ${price} DH`;
+      document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
+    } else {
+      document.getElementById('result').textContent = 'Sur devis';
+      document.getElementById('status').textContent = 'Saisie manuelle sans kilométrage précis.';
+
+      let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${dep}\n🏁 Destination : ${dest}`;
+      document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
+    }
   } else {
     resetPriceDisplay();
   }
@@ -550,4 +708,3 @@ function calculateManualPrice() {
 </script>
 </body>
 </html>
-

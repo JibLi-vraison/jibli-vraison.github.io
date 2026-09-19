@@ -1,6 +1,6 @@
 
 <!doctype html>
-<html lang="fr">
+<html lang="fr" dir="ltr">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>JibLi-vraison | Service de livraison</title>
@@ -20,17 +20,28 @@ nav{height:70px;display:flex;align-items:center;justify-content:space-between}
 .brand{font-size:24px;font-weight:900;font-style:italic}
 .brand span{color:#ffb900}
 .links{display:flex;gap:20px;font-size:14px}
-.btn{display:inline-block;padding:13px 18px;border-radius:11px;font-weight:800;cursor:pointer;border:none}
+.btn{display:inline-block;padding:11px 16px;border-radius:11px;font-weight:800;cursor:pointer;border:none}
 .yellow{background:#ffb900;color:#111}
 .dark{background:#171717;border:1px solid #555;color:#fff}
 
-.hero{padding:40px 0;background:radial-gradient(circle at 50% 30%,#ffb90015,transparent 50%)}
-.poster-container{width:100%;max-width:900px;margin:0 auto 25px auto}
-.hero-actions{display:flex;justify-content:center;gap:15px;flex-wrap:wrap}
+/* Lang Switcher Select */
+.lang-select {
+  background: #171717;
+  color: #ffb900;
+  border: 1px solid #ffb900;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+}
 
-section{padding:50px 0}
-.title{text-align:center;font-size:35px}
-.sub{text-align:center;color:#aaa}
+.hero{padding:30px 0 40px 0;background:radial-gradient(circle at 50% 30%,#ffb90015,transparent 50%)}
+.hero-actions{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin-top:25px}
+
+section{padding:40px 0}
+.title{text-align:center;font-size:32px;margin-bottom:8px}
+.sub{text-align:center;color:#aaa;margin-top:0;margin-bottom:25px}
 .cards,.steps,.why{display:grid;gap:16px}
 .cards{grid-template-columns:repeat(3,1fr)}
 .steps{grid-template-columns:repeat(4,1fr)}
@@ -48,12 +59,13 @@ section{padding:50px 0}
 .cta .btn{background:#111;color:#fff}
 footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 .wa{position:fixed;right:20px;bottom:25px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:28px;z-index:9999;box-shadow:0 4px 15px rgba(0,0,0,0.5)}
+html[dir="rtl"] .wa { right: auto; left: 20px; }
 
-/* IMAGE GLOVO STYLE BANNER */
-.glovo-banner-container {
+/* GLOVO CATEGORIES GRID */
+.glovo-categories-container {
   width: 100%;
   max-width: 850px;
-  margin: 30px auto 10px auto;
+  margin: 10px auto 20px auto;
 }
 
 @media(max-width:800px){
@@ -67,11 +79,13 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 
 /* RECHERCHE ET ENTRÉES */
 .search-box { position: relative; width: 100%; text-align: left; }
+html[dir="rtl"] .search-box { text-align: right; }
 .input-wrapper { position: relative; flex: 1; display: flex; align-items: center; }
 .input-group { display: flex; gap: 8px; position: relative; z-index: 10; }
-.search-input { width: 100%; padding: 14px 35px 14px 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 15px; outline: none; }
+.search-input { width: 100%; padding: 14px 14px 14px 35px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 15px; outline: none; }
 .search-input:focus { border-color: #ffb900; }
 .clear-btn { position: absolute; right: 10px; background: none; border: none; color: #888; font-size: 18px; font-weight: bold; cursor: pointer; display: none; padding: 2px 6px; }
+html[dir="rtl"] .clear-btn { right: auto; left: 10px; }
 .clear-btn:hover { color: #ffb900; }
 
 .gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 12px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; }
@@ -108,7 +122,7 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 .suggestions-list li:last-child { border-bottom: none; }
 .suggestions-list li:hover { background: #2a2a2a; color: #ffb900; }
 
-/* CARTE STYLE GLOVO */
+/* MAP */
 .map-wrapper { position: relative; width: 100%; height: 350px; margin-top: 10px; border-radius: 15px; overflow: hidden; border: 2px solid #ffb900; }
 #map { width: 100%; height: 100%; z-index: 1; }
 
@@ -151,279 +165,371 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 </head>
 <body>
 
-<header><div class="c"><nav><a class="brand" href="#">JibLi-<span>vraison</span></a><div class="links"><a href="#services">Services</a><a href="#tarifs">Tarifs</a><a href="#comment">Comment ça marche</a><a href="#pourquoi">Pourquoi nous</a><a href="#faq">FAQ</a></div><div style="display:flex;gap:8px;align-items:center"><a class="btn dark" href="mailto:jibli.vraison@gmail.com">Email</a><a class="btn yellow" href="https://wa.me/212634084543">WhatsApp</a></div></nav></div></header>
+<header>
+  <div class="c">
+    <nav>
+      <a class="brand" href="#">JibLi-<span>vraison</span></a>
+      <div class="links">
+        <a href="#services" data-i18n="nav_services">Services</a>
+        <a href="#tarifs" data-i18n="nav_tarifs">Tarifs</a>
+        <a href="#comment" data-i18n="nav_how">Comment ça marche</a>
+        <a href="#pourquoi" data-i18n="nav_why">Pourquoi nous</a>
+        <a href="#faq" data-i18n="nav_faq">FAQ</a>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <!-- LANG SWITCHER -->
+        <select class="lang-select" onchange="changeLanguage(this.value)">
+          <option value="fr" selected>🇫🇷 FR</option>
+          <option value="ar">🇲🇦 العَرَبِيّة</option>
+        </select>
+        <a class="btn dark" href="mailto:jibli.vraison@gmail.com" data-i18n="btn_email">Email</a>
+        <a class="btn yellow" href="https://wa.me/212634084543" data-i18n="btn_whatsapp">WhatsApp</a>
+      </div>
+    </nav>
+  </div>
+</header>
 
 <section class="hero">
   <div class="c">
-    <!-- POSTER PRINCIPAL -->
-    <div class="poster-container">
-      <svg viewBox="0 0 1000 650" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="background:#090909; font-family:Arial, sans-serif; border-radius:18px; border:1px solid #333; box-shadow:0 12px 40px rgba(0,0,0,0.8);">
-        <rect width="1000" height="650" fill="#0c0c0c" rx="18"/>
-        <path d="M 480 0 L 1000 0 L 1000 650 L 380 650 Z" fill="#141414"/>
-        <circle cx="750" cy="280" r="220" fill="#ffb900" opacity="0.04"/>
-
-        <g transform="translate(45, 55)">
-          <text x="0" y="0" font-weight="900" font-style="italic" font-size="52" fill="#ffffff">JibLi-<tspan fill="#ffb900">vraison</tspan></text>
-          <line x1="0" y1="18" x2="380" y2="18" stroke="#ffb900" stroke-width="4" stroke-linecap="round"/>
-          <text x="0" y="44" font-weight="bold" font-size="16" fill="#aaa" letter-spacing="3">SERVICE DE COURSIER À MOTO</text>
-        </g>
-
-        <g transform="translate(45, 145)">
-          <rect width="420" height="135" fill="#ffb900" rx="14"/>
-          <text x="24" y="36" font-weight="900" font-size="18" fill="#111">DISPONIBLE À KÉNITRA</text>
-          <line x1="24" y1="48" x2="396" y2="48" stroke="#111" stroke-width="1.5" opacity="0.3"/>
-          <text x="24" y="80" font-weight="bold" font-size="18" fill="#111">🕒 Lun - Sam : 17h00 à 02h00</text>
-          <text x="24" y="110" font-weight="bold" font-size="18" fill="#111">🕒 Dimanche : 10h00 à 02h00</text>
-        </g>
-
-        <g transform="translate(45, 308)">
-          <rect x="0" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
-          <text x="65" y="32" font-size="22" text-anchor="middle">⚡</text>
-          <text x="65" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">LIVRAISON RAPIDE</text>
-
-          <rect x="145" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
-          <text x="210" y="32" font-size="22" text-anchor="middle">🔒</text>
-          <text x="210" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">SÉCURISÉE &amp; FIABLE</text>
-
-          <rect x="290" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
-          <text x="355" y="32" font-size="22" text-anchor="middle">🌙</text>
-          <text x="355" y="54" font-weight="bold" font-size="12" fill="#fff" text-anchor="middle">SERVICE NOCTURNE</text>
-        </g>
-
-        <g transform="translate(45, 410)">
-          <text x="0" y="20" font-weight="900" font-size="15" fill="#ffb900" letter-spacing="1">TOUS VOS BESOINS, UNE SEULE LIVRAISON !</text>
-          
-          <g transform="translate(0, 35)">
-            <rect x="0" y="0" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
-            <text x="12" y="26" font-size="16">🛒</text>
-            <text x="38" y="26" font-weight="bold" font-size="13" fill="#eee">E-Commerce</text>
-
-            <rect x="212" y="0" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
-            <text x="224" y="26" font-size="16">🍔</text>
-            <text x="250" y="26" font-weight="bold" font-size="13" fill="#eee">Restaurants</text>
-
-            <rect x="0" y="50" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
-            <text x="12" y="76" font-size="16">💊</text>
-            <text x="38" y="76" font-weight="bold" font-size="13" fill="#eee">Pharmacie</text>
-
-            <rect x="212" y="50" width="202" height="42" fill="#161616" stroke="#282828" rx="8"/>
-            <text x="224" y="76" font-size="16">📦</text>
-            <text x="250" y="76" font-weight="bold" font-size="13" fill="#eee">Petits Colis &amp; Courses</text>
-          </g>
-        </g>
-
-        <g transform="translate(520, 100)">
-          <circle cx="210" cy="210" r="170" fill="#1a1a1a" stroke="#ffb900" stroke-width="2" stroke-dasharray="8,8"/>
-          <text x="210" y="250" font-size="180" text-anchor="middle">🛵</text>
-          
-          <g transform="translate(250, 60)">
-            <rect width="110" height="90" fill="#ffb900" rx="12"/>
-            <text x="55" y="38" font-weight="900" font-size="14" fill="#111" text-anchor="middle">JibLi-</text>
-            <text x="55" y="58" font-weight="900" font-size="14" fill="#111" text-anchor="middle">vraison</text>
-            <text x="55" y="78" font-size="16" text-anchor="middle">📍</text>
-          </g>
-        </g>
-
-        <g transform="translate(45, 555)">
-          <rect width="910" height="55" fill="#181818" stroke="#ffb900" stroke-width="2" rx="14"/>
-          <text x="25" y="34" font-weight="bold" font-size="16" fill="#fff">REJOIGNEZ-NOUS DÈS MAINTENANT !</text>
-          <rect x="620" y="10" width="270" height="35" fill="#25d366" rx="8"/>
-          <text x="755" y="33" font-weight="900" font-size="18" fill="#fff" text-anchor="middle">📲 06 34 08 45 43</text>
-        </g>
-      </svg>
-    </div>
-
-    <!-- REPRODUCTION DE L'IMAGE GLOVO (DARK THEME) -->
-    <div class="glovo-banner-container">
+    <div class="glovo-categories-container">
       <svg viewBox="0 0 1000 620" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="background:#111; border-radius:20px; border:2px solid #ffb90033; box-shadow:0 10px 30px rgba(0,0,0,0.6);">
-        <!-- Background radial glow -->
         <circle cx="500" cy="310" r="400" fill="#ffb900" opacity="0.05"/>
 
-        <!-- ROW 1 : Restaurants & Courses -->
-        <!-- 1. Restaurants -->
+        <!-- ROW 1 -->
         <g transform="translate(200, 40)">
-          <!-- Outer Yellow Halo -->
           <circle cx="120" cy="110" r="115" fill="#ffb900" opacity="0.15"/>
-          <!-- Inner Dark Circle -->
           <circle cx="120" cy="110" r="100" fill="#1a1a1a" stroke="#ffb900" stroke-width="4"/>
-          <!-- Icon -->
           <text x="120" y="125" font-size="75" text-anchor="middle">🍜🍔</text>
-          <!-- Label Pill -->
           <rect x="20" y="185" width="200" height="46" rx="23" fill="#111" stroke="#ffb900" stroke-width="2"/>
-          <text x="120" y="215" font-weight="900" font-size="20" fill="#ffffff" text-anchor="middle">Restaurants</text>
+          <text id="cat-1" x="120" y="215" font-weight="900" font-size="20" fill="#ffffff" text-anchor="middle">Restaurants</text>
         </g>
 
-        <!-- 2. Courses -->
         <g transform="translate(560, 40)">
-          <!-- Outer Yellow Halo -->
           <circle cx="120" cy="110" r="115" fill="#ffb900" opacity="0.15"/>
-          <!-- Inner Dark Circle -->
           <circle cx="120" cy="110" r="100" fill="#1a1a1a" stroke="#ffb900" stroke-width="4"/>
-          <!-- Icon -->
           <text x="120" y="125" font-size="75" text-anchor="middle">🛒🥦</text>
-          <!-- Label Pill -->
           <rect x="20" y="185" width="200" height="46" rx="23" fill="#111" stroke="#ffb900" stroke-width="2"/>
-          <text x="120" y="215" font-weight="900" font-size="20" fill="#ffffff" text-anchor="middle">Courses</text>
+          <text id="cat-2" x="120" y="215" font-weight="900" font-size="20" fill="#ffffff" text-anchor="middle">Courses</text>
         </g>
 
-        <!-- ROW 2 : Boutiques, Parapharmacies, Service Coursier -->
-        <!-- 3. Boutiques -->
+        <!-- ROW 2 -->
         <g transform="translate(50, 320)">
-          <!-- Outer Yellow Halo -->
           <circle cx="120" cy="110" r="115" fill="#ffb900" opacity="0.15"/>
-          <!-- Inner Dark Circle -->
           <circle cx="120" cy="110" r="100" fill="#1a1a1a" stroke="#ffb900" stroke-width="4"/>
-          <!-- Icon -->
           <text x="120" y="125" font-size="75" text-anchor="middle">🛍️🛍️</text>
-          <!-- Label Pill -->
           <rect x="20" y="185" width="200" height="46" rx="23" fill="#111" stroke="#ffb900" stroke-width="2"/>
-          <text x="120" y="215" font-weight="900" font-size="20" fill="#ffffff" text-anchor="middle">Boutiques</text>
+          <text id="cat-3" x="120" y="215" font-weight="900" font-size="20" fill="#ffffff" text-anchor="middle">Boutiques</text>
         </g>
 
-        <!-- 4. Parapharmacies & Beauté -->
         <g transform="translate(380, 320)">
-          <!-- Outer Yellow Halo -->
           <circle cx="120" cy="110" r="115" fill="#ffb900" opacity="0.15"/>
-          <!-- Inner Dark Circle -->
           <circle cx="120" cy="110" r="100" fill="#1a1a1a" stroke="#ffb900" stroke-width="4"/>
-          <!-- Icon -->
           <text x="120" y="125" font-size="70" text-anchor="middle">💄🟢</text>
-          <!-- Label Pill -->
           <rect x="0" y="185" width="240" height="52" rx="26" fill="#111" stroke="#ffb900" stroke-width="2"/>
-          <text x="120" y="208" font-weight="900" font-size="16" fill="#ffffff" text-anchor="middle">Parapharmacies</text>
-          <text x="120" y="228" font-weight="900" font-size="16" fill="#ffb900" text-anchor="middle">&amp; Beauté</text>
+          <text id="cat-4" x="120" y="218" font-weight="900" font-size="16" fill="#ffffff" text-anchor="middle">Parapharmacie & Beauté</text>
         </g>
 
-        <!-- 5. Service Coursier -->
         <g transform="translate(710, 320)">
-          <!-- Outer Yellow Halo -->
           <circle cx="120" cy="110" r="115" fill="#ffb900" opacity="0.15"/>
-          <!-- Inner Dark Circle -->
           <circle cx="120" cy="110" r="100" fill="#1a1a1a" stroke="#ffb900" stroke-width="4"/>
-          <!-- Icon -->
           <text x="120" y="125" font-size="75" text-anchor="middle">🛵📦</text>
-          <!-- Label Pill -->
           <rect x="10" y="185" width="220" height="52" rx="26" fill="#111" stroke="#ffb900" stroke-width="2"/>
-          <text x="120" y="208" font-weight="900" font-size="16" fill="#ffffff" text-anchor="middle">Service</text>
-          <text x="120" y="228" font-weight="900" font-size="16" fill="#ffb900" text-anchor="middle">Coursier</text>
+          <text id="cat-5" x="120" y="218" font-weight="900" font-size="16" fill="#ffffff" text-anchor="middle">Service Coursier</text>
         </g>
       </svg>
     </div>
 
     <div class="hero-actions">
-      <a class="btn yellow" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison.">Commander sur WhatsApp</a>
-      <a class="btn dark" href="tel:+212634084543">📞 06 34 08 45 43</a>
+      <a class="btn yellow" href="https://wa.me/212634084543" data-i18n="hero_cta">Commander via WhatsApp</a>
     </div>
   </div>
 </section>
 
-<section id="services"><div class="c"><h2 class="title">Tous vos besoins, une seule livraison</h2><p class="sub">Un service local pensé pour Kénitra.</p><div class="cards">
-<div class="card"><div class="icon">🛒</div><h3>E-commerce</h3><p>Livraison de vos commandes en ligne.</p></div>
-<div class="card"><div class="icon">🍔</div><h3>Restaurants</h3><p>Vos repas livrés rapidement.</p></div>
-<div class="card"><div class="icon">💊</div><h3>Pharmacie</h3><p>Produits de pharmacie selon les conditions applicables.</p></div>
-<div class="card"><div class="icon">🛍️</div><h3>Courses diverses</h3><p>Petits achats et besoins du quotidien.</p></div>
-<div class="card"><div class="icon">📦</div><h3>Petits colis</h3><p>Un service de proximité pour vos petits envois.</p></div>
-<div class="card"><div class="icon">🌙</div><h3>Service nocturne</h3><p>Disponible en soirée et nuit.</p></div>
-</div></div></section>
+<section id="services">
+  <div class="c">
+    <h2 class="title" data-i18n="srv_title">Tous vos besoins, une seule livraison</h2>
+    <p class="sub" data-i18n="srv_sub">Un service local conçu pour la ville de Kénitra.</p>
+    <div class="cards">
+      <div class="card"><div class="icon">🛒</div><h3 data-i18n="srv_1_t">E-Commerce</h3><p data-i18n="srv_1_d">Livraison rapide de vos commandes en ligne.</p></div>
+      <div class="card"><div class="icon">🍔</div><h3 data-i18n="srv_2_t">Restaurants</h3><p data-i18n="srv_2_d">Vos plats préférés livrés chauds.</p></div>
+      <div class="card"><div class="icon">💊</div><h3 data-i18n="srv_3_t">Pharmacie</h3><p data-i18n="srv_3_d">Livraison de vos besoins parapharmaceutiques.</p></div>
+      <div class="card"><div class="icon">🛍️</div><h3 data-i18n="srv_4_t">Courses diverses</h3><p data-i18n="srv_4_d">Vos achats et besoins quotidiens.</p></div>
+      <div class="card"><div class="icon">📦</div><h3 data-i18n="srv_5_t">Petit colis</h3><p data-i18n="srv_5_d">Service express pour documents et objets.</p></div>
+      <div class="card"><div class="icon">🌙</div><h3 data-i18n="srv_6_t">Service Nocturne</h3><p data-i18n="srv_6_d">Disponible tard en soirée et la nuit.</p></div>
+    </div>
+  </div>
+</section>
 
-<section id="comment"><div class="c"><h2 class="title">Comment ça marche ?</h2><p class="sub">Commander en 4 étapes simples.</p><div class="steps">
-<div class="step"><div class="num">1</div><h3>Choisissez</h3><p>Sélectionnez votre départ et votre destination.</p></div>
-<div class="step"><div class="num">2</div><h3>Calculez</h3><p>Le tarif s'affiche automatiquement.</p></div>
-<div class="step"><div class="num">3</div><h3>Envoyez</h3><p>Validez votre demande directement sur WhatsApp.</p></div>
-<div class="step"><div class="num">4</div><h3>Recevez</h3><p>Votre coursier livre votre commande rapidement.</p></div>
-</div></div></section>
+<section id="comment">
+  <div class="c">
+    <h2 class="title" data-i18n="how_title">Comment ça marche ?</h2>
+    <p class="sub" data-i18n="how_sub">Commandez votre livraison en 4 étapes simples.</p>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><h3 data-i18n="how_1_t">Choisissez le lieu</h3><p data-i18n="how_1_d">Sélectionnez le départ et la destination.</p></div>
+      <div class="step"><div class="num">2</div><h3 data-i18n="how_2_t">Calculez le prix</h3><p data-i18n="how_2_d">Le tarif s'affiche instantanément.</p></div>
+      <div class="step"><div class="num">3</div><h3 data-i18n="how_3_t">Envoyez la demande</h3><p data-i18n="how_3_d">Confirmez votre course directement sur WhatsApp.</p></div>
+      <div class="step"><div class="num">4</div><h3 data-i18n="how_4_t">Recevez votre colis</h3><p data-i18n="how_4_d">Le coursier arrive dans les plus brefs délais.</p></div>
+    </div>
+  </div>
+</section>
 
-<section id="tarifs"><div class="c"><h2 class="title">Commander ma livraison</h2><p class="sub">Choisissez vos adresses sur la carte ou recherchez par nom.</p><div class="tarif">
+<section id="tarifs">
+  <div class="c">
+    <h2 class="title" data-i18n="calc_title">Calculer le tarif de livraison</h2>
+    <p class="sub" data-i18n="calc_sub">Sélectionnez sur la carte ou recherchez par nom de quartier.</p>
+    <div class="tarif">
 
-<div class="mode-selector">
-  <button type="button" class="mode-btn active" id="btn-mode-auto" onclick="switchMode('auto')">🗺️ Par Carte / Recherche</button>
-  <button type="button" class="mode-btn" id="btn-mode-manual" onclick="switchMode('manual')">✍️ Saisie directe</button>
-</div>
+      <div class="mode-selector">
+        <button type="button" class="mode-btn active" id="btn-mode-auto" onclick="switchMode('auto')" data-i18n="mode_auto">🗺️ Carte / Recherche</button>
+        <button type="button" class="mode-btn" id="btn-mode-manual" onclick="switchMode('manual')" data-i18n="mode_manual">✍️ Saisie manuelle</button>
+      </div>
 
-<!-- MODE AUTOMATIQUE & CARTE -->
-<div id="section-auto">
-  <div style="display:grid;gap:15px;margin-bottom:18px;text-align:left">
-    <div>
-      <label style="font-weight:700;display:block;margin-bottom:5px">🚦🟢 Départ</label>
-      <div class="search-box">
-        <div class="input-group">
-          <div class="input-wrapper">
-            <input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare Kenitra, Marjane..." autocomplete="off" oninput="onSearchInput(this.value, true)">
-            <button type="button" class="clear-btn" id="clear-depart" onclick="clearField(true)">✕</button>
+      <!-- MODE AUTOMATIQUE -->
+      <div id="section-auto">
+        <div style="display:grid;gap:15px;margin-bottom:18px;">
+          <div>
+            <label style="font-weight:700;display:block;margin-bottom:5px" data-i18n="label_dep">🚦🟢 Point de départ</label>
+            <div class="search-box">
+              <div class="input-group">
+                <div class="input-wrapper">
+                  <input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare Kénitra, Marjane..." autocomplete="off" oninput="onSearchInput(this.value, true)">
+                  <button type="button" class="clear-btn" id="clear-depart" onclick="clearField(true)">✕</button>
+                </div>
+                <button type="button" class="gps-btn" onclick="useCurrentLocation(true)">🎯 GPS</button>
+              </div>
+              <ul id="list-depart" class="suggestions-list"></ul>
+            </div>
           </div>
-          <button type="button" class="gps-btn" onclick="useCurrentLocation(true)">🎯 GPS</button>
-        </div>
-        <ul id="list-depart" class="suggestions-list"></ul>
-      </div>
-    </div>
 
-    <div>
-      <label style="font-weight:700;display:block;margin-bottom:5px">🚦🔴 Destination</label>
-      <div class="search-box">
-        <div class="input-group">
-          <div class="input-wrapper">
-            <input type="text" id="input-dest" class="search-input" placeholder="Ex: Mehdia, Café..." autocomplete="off" oninput="onSearchInput(this.value, false)">
-            <button type="button" class="clear-btn" id="clear-dest" onclick="clearField(false)">✕</button>
+          <div>
+            <label style="font-weight:700;display:block;margin-bottom:5px" data-i18n="label_dest">🚦🔴 Point d'arrivée</label>
+            <div class="search-box">
+              <div class="input-group">
+                <div class="input-wrapper">
+                  <input type="text" id="input-dest" class="search-input" placeholder="Ex: Mehdia, Café..." autocomplete="off" oninput="onSearchInput(this.value, false)">
+                  <button type="button" class="clear-btn" id="clear-dest" onclick="clearField(false)">✕</button>
+                </div>
+                <button type="button" class="gps-btn" onclick="useCurrentLocation(false)">🎯 GPS</button>
+              </div>
+              <ul id="list-dest" class="suggestions-list"></ul>
+            </div>
           </div>
-          <button type="button" class="gps-btn" onclick="useCurrentLocation(false)">🎯 GPS</button>
         </div>
-        <ul id="list-dest" class="suggestions-list"></ul>
+
+        <div class="map-wrapper">
+          <div id="map"></div>
+          <div class="center-picker">
+            <div class="picker-card" id="picker-card" onclick="confirmCenterPoint()">
+              <div id="picker-address" data-i18n="map_move">Déplacez la carte...</div>
+              <span data-i18n="map_use_point">Utiliser ce point ›</span>
+            </div>
+            <div class="picker-pin">📍</div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <div class="map-wrapper">
-    <div id="map"></div>
-    <div class="center-picker">
-      <div class="picker-card" id="picker-card" onclick="confirmCenterPoint()">
-        <div id="picker-address">Déplacez la carte...</div>
-        <span>Utiliser ce point ›</span>
+      <!-- MODE MANUEL -->
+      <div id="section-manual" style="display:none;">
+        <div style="display:grid;gap:15px;margin-bottom:18px;">
+          <div>
+            <label style="font-weight:700;display:block;margin-bottom:5px" data-i18n="label_dep_man">📍 Lieu de départ</label>
+            <input type="text" id="manual-depart" class="search-input" style="width:100%" placeholder="Entrez le lieu de départ..." oninput="calculateManualPrice()">
+          </div>
+          <div>
+            <label style="font-weight:700;display:block;margin-bottom:5px" data-i18n="label_dest_man">🏁 Lieu d'arrivée</label>
+            <input type="text" id="manual-dest" class="search-input" style="width:100%" placeholder="Entrez le lieu d'arrivée..." oninput="calculateManualPrice()">
+          </div>
+        </div>
       </div>
-      <div class="picker-pin">📍</div>
+
+      <div class="result" id="result">— DH</div>
+      <p id="status" style="color:#aaa;margin-bottom:15px;" data-i18n="status_initial">Définissez les deux points pour afficher le prix.</p>
+
+      <a id="order" class="btn yellow" href="https://wa.me/212634084543" style="width:100%;text-align:center;" data-i18n="btn_order_wa">Commander via WhatsApp</a>
     </div>
   </div>
-</div>
+</section>
 
-<!-- MODE SAISIE MANUELLE -->
-<div id="section-manual" style="display:none; text-align:left;">
-  <div style="display:grid;gap:15px;margin-bottom:18px;">
-    <div>
-      <label style="font-weight:700;display:block;margin-bottom:5px">📍 Lieu de Départ</label>
-      <input type="text" id="manual-depart" class="search-input" style="width:100%" placeholder="Entrez le lieu de départ..." oninput="calculateManualPrice()">
-    </div>
-    <div>
-      <label style="font-weight:700;display:block;margin-bottom:5px">🏁 Destination</label>
-      <input type="text" id="manual-dest" class="search-input" style="width:100%" placeholder="Entrez la destination..." oninput="calculateManualPrice()">
+<section id="pourquoi">
+  <div class="c">
+    <h2 class="title" data-i18n="why_title">Pourquoi choisir JibLi-vraison ?</h2>
+    <p class="sub" data-i18n="why_sub">Un service conçu pour vous faire gagner du temps.</p>
+    <div class="why">
+      <div class="whyitem"><span>⚡</span><h3 data-i18n="why_1_t">Rapidité</h3><small data-i18n="why_1_d">Livraison directe en moto dans tout Kénitra.</small></div>
+      <div class="whyitem"><span>🎯</span><h3 data-i18n="why_2_t">Transparence</h3><small data-i18n="why_2_d">Calcul de prix clair avant la commande.</small></div>
+      <div class="whyitem"><span>📱</span><h3 data-i18n="why_3_t">Simplicité</h3><small data-i18n="why_3_d">Tout se fait en quelques clics via WhatsApp.</small></div>
+      <div class="whyitem"><span>🌙</span><h3 data-i18n="why_4_t">Disponibilité</h3><small data-i18n="why_4_d">Service disponible jusqu'à 02:00 du matin.</small></div>
     </div>
   </div>
-</div>
+</section>
 
-<div class="result" id="result">— DH</div>
-<p id="status" style="color:#aaa;margin-bottom:15px;">Sélectionnez les lieux pour afficher le tarif.</p>
+<section>
+  <div class="c">
+    <div class="cta">
+      <div>
+        <h2 data-i18n="cta_title">Besoin d'une livraison à Kénitra ?</h2>
+        <p data-i18n="cta_sub">Contactez-nous directement sur WhatsApp pour confirmer votre course.</p>
+      </div>
+      <a class="btn" href="https://wa.me/212634084543" data-i18n="cta_btn">Commander maintenant</a>
+    </div>
+  </div>
+</section>
 
-<a id="order" class="btn yellow" href="https://wa.me/212634084543" style="width:100%;text-align:center;">Commander sur WhatsApp</a>
-</div></div></section>
+<section id="faq">
+  <div class="c">
+    <h2 class="title" data-i18n="faq_title">Foire Aux Questions</h2>
+    <div class="faq">
+      <details><summary data-i18n="faq_1_q">Comment passer une commande ?</summary><div class="answer" data-i18n="faq_1_a">Sélectionnez le point de départ et d'arrivée (ou saisissez l'adresse), puis cliquez sur le bouton WhatsApp.</div></details>
+      <details><summary data-i18n="faq_2_q">Quelles sont les zones couvertes ?</summary><div class="answer" data-i18n="faq_2_a">Le service est actuellement disponible dans toute la ville de Kénitra et ses environs.</div></details>
+      <details><summary data-i18n="faq_3_q">Comment le prix est-il calculé ?</summary><div class="answer" data-i18n="faq_3_a">Le prix est calculé automatiquement en fonction des kilomètres parcourus.</div></details>
+      <details><summary data-i18n="faq_4_q">Quels sont les horaires de travail ?</summary><div class="answer" data-i18n="faq_4_a">Du Lundi au Samedi: 17h00 à 02h00.<br>Dimanche: 10h00 à 02h00.</div></details>
+    </div>
+  </div>
+</section>
 
-<section id="pourquoi"><div class="c"><h2 class="title">Pourquoi choisir JibLi-vraison ?</h2><p class="sub">Un service pensé pour vous faciliter la vie.</p><div class="why">
-<div class="whyitem"><span>⚡</span><h3>Rapidité</h3><small>Livraison directe à moto dans Kénitra.</small></div>
-<div class="whyitem"><span>🎯</span><h3>Transparence</h3><small>Calcul clair du tarif avant commande.</small></div>
-<div class="whyitem"><span>📱</span><h3>Simplicité</h3><small>Tout se fait en quelques clics via WhatsApp.</small></div>
-<div class="whyitem"><span>🌙</span><h3>Disponibilité</h3><small>Service disponible jusqu'à 02h00 du matin.</small></div>
-</div></div></section>
-
-<section><div class="c"><div class="cta"><div><h2>Besoin d'une livraison à Kénitra ?</h2><p>Contactez-nous directement sur WhatsApp pour votre commande.</p></div><a class="btn" href="https://wa.me/212634084543">Commander maintenant</a></div></div></section>
-
-<section id="faq"><div class="c"><h2 class="title">Questions fréquentes</h2><div class="faq">
-<details><summary>Comment commander ?</summary><div class="answer">Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.</div></details>
-<details><summary>Où faites-vous les livraisons ?</summary><div class="answer">Le service est destiné aux livraisons à Kénitra et ses environs.</div></details>
-<details><summary>Comment connaître le prix ?</summary><div class="answer">Le prix est calculé automatiquement en fonction du kilométrage exact.</div></details>
-<details><summary>Quels sont vos horaires ?</summary><div class="answer">Du Lundi au Samedi : 17h00 à 02h00.<br>Le Dimanche : 10h00 à 02h00.</div></details>
-</div></div></section>
-
-<footer><div class="c"><b>JibLi-vraison</b> — Service de coursier à moto à Kénitra. <span style="float:right">© 2026</span></div></footer>
+<footer>
+  <div class="c"><b>JibLi-vraison</b> — <span data-i18n="footer_text">Service de livraison rapide à Kénitra.</span> <span style="float:right">© 2026</span></div>
+</footer>
 <a class="wa" href="https://wa.me/212634084543">☏</a>
 
 <script>
+const translations = {
+  fr: {
+    nav_services: "Services",
+    nav_tarifs: "Tarifs",
+    nav_how: "Comment ça marche",
+    nav_why: "Pourquoi nous",
+    nav_faq: "FAQ",
+    btn_email: "Email",
+    btn_whatsapp: "WhatsApp",
+    hero_cta: "Commander via WhatsApp",
+    srv_title: "Tous vos besoins, une seule livraison",
+    srv_sub: "Un service local conçu pour la ville de Kénitra.",
+    srv_1_t: "E-Commerce", srv_1_d: "Livraison rapide de vos commandes en ligne.",
+    srv_2_t: "Restaurants", srv_2_d: "Vos plats préférés livrés chauds.",
+    srv_3_t: "Pharmacie", srv_3_d: "Livraison de vos besoins parapharmaceutiques.",
+    srv_4_t: "Courses diverses", srv_4_d: "Vos achats et besoins quotidiens.",
+    srv_5_t: "Petit colis", srv_5_d: "Service express pour documents et objets.",
+    srv_6_t: "Service Nocturne", srv_6_d: "Disponible tard en soirée et la nuit.",
+    how_title: "Comment ça marche ?",
+    how_sub: "Commandez votre livraison en 4 étapes simples.",
+    how_1_t: "Choisissez le lieu", how_1_d: "Sélectionnez le départ et la destination.",
+    how_2_t: "Calculez le prix", how_2_d: "Le tarif s'affiche instantanément.",
+    how_3_t: "Envoyez la demande", how_3_d: "Confirmez votre course directement sur WhatsApp.",
+    how_4_t: "Recevez votre colis", how_4_d: "Le coursier arrive dans les plus brefs délais.",
+    calc_title: "Calculer le tarif de livraison",
+    calc_sub: "Sélectionnez sur la carte ou recherchez par nom de quartier.",
+    mode_auto: "🗺️ Carte / Recherche",
+    mode_manual: "✍️ Saisie manuelle",
+    label_dep: "🚦🟢 Point de départ",
+    label_dest: "🚦🔴 Point d'arrivée",
+    label_dep_man: "📍 Lieu de départ",
+    label_dest_man: "🏁 Lieu d'arrivée",
+    map_move: "Déplacez la carte...",
+    map_use_point: "Utiliser ce point ›",
+    status_initial: "Définissez les deux points pour afficher le prix.",
+    btn_order_wa: "Commander via WhatsApp",
+    why_title: "Pourquoi choisir JibLi-vraison ?",
+    why_sub: "Un service conçu pour vous faire gagner du temps.",
+    why_1_t: "Rapidité", why_1_d: "Livraison directe en moto dans tout Kénitra.",
+    why_2_t: "Transparence", why_2_d: "Calcul de prix clair avant la commande.",
+    why_3_t: "Simplicité", why_3_d: "Tout se fait en quelques clics via WhatsApp.",
+    why_4_t: "Disponibilité", why_4_d: "Service disponible jusqu'à 02:00 du matin.",
+    cta_title: "Besoin d'une livraison à Kénitra ?",
+    cta_sub: "Contactez-nous directement sur WhatsApp pour confirmer votre course.",
+    cta_btn: "Commander maintenant",
+    faq_title: "Foire Aux Questions",
+    faq_1_q: "Comment passer une commande ?", faq_1_a: "Sélectionnez le point de départ et d'arrivée (ou saisissez l'adresse), puis cliquez sur le bouton WhatsApp.",
+    faq_2_q: "Quelles sont les zones couvertes ?", faq_2_a: "Le service est actuellement disponible dans toute la ville de Kénitra et ses environs.",
+    faq_3_q: "Comment le prix est-il calculé ?", faq_3_a: "Le prix est calculé automatiquement en fonction des kilomètres parcourus.",
+    faq_4_q: "Quels sont les horaires de travail ?", faq_4_a: "Du Lundi au Samedi: 17h00 à 02h00.<br>Dimanche: 10h00 à 02h00.",
+    footer_text: "Service de livraison rapide à Kénitra.",
+    cat_1: "Restaurants", cat_2: "Courses", cat_3: "Boutiques", cat_4: "Parapharmacie & Beauté", cat_5: "Service Coursier",
+    dh: "DH",
+    agreed: "Sur accord"
+  },
+  ar: {
+    nav_services: "الخدمات",
+    nav_tarifs: "الأسعار",
+    nav_how: "كيف نعمل",
+    nav_why: "لماذا نحن",
+    nav_faq: "الأسئلة الشائعة",
+    btn_email: "البريد الإلكتروني",
+    btn_whatsapp: "واتساب",
+    hero_cta: "الطلب عبر واتساب",
+    srv_title: "كل احتياجاتك في توصيلة واحدة",
+    srv_sub: "خدمة محليّة مصممة لمدينة القنيطرة.",
+    srv_1_t: "التجارة الإلكترونية", srv_1_d: "توصيل طلبياتك عبر الإنترنت بسرعة.",
+    srv_2_t: "المطاعم", srv_2_d: "وجباتك المفضلة تصلك ساخنة.",
+    srv_3_t: "الصيدلية", srv_3_d: "توصيل المستلزمات والمنتجات الصيدلانية.",
+    srv_4_t: "مشتريات متنوعة", srv_4_d: "أغراضك واحتياجاتك اليومية.",
+    srv_5_t: "طرد صغير", srv_5_d: "خدمة توصيل سريعة للأغراض الشخصية.",
+    srv_6_t: "خدمة ليلية", srv_6_d: "متوفرون خلال الفترة المسائية والليلية.",
+    how_title: "كيف تعمل الخدمة؟",
+    how_sub: "اطلب توصيلتك في 4 خطوات بسيطة.",
+    how_1_t: "حدد المكان", how_1_d: "اختر نقطة الانطلاق والوجهة.",
+    how_2_t: "احسب السعر", how_2_d: "يظهر لك السعر المباشر تلقائياً.",
+    how_3_t: "أرسل الطلب", how_3_d: "أكد طلبك مباشرة عبر واتساب.",
+    how_4_t: "استلم شحنتك", how_4_d: "يصلك السائق في أسرع وقت ممكن.",
+    calc_title: "حساب سعر التوصيل",
+    calc_sub: "اختر المواقع على الخريطة أو ابحث باسم المنطقة.",
+    mode_auto: "🗺️ عبر الخريطة / البحث",
+    mode_manual: "✍️ كتابة مباشرة",
+    label_dep: "🚦🟢 نقطة الانطلاق",
+    label_dest: "🚦🔴 نقطة الوصول",
+    label_dep_man: "📍 مكان الانطلاق",
+    label_dest_man: "🏁 وجهة التوصيل",
+    map_move: "حرّك الخريطة...",
+    map_use_point: "استخدم هذه النقطة ›",
+    status_initial: "حدد النقطتين لإظهار الثمن.",
+    btn_order_wa: "الطلب عبر واتساب",
+    why_title: "لماذا اختار JibLi-vraison؟",
+    why_sub: "خدمة مصممة لتوفير وقتك وراحتك.",
+    why_1_t: "السرعة", why_1_d: "توصيل مباشر بالدراجة النارية داخل القنيطرة.",
+    why_2_t: "الشفافية", why_2_d: "حساب واضح للسعر قبل الطلب.",
+    why_3_t: "السهولة", why_3_d: "كل شيء يتم في لحظات عبر واتساب.",
+    why_4_t: "الاستمرارية", why_4_d: "خدمة متوفرة إلى غاية 02:00 صباحاً.",
+    cta_title: "تحتاج توصيل داخل القنيطرة؟",
+    cta_sub: "تواصل معنا مباشرة عبر واتساب لتأكيد طلبك.",
+    cta_btn: "اطلب الآن",
+    faq_title: "الأسئلة الشائعة",
+    faq_1_q: "كيف أقوم بالطلب؟", faq_1_a: "اختر نقطة الانطلاق والوصول (أو اكتب العنوان)، ثم اضغط على زر واتساب.",
+    faq_2_q: "ما هي مناطق التوصيل؟", faq_2_a: "الخدمة متوفرة حالياً داخل مدينة القنيطرة والنواحي.",
+    faq_3_q: "كيف يتم معرفة السعر؟", faq_3_a: "يتم حساب الثمن أوتوماتيكياً بناءً على الكيلومترات المقطوعة.",
+    faq_4_q: "ما هي أوقات العمل؟", faq_4_a: "من الإثنين إلى السبت: 17:00 إلى 02:00 صباحاً.<br>الأحد: 10:00 صباحاً إلى 02:00 صباحاً.",
+    footer_text: "خدمة التوصيل السريع بالقنيطرة.",
+    cat_1: "مطاعم", cat_2: "المشتريات", cat_3: "متاجر", cat_4: "شبه صيدلية وتجميل", cat_5: "خدمة التوصيل السريع",
+    dh: "درهم",
+    agreed: "حسب الاتفاق"
+  }
+};
+
+let currentLang = 'fr';
+
+function changeLanguage(lang) {
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+
+  // Update SVG banners text
+  document.getElementById('cat-1').textContent = translations[lang].cat_1;
+  document.getElementById('cat-2').textContent = translations[lang].cat_2;
+  document.getElementById('cat-3').textContent = translations[lang].cat_3;
+  document.getElementById('cat-4').textContent = translations[lang].cat_4;
+  document.getElementById('cat-5').textContent = translations[lang].cat_5;
+
+  if (depCoord && destCoord) calculateRouteDistance();
+  else if (currentMode === 'manual') calculateManualPrice();
+  else resetPriceDisplay();
+}
+
 let currentMode = 'auto';
 let depCoord = null, destCoord = null, depName = '', destName = '';
 let depMarker = null, destMarker = null, routePolyline = null;
@@ -437,10 +543,9 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap'
 }).addTo(map);
 
-// Geocoding inverse lors du déplacement de la carte (Style Glovo)
 let moveTimer;
 map.on('move', () => {
-  document.getElementById('picker-address').textContent = 'Chargement...';
+  document.getElementById('picker-address').textContent = currentLang === 'fr' ? 'Chargement...' : 'جاري التحميل...';
   clearTimeout(moveTimer);
   moveTimer = setTimeout(() => {
     const center = map.getCenter();
@@ -452,7 +557,7 @@ map.on('move', () => {
           currentCenterAddress = parts.slice(0, 3).join(', ').trim();
           document.getElementById('picker-address').textContent = currentCenterAddress;
         } else {
-          currentCenterAddress = "Point sur la carte";
+          currentCenterAddress = currentLang === 'fr' ? "Point sur la carte" : "نقطة على الخريطة";
           document.getElementById('picker-address').textContent = currentCenterAddress;
         }
       });
@@ -479,7 +584,6 @@ function confirmCenterPoint() {
   }
 }
 
-// Recherche automatique via l'API Nominatim
 function onSearchInput(query, isDepart) {
   let clearBtn = document.getElementById(isDepart ? 'clear-depart' : 'clear-dest');
   clearBtn.style.display = query.length > 0 ? 'block' : 'none';
@@ -533,13 +637,13 @@ function useCurrentLocation(isDepart) {
       fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${coords[0]}&lon=${coords[1]}`)
         .then(res => res.json())
         .then(data => {
-          let name = data.display_name ? data.display_name.split(',').slice(0, 2).join(',') : "Position Actuelle";
+          let name = data.display_name ? data.display_name.split(',').slice(0, 2).join(',') : (currentLang === 'fr' ? "Ma position" : "الموقع الحالي");
           document.getElementById(isDepart ? 'input-depart' : 'input-dest').value = name;
           document.getElementById(isDepart ? 'clear-depart' : 'clear-dest').style.display = 'block';
           setPoint(coords, name, isDepart);
           map.setView(coords, 16);
         });
-    }, () => alert("Impossible de récupérer la position GPS."));
+    }, () => alert(currentLang === 'fr' ? "Impossible d'obtenir votre position GPS." : "تعذر تحديد موقع GPS الخاص بك."));
   }
 }
 
@@ -567,11 +671,11 @@ function setPoint(coords, name, isDepart) {
   if (isDepart) {
     depCoord = coords; depName = name;
     if (depMarker) map.removeLayer(depMarker);
-    depMarker = L.marker(coords).addTo(map).bindPopup("<b>Départ:</b> " + name);
+    depMarker = L.marker(coords).addTo(map).bindPopup("<b>" + (currentLang === 'fr' ? 'Départ:' : 'الإنطلاق:') + "</b> " + name);
   } else {
     destCoord = coords; destName = name;
     if (destMarker) map.removeLayer(destMarker);
-    destMarker = L.marker(coords).addTo(map).bindPopup("<b>Destination:</b> " + name);
+    destMarker = L.marker(coords).addTo(map).bindPopup("<b>" + (currentLang === 'fr' ? 'Arrivée:' : 'الوصول:') + "</b> " + name);
   }
 
   if (depCoord && destCoord) {
@@ -595,16 +699,19 @@ function calculateRouteDistance() {
 
 function renderPrice(n, dep, dest) {
   let price = n <= 4 ? 20 : n < 6 ? 25 : n < 7 ? 26 : n < 8 ? 27 : n < 9 ? 28 : n < 10 ? 29 : 35 + Math.ceil(n - 10) * 2;
-  document.getElementById('result').textContent = price + ' DH';
-  document.getElementById('status').textContent = 'Distance : ' + n.toFixed(1) + ' km';
+  document.getElementById('result').textContent = price + ' ' + translations[currentLang].dh;
+  document.getElementById('status').textContent = (currentLang === 'fr' ? 'Distance: ' : 'المسافة: ') + n.toFixed(1) + ' km';
 
-  let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${dep}\n🏁 Destination : ${dest}\n📏 Distance : ${n.toFixed(1)} km\n💰 Prix : ${price} DH`;
+  let msg = currentLang === 'fr' 
+    ? `Bonjour JibLi-vraison 👋\nJe souhaite demander une livraison.\n\n📍 Départ: ${dep}\n🏁 Arrivée: ${dest}\n📏 Distance: ${n.toFixed(1)} km\n💰 Prix: ${price} DH`
+    : `السلام عليكم JibLi-vraison 👋\nأريد طلب توصيل.\n\n📍 الانطلاق: ${dep}\n🏁 الوصول: ${dest}\n📏 المسافة: ${n.toFixed(1)} كلم\n💰 السعر: ${price} درهم`;
+
   document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
 }
 
 function resetPriceDisplay() {
-  document.getElementById('result').textContent = '— DH';
-  document.getElementById('status').textContent = 'Sélectionnez les deux adresses pour afficher le tarif.';
+  document.getElementById('result').textContent = '— ' + translations[currentLang].dh;
+  document.getElementById('status').textContent = translations[currentLang].status_initial;
 }
 
 function switchMode(mode) {
@@ -624,10 +731,13 @@ function calculateManualPrice() {
   let dest = document.getElementById('manual-dest').value.trim();
 
   if (dep && dest) {
-    document.getElementById('result').textContent = 'Sur devis';
-    document.getElementById('status').textContent = 'Saisie manuelle effectuée.';
+    document.getElementById('result').textContent = translations[currentLang].agreed;
+    document.getElementById('status').textContent = currentLang === 'fr' ? 'Adresses saisies manuellement.' : 'تم إدخال العناوين يدوياً.';
 
-    let msg = `Bonjour JibLi-vraison 👋\nJe souhaite une livraison.\n\n📍 Départ : ${dep}\n🏁 Destination : ${dest}`;
+    let msg = currentLang === 'fr'
+      ? `Bonjour JibLi-vraison 👋\nJe souhaite demander une livraison.\n\n📍 Départ: ${dep}\n🏁 Arrivée: ${dest}`
+      : `السلام عليكم JibLi-vraison 👋\nأريد طلب توصيل.\n\n📍 الانطلاق: ${dep}\n🏁 الوصول: ${dest}`;
+
     document.getElementById('order').href = 'https://api.whatsapp.com/send?phone=212634084543&text=' + encodeURIComponent(msg);
   } else {
     resetPriceDisplay();

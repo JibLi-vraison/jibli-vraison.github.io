@@ -277,7 +277,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dep">🚦🟢 Départ</label>
 <div class="input-group">
 <div class="input-wrapper">
-<input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare Kenitra, Marjane..." autocomplete="off" oninput="onSearchInput(this.value, true)">
+<input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare Kenitra, Marjane ou lien Maps..." autocomplete="off" oninput="onSearchInput(this.value, true)">
 <button type="button" class="clear-btn" id="clear-depart" onclick="clearField(true)">✕</button>
 </div>
 <button type="button" class="gps-btn" onclick="useCurrentLocation(true)">🎯 GPS</button>
@@ -289,7 +289,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dest">🚦🔴 Destination</label>
 <div class="input-group">
 <div class="input-wrapper">
-<input type="text" id="input-dest" class="search-input" placeholder="Ex: Café, Residence..." autocomplete="off" oninput="onSearchInput(this.value, false)">
+<input type="text" id="input-dest" class="search-input" placeholder="Ex: Café, Residence ou lien Maps..." autocomplete="off" oninput="onSearchInput(this.value, false)">
 <button type="button" class="clear-btn" id="clear-dest" onclick="clearField(false)">✕</button>
 </div>
 <button type="button" class="gps-btn" onclick="useCurrentLocation(false)">🎯 GPS</button>
@@ -659,6 +659,18 @@ function calculateRouteAndPrice() {
     });
 }
 
+function getMapLink(coord, inputVal) {
+    if (inputVal && inputVal.includes('http')) {
+        return inputVal;
+    }
+    if (coord) {
+        const lat = typeof coord.lat === 'function' ? coord.lat() : coord.lat;
+        const lng = typeof coord.lng === 'function' ? coord.lng() : coord.lng;
+        return `https://maps.google.com/?q=${lat},${lng}`;
+    }
+    return "Non spécifié";
+}
+
 function applyPricingLogic(distanceKm) {
     const now = new Date();
     const hour = now.getHours();
@@ -692,16 +704,13 @@ function applyPricingLogic(distanceKm) {
     document.getElementById("result").innerText = price + " DH";
     document.getElementById("status").innerText = `Distance : ${distanceKm.toFixed(1)} km (${isNight ? 'Tarif Nuit' : 'Tarif Soir'})`;
 
-    // استخراج الإحداثيات لروابط خرائط جوجل المباشرة
-    const depLat = typeof depCoord.lat === 'function' ? depCoord.lat() : depCoord.lat;
-    const depLng = typeof depCoord.lng === 'function' ? depCoord.lng() : depCoord.lng;
-    const destLat = typeof destCoord.lat === 'function' ? destCoord.lat() : destCoord.lat;
-    const destLng = typeof destCoord.lng === 'function' ? destCoord.lng() : destCoord.lng;
+    const depInputValue = document.getElementById("input-depart").value;
+    const destInputValue = document.getElementById("input-dest").value;
 
-    const depMapLink = `https://maps.google.com/?q=${depLat},${depLng}`;
-    const destMapLink = `https://maps.google.com/?q=${destLat},${destLng}`;
+    const depMapLink = getMapLink(depCoord, depInputValue);
+    const destMapLink = getMapLink(destCoord, destInputValue);
 
-    const waText = `Bonjour JibLi-vraison, je souhaite commander une livraison.%0A%0A📍 Départ : ${depName}%0A🔗 Map Départ : ${depMapLink}%0A%0A🏁 Destination : ${destName}%0A🔗 Map Destination : ${destMapLink}%0A%0A📏 Distance : ${distanceKm.toFixed(1)} km%0A💰 Prix estimé : ${price} DH`;
+    const waText = `Bonjour JibLi-vraison, je souhaite commander une livraison.%0A%0A📍 Départ : ${depInputValue || depName}%0A🔗 Map Départ : ${depMapLink}%0A%0A🏁 Destination : ${destInputValue || destName}%0A🔗 Map Destination : ${destMapLink}%0A%0A📏 Distance : ${distanceKm.toFixed(1)} km%0A💰 Prix estimé : ${price} DH`;
     
     document.getElementById("order").href = `https://wa.me/212634084543?text=${waText}`;
 }

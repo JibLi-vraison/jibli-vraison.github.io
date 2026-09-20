@@ -55,13 +55,20 @@ section{padding:50px 0}
 .num{width:38px;height:38px;background:#ffb900;color:#111;border-radius:50%;display:grid;place-items:center;font-weight:900}
 .whyitem{text-align:center}
 .whyitem span{font-size:28px}
-.tarif{max-width:650px;margin:auto;text-align:center;padding:20px}
+.tarif{max-width:700px;margin:auto;text-align:center;padding:20px}
 .result{font-size:32px;font-weight:900;color:#ffb900;margin:12px 0}
 .cta{background:linear-gradient(135deg,#ffb900,#f08d00);color:#111;border-radius:23px;padding:40px;display:flex;justify-content:space-between;align-items:center;gap:20px}
 .cta h2{font-size:32px;margin:0}
 .cta .btn{background:#111;color:#fff}
 footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 .wa{position:fixed;right:20px;bottom:25px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:28px;z-index:9999;box-shadow:0 4px 15px rgba(0,0,0,0.5)}
+
+/* TABLEAU DES TARIFS */
+.price-table-wrapper { margin-top: 30px; overflow-x: auto; }
+.price-table { width: 100%; border-collapse: collapse; text-align: left; background: #1a1a1a; border-radius: 12px; overflow: hidden; border: 1px solid #333; font-size: 14px; }
+.price-table th, .price-table td { padding: 12px 15px; border-bottom: 1px solid #282828; }
+.price-table th { background: #222; color: #ffb900; }
+.price-table tr:hover { background: #22222280; }
 
 @media(max-width:800px){
 .links{display:none}
@@ -263,15 +270,15 @@ filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
 </g>
 </g>
 
-<!-- Banner Bottom -->
-<a href="#tarifs" style="cursor:pointer">
+<!-- Banner Bottom Direct WhatsApp Button -->
 <g transform="translate(45, 555)" style="direction: ltr;">
 <rect width="910" height="55" fill="#181818" stroke="#ffb900" stroke-width="2" rx="14"/>
 <text x="25" y="34" id="svg-cta" font-weight="bold" font-size="15" fill="#fff" text-anchor="start" data-key="svg-cta">REJOIGNEZ-NOUS DÈS MAINTENANT</text>
+<a href="https://wa.me/212634084543" target="_blank" style="cursor:pointer">
 <rect x="620" y="10" width="270" height="35" fill="#25d366" rx="8"/>
 <text x="755" y="33" font-weight="900" font-size="18" fill="#fff" text-anchor="middle">📲 06 34 08 45 43</text>
-</g>
 </a>
+</g>
 </svg>
 </div>
 
@@ -367,6 +374,33 @@ filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
 <p id="status" style="color:#aaa;margin-bottom:15px;" data-key="status-default">Sélectionnez les lieux pour afficher le tarif.</p>
 
 <a id="order" class="btn yellow" href="https://wa.me/212634084543" style="width:100%;text-align:center;" data-key="btn-wa">Commander sur WhatsApp</a>
+
+<!-- TABLEAU DETAIL DES TARIFS EN CLAIR -->
+<div class="price-table-wrapper">
+  <h3 style="color:#ffb900;margin-top:25px;margin-bottom:10px;" data-key="tbl-title">Grille Tarifaire (Kénitra & Mehdia)</h3>
+  <table class="price-table">
+    <thead>
+      <tr>
+        <th data-key="th-dist">Distance</th>
+        <th data-key="th-eve">Soir (17h - 21h)</th>
+        <th data-key="th-night">Nuit (21h - 02h)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1 - 3 Km</td><td>15 DH</td><td>20 DH</td></tr>
+      <tr><td>4 Km</td><td>18 DH</td><td>23 DH</td></tr>
+      <tr><td>5 Km</td><td>20 DH</td><td>25 DH</td></tr>
+      <tr><td>6 Km</td><td>22 DH</td><td>27 DH</td></tr>
+      <tr><td>7 Km</td><td>25 DH</td><td>30 DH</td></tr>
+      <tr><td>8 Km</td><td>27 DH</td><td>32 DH</td></tr>
+      <tr><td>9 Km</td><td>30 DH</td><td>35 DH</td></tr>
+      <tr><td>10 Km</td><td>32 DH</td><td>37 DH</td></tr>
+      <tr><td>11 - 13 Km (Mehdia)</td><td>35 DH</td><td>40 DH</td></tr>
+      <tr><td>> 13 Km (Sidi Taibi)</td><td colspan="2" style="color:#ff4444;" data-key="tbl-na">Non disponible / غير متوفر</td></tr>
+    </tbody>
+  </table>
+</div>
+
 </div></div></section>
 
 <section id="pourquoi"><div class="c"><h2 class="title" data-key="why-title">Pourquoi choisir JibLi-vraison ?</h2><p class="sub" data-key="why-sub">Un service pensé pour vous faciliter la vie.</p><div class="why">
@@ -380,8 +414,8 @@ filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
 
 <section id="faq"><div class="c"><h2 class="title">FAQ</h2><div class="faq">
 <details><summary data-key="faq-1-q">Comment commander ?</summary><div class="answer" data-key="faq-1-a">Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.</div></details>
-<details><summary data-key="faq-2-q">Où faites-vous les livraisons ?</summary><div class="answer" data-key="faq-2-a">Le service est destiné aux livraisons à Kénitra et ses environs.</div></details>
-<details><summary data-key="faq-3-q">Comment connaître le prix ?</summary><div class="answer" data-key="faq-3-a">Le prix est calculé automatiquement en fonction du kilométrage exact.</div></details>
+<details><summary data-key="faq-2-q">Où faites-vous les livraisons ?</summary><div class="answer" data-key="faq-2-a">Le service est destiné aux livraisons à Kénitra et ses environs (Mehdia inclus, Sidi Taibi non inclus).</div></details>
+<details><summary data-key="faq-3-q">Comment connaître le prix ?</summary><div class="answer" data-key="faq-3-a">Le prix est calculé automatiquement en fonction du kilométrage exact et de l'heure actuelle.</div></details>
 <details><summary data-key="faq-4-q">Quels sont vos horaires ?</summary><div class="answer" data-key="faq-4-a">Du Lundi au Samedi : 17h00 à 02h00.<br>Le Dimanche : 10h00 à 02h00.</div></details>
 </div></div></section>
 
@@ -426,10 +460,11 @@ fr: {
 "why-4-t": "Disponibilité", "why-4-d": "Service disponible jusqu'à 02h00 du matin.",
 "cta-t": "Besoin d'une livraison à Kénitra ?", "cta-d": "Contactez-nous directement sur WhatsApp pour votre commande.", "cta-b": "Commander maintenant",
 "faq-1-q": "Comment commander ?", "faq-1-a": "Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.",
-"faq-2-q": "Où faites-vous les livraisons ?", "faq-2-a": "Le service est destiné aux livraisons à Kénitra et ses environs.",
-"faq-3-q": "Comment connaître le prix ?", "faq-3-a": "Le prix est calculé automatiquement en fonction du kilométrage exact.",
+"faq-2-q": "Où faites-vous les livraisons ?", "faq-2-a": "Le service est destiné aux livraisons à Kénitra et ses environs (Mehdia inclus, Sidi Taibi non inclus).",
+"faq-3-q": "Comment connaître le prix ?", "faq-3-a": "Le prix est calculé automatiquement en fonction du kilométrage exact et de l'heure.",
 "faq-4-q": "Quels sont vos horaires ?", "faq-4-a": "Du Lundi au Samedi : 17h00 à 02h00.<br>Le Dimanche : 10h00 à 02h00.",
 "footer-text": "Service de coursier à moto à Kénitra.",
+"tbl-title": "Grille Tarifaire (Kénitra & Mehdia)", "th-dist": "Distance", "th-eve": "Soir (17h - 21h)", "th-night": "Nuit (21h - 02h)", "tbl-na": "Non disponible (Sidi Taibi)",
 
 /* SVG Traduction FR */
 "svg-sub": "SERVICE DE COURSIER À MOTO",
@@ -474,10 +509,11 @@ ar: {
 "why-4-t": "التوفر", "why-4-d": "الخدمة متوفرة حتى 02:00 صباحاً.",
 "cta-t": "تحتاج توصيلة بالقنيطرة؟", "cta-d": "تواصل معنا مباشرة عبر الواتساب لطلبك.", "cta-b": "اطلب الآن",
 "faq-1-q": "كيف أطلب؟", "faq-1-a": "اختر مكان الانطلاق والوجهة ثم اضغط على زر الواتساب.",
-"faq-2-q": "أين تقومون بالتوصيل؟", "faq-2-a": "الخدمة مخصصة للتوصيل بالقنيطرة والنواحي.",
-"faq-3-q": "كيف أعرف السعر؟", "faq-3-a": "يتم حساب السعر تلقائياً حسب المسافة بالضبط.",
+"faq-2-q": "أين تقومون بالتوصيل؟", "faq-2-a": "الخدمة مخصصة للتوصيل بالقنيطرة والنواحي (مهدية داخلة، سيدي الطيبي غير متوفرة).",
+"faq-3-q": "كيف أعرف السعر؟", "faq-3-a": "يتم حساب السعر تلقائياً حسب المسافة بالضبط والوقت الحالي.",
 "faq-4-q": "ما هي أوقات العمل؟", "faq-4-a": "من الإثنين إلى السبت: 17:00 إلى 02:00.<br>الأحد: 10:00 إلى 02:00.",
 "footer-text": "خدمة التوصيل بالدراجات النارية بالقنيطرة.",
+"tbl-title": "جدول الأسعار (القنيطرة ومهدية)", "th-dist": "المسافة", "th-eve": "المسائية (17h - 21h)", "th-night": "الليلية (21h - 02h)", "tbl-na": "غير متوفر (سيدي الطيبي)",
 
 /* SVG Traduction AR */
 "svg-sub": "خدمة التوصيل بالدراجة النارية",
@@ -522,10 +558,11 @@ dar: {
 "why-4-t": "ديما كاينين", "why-4-d": "خدامين معاك حتى لـ 02:00 د الليل.",
 "cta-t": "محتاج تسخيرة ف القنيطرة؟", "cta-d": "تواصل معانا ديريكت ف الواتساب وتوصلك سخرتك.", "cta-b": "اطلب دابا",
 "faq-1-q": "كيفاش نطلب؟", "faq-1-a": "عزل البلاصة ديال البدية والنهاية ثم برك على بوطون الواتساب.",
-"faq-2-q": "فين كتوصيلو؟", "faq-2-a": "الخدمة مخصصة للتوصيل ف القنيطرة والنواحي.",
-"faq-3-q": "كيفاش نعرف الثمن؟", "faq-3-a": "الثمن كايتحسب أوتوماتيك على حساب الكيلومتراج ضبط.",
+"faq-2-q": "فين كتوصيلو؟", "faq-2-a": "الخدمة مخصصة للتوصيل ف القنيطرة والنواحي (مهدية داخلة، سيدي الطيبي لا).",
+"faq-3-q": "كيفاش نعرف الثمن؟", "faq-3-a": "الثمن كايتحسب أوتوماتيك على حساب الكيلومتراج ضبط والوقت دابا.",
 "faq-4-q": "وقتاش خدامين؟", "faq-4-a": "من الاثنين للسبت: 17:00 حتى لـ 02:00 د الليل.<br>الحد: 10:00 حتى لـ 02:00.",
 "footer-text": "خدمة التوصيل بالموطور ف القنيطرة.",
+"tbl-title": "جدول الأثمنة (القنيطرة ومهدية)", "th-dist": "المسافة", "th-eve": "العشية (17h - 21h)", "th-night": "الليل (21h - 02h)", "tbl-na": "ماخداماش ف سيدي الطيبي",
 
 /* SVG Traduction DAR */
 "svg-sub": "خدمة التوصيل بالموطور ف القنيطرة",
@@ -561,7 +598,6 @@ el.innerHTML = dict[key];
 }
 });
 
-// Placeholders pour le mode manuel mis à jour (Lien ou nom de lieu)
 const depInput = document.getElementById('manual-depart');
 const destInput = document.getElementById('manual-dest');
 
@@ -581,6 +617,40 @@ else if (depCoord && destCoord) calculateRouteDistance();
 else resetPriceDisplay();
 }
 
+// FONCTION MATHEMATIQUE DE CALCUL DE TARIF EXACT SEGMENTÉ
+function calculateExactPrice(distKm) {
+  const currentHour = new Date().getHours();
+  // Période nocturne: entre 21h et 02h du matin (21, 22, 23, 0, 1)
+  const isNight = (currentHour >= 21 || currentHour < 2);
+
+  if (distKm > 13) {
+    return { error: true, msg: "Distance > 13 km (Sidi Taibi non couverte)" };
+  }
+
+  let price = 0;
+  if (distKm <= 3) {
+    price = isNight ? 20 : 15;
+  } else if (distKm <= 4) {
+    price = isNight ? 23 : 18;
+  } else if (distKm <= 5) {
+    price = isNight ? 25 : 20;
+  } else if (distKm <= 6) {
+    price = isNight ? 27 : 22;
+  } else if (distKm <= 7) {
+    price = isNight ? 30 : 25;
+  } else if (distKm <= 8) {
+    price = isNight ? 32 : 27;
+  } else if (distKm <= 9) {
+    price = isNight ? 35 : 30;
+  } else if (distKm <= 10) {
+    price = isNight ? 37 : 32;
+  } else if (distKm <= 13) {
+    price = isNight ? 40 : 35;
+  }
+
+  return { error: false, price: price, isNight: isNight };
+}
+
 const map = L.map('map').setView([34.2610, -6.5802], 14);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -595,199 +665,198 @@ clearTimeout(moveTimer);
 moveTimer = setTimeout(() => {
 const center = map.getCenter();
 fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${center.lat}&lon=${center.lng}`)
-.then(res => res.json())
-.then(data => {
-if(data && data.display_name) {
-currentCenterAddress = data.display_name.split(',').slice(0, 3).join(',');
-document.getElementById('picker-address').textContent = currentCenterAddress;
-}
-})
-.catch(() => {
-document.getElementById('picker-address').textContent = `${center.lat.toFixed(4)}, ${center.lng.toFixed(4)}`;
-});
-}, 400);
+  .then(res => res.json())
+  .then(data => {
+    let name = data.display_name ? data.display_name.split(',')[0] : 'Emplacement sélectionné';
+    document.getElementById('picker-address').textContent = name;
+    currentCenterAddress = name;
+  })
+  .catch(() => {
+    document.getElementById('picker-address').textContent = "Point sur la carte";
+  });
+}, 500);
 });
 
 function confirmCenterPoint() {
-const center = map.getCenter();
-const name = currentCenterAddress || `${center.lat.toFixed(4)}, ${center.lng.toFixed(4)}`;
-if (isSettingDepNext) {
-setDeparture(center.lat, center.lng, name);
-isSettingDepNext = false;
-} else {
-setDestination(center.lat, center.lng, name);
-isSettingDepNext = true;
-}
-}
-
-function switchMode(mode) {
-currentMode = mode;
-document.getElementById('btn-mode-auto').classList.toggle('active', mode === 'auto');
-document.getElementById('btn-mode-manual').classList.toggle('active', mode === 'manual');
-document.getElementById('section-auto').style.display = mode === 'auto' ? 'block' : 'none';
-document.getElementById('section-manual').style.display = mode === 'manual' ? 'block' : 'none';
-
-if (mode === 'manual') {
-calculateManualPrice();
-} else {
-if (depCoord && destCoord) calculateRouteDistance();
-else resetPriceDisplay();
-map.invalidateSize();
-}
-}
-
-function setDeparture(lat, lng, name) {
-depCoord = [lat, lng];
-depName = name;
-document.getElementById('input-depart').value = name;
-document.getElementById('clear-depart').style.display = 'block';
-
-if (depMarker) map.removeLayer(depMarker);
-depMarker = L.marker(depCoord, {
-icon: L.divIcon({ className: 'custom-pin', html: '🟢', iconSize: [25, 25] })
-}).addTo(map);
-
-if (destCoord) calculateRouteDistance();
-else map.setView(depCoord, 15);
-}
-
-function setDestination(lat, lng, name) {
-destCoord = [lat, lng];
-destName = name;
-document.getElementById('input-dest').value = name;
-document.getElementById('clear-dest').style.display = 'block';
-
-if (destMarker) map.removeLayer(destMarker);
-destMarker = L.marker(destCoord, {
-icon: L.divIcon({ className: 'custom-pin', html: '🔴', iconSize: [25, 25] })
-}).addTo(map);
-
-if (depCoord) calculateRouteDistance();
-else map.setView(destCoord, 15);
+  const center = map.getCenter();
+  if (isSettingDepNext) {
+    depCoord = center;
+    depName = currentCenterAddress || "Point Départ";
+    document.getElementById('input-depart').value = depName;
+    document.getElementById('clear-depart').style.display = 'block';
+    if (depMarker) map.removeLayer(depMarker);
+    depMarker = L.marker(center, {title: "Départ"}).addTo(map).bindPopup("Départ").openPopup();
+    isSettingDepNext = false;
+  } else {
+    destCoord = center;
+    destName = currentCenterAddress || "Point Destination";
+    document.getElementById('input-dest').value = destName;
+    document.getElementById('clear-dest').style.display = 'block';
+    if (destMarker) map.removeLayer(destMarker);
+    destMarker = L.marker(center, {title: "Destination"}).addTo(map).bindPopup("Destination").openPopup();
+    isSettingDepNext = true;
+  }
+  if (depCoord && destCoord) calculateRouteDistance();
 }
 
 function clearField(isDepart) {
-if (isDepart) {
-depCoord = null; depName = '';
-document.getElementById('input-depart').value = '';
-document.getElementById('clear-depart').style.display = 'none';
-if (depMarker) map.removeLayer(depMarker);
-isSettingDepNext = true;
-} else {
-destCoord = null; destName = '';
-document.getElementById('input-dest').value = '';
-document.getElementById('clear-dest').style.display = 'none';
-if (destMarker) map.removeLayer(destMarker);
-isSettingDepNext = false;
-}
-if (routePolyline) map.removeLayer(routePolyline);
-resetPriceDisplay();
-}
-
-function onSearchInput(val, isDepart) {
-const clearBtn = document.getElementById(isDepart ? 'clear-depart' : 'clear-dest');
-const listEl = document.getElementById(isDepart ? 'list-depart' : 'list-dest');
-clearBtn.style.display = val ? 'block' : 'none';
-
-if (!val || val.length < 3) {
-listEl.style.display = 'none';
-return;
-}
-
-clearTimeout(searchTimeout);
-searchTimeout = setTimeout(() => {
-fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(val + ' Kenitra')}&limit=5`)
-.then(r => r.json())
-.then(data => {
-listEl.innerHTML = '';
-if (data.length === 0) {
-listEl.style.display = 'none';
-return;
-}
-data.forEach(item => {
-const li = document.createElement('li');
-li.textContent = item.display_name;
-li.onclick = () => {
-const lat = parseFloat(item.lat), lon = parseFloat(item.lon);
-if (isDepart) setDeparture(lat, lon, item.display_name);
-else setDestination(lat, lon, item.display_name);
-listEl.style.display = 'none';
-};
-listEl.appendChild(li);
-});
-listEl.style.display = 'block';
-});
-}, 300);
-}
-
-function useCurrentLocation(isDepart) {
-if (navigator.geolocation) {
-navigator.geolocation.getCurrentPosition(pos => {
-const lat = pos.coords.latitude, lon = pos.coords.longitude;
-fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
-.then(r => r.json())
-.then(data => {
-const name = data.display_name ? data.display_name.split(',').slice(0, 3).join(',') : "Position GPS";
-if (isDepart) setDeparture(lat, lon, name);
-else setDestination(lat, lon, name);
-});
-}, () => alert("Impossible d'accéder à votre position."));
-}
-}
-
-function calculateRouteDistance() {
-if (!depCoord || !destCoord) return;
-
-fetch(`https://router.project-osrm.org/route/v1/driving/${depCoord[1]},${depCoord[0]};${destCoord[1]},${destCoord[0]}?overview=full&geometries=geojson`)
-.then(r => r.json())
-.then(data => {
-if (data.routes && data.routes.length > 0) {
-const route = data.routes[0];
-const distKm = (route.distance / 1000).toFixed(1);
-
-if (routePolyline) map.removeLayer(routePolyline);
-routePolyline = L.geoJSON(route.geometry, { style: { color: '#ffb900', weight: 5 } }).addTo(map);
-map.fitBounds(routePolyline.getBounds(), { padding: [40, 40] });
-
-updatePrice(distKm, depName, destName);
-}
-});
-}
-
-function calculatePriceValue(dist) {
-if (dist <= 0) return 0;
-if (dist <= 3) return 15;
-return Math.round(15 + (dist - 3) * 3);
-}
-
-function updatePrice(distKm, depText, destText) {
-const price = calculatePriceValue(parseFloat(distKm));
-document.getElementById('result').textContent = price + ' DH';
-document.getElementById('status').textContent = `Distance: ~${distKm} km`;
-
-const msg = encodeURIComponent(`Bonjour JibLi-vraison, je souhaite commander :\n📍 Départ : ${depText || 'Non spécifié'}\n🏁 Destination : ${destText || 'Non spécifiée'}\n📏 Distance : ${distKm} km\n💰 Prix estimé : ${price} DH`);
-document.getElementById('order').href = `https://wa.me/212634084543?text=${msg}`;
-}
-
-function calculateManualPrice() {
-const dist = parseFloat(document.getElementById('manual-dist').value);
-const depText = document.getElementById('manual-depart').value;
-const destText = document.getElementById('manual-dest').value;
-
-if (isNaN(dist) || dist <= 0) {
-resetPriceDisplay();
-return;
-}
-
-updatePrice(dist, depText, destText);
+  if (isDepart) {
+    depCoord = null; depName = '';
+    document.getElementById('input-depart').value = '';
+    document.getElementById('clear-depart').style.display = 'none';
+    if (depMarker) map.removeLayer(depMarker);
+  } else {
+    destCoord = null; destName = '';
+    document.getElementById('input-dest').value = '';
+    document.getElementById('clear-dest').style.display = 'none';
+    if (destMarker) map.removeLayer(destMarker);
+  }
+  if (routePolyline) map.removeLayer(routePolyline);
+  resetPriceDisplay();
 }
 
 function resetPriceDisplay() {
-document.getElementById('result').textContent = '— DH';
-document.getElementById('status').textContent = translations[currentLang]["status-default"];
-document.getElementById('order').href = 'https://wa.me/212634084543';
+  document.getElementById('result').textContent = "— DH";
+  document.getElementById('status').textContent = translations[currentLang]["status-default"];
+}
+
+function calculateRouteDistance() {
+  if (!depCoord || !destCoord) return;
+  const url = `https://router.project-osrm.org/route/v1/driving/${depCoord.lng},${depCoord.lat};${destCoord.lng},${destCoord.lat}?overview=full&geometries=geojson`;
+  
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      if (data.routes && data.routes.length > 0) {
+        const route = data.routes[0];
+        const distKm = parseFloat((route.distance / 1000).toFixed(1));
+        
+        const calcRes = calculateExactPrice(distKm);
+        
+        if (calcRes.error) {
+          document.getElementById('result').textContent = "N/A";
+          document.getElementById('status').textContent = calcRes.msg;
+          document.getElementById('order').href = "javascript:void(0)";
+        } else {
+          document.getElementById('result').textContent = `${calcRes.price} DH`;
+          document.getElementById('status').textContent = `Distance: ${distKm} km (${calcRes.isNight ? 'Tarif Nuit' : 'Tarif Soir'})`;
+          
+          if (routePolyline) map.removeLayer(routePolyline);
+          const geojson = route.geometry;
+          routePolyline = L.geoJSON(geojson, {style: {color: '#ffb900', weight: 5}}).addTo(map);
+          map.fitBounds(routePolyline.getBounds(), {padding: [30, 30]});
+          
+          const msg = encodeURIComponent(`Bonjour JibLi-vraison, je souhaite commander:\n- Départ: ${depName}\n- Destination: ${destName}\n- Distance: ${distKm} km\n- Prix estimé: ${calcRes.price} DH`);
+          document.getElementById('order').href = `https://wa.me/212634084543?text=${msg}`;
+        }
+      }
+    });
+}
+
+function switchMode(mode) {
+  currentMode = mode;
+  document.getElementById('btn-mode-auto').classList.toggle('active', mode === 'auto');
+  document.getElementById('btn-mode-manual').classList.toggle('active', mode === 'manual');
+  document.getElementById('section-auto').style.display = mode === 'auto' ? 'block' : 'none';
+  document.getElementById('section-manual').style.display = mode === 'manual' ? 'block' : 'none';
+}
+
+function calculateManualPrice() {
+  const dist = parseFloat(document.getElementById('manual-dist').value);
+  if (!isNaN(dist) && dist > 0) {
+    const calcRes = calculateExactPrice(dist);
+    
+    if (calcRes.error) {
+      document.getElementById('result').textContent = "N/A";
+      document.getElementById('status').textContent = calcRes.msg;
+      document.getElementById('order').href = "javascript:void(0)";
+    } else {
+      document.getElementById('result').textContent = `${calcRes.price} DH`;
+      document.getElementById('status').textContent = `Distance estimée: ${dist} km (${calcRes.isNight ? 'Tarif Nuit' : 'Tarif Soir'})`;
+      
+      const depM = document.getElementById('manual-depart').value || 'Non spécifié';
+      const destM = document.getElementById('manual-dest').value || 'Non spécifié';
+      const msg = encodeURIComponent(`Bonjour JibLi-vraison, commande manuelle:\n- Départ: ${depM}\n- Destination: ${destM}\n- Distance: ${dist} km\n- Prix estimé: ${calcRes.price} DH`);
+      document.getElementById('order').href = `https://wa.me/212634084543?text=${msg}`;
+    }
+  } else {
+    resetPriceDisplay();
+  }
+}
+
+function onSearchInput(val, isDepart) {
+  const listId = isDepart ? 'list-depart' : 'list-dest';
+  const listEl = document.getElementById(listId);
+  if (!val || val.length < 3) {
+    listEl.style.display = 'none';
+    return;
+  }
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(val + ', Kenitra')}&limit=5`)
+      .then(res => res.json())
+      .then(data => {
+        listEl.innerHTML = '';
+        if (data.length === 0) {
+          listEl.style.display = 'none';
+          return;
+        }
+        data.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = item.display_name;
+          li.onclick = () => {
+            const coord = L.latLng(item.lat, item.lon);
+            if (isDepart) {
+              depCoord = coord; depName = item.display_name.split(',')[0];
+              document.getElementById('input-depart').value = depName;
+              document.getElementById('clear-depart').style.display = 'block';
+              if (depMarker) map.removeLayer(depMarker);
+              depMarker = L.marker(coord).addTo(map).bindPopup("Départ").openPopup();
+            } else {
+              destCoord = coord; destName = item.display_name.split(',')[0];
+              document.getElementById('input-dest').value = destName;
+              document.getElementById('clear-dest').style.display = 'block';
+              if (destMarker) map.removeLayer(destMarker);
+              destMarker = L.marker(coord).addTo(map).bindPopup("Destination").openPopup();
+            }
+            listEl.style.display = 'none';
+            map.setView(coord, 15);
+            if (depCoord && destCoord) calculateRouteDistance();
+          };
+          listEl.appendChild(li);
+        });
+        listEl.style.display = 'block';
+      });
+  }, 400);
+}
+
+function useCurrentLocation(isDepart) {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(pos => {
+      const coord = L.latLng(pos.coords.latitude, pos.coords.longitude);
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${coord.lat}&lon=${coord.lng}`)
+        .then(res => res.json())
+        .then(data => {
+          const name = data.display_name ? data.display_name.split(',')[0] : 'Ma position';
+          if (isDepart) {
+            depCoord = coord; depName = name;
+            document.getElementById('input-depart').value = name;
+            document.getElementById('clear-depart').style.display = 'block';
+            if (depMarker) map.removeLayer(depMarker);
+            depMarker = L.marker(coord).addTo(map).bindPopup("Départ").openPopup();
+          } else {
+            destCoord = coord; destName = name;
+            document.getElementById('input-dest').value = name;
+            document.getElementById('clear-dest').style.display = 'block';
+            if (destMarker) map.removeLayer(destMarker);
+            destMarker = L.marker(coord).addTo(map).bindPopup("Destination").openPopup();
+          }
+          map.setView(coord, 15);
+          if (depCoord && destCoord) calculateRouteDistance();
+        });
+    });
+  }
 }
 </script>
-
 </body>
 </html>

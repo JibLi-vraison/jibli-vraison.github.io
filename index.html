@@ -24,7 +24,6 @@ nav{height:70px;display:flex;align-items:center;justify-content:space-between;ga
 .yellow{background:#ffb900;color:#111}
 .dark{background:#171717;border:1px solid #555;color:#fff}
 
-/* SELECTEUR DE LANGUE COMPACT */
 .lang-select {
 background: #171717;
 color: #ffb900;
@@ -63,12 +62,55 @@ section{padding:50px 0}
 footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 .wa{position:fixed;right:20px;bottom:25px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:28px;z-index:9999;box-shadow:0 4px 15px rgba(0,0,0,0.5)}
 
-/* TABLEAU DES TARIFS */
-.price-table-wrapper { margin-top: 30px; overflow-x: auto; }
-.price-table { width: 100%; border-collapse: collapse; text-align: left; background: #1a1a1a; border-radius: 12px; overflow: hidden; border: 1px solid #333; font-size: 14px; }
-.price-table th, .price-table td { padding: 12px 15px; border-bottom: 1px solid #282828; }
-.price-table th { background: #222; color: #ffb900; }
-.price-table tr:hover { background: #22222280; }
+/* ACCORDION TARIFS DESIGN PRO */
+.accordion-toggle {
+margin-top: 25px;
+width: 100%;
+background: #1e1e1e;
+border: 1px solid #333;
+color: #ffb900;
+padding: 14px 18px;
+border-radius: 12px;
+font-weight: bold;
+font-size: 14px;
+cursor: pointer;
+display: flex;
+justify-content: space-between;
+align-items: center;
+transition: all 0.3s ease;
+}
+.accordion-toggle:hover {
+background: #252525;
+border-color: #ffb900;
+}
+.accordion-icon {
+transition: transform 0.3s ease;
+font-size: 12px;
+}
+.accordion-toggle.active .accordion-icon {
+transform: rotate(180deg);
+}
+
+.price-table-wrapper {
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.4s ease-out, margin-top 0.3s ease;
+background: #181818;
+border-radius: 12px;
+border: 0px solid #333;
+}
+.price-table-wrapper.open {
+max-height: 600px;
+margin-top: 10px;
+border-width: 1px;
+}
+
+.price-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+[dir="rtl"] .price-table { text-align: right; }
+.price-table th, .price-table td { padding: 12px 15px; border-bottom: 1px solid #262626; }
+.price-table th { background: #222; color: #ffb900; font-weight: bold; }
+.price-table tr:last-child td { border-bottom: none; }
+.price-table tr:hover { background: #202020; }
 
 @media(max-width:800px){
 .links{display:none}
@@ -80,7 +122,6 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 .brand{font-size:18px}
 }
 
-/* RECHERCHE ET ENTRÉES */
 .search-box { position: relative; width: 100%; text-align: left; }
 [dir="rtl"] .search-box { text-align: right; }
 .input-wrapper { position: relative; flex: 1; display: flex; align-items: center; }
@@ -99,71 +140,35 @@ footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 
 .suggestions-list {
 position: absolute;
-top: 100%;
-left: 0;
-right: 0;
-background: #1e1e1e;
-border: 1px solid #ffb900;
-border-radius: 10px;
-max-height: 180px;
-overflow-y: auto;
-z-index: 3000;
-display: none;
-margin: 4px 0 0 0;
-padding: 0;
-list-style: none;
-box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+top: 100%; left: 0; right: 0;
+background: #1e1e1e; border: 1px solid #ffb900;
+border-radius: 10px; max-height: 180px; overflow-y: auto;
+z-index: 3000; display: none; margin: 4px 0 0 0; padding: 0;
+list-style: none; box-shadow: 0 8px 20px rgba(0,0,0,0.8);
 }
-.suggestions-list li {
-padding: 12px;
-cursor: pointer;
-color: #eee;
-border-bottom: 1px solid #2e2e2e;
-font-size: 13px;
-line-height: 1.4;
-}
+.suggestions-list li { padding: 12px; cursor: pointer; color: #eee; border-bottom: 1px solid #2e2e2e; font-size: 13px; line-height: 1.4; }
 .suggestions-list li:last-child { border-bottom: none; }
 .suggestions-list li:hover { background: #2a2a2a; color: #ffb900; }
 
-/* CARTE STYLE GLOVO */
 .map-wrapper { position: relative; width: 100%; height: 350px; margin-top: 10px; border-radius: 15px; overflow: hidden; border: 2px solid #ffb900; }
 #map { width: 100%; height: 100%; z-index: 1; }
 
 .center-picker {
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -100%);
-z-index: 1000;
-pointer-events: none;
-display: flex;
-flex-direction: column;
-align-items: center;
+position: absolute; top: 50%; left: 50%;
+transform: translate(-50%, -100%); z-index: 1000;
+pointer-events: none; display: flex; flex-direction: column; align-items: center;
 }
 
 .picker-card {
-background: #fff;
-color: #111;
-padding: 8px 14px;
-border-radius: 12px;
-box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-font-size: 13px;
-font-weight: bold;
-text-align: center;
-margin-bottom: 6px;
-pointer-events: auto;
-cursor: pointer;
-border: 2px solid #ffb900;
-transition: transform 0.2s;
+background: #fff; color: #111; padding: 8px 14px; border-radius: 12px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.4); font-size: 13px; font-weight: bold;
+text-align: center; margin-bottom: 6px; pointer-events: auto; cursor: pointer;
+border: 2px solid #ffb900; transition: transform 0.2s;
 }
 .picker-card:active { transform: scale(0.95); }
 .picker-card span { color: #00a082; display: block; font-size: 11px; margin-top: 2px; text-decoration: underline; }
 
-.picker-pin {
-font-size: 38px;
-line-height: 1;
-filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
-}
+.picker-pin { font-size: 38px; line-height: 1; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5)); }
 </style>
 </head>
 <body>
@@ -195,20 +200,17 @@ filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
 <section class="hero">
 <div class="c">
 <div class="poster-container">
-<!-- POSTER SVG FIXÉ EN LTR POUR ÉVITER TOUT DÉCALAGE -->
 <svg viewBox="0 0 1000 650" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="background:#090909; font-family:Arial, sans-serif; border-radius:18px; border:1px solid #333; box-shadow:0 12px 40px rgba(0,0,0,0.8); direction: ltr;">
 <rect width="1000" height="650" fill="#0c0c0c" rx="18"/>
 <path d="M 480 0 L 1000 0 L 1000 650 L 380 650 Z" fill="#141414"/>
 <circle cx="750" cy="280" r="220" fill="#ffb900" opacity="0.04"/>
 
-<!-- Header Brand -->
 <g transform="translate(45, 50)" style="direction: ltr;">
 <text x="0" y="0" font-weight="900" font-style="italic" font-size="52" fill="#ffffff" text-anchor="start">JibLi-<tspan fill="#ffb900">vraison</tspan></text>
 <line x1="0" y1="18" x2="380" y2="18" stroke="#ffb900" stroke-width="4" stroke-linecap="round"/>
 <text x="0" y="44" id="svg-sub" font-weight="bold" font-size="15" fill="#aaa" letter-spacing="1" text-anchor="start" data-key="svg-sub">SERVICE DE COURSIER À MOTO</text>
 </g>
 
-<!-- Zone Disponibilité -->
 <g transform="translate(45, 140)" style="direction: ltr;">
 <rect width="420" height="125" fill="#ffb900" rx="14"/>
 <text x="24" y="34" id="svg-disp-title" font-weight="900" font-size="18" fill="#111" text-anchor="start" data-key="svg-disp-title">DISPONIBLE À KÉNITRA</text>
@@ -217,7 +219,6 @@ filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
 <text x="24" y="104" id="svg-disp-2" font-weight="bold" font-size="14" fill="#111" text-anchor="start" data-key="svg-disp-2">🕒 Dimanche : 10h00 à 02h00</text>
 </g>
 
-<!-- Badges -->
 <g transform="translate(45, 290)" style="direction: ltr;">
 <rect x="0" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
 <text x="65" y="30" font-size="20" text-anchor="middle">⚡</text>
@@ -232,7 +233,6 @@ filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
 <text x="355" y="52" id="svg-badge-3" font-weight="bold" font-size="11" fill="#fff" text-anchor="middle" data-key="svg-badge-3">SERVICE NOCTURNE</text>
 </g>
 
-<!-- Services Grid -->
 <g transform="translate(45, 390)" style="direction: ltr;">
 <text x="0" y="20" id="svg-serv-head" font-weight="900" font-size="14" fill="#ffb900" letter-spacing="1" text-anchor="start" data-key="svg-serv-head">TOUS VOS BESOINS, UNE SEULE LIVRAISON</text>
 
@@ -255,13 +255,10 @@ filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
 </g>
 </g>
 
-<!-- Moto Illustration -->
 <g transform="translate(520, 100)" style="direction: ltr;">
 <circle cx="210" cy="210" r="170" fill="#1a1a1a" stroke="#ffb900" stroke-width="2" stroke-dasharray="8,8"/>
-<!-- Scooter -->
 <text x="200" y="250" font-size="180" text-anchor="middle">🛵</text>
 
-<!-- Boîte de livraison fixée derrière le scooter -->
 <g transform="translate(265, 90)">
 <rect width="110" height="90" fill="#ffb900" rx="12"/>
 <text x="55" y="38" font-weight="900" font-size="14" fill="#111" text-anchor="middle">JibLi-</text>
@@ -270,7 +267,6 @@ filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
 </g>
 </g>
 
-<!-- Banner Bottom Direct WhatsApp Button -->
 <g transform="translate(45, 555)" style="direction: ltr;">
 <rect width="910" height="55" fill="#181818" stroke="#ffb900" stroke-width="2" rx="14"/>
 <text x="25" y="34" id="svg-cta" font-weight="bold" font-size="15" fill="#fff" text-anchor="start" data-key="svg-cta">REJOIGNEZ-NOUS DÈS MAINTENANT</text>
@@ -331,7 +327,7 @@ filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
 <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dest">🚦🔴 Destination</label>
 <div class="input-group">
 <div class="input-wrapper">
-<input type="text" id="input-dest" class="search-input" placeholder="Ex: Mehdia, Café..." autocomplete="off" oninput="onSearchInput(this.value, false)">
+<input type="text" id="input-dest" class="search-input" placeholder="Ex: Café, Residence..." autocomplete="off" oninput="onSearchInput(this.value, false)">
 <button type="button" class="clear-btn" id="clear-dest" onclick="clearField(false)">✕</button>
 </div>
 <button type="button" class="gps-btn" onclick="useCurrentLocation(false)">🎯 GPS</button>
@@ -375,9 +371,13 @@ filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
 
 <a id="order" class="btn yellow" href="https://wa.me/212634084543" style="width:100%;text-align:center;" data-key="btn-wa">Commander sur WhatsApp</a>
 
-<!-- TABLEAU DETAIL DES TARIFS EN CLAIR -->
-<div class="price-table-wrapper">
-  <h3 style="color:#ffb900;margin-top:25px;margin-bottom:10px;" data-key="tbl-title">Grille Tarifaire (Kénitra & Mehdia)</h3>
+<!-- ACCORDEON TARIFS PROFESSIONNEL -->
+<button type="button" class="accordion-toggle" onclick="toggleAccordion(this)">
+<span data-key="acc-btn">📊 Afficher le détail des tarifs</span>
+<span class="accordion-icon">▼</span>
+</button>
+
+<div class="price-table-wrapper" id="accordion-content">
   <table class="price-table">
     <thead>
       <tr>
@@ -395,8 +395,8 @@ filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
       <tr><td>8 Km</td><td>27 DH</td><td>32 DH</td></tr>
       <tr><td>9 Km</td><td>30 DH</td><td>35 DH</td></tr>
       <tr><td>10 Km</td><td>32 DH</td><td>37 DH</td></tr>
-      <tr><td>11 - 13 Km (Mehdia)</td><td>35 DH</td><td>40 DH</td></tr>
-      <tr><td>> 13 Km (Sidi Taibi)</td><td colspan="2" style="color:#ff4444;" data-key="tbl-na">Non disponible / غير متوفر</td></tr>
+      <tr><td>11 - 13 Km</td><td>35 DH</td><td>40 DH</td></tr>
+      <tr><td>> 13 Km</td><td colspan="2" style="color:#ff4444;" data-key="tbl-na">Service non disponible</td></tr>
     </tbody>
   </table>
 </div>
@@ -414,7 +414,7 @@ filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
 
 <section id="faq"><div class="c"><h2 class="title">FAQ</h2><div class="faq">
 <details><summary data-key="faq-1-q">Comment commander ?</summary><div class="answer" data-key="faq-1-a">Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.</div></details>
-<details><summary data-key="faq-2-q">Où faites-vous les livraisons ?</summary><div class="answer" data-key="faq-2-a">Le service est destiné aux livraisons à Kénitra et ses environs (Mehdia inclus, Sidi Taibi non inclus).</div></details>
+<details><summary data-key="faq-2-q">Où faites-vous les livraisons ?</summary><div class="answer" data-key="faq-2-a">Le service est destiné aux livraisons dans la zone de couverture jusqu'à 13 km.</div></details>
 <details><summary data-key="faq-3-q">Comment connaître le prix ?</summary><div class="answer" data-key="faq-3-a">Le prix est calculé automatiquement en fonction du kilométrage exact et de l'heure actuelle.</div></details>
 <details><summary data-key="faq-4-q">Quels sont vos horaires ?</summary><div class="answer" data-key="faq-4-a">Du Lundi au Samedi : 17h00 à 02h00.<br>Le Dimanche : 10h00 à 02h00.</div></details>
 </div></div></section>
@@ -460,13 +460,12 @@ fr: {
 "why-4-t": "Disponibilité", "why-4-d": "Service disponible jusqu'à 02h00 du matin.",
 "cta-t": "Besoin d'une livraison à Kénitra ?", "cta-d": "Contactez-nous directement sur WhatsApp pour votre commande.", "cta-b": "Commander maintenant",
 "faq-1-q": "Comment commander ?", "faq-1-a": "Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.",
-"faq-2-q": "Où faites-vous les livraisons ?", "faq-2-a": "Le service est destiné aux livraisons à Kénitra et ses environs (Mehdia inclus, Sidi Taibi non inclus).",
+"faq-2-q": "Où faites-vous les livraisons ?", "faq-2-a": "Le service est destiné aux livraisons dans la zone de couverture jusqu'à 13 km.",
 "faq-3-q": "Comment connaître le prix ?", "faq-3-a": "Le prix est calculé automatiquement en fonction du kilométrage exact et de l'heure.",
 "faq-4-q": "Quels sont vos horaires ?", "faq-4-a": "Du Lundi au Samedi : 17h00 à 02h00.<br>Le Dimanche : 10h00 à 02h00.",
 "footer-text": "Service de coursier à moto à Kénitra.",
-"tbl-title": "Grille Tarifaire (Kénitra & Mehdia)", "th-dist": "Distance", "th-eve": "Soir (17h - 21h)", "th-night": "Nuit (21h - 02h)", "tbl-na": "Non disponible (Sidi Taibi)",
+"acc-btn": "📊 Afficher le détail des tarifs", "th-dist": "Distance", "th-eve": "Soir (17h - 21h)", "th-night": "Nuit (21h - 02h)", "tbl-na": "Non disponible (> 13 km)",
 
-/* SVG Traduction FR */
 "svg-sub": "SERVICE DE COURSIER À MOTO",
 "svg-disp-title": "DISPONIBLE À KÉNITRA",
 "svg-disp-1": "🕒 Lun - Sam : 17h00 à 02h00",
@@ -509,13 +508,12 @@ ar: {
 "why-4-t": "التوفر", "why-4-d": "الخدمة متوفرة حتى 02:00 صباحاً.",
 "cta-t": "تحتاج توصيلة بالقنيطرة؟", "cta-d": "تواصل معنا مباشرة عبر الواتساب لطلبك.", "cta-b": "اطلب الآن",
 "faq-1-q": "كيف أطلب؟", "faq-1-a": "اختر مكان الانطلاق والوجهة ثم اضغط على زر الواتساب.",
-"faq-2-q": "أين تقومون بالتوصيل؟", "faq-2-a": "الخدمة مخصصة للتوصيل بالقنيطرة والنواحي (مهدية داخلة، سيدي الطيبي غير متوفرة).",
+"faq-2-q": "أين تقومون بالتوصيل؟", "faq-2-a": "الخدمة مخصصة للتوصيل في حدود 13 كيلومتر.",
 "faq-3-q": "كيف أعرف السعر؟", "faq-3-a": "يتم حساب السعر تلقائياً حسب المسافة بالضبط والوقت الحالي.",
 "faq-4-q": "ما هي أوقات العمل؟", "faq-4-a": "من الإثنين إلى السبت: 17:00 إلى 02:00.<br>الأحد: 10:00 إلى 02:00.",
 "footer-text": "خدمة التوصيل بالدراجات النارية بالقنيطرة.",
-"tbl-title": "جدول الأسعار (القنيطرة ومهدية)", "th-dist": "المسافة", "th-eve": "المسائية (17h - 21h)", "th-night": "الليلية (21h - 02h)", "tbl-na": "غير متوفر (سيدي الطيبي)",
+"acc-btn": "📊 عرض تفاصيل جدول الأسعار", "th-dist": "المسافة", "th-eve": "المسائية (17h - 21h)", "th-night": "الليلية (21h - 02h)", "tbl-na": "غير متوفر (> 13 km)",
 
-/* SVG Traduction AR */
 "svg-sub": "خدمة التوصيل بالدراجة النارية",
 "svg-disp-title": "متوفر في القنيطرة",
 "svg-disp-1": "🕒 الإثنين - السبت : من 17:00 إلى 02:00",
@@ -558,13 +556,12 @@ dar: {
 "why-4-t": "ديما كاينين", "why-4-d": "خدامين معاك حتى لـ 02:00 د الليل.",
 "cta-t": "محتاج تسخيرة ف القنيطرة؟", "cta-d": "تواصل معانا ديريكت ف الواتساب وتوصلك سخرتك.", "cta-b": "اطلب دابا",
 "faq-1-q": "كيفاش نطلب؟", "faq-1-a": "عزل البلاصة ديال البدية والنهاية ثم برك على بوطون الواتساب.",
-"faq-2-q": "فين كتوصيلو؟", "faq-2-a": "الخدمة مخصصة للتوصيل ف القنيطرة والنواحي (مهدية داخلة، سيدي الطيبي لا).",
+"faq-2-q": "فين كتوصيلو؟", "faq-2-a": "الخدمة مخصصة للتوصيل ف حدود 13 كيلومتر.",
 "faq-3-q": "كيفاش نعرف الثمن؟", "faq-3-a": "الثمن كايتحسب أوتوماتيك على حساب الكيلومتراج ضبط والوقت دابا.",
 "faq-4-q": "وقتاش خدامين؟", "faq-4-a": "من الاثنين للسبت: 17:00 حتى لـ 02:00 د الليل.<br>الحد: 10:00 حتى لـ 02:00.",
 "footer-text": "خدمة التوصيل بالموطور ف القنيطرة.",
-"tbl-title": "جدول الأثمنة (القنيطرة ومهدية)", "th-dist": "المسافة", "th-eve": "العشية (17h - 21h)", "th-night": "الليل (21h - 02h)", "tbl-na": "ماخداماش ف سيدي الطيبي",
+"acc-btn": "📊 شوف التفاصيل ديال الأثمنة", "th-dist": "المسافة", "th-eve": "العشية (17h - 21h)", "th-night": "الليل (21h - 02h)", "tbl-na": "غير متوفر (> 13 km)",
 
-/* SVG Traduction DAR */
 "svg-sub": "خدمة التوصيل بالموطور ف القنيطرة",
 "svg-disp-title": "متوفرين ف القنيطرة",
 "svg-disp-1": "🕒 الاثنين - السبت : من 17:00 لـ 02:00",
@@ -580,6 +577,12 @@ dar: {
 "svg-cta": "تواصل معانا دابا"
 }
 };
+
+function toggleAccordion(btn) {
+  btn.classList.toggle('active');
+  const content = document.getElementById('accordion-content');
+  content.classList.toggle('open');
+}
 
 function changeLanguage(lang) {
 currentLang = lang;
@@ -617,14 +620,12 @@ else if (depCoord && destCoord) calculateRouteDistance();
 else resetPriceDisplay();
 }
 
-// FONCTION MATHEMATIQUE DE CALCUL DE TARIF EXACT SEGMENTÉ
 function calculateExactPrice(distKm) {
   const currentHour = new Date().getHours();
-  // Période nocturne: entre 21h et 02h du matin (21, 22, 23, 0, 1)
   const isNight = (currentHour >= 21 || currentHour < 2);
 
   if (distKm > 13) {
-    return { error: true, msg: "Distance > 13 km (Sidi Taibi non couverte)" };
+    return { error: true, msg: "Service non disponible (> 13 km)" };
   }
 
   let price = 0;

@@ -97,10 +97,6 @@ background: #181818; border-radius: 12px; border: 0px solid #333;
 
 .gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 12px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; }
 
-.mode-selector { display: flex; gap: 10px; margin-bottom: 20px; background: #222; padding: 5px; border-radius: 12px; }
-.mode-btn { flex: 1; padding: 12px 8px; border: none; background: transparent; color: #aaa; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 13px; }
-.mode-btn.active { background: #ffb900; color: #111; }
-
 .suggestions-list {
 position: absolute; top: 100%; left: 0; right: 0;
 background: #1e1e1e; border: 1px solid #ffb900;
@@ -265,12 +261,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 
 <section id="tarifs"><div class="c"><h2 class="title" data-key="tarif-title">Commander ma livraison</h2><p class="sub" data-key="tarif-sub">Choisissez vos adresses sur la carte ou recherchez par nom.</p><div class="tarif">
 
-<div class="mode-selector">
-<button type="button" class="mode-btn active" id="btn-mode-auto" onclick="switchMode('auto')" data-key="m-auto">🗺️ Par Carte / Recherche</button>
-<button type="button" class="mode-btn" id="btn-mode-manual" onclick="switchMode('manual')" data-key="m-manual">✍️ Saisie directe</button>
-</div>
-
-<!-- MODE AUTOMATIQUE & CARTE -->
+<!-- MODE AUTOMATIQUE & CARTE (SEUL MODE ACTIF) -->
 <div id="section-auto">
 <div style="display:grid;gap:15px;margin-bottom:18px;">
 <div class="search-box">
@@ -306,24 +297,6 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <span data-key="map-use">Utiliser ce point ›</span>
 </div>
 <div class="picker-pin">📍</div>
-</div>
-</div>
-</div>
-
-<!-- MODE SAISIE MANUELLE -->
-<div id="section-manual" style="display:none;">
-<div style="display:grid;gap:15px;margin-bottom:18px;">
-<div>
-<label style="font-weight:700;display:block;margin-bottom:5px" id="lbl-dep-m" data-key="lbl-dep-m">📍 Lieu de départ (Optionnel)</label>
-<input type="text" id="manual-depart" class="search-input" style="width:100%" placeholder="Coller le lien ou écrire le nom du lieu..." oninput="calculateManualPrice()">
-</div>
-<div>
-<label style="font-weight:700;display:block;margin-bottom:5px" id="lbl-dest-m" data-key="lbl-dest-m">🏁 Lieu de destination (Optionnel)</label>
-<input type="text" id="manual-dest" class="search-input" style="width:100%" placeholder="Coller le lien ou écrire le nom du lieu..." oninput="calculateManualPrice()">
-</div>
-<div>
-<label style="font-weight:700;display:block;margin-bottom:5px" id="lbl-dist-m">📏 Distance estimée (en km)</label>
-<input type="number" id="manual-dist" class="search-input" style="width:100%" placeholder="Ex: 6" step="0.1" min="0" oninput="calculateManualPrice()">
 </div>
 </div>
 </div>
@@ -385,7 +358,6 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <a class="wa" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison">☏</a>
 
 <script>
-let currentMode = 'auto';
 let depCoord = null, destCoord = null, depName = '', destName = '';
 let map, directionsService, directionsRenderer, geocoder, autocompleteService;
 let depMarker = null, destMarker = null;
@@ -411,11 +383,9 @@ fr: {
 "step-3-t": "Envoyez", "step-3-d": "Validez votre demande directement sur WhatsApp.",
 "step-4-t": "Recevez", "step-4-d": "Votre coursier livre votre commande rapidement.",
 "tarif-title": "Commander ma livraison", "tarif-sub": "Choisissez vos adresses sur la carte ou recherchez par nom.",
-"m-auto": "🗺️ Par Carte / Recherche", "m-manual": "✍️ Saisie directe",
 "lbl-dep": "🚦🟢 Départ", "lbl-dest": "🚦🔴 Destination",
 "map-moving": "Déplacez la carte...", "map-use": "Utiliser ce point ›",
-"lbl-dep-m": "📍 Lieu de départ (Optionnel)", "lbl-dest-m": "🏁 Lieu de destination (Optionnel)", "lbl-dist-m": "📏 Distance estimée (en km)",
-"status-default": "Sélectionnez les lieux ou entrez la distance pour afficher le tarif.",
+"status-default": "Sélectionnez les lieux pour afficher le tarif.",
 "why-title": "Pourquoi choisir JibLi-vraison ?", "why-sub": "Un service pensé pour vous faciliter la vie.",
 "why-1-t": "Rapidité", "why-1-d": "Livraison directe à moto dans Kénitra.",
 "why-2-t": "Transparence", "why-2-d": "Calcul clair du tarif avant commande.",
@@ -434,7 +404,6 @@ ar: {
 "btn-hero-cmd": "طلب التوصيل",
 "btn-wa": "اطلب عبر واتساب", "srv-title": "جميع احتياجاتك، توصيلة واحدة", "srv-sub": "خدمة محلية مصممة لمدينة القنيطرة.",
 "tarif-title": "طلب التوصيل", "tarif-sub": "اختر العناوين من الخريطة أو ابحث بالاسم.",
-"m-auto": "🗺️ عبر الخريطة / البحث", "m-manual": "✍️ إدخال مباشر",
 "lbl-dep": "🚦🟢 مكان الانطلاق", "lbl-dest": "🚦🔴 الوجهة",
 "map-moving": "حرك الخريطة...", "map-use": "استخدم هذه النقطة ›"
 },
@@ -443,7 +412,6 @@ dar: {
 "btn-hero-cmd": "طلب التوصيل ديالك",
 "btn-wa": "طلب ف الواتساب", "srv-title": "كاع احتياجاتك ف تسخيرة وحدة", "srv-sub": "خدمة محلية مصاوبة للقنيطرة.",
 "tarif-title": "طلب التوصيل ديالك", "tarif-sub": "عزل البلايص ف الخريطة أو قلب بالسمية.",
-"m-auto": "🗺️ الخريطة والبحث", "m-manual": "✍️ كتب بيديك"
 }
 };
 
@@ -470,13 +438,11 @@ function initGoogleMap() {
     autocompleteService = new google.maps.places.AutocompleteService();
 
     map.addListener("bounds_changed", () => {
-        if (currentMode === 'auto') {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                const center = map.getCenter();
-                updateCenterAddress(center);
-            }, 400);
-        }
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            const center = map.getCenter();
+            updateCenterAddress(center);
+        }, 400);
     });
 }
 
@@ -712,69 +678,6 @@ function applyPricingLogic(distanceKm) {
 
     const waText = `Bonjour JibLi-vraison, je souhaite commander une livraison.%0A%0A📍 Départ : ${depInputValue || depName}%0A🔗 Map Départ : ${depMapLink}%0A%0A🏁 Destination : ${destInputValue || destName}%0A🔗 Map Destination : ${destMapLink}%0A%0A📏 Distance : ${distanceKm.toFixed(1)} km%0A💰 Prix estimé : ${price} DH`;
     
-    document.getElementById("order").href = `https://wa.me/212634084543?text=${waText}`;
-}
-
-function switchMode(mode) {
-    currentMode = mode;
-    if (mode === 'auto') {
-        document.getElementById("btn-mode-auto").classList.add("active");
-        document.getElementById("btn-mode-manual").classList.remove("active");
-        document.getElementById("section-auto").style.display = "block";
-        document.getElementById("section-manual").style.display = "none";
-        google.maps.event.trigger(map, 'resize');
-    } else {
-        document.getElementById("btn-mode-manual").classList.add("active");
-        document.getElementById("btn-mode-auto").classList.remove("active");
-        document.getElementById("section-auto").style.display = "none";
-        document.getElementById("section-manual").style.display = "block";
-    }
-}
-
-function calculateManualPrice() {
-    const distInput = parseFloat(document.getElementById("manual-dist").value);
-    const manualDep = document.getElementById("manual-depart").value || "Non spécifié";
-    const manualDest = document.getElementById("manual-dest").value || "Non spécifié";
-
-    if (isNaN(distInput) || distInput <= 0) {
-        document.getElementById("result").innerText = "— DH";
-        document.getElementById("status").innerText = "Veuillez entrer une distance valide.";
-        return;
-    }
-
-    const now = new Date();
-    const hour = now.getHours();
-    const isNight = (hour >= 21 || hour < 5);
-
-    let price = 0;
-    if (distInput <= 3) {
-        price = isNight ? 20 : 15;
-    } else if (distInput <= 4) {
-        price = isNight ? 23 : 18;
-    } else if (distInput <= 5) {
-        price = isNight ? 25 : 20;
-    } else if (distInput <= 6) {
-        price = isNight ? 27 : 22;
-    } else if (distInput <= 7) {
-        price = isNight ? 30 : 25;
-    } else if (distInput <= 8) {
-        price = isNight ? 32 : 27;
-    } else if (distInput <= 9) {
-        price = isNight ? 35 : 30;
-    } else if (distInput <= 10) {
-        price = isNight ? 37 : 32;
-    } else if (distInput <= 13) {
-        price = isNight ? 40 : 35;
-    } else {
-        document.getElementById("result").innerText = "Non dispo";
-        document.getElementById("status").innerText = "Distance supérieure à 13 km.";
-        return;
-    }
-
-    document.getElementById("result").innerText = price + " DH";
-    document.getElementById("status").innerText = `Distance : ${distInput} km`;
-
-    const waText = `Bonjour JibLi-vraison, je souhaite commander une livraison (Manuel).%0A%0A📍 Départ : ${manualDep}%0A🏁 Destination : ${manualDest}%0A📏 Distance : ${distInput} km%0A💰 Prix estimé : ${price} DH`;
     document.getElementById("order").href = `https://wa.me/212634084543?text=${waText}`;
 }
 

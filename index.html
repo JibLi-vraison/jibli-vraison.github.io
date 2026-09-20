@@ -748,8 +748,13 @@ function calculateRouteDistance() {
           routePolyline = L.geoJSON(geojson, {style: {color: '#ffb900', weight: 5}}).addTo(map);
           map.fitBounds(routePolyline.getBounds(), {padding: [30, 30]});
           
-          const msg = encodeURIComponent(`Bonjour JibLi-vraison, je souhaite une livraison:\n- Départ: ${depName}\n- Destination: ${destName}\n- Distance: ${distKm} km\n- Prix estimé: ${calcRes.price} DH`);
-          document.getElementById('order').href = `https://wa.me/212634084543?text=${msg}`;
+          // GENERATING DIRECT GOOGLE MAPS LINKS FOR BOTH LOCATIONS
+          const depLink = `https://maps.google.com/?q=${depCoord.lat},${depCoord.lng}`;
+          const destLink = `https://maps.google.com/?q=${destCoord.lat},${destCoord.lng}`;
+
+          const rawText = `Bonjour JibLi-vraison, je souhaite une livraison:\n\n📍 Départ: ${depName}\n🔗 Lien Départ: ${depLink}\n\n🏁 Destination: ${destName}\n🔗 Lien Destination: ${destLink}\n\n📏 Distance: ${distKm} km\n💰 Prix estimé: ${calcRes.price} DH`;
+          
+          document.getElementById('order').href = `https://wa.me/212634084543?text=${encodeURIComponent(rawText)}`;
         }
       }
     });
@@ -778,8 +783,10 @@ function calculateManualPrice() {
       
       const depM = document.getElementById('manual-depart').value || 'Non spécifié';
       const destM = document.getElementById('manual-dest').value || 'Non spécifié';
-      const msg = encodeURIComponent(`Bonjour JibLi-vraison, je souhaite une livraison:\n- Départ: ${depM}\n- Destination: ${destM}\n- Distance: ${dist} km\n- Prix estimé: ${calcRes.price} DH`);
-      document.getElementById('order').href = `https://wa.me/212634084543?text=${msg}`;
+
+      const rawText = `Bonjour JibLi-vraison, je souhaite une livraison:\n\n📍 Départ: ${depM}\n🏁 Destination: ${destM}\n📏 Distance estimée: ${dist} km\n💰 Prix estimé: ${calcRes.price} DH`;
+      
+      document.getElementById('order').href = `https://wa.me/212634084543?text=${encodeURIComponent(rawText)}`;
     }
   } else {
     resetPriceDisplay();

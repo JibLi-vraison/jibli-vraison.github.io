@@ -191,7 +191,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <option value="dar">🗣️ DAR</option>
 </select>
 <a class="btn dark" href="mailto:jibli.vraison@gmail.com">Email</a>
-<a class="btn yellow" href="https://wa.me/212634084543">WhatsApp</a>
+<a class="btn yellow" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison">WhatsApp</a>
 </div>
 </nav>
 </div>
@@ -270,7 +270,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <g transform="translate(45, 555)" style="direction: ltr;">
 <rect width="910" height="55" fill="#181818" stroke="#ffb900" stroke-width="2" rx="14"/>
 <text x="25" y="34" id="svg-cta" font-weight="bold" font-size="15" fill="#fff" text-anchor="start" data-key="svg-cta">REJOIGNEZ-NOUS DÈS MAINTENANT</text>
-<a href="https://wa.me/212634084543" target="_blank" style="cursor:pointer">
+<a href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison" target="_blank" style="cursor:pointer">
 <rect x="620" y="10" width="270" height="35" fill="#25d366" rx="8"/>
 <text x="755" y="33" font-weight="900" font-size="18" fill="#fff" text-anchor="middle">📲 06 34 08 45 43</text>
 </a>
@@ -369,7 +369,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <div class="result" id="result">— DH</div>
 <p id="status" style="color:#aaa;margin-bottom:15px;" data-key="status-default">Sélectionnez les lieux pour afficher le tarif.</p>
 
-<a id="order" class="btn yellow" href="https://wa.me/212634084543" style="width:100%;text-align:center;" data-key="btn-wa">Commander sur WhatsApp</a>
+<a id="order" class="btn yellow" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison" style="width:100%;text-align:center;" data-key="btn-wa">Commander sur WhatsApp</a>
 
 <!-- ACCORDEON TARIFS PROFESSIONNEL -->
 <button type="button" class="accordion-toggle" onclick="toggleAccordion(this)">
@@ -410,7 +410,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <div class="whyitem"><span>🌙</span><h3 data-key="why-4-t">Disponibilité</h3><small data-key="why-4-d">Service disponible jusqu'à 02h00 du matin.</small></div>
 </div></div></section>
 
-<section><div class="c"><div class="cta"><div><h2 data-key="cta-t">Besoin d'une livraison à Kénitra ?</h2><p data-key="cta-d">Contactez-nous directement sur WhatsApp pour votre commande.</p></div><a class="btn" href="https://wa.me/212634084543" data-key="cta-b">Commander maintenant</a></div></div></section>
+<section><div class="c"><div class="cta"><div><h2 data-key="cta-t">Besoin d'une livraison à Kénitra ?</h2><p data-key="cta-d">Contactez-nous directement sur WhatsApp pour votre commande.</p></div><a class="btn" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison" data-key="cta-b">Commander maintenant</a></div></div></section>
 
 <section id="faq"><div class="c"><h2 class="title">FAQ</h2><div class="faq">
 <details><summary data-key="faq-1-q">Comment commander ?</summary><div class="answer" data-key="faq-1-a">Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.</div></details>
@@ -420,7 +420,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 </div></div></section>
 
 <footer><div class="c"><b>JibLi-vraison</b> — <span data-key="footer-text">Service de coursier à moto à Kénitra.</span> <span style="float:right">© 2026</span></div></footer>
-<a class="wa" href="https://wa.me/212634084543">☏</a>
+<a class="wa" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison">☏</a>
 
 <script>
 let currentMode = 'auto';
@@ -719,6 +719,7 @@ function clearField(isDepart) {
 function resetPriceDisplay() {
   document.getElementById('result').textContent = "— DH";
   document.getElementById('status').textContent = translations[currentLang]["status-default"];
+  document.getElementById('order').href = "https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison";
 }
 
 function calculateRouteDistance() {
@@ -747,7 +748,7 @@ function calculateRouteDistance() {
           routePolyline = L.geoJSON(geojson, {style: {color: '#ffb900', weight: 5}}).addTo(map);
           map.fitBounds(routePolyline.getBounds(), {padding: [30, 30]});
           
-          const msg = encodeURIComponent(`Bonjour JibLi-vraison, je souhaite commander:\n- Départ: ${depName}\n- Destination: ${destName}\n- Distance: ${distKm} km\n- Prix estimé: ${calcRes.price} DH`);
+          const msg = encodeURIComponent(`Bonjour JibLi-vraison, je souhaite une livraison:\n- Départ: ${depName}\n- Destination: ${destName}\n- Distance: ${distKm} km\n- Prix estimé: ${calcRes.price} DH`);
           document.getElementById('order').href = `https://wa.me/212634084543?text=${msg}`;
         }
       }
@@ -777,7 +778,7 @@ function calculateManualPrice() {
       
       const depM = document.getElementById('manual-depart').value || 'Non spécifié';
       const destM = document.getElementById('manual-dest').value || 'Non spécifié';
-      const msg = encodeURIComponent(`Bonjour JibLi-vraison, commande manuelle:\n- Départ: ${depM}\n- Destination: ${destM}\n- Distance: ${dist} km\n- Prix estimé: ${calcRes.price} DH`);
+      const msg = encodeURIComponent(`Bonjour JibLi-vraison, je souhaite une livraison:\n- Départ: ${depM}\n- Destination: ${destM}\n- Distance: ${dist} km\n- Prix estimé: ${calcRes.price} DH`);
       document.getElementById('order').href = `https://wa.me/212634084543?text=${msg}`;
     }
   } else {

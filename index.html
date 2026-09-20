@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>JibLi-vraison | Service de livraison</title>
 
-<!-- Google Maps JS API & Libraries (Places, Geocoding, Maps) -->
+<!-- Google Maps JS API & Libraries -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA0nXHHyHRpw1vMo-TmUeD79M7biu5ZXe0&libraries=places"></script>
 
 <style>
@@ -24,16 +24,8 @@ nav{height:70px;display:flex;align-items:center;justify-content:space-between;ga
 .dark{background:#171717;border:1px solid #555;color:#fff}
 
 .lang-select {
-background: #171717;
-color: #ffb900;
-border: 1px solid #ffb900;
-padding: 4px 6px;
-border-radius: 6px;
-font-weight: bold;
-font-size: 11px;
-cursor: pointer;
-outline: none;
-max-width: 85px;
+background: #171717; color: #ffb900; border: 1px solid #ffb900;
+padding: 4px 6px; border-radius: 6px; font-weight: bold; font-size: 11px; cursor: pointer; outline: none; max-width: 85px;
 }
 
 .hero{padding:40px 0;background:radial-gradient(circle at 50% 30%,#ffb90015,transparent 50%)}
@@ -61,48 +53,20 @@ section{padding:50px 0}
 footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
 .wa{position:fixed;right:20px;bottom:25px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:28px;z-index:9999;box-shadow:0 4px 15px rgba(0,0,0,0.5)}
 
-/* ACCORDION TARIFS DESIGN PRO */
 .accordion-toggle {
-margin-top: 25px;
-width: 100%;
-background: #1e1e1e;
-border: 1px solid #333;
-color: #ffb900;
-padding: 14px 18px;
-border-radius: 12px;
-font-weight: bold;
-font-size: 14px;
-cursor: pointer;
-display: flex;
-justify-content: space-between;
-align-items: center;
-transition: all 0.3s ease;
+margin-top: 25px; width: 100%; background: #1e1e1e; border: 1px solid #333; color: #ffb900;
+padding: 14px 18px; border-radius: 12px; font-weight: bold; font-size: 14px; cursor: pointer;
+display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease;
 }
-.accordion-toggle:hover {
-background: #252525;
-border-color: #ffb900;
-}
-.accordion-icon {
-transition: transform 0.3s ease;
-font-size: 12px;
-}
-.accordion-toggle.active .accordion-icon {
-transform: rotate(180deg);
-}
+.accordion-toggle:hover { background: #252525; border-color: #ffb900; }
+.accordion-icon { transition: transform 0.3s ease; font-size: 12px; }
+.accordion-toggle.active .accordion-icon { transform: rotate(180deg); }
 
 .price-table-wrapper {
-max-height: 0;
-overflow: hidden;
-transition: max-height 0.4s ease-out, margin-top 0.3s ease;
-background: #181818;
-border-radius: 12px;
-border: 0px solid #333;
+max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out, margin-top 0.3s ease;
+background: #181818; border-radius: 12px; border: 0px solid #333;
 }
-.price-table-wrapper.open {
-max-height: 600px;
-margin-top: 10px;
-border-width: 1px;
-}
+.price-table-wrapper.open { max-height: 600px; margin-top: 10px; border-width: 1px; }
 
 .price-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
 [dir="rtl"] .price-table { text-align: right; }
@@ -138,8 +102,7 @@ border-width: 1px;
 .mode-btn.active { background: #ffb900; color: #111; }
 
 .suggestions-list {
-position: absolute;
-top: 100%; left: 0; right: 0;
+position: absolute; top: 100%; left: 0; right: 0;
 background: #1e1e1e; border: 1px solid #ffb900;
 border-radius: 10px; max-height: 180px; overflow-y: auto;
 z-index: 3000; display: none; margin: 4px 0 0 0; padding: 0;
@@ -370,7 +333,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 
 <a id="order" class="btn yellow" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison" style="width:100%;text-align:center;" data-key="btn-wa">Commander sur WhatsApp</a>
 
-<!-- ACCORDEON TARIFS PROFESSIONNEL -->
+<!-- ACCORDEON TARIFS -->
 <button type="button" class="accordion-toggle" onclick="toggleAccordion(this)">
 <span data-key="acc-btn">📊 Afficher le détail des tarifs</span>
 <span class="accordion-icon">▼</span>
@@ -464,82 +427,23 @@ fr: {
 "faq-3-q": "Comment connaître le prix ?", "faq-3-a": "Le prix est calculé automatiquement en fonction du kilométrage exact et de l'heure.",
 "faq-4-q": "Quels sont vos horaires ?", "faq-4-a": "Du Lundi au Samedi : 17h00 à 02h00.<br>Le Dimanche : 10h00 à 02h00.",
 "footer-text": "Service de coursier à moto à Kénitra.",
-"acc-btn": "📊 Afficher le détail des tarifs", "th-dist": "Distance", "th-eve": "Soir (17h - 21h)", "th-night": "Nuit (21h - 02h)", "tbl-na": "Non disponible (> 13 km)",
-"svg-sub": "SERVICE DE COURSIER À MOTO",
-"svg-disp-title": "DISPONIBLE À KÉNITRA",
-"svg-disp-1": "🕒 Lun - Sam : 17h00 à 02h00",
-"svg-disp-2": "🕒 Dimanche : 10h00 à 02h00",
-"svg-badge-1": "LIVRAISON RAPIDE",
-"svg-badge-2": "SÉCURISÉE & FIABLE",
-"svg-badge-3": "SERVICE NOCTURNE",
-"svg-serv-head": "TOUS VOS BESOINS, UNE SEULE LIVRAISON",
-"svg-s1": "E-Commerce", "svg-s2": "Restaurants", "svg-s3": "Pharmacie", "svg-s4": "Petits Colis & Courses",
-"svg-cta": "REJOIGNEZ-NOUS DÈS MAINTENANT"
+"acc-btn": "📊 Afficher le détail des tarifs", "th-dist": "Distance", "th-eve": "Soir (17h - 21h)", "th-night": "Nuit (21h - 02h)", "tbl-na": "Non disponible (> 13 km)"
 },
 ar: {
 "nav-services": "الخدمات", "nav-tarifs": "الأسعار", "nav-comment": "كيف نشتغل", "nav-pourquoi": "لماذا نحن", "nav-faq": "أسئلة شائعة",
 "btn-hero-cmd": "طلب التوصيل",
 "btn-wa": "اطلب عبر واتساب", "srv-title": "جميع احتياجاتك، توصيلة واحدة", "srv-sub": "خدمة محلية مصممة لمدينة القنيطرة.",
-"srv-1-t": "التجارة الإلكترونية", "srv-1-d": "توصيل طلباتك عبر الإنترنت.",
-"srv-2-t": "المطاعم", "srv-2-d": "توصيل وجباتك بسرعة.",
-"srv-3-t": "الصيدلية", "srv-3-d": "منتجات الصيدلية حسب الشروط.",
-"srv-4-t": "المشتريات", "srv-4-d": "مشترياتك وااحتياجاتك اليومية.",
-"srv-5-t": "الطرود الصغيرة", "srv-5-d": "خدمة توصيل سريعة لطرودك.",
-"srv-6-t": "الخدمة الليلية", "srv-6-d": "متوفرون طيلة المساء والليل.",
-"how-title": "كيف تعمل الخدمة؟", "how-sub": "اطلب في 4 خطوات بسيطة.",
-"step-1-t": "اختر", "step-1-d": "حدد مكان الانطلاق والوجهة.",
-"step-2-t": "احسب", "step-2-d": "يظهر السعر تلقائياً.",
-"step-3-t": "أرسل", "step-3-d": "أكد طلبك عبر الواتساب.",
-"step-4-t": "استلم", "step-4-d": "سائقنا يوصل طلبك بسرعة.",
 "tarif-title": "طلب التوصيل", "tarif-sub": "اختر العناوين من الخريطة أو ابحث بالاسم.",
 "m-auto": "🗺️ عبر الخريطة / البحث", "m-manual": "✍️ إدخال مباشر",
 "lbl-dep": "🚦🟢 مكان الانطلاق", "lbl-dest": "🚦🔴 الوجهة",
-"map-moving": "حرك الخريطة...", "map-use": "استخدم هذه النقطة ›",
-"lbl-dep-m": "📍 مكان الانطلاق (اختياري)", "lbl-dest-m": "🏁 الوجهة (اختياري)", "lbl-dist-m": "📏 المسافة التقديرية (بالكيلومتر)",
-"status-default": "حدد الأماكن أو أدخل المسافة لعرض السعر.",
-"why-title": "لماذا تختار JibLi-vraison؟", "why-sub": "خدمة مصممة لتسهيل حياتك.",
-"why-1-t": "السرعة", "why-1-d": "توصيل مباشر بالدراجة النارية بالقنيطرة.",
-"why-2-t": "الشفافية", "why-2-d": "حساب واضح للسعر قبل الطلب.",
-"why-3-t": "السهولة", "why-3-d": "كل شيء بنقرات بسيطة عبر الواتساب.",
-"why-4-t": "التوفر", "why-4-d": "الخدمة متوفرة حتى 02:00 صباحاً.",
-"cta-t": "تحتاج توصيلة بالقنيطرة؟", "cta-d": "تواصل معنا مباشرة عبر الواتساب لطلبك.", "cta-b": "اطلب الآن",
-"faq-1-q": "كيف أطلب؟", "faq-1-a": "اختر مكان الانطلاق والوجهة ثم اضغط على زر الواتساب.",
-"faq-2-q": "أين تقومون بالتوصيل؟", "faq-2-a": "الخدمة مخصصة للتوصيل في حدود 13 كيلومتر.",
-"faq-3-q": "كيف أعرف السعر؟", "faq-3-a": "يتم حساب السعر تلقائياً حسب المسافة بالضبط والوقت الحالي.",
-"faq-4-q": "ما هي أوقات العمل؟", "faq-4-a": "من الإثنين إلى السبت: 17:00 إلى 02:00.<br>الأحد: 10:00 إلى 02:00.",
-"footer-text": "خدمة التوصيل بالدراجات النارية بالقنيطرة.",
-"acc-btn": "📊 عرض تفاصيل جدول الأسعار", "th-dist": "المسافة", "th-eve": "المسائية (17h - 21h)", "th-night": "الليلية (21h - 02h)", "tbl-na": "غير متوفر (> 13 km)",
-"svg-sub": "خدمة التوصيل بالدراجة النارية",
-"svg-disp-title": "متوفر في القنيطرة",
-"svg-disp-1": "🕒 الإثنين - السبت : من 17:00 إلى 02:00",
-"svg-disp-2": "🕒 الأحد : من 10:00 إلى 02:00",
-"svg-badge-1": "توصيل سريع",
-"svg-badge-2": "آمن وموثوق",
-"svg-badge-3": "خدمة ليلية",
-"svg-serv-head": "كل احتياجاتك في توصيلة واحدة",
-"svg-s1": "التجارة الإلكترونية", "svg-s2": "المطاعم", "svg-s3": "الصيدلية", "svg-s4": "الطرود الصغيرة والسخرة",
-"svg-cta": "انضم إلينا الآن"
+"map-moving": "حرك الخريطة...", "map-use": "استخدم هذه النقطة ›"
 },
 dar: {
 "nav-services": "الخدمات", "nav-tarifs": "الأثمنة", "nav-comment": "كيفاش كانديرو", "nav-pourquoi": "علاش إحنا", "nav-faq": "الأسئلة",
 "btn-hero-cmd": "طلب التوصيل ديالك",
 "btn-wa": "طلب ف الواتساب", "srv-title": "كاع احتياجاتك ف تسخيرة وحدة", "srv-sub": "خدمة محلية مصاوبة للقنيطرة.",
-"srv-1-t": "إيكوميرس", "srv-1-d": "التوصيل ديال السلعة أونلاين.",
-"srv-2-t": "المطاعم", "srv-2-d": "ماكلتك توصلك سخونة وبسرعة.",
-"srv-3-t": "الفارماسي", "srv-3-d": "دواك والدوايات حسب الشروط.",
-"srv-4-t": "السخرة والتسوق", "srv-4-d": "السخرة والحاجات ديال كل نهار.",
-"srv-5-t": "البروات والكراتن", "srv-5-d": "توصيل سريع للكراتن والسلعة الصغيرة.",
-"srv-6-t": "الخدمة بالليل", "srv-6-d": "خدامين معاك ف العشية وبالليل.",
-"how-title": "كيفاش كانديرو؟", "how-sub": "طلب ف 4 د الخطوات سهلة.",
-"step-1-t": "عزل", "step-1-d": "منين نجيبوا وفين ندوا.",
-"step-2-t": "حسب", "step-2-d": "الثمن كايطلع ليك أوتوماتيك.",
-"step-3-t": "صيفط", "step-3-d": "أكد الطلب ديريكت ف الواتساب.",
-"step-4-t": "شد السخرة", "step-4-d": "الكورسي ديالنا يجيبها لك دغيا.",
 "tarif-title": "طلب التوصيل ديالك", "tarif-sub": "عزل البلايص ف الخريطة أو قلب بالسمية.",
-"m-auto": "🗺️ الخريطة والبحث", "m-manual": "✍️ كتب بيديك",
-"lbl-dep": "🚦🟢 منين نجيبو (المنطلق)", "lbl-dest": "🚦🔴 فين ندبو (الوجهة)",
-"map-moving": "حرك الخريطة...", "map-use": "استعمل هاد البلاصة ›",
-"lbl-dep-m": "📍 بلاصة المنطلق (اختياري)", "lbl-dest-m": "🏁 بلاصة الوجهة (اختياري)", "lbl-dist-m": "📏 الكيلومتراج التقديري (بـ Km)"
+"m-auto": "🗺️ الخريطة والبحث", "m-manual": "✍️ كتب بيديك"
 }
 };
 
@@ -550,7 +454,6 @@ window.onload = function() {
 function initGoogleMap() {
     const kenitraCenter = { lat: 34.2610, lng: -6.5802 };
 
-    // الخريطة بالألوان القياسية والعادية لجوجل ماب (بدون Dark Mode مخصص)
     map = new google.maps.Map(document.getElementById("map"), {
         center: kenitraCenter,
         zoom: 14,
@@ -789,7 +692,17 @@ function applyPricingLogic(distanceKm) {
     document.getElementById("result").innerText = price + " DH";
     document.getElementById("status").innerText = `Distance : ${distanceKm.toFixed(1)} km (${isNight ? 'Tarif Nuit' : 'Tarif Soir'})`;
 
-    const waText = `Bonjour JibLi-vraison, je souhaite commander une livraison.%0A📍 Départ : ${depName}%0A🏁 Destination : ${destName}%0A📏 Distance : ${distanceKm.toFixed(1)} km%0A💰 Prix estimé : ${price} DH`;
+    // استخراج الإحداثيات لروابط خرائط جوجل المباشرة
+    const depLat = typeof depCoord.lat === 'function' ? depCoord.lat() : depCoord.lat;
+    const depLng = typeof depCoord.lng === 'function' ? depCoord.lng() : depCoord.lng;
+    const destLat = typeof destCoord.lat === 'function' ? destCoord.lat() : destCoord.lat;
+    const destLng = typeof destCoord.lng === 'function' ? destCoord.lng() : destCoord.lng;
+
+    const depMapLink = `https://maps.google.com/?q=${depLat},${depLng}`;
+    const destMapLink = `https://maps.google.com/?q=${destLat},${destLng}`;
+
+    const waText = `Bonjour JibLi-vraison, je souhaite commander une livraison.%0A%0A📍 Départ : ${depName}%0A🔗 Map Départ : ${depMapLink}%0A%0A🏁 Destination : ${destName}%0A🔗 Map Destination : ${destMapLink}%0A%0A📏 Distance : ${distanceKm.toFixed(1)} km%0A💰 Prix estimé : ${price} DH`;
+    
     document.getElementById("order").href = `https://wa.me/212634084543?text=${waText}`;
 }
 
@@ -852,7 +765,7 @@ function calculateManualPrice() {
     document.getElementById("result").innerText = price + " DH";
     document.getElementById("status").innerText = `Distance : ${distInput} km`;
 
-    const waText = `Bonjour JibLi-vraison, je souhaite commander une livraison (Manuel).%0A📍 Départ : ${manualDep}%0A🏁 Destination : ${manualDest}%0A📏 Distance : ${distInput} km%0A💰 Prix estimé : ${price} DH`;
+    const waText = `Bonjour JibLi-vraison, je souhaite commander une livraison (Manuel).%0A%0A📍 Départ : ${manualDep}%0A🏁 Destination : ${manualDest}%0A📏 Distance : ${distInput} km%0A💰 Prix estimé : ${price} DH`;
     document.getElementById("order").href = `https://wa.me/212634084543?text=${waText}`;
 }
 
@@ -867,9 +780,7 @@ function changeLanguage(lang) {
     const t = translations[lang];
     if (!t) return;
 
-    if (lang === 'ar') {
-        document.getElementById("html-root").setAttribute("dir", "rtl");
-    } else if (lang === 'dar') {
+    if (lang === 'ar' || lang === 'dar') {
         document.getElementById("html-root").setAttribute("dir", "rtl");
     } else {
         document.getElementById("html-root").setAttribute("dir", "ltr");

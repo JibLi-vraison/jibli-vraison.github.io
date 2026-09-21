@@ -373,15 +373,14 @@ let isSettingDepNext = true;
 let kenitraPolygon = null;
 let isInsideZone = true;
 
-// تم توسيع المضلع بشكل كبير نحو الغرب والشمال الغربي ليشمل شاطئ المهديّة بالكامل، الفنادق والمقاهي دون أي استثناء
 const kenitraCoords = [
-    {lat: 34.3500, lng: -6.6500}, // أقصى الشمال الغربي (البحر المفتوح وشمال المهديّة)
-    {lat: 34.3500, lng: -6.5300}, // أقصى الشمال الشرقي
-    {lat: 34.2500, lng: -6.5100}, // الشرق
-    {lat: 34.1800, lng: -6.5300}, // الجنوب الشرقي
-    {lat: 34.1800, lng: -6.6200}, // الجنوب
-    {lat: 34.2000, lng: -6.6800}, // أقصى الغرب (تغطية كاملة للمهدية وطريق القنيطرة)
-    {lat: 34.3000, lng: -6.6800}  // الشمال الغربي المحاذي للشاطئ
+    {lat: 34.3500, lng: -6.6500},
+    {lat: 34.3500, lng: -6.5300},
+    {lat: 34.2500, lng: -6.5100},
+    {lat: 34.1800, lng: -6.5300},
+    {lat: 34.1800, lng: -6.6200},
+    {lat: 34.2000, lng: -6.6800},
+    {lat: 34.3000, lng: -6.6800}
 ];
 
 const translations = {
@@ -638,24 +637,24 @@ function useCurrentLocation(isDep) {
             }
 
             geocoder.geocode({ location: pos }, (results, status) => {
-                const address = (status === "OK" && results[0]) ? results[0].formatted_address : "Position actuelle";
+                const address = (status === "OK" && results[0]) ? results[0].formatted_address : "Position GPS";
                 if (isDep) {
                     depCoord = pos;
-                    depName = address;
-                    document.getElementById("input-depart").value = address;
+                    depName = `GPS (${pos.lat.toFixed(5)}, ${pos.lng.toFixed(5)})`;
+                    document.getElementById("input-depart").value = depName;
                     document.getElementById("clear-depart").style.display = "block";
                     if (depMarker) depMarker.setMap(null);
                     depMarker = new google.maps.Marker({ position: pos, map: map, label: "A" });
                 } else {
                     destCoord = pos;
-                    destName = address;
-                    document.getElementById("input-dest").value = address;
+                    destName = `GPS (${pos.lat.toFixed(5)}, ${pos.lng.toFixed(5)})`;
+                    document.getElementById("input-dest").value = destName;
                     document.getElementById("clear-dest").style.display = "block";
                     if (destMarker) destMarker.setMap(null);
                     destMarker = new google.maps.Marker({ position: pos, map: map, label: "B" });
                 }
                 map.setCenter(pos);
-                map.setZoom(15);
+                map.setZoom(17);
                 calculateRouteAndPrice();
             });
         }, () => {

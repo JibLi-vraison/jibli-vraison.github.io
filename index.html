@@ -374,13 +374,17 @@ let isSettingDepNext = true;
 let kenitraPolygon = null;
 let isInsideZone = true;
 
-// حدود مدينة القניطرة (Polygon) للتأكد من أن النقطة داخل المنطقة الحمراء
+// الحدود مطابقة تماماً للمنطقة المحددة في لقطة الشاشة (Mehdia, Bir Rami, Fouarat, Nkhakhsa...)
 const kenitraCoords = [
-    {lat: 34.315, lng: -6.630},
-    {lat: 34.310, lng: -6.530},
-    {lat: 34.220, lng: -6.520},
-    {lat: 34.205, lng: -6.610},
-    {lat: 34.230, lng: -6.650}
+    {lat: 34.3168, lng: -6.6120}, // شمال المهدية
+    {lat: 34.3015, lng: -6.5512}, // شرق المهدية
+    {lat: 34.2550, lng: -6.5250}, // منطقة الطايبي الشرقية
+    {lat: 34.2150, lng: -6.5400}, // الحي الصناعي شرقاً
+    {lat: 34.1950, lng: -6.5750}, // النخاصة جنوباً
+    {lat: 34.1980, lng: -6.6150}, // العصام جنوب غرب
+    {lat: 34.2120, lng: -6.6450}, // الفوارات
+    {lat: 34.2380, lng: -6.6680}, // تجزئة الوفاء غرباً
+    {lat: 34.2850, lng: -6.6420}  // بئر رامي غرباً
 ];
 
 const translations = {
@@ -441,19 +445,19 @@ function initGoogleMap() {
 
     map = new google.maps.Map(document.getElementById("map"), {
         center: kenitraCenter,
-        zoom: 14,
+        zoom: 13,
         disableDefaultUI: true,
         zoomControl: true
     });
 
-    // رسم الخطوط الحمراء الخاصة بالمنطقة
+    // حدود دقيقة ومخفية (بدون لون أحمر معبأ، خريطة نقية وطبيعية 100%)
     kenitraPolygon = new google.maps.Polygon({
         paths: kenitraCoords,
-        strokeColor: "#FF0000",
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillColor: "#FF0000",
-        fillOpacity: 0.15
+        strokeColor: "#ffb900",
+        strokeOpacity: 0.6,
+        strokeWeight: 1.5,
+        fillColor: "#ffb900",
+        fillOpacity: 0.0
     });
     kenitraPolygon.setMap(map);
 
@@ -579,7 +583,6 @@ function selectPrediction(placeId, description, isDep) {
         if (status === google.maps.places.PlacesServiceStatus.OK && place.geometry && place.geometry.location) {
             const loc = place.geometry.location;
             
-            // التحقق واش البلاصة المختارة داخل الزون الحمراء ولا لا
             const checkInZone = google.maps.geometry.poly.containsLocation(loc, kenitraPolygon);
             if (!checkInZone) {
                 alert(currentLang === 'ar' || currentLang === 'dar' ? "هذا الموقع خارج نطاق الخدمة!" : "Ce lieu est hors zone de service !");

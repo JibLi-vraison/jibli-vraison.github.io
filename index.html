@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="fr" id="html-root">
 <head>
@@ -6,7 +7,7 @@
 <title>JibLi-vraison | Service de livraison</title>
 
 <!-- Google Maps JS API & Libraries -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA0nXHHyHRpw1vMo-TmUeD79M7biu5ZXe0&libraries=places"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA0nXHHyHRpw1vMo-TmUeD79M7biu5ZXe0&libraries=places,geometry"></script>
 
 <style>
 *{box-sizing:border-box}
@@ -169,7 +170,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <text x="0" y="44" id="svg-sub" font-weight="bold" font-size="15" fill="#aaa" letter-spacing="1" text-anchor="start" data-key="svg-sub">SERVICE DE COURSIER À MOTO</text>
 </g>
 
-<!-- Cadre Jaune (Disponible à Kénitra) - Kbir w wad7 -->
+<!-- Cadre Jaune (Disponible à Kénitra) -->
 <g transform="translate(45, 125)" style="direction: ltr;">
 <rect width="420" height="150" fill="#ffb900" rx="14"/>
 <text x="24" y="34" id="svg-disp-title" font-weight="900" font-size="20" fill="#111" text-anchor="start" data-key="svg-disp-title">DISPONIBLE À KÉNITRA</text>
@@ -178,7 +179,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <text x="24" y="118" id="svg-disp-2" font-weight="bold" font-size="16" fill="#111" text-anchor="start" data-key="svg-disp-2">🕒 Dimanche : 10h00 à 02h00</text>
 </g>
 
-<!-- Badges (Rapide, Sécurisée, Nocturne) -->
+<!-- Badges -->
 <g transform="translate(45, 295)" style="direction: ltr;">
 <rect x="0" y="0" width="130" height="75" fill="#181818" stroke="#2c2c2c" rx="12"/>
 <text x="65" y="28" font-size="22" text-anchor="middle">⚡</text>
@@ -216,7 +217,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 </g>
 </g>
 
-<!-- Moto Graphic (JibLi-vraison) -->
+<!-- Moto Graphic -->
 <g transform="translate(520, 100)" style="direction: ltr;">
 <circle cx="210" cy="210" r="170" fill="#1a1a1a" stroke="#ffb900" stroke-width="2" stroke-dasharray="8,8"/>
 <text x="200" y="250" font-size="180" text-anchor="middle">🛵</text>
@@ -266,7 +267,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 
 <section id="tarifs"><div class="c"><h2 class="title" data-key="tarif-title">Commander ma livraison</h2><p class="sub" data-key="tarif-sub">Choisissez vos adresses sur la carte ou recherchez par nom.</p><div class="tarif">
 
-<!-- MODE AUTOMATIQUE & CARTE (SEUL MODE ACTIF) -->
+<!-- MODE AUTOMATIQUE & CARTE -->
 <div id="section-auto">
 <div style="display:grid;gap:15px;margin-bottom:18px;">
 <div class="search-box">
@@ -299,7 +300,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <div class="center-picker">
 <div class="picker-card" id="picker-card" onclick="confirmCenterPoint()">
 <div id="picker-address" data-key="map-moving">Déplacez la carte...</div>
-<span data-key="map-use">Utiliser ce point ›</span>
+<span id="picker-action-text" data-key="map-use">Utiliser ce point ›</span>
 </div>
 <div class="picker-pin">📍</div>
 </div>
@@ -370,6 +371,17 @@ let currentCenterAddress = '';
 let searchTimeout = null;
 let currentLang = 'fr';
 let isSettingDepNext = true;
+let kenitraPolygon = null;
+let isInsideZone = true;
+
+// حدود مدينة القניطرة (Polygon) للتأكد من أن النقطة داخل المنطقة الحمراء
+const kenitraCoords = [
+    {lat: 34.315, lng: -6.630},
+    {lat: 34.310, lng: -6.530},
+    {lat: 34.220, lng: -6.520},
+    {lat: 34.205, lng: -6.610},
+    {lat: 34.230, lng: -6.650}
+];
 
 const translations = {
 fr: {
@@ -434,6 +446,17 @@ function initGoogleMap() {
         zoomControl: true
     });
 
+    // رسم الخطوط الحمراء الخاصة بالمنطقة
+    kenitraPolygon = new google.maps.Polygon({
+        paths: kenitraCoords,
+        strokeColor: "#FF0000",
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: "#FF0000",
+        fillOpacity: 0.15
+    });
+    kenitraPolygon.setMap(map);
+
     directionsService = new google.maps.DirectionsService();
     directionsRenderer = new google.maps.DirectionsRenderer({
         map: map,
@@ -446,9 +469,26 @@ function initGoogleMap() {
         clearTimeout(searchTimeout);
         searchTimeout = setTimeout(() => {
             const center = map.getCenter();
+            checkCenterInZone(center);
             updateCenterAddress(center);
         }, 400);
     });
+}
+
+function checkCenterInZone(latLng) {
+    isInsideZone = google.maps.geometry.poly.containsLocation(latLng, kenitraPolygon);
+    const pickerCard = document.getElementById("picker-card");
+    const actionText = document.getElementById("picker-action-text");
+
+    if (!isInsideZone) {
+        pickerCard.style.borderColor = "#ff4444";
+        actionText.style.color = "#ff4444";
+        actionText.innerText = "Hors zone ✕";
+    } else {
+        pickerCard.style.borderColor = "#ffb900";
+        actionText.style.color = "#00a082";
+        actionText.innerText = currentLang === 'ar' || currentLang === 'dar' ? 'استخدم هذه النقطة ›' : 'Utiliser ce point ›';
+    }
 }
 
 function updateCenterAddress(latLng) {
@@ -464,6 +504,11 @@ function updateCenterAddress(latLng) {
 }
 
 function confirmCenterPoint() {
+    if (!isInsideZone) {
+        alert(currentLang === 'ar' || currentLang === 'dar' ? "هذه النقطة خارج منطقة التغطية (Hors zone)!" : "Cette position est hors zone de livraison !");
+        return;
+    }
+
     const center = map.getCenter();
     if (isSettingDepNext) {
         depCoord = center;
@@ -533,6 +578,14 @@ function selectPrediction(placeId, description, isDep) {
     placesService.getDetails({ placeId: placeId }, (place, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK && place.geometry && place.geometry.location) {
             const loc = place.geometry.location;
+            
+            // التحقق واش البلاصة المختارة داخل الزون الحمراء ولا لا
+            const checkInZone = google.maps.geometry.poly.containsLocation(loc, kenitraPolygon);
+            if (!checkInZone) {
+                alert(currentLang === 'ar' || currentLang === 'dar' ? "هذا الموقع خارج نطاق الخدمة!" : "Ce lieu est hors zone de service !");
+                return;
+            }
+
             if (isDep) {
                 depCoord = loc;
                 depName = description;
@@ -578,6 +631,13 @@ function useCurrentLocation(isDep) {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(position => {
             const pos = { lat: position.coords.latitude, lng: position.coords.longitude };
+            
+            const checkInZone = google.maps.geometry.poly.containsLocation(new google.maps.LatLng(pos.lat, pos.lng), kenitraPolygon);
+            if (!checkInZone) {
+                alert(currentLang === 'ar' || currentLang === 'dar' ? "موقعك الحالي خارج نطاق التوصيل!" : "Votre position actuelle est hors zone !");
+                return;
+            }
+
             geocoder.geocode({ location: pos }, (results, status) => {
                 const address = (status === "OK" && results[0]) ? results[0].formatted_address : "Position actuelle";
                 if (isDep) {
@@ -713,4 +773,3 @@ function changeLanguage(lang) {
 </script>
 </body>
 </html>
-

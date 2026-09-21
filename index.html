@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="fr" id="html-root">
 <head>
@@ -373,17 +374,17 @@ let isSettingDepNext = true;
 let kenitraPolygon = null;
 let isInsideZone = true;
 
-// الإحداثيات مطابقة تماماً للمنطقة الدقيقة المستخرجة من لقطة شاشة الساتلايت المرفقة
+// تم توسيع المضلع ليشمل شاطئ المهديّة بالكامل وجميع النطاقات المطلوبة بدقة عبر Plus Codes
 const kenitraCoords = [
-    {lat: 34.3168, lng: -6.6110}, // شاطئ المهدية شمالاً
-    {lat: 34.3015, lng: -6.5512}, // شليحات / وادي سبو شرقاً
+    {lat: 34.3350, lng: -6.6250}, // أقصى شمال شاطئ المهدية (تغطية Plus Code: 79F5+G6R وما حولها)
+    {lat: 34.3200, lng: -6.5400}, // جهة الشمال الشرقي (787C+8X)
     {lat: 34.2550, lng: -6.5220}, // الطايبي / المطار شرقاً
-    {lat: 34.2150, lng: -6.5400}, // الحي الصناعي جنوب شرق
-    {lat: 34.1950, lng: -6.5750}, // النخاصة والعصام جنوباً
-    {lat: 34.2020, lng: -6.6180}, // الفوارات جنوب غرب
-    {lat: 34.2250, lng: -6.6650}, // تجزئة الوفاء غرباً
-    {lat: 34.2750, lng: -6.6420}, // بئر رامي غرباً
-    {lat: 34.3050, lng: -6.6200}  // طريق المهدية شمال غرب
+    {lat: 34.2150, lng: -6.5400}, // الحي الصناعي جنوب شرق (68X9+Q9J, 68WC+W8R)
+    {lat: 34.1950, lng: -6.5750}, // النخاصة والعصام جنوباً (783J+4R9)
+    {lat: 34.2020, lng: -6.6180}, // الفوارات جنوب غرب (782M+WVH, 782P+CGQ)
+    {lat: 34.2250, lng: -6.6650}, // تجزئة الوفاء غرباً (68QJ+XC6)
+    {lat: 34.2850, lng: -6.6450}, // بئر رامي غرباً
+    {lat: 34.3300, lng: -6.6320}  // العودة لمدخل الشاطئ شمالاً
 ];
 
 const translations = {
@@ -444,12 +445,11 @@ function initGoogleMap() {
 
     map = new google.maps.Map(document.getElementById("map"), {
         center: kenitraCenter,
-        zoom: 13,
+        zoom: 12,
         disableDefaultUI: true,
         zoomControl: true
     });
 
-    // مضلع الحدود بدون لون أحمر معبأ، شغال في الخلفية للتحقق بدقة
     kenitraPolygon = new google.maps.Polygon({
         paths: kenitraCoords,
         strokeColor: "#ffb900",
@@ -547,8 +547,8 @@ function onSearchInput(val, isDep) {
     }
 
     const kenitraBounds = new google.maps.LatLngBounds(
-        new google.maps.LatLng(34.20, -6.65),
-        new google.maps.LatLng(34.32, -6.50)
+        new google.maps.LatLng(34.18, -6.68),
+        new google.maps.LatLng(34.35, -6.50)
     );
 
     autocompleteService.getPlacePredictions({
@@ -775,4 +775,3 @@ function changeLanguage(lang) {
 </script>
 </body>
 </html>
-

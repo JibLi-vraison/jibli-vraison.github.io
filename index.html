@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="fr" id="html-root">
 <head>
@@ -170,7 +169,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <text x="0" y="44" id="svg-sub" font-weight="bold" font-size="15" fill="#aaa" letter-spacing="1" text-anchor="start" data-key="svg-sub">SERVICE DE COURSIER À MOTO</text>
 </g>
 
-<!-- Cadre Jaune (Disponible à Kénitra) -->
+<!-- Cadre Jaune -->
 <g transform="translate(45, 125)" style="direction: ltr;">
 <rect width="420" height="150" fill="#ffb900" rx="14"/>
 <text x="24" y="34" id="svg-disp-title" font-weight="900" font-size="20" fill="#111" text-anchor="start" data-key="svg-disp-title">DISPONIBLE À KÉNITRA</text>
@@ -374,17 +373,17 @@ let isSettingDepNext = true;
 let kenitraPolygon = null;
 let isInsideZone = true;
 
-// الحدود مطابقة تماماً للمنطقة المحددة في لقطة الشاشة (Mehdia, Bir Rami, Fouarat, Nkhakhsa...)
+// الإحداثيات مطابقة تماماً للمنطقة الدقيقة المستخرجة من لقطة شاشة الساتلايت المرفقة
 const kenitraCoords = [
-    {lat: 34.3168, lng: -6.6120}, // شمال المهدية
-    {lat: 34.3015, lng: -6.5512}, // شرق المهدية
-    {lat: 34.2550, lng: -6.5250}, // منطقة الطايبي الشرقية
-    {lat: 34.2150, lng: -6.5400}, // الحي الصناعي شرقاً
-    {lat: 34.1950, lng: -6.5750}, // النخاصة جنوباً
-    {lat: 34.1980, lng: -6.6150}, // العصام جنوب غرب
-    {lat: 34.2120, lng: -6.6450}, // الفوارات
-    {lat: 34.2380, lng: -6.6680}, // تجزئة الوفاء غرباً
-    {lat: 34.2850, lng: -6.6420}  // بئر رامي غرباً
+    {lat: 34.3168, lng: -6.6110}, // شاطئ المهدية شمالاً
+    {lat: 34.3015, lng: -6.5512}, // شليحات / وادي سبو شرقاً
+    {lat: 34.2550, lng: -6.5220}, // الطايبي / المطار شرقاً
+    {lat: 34.2150, lng: -6.5400}, // الحي الصناعي جنوب شرق
+    {lat: 34.1950, lng: -6.5750}, // النخاصة والعصام جنوباً
+    {lat: 34.2020, lng: -6.6180}, // الفوارات جنوب غرب
+    {lat: 34.2250, lng: -6.6650}, // تجزئة الوفاء غرباً
+    {lat: 34.2750, lng: -6.6420}, // بئر رامي غرباً
+    {lat: 34.3050, lng: -6.6200}  // طريق المهدية شمال غرب
 ];
 
 const translations = {
@@ -450,7 +449,7 @@ function initGoogleMap() {
         zoomControl: true
     });
 
-    // حدود دقيقة ومخفية (بدون لون أحمر معبأ، خريطة نقية وطبيعية 100%)
+    // مضلع الحدود بدون لون أحمر معبأ، شغال في الخلفية للتحقق بدقة
     kenitraPolygon = new google.maps.Polygon({
         paths: kenitraCoords,
         strokeColor: "#ffb900",
@@ -776,3 +775,4 @@ function changeLanguage(lang) {
 </script>
 </body>
 </html>
+

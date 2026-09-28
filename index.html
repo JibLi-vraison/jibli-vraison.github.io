@@ -553,7 +553,7 @@ function checkCenterInZone(latLng) {
     if (!isInsideZone) {
         pickerCard.style.borderColor = "#ff4444";
         actionText.style.color = "#ff4444";
-        actionText.innerText = currentLang === 'ar' || currentLang === 'dar' ? "خارج المنطقة ✕" : "Hors zone ✕";
+        actionText.innerText = (currentLang === 'ar' || currentLang === 'dar') ? "خارج المنطقة ✕" : "Hors zone ✕";
     } else {
         pickerCard.style.borderColor = "#ffb900";
         actionText.style.color = "#00a082";
@@ -588,7 +588,7 @@ function confirmCenterPoint() {
         if (depMarker) depMarker.setMap(null);
         depMarker = new google.maps.Marker({ position: center, map: map, label: "A" });
         isSettingDepNext = false;
-        document.getElementById("picker-address").innerText = currentLang === 'ar' || currentLang === 'dar' ? "اختر الوجهة..." : "Choisissez la destination...";
+        document.getElementById("picker-address").innerText = (currentLang === 'ar' || currentLang === 'dar') ? "اختر الوجهة..." : "Choisissez la destination...";
     } else {
         destCoord = center;
         destName = currentCenterAddress || "Destination";
@@ -754,7 +754,7 @@ function calculateRouteAndPrice() {
             const distanceKm = distanceMeters / 1000;
             applyPricingLogic(distanceKm);
         } else {
-            document.getElementById("status").innerText = currentLang === 'ar' || currentLang === 'dar' ? "تعذر حساب المسار." : "Impossible de calculer l'itinéraire.";
+            document.getElementById("status").innerText = (currentLang === 'ar' || currentLang === 'dar') ? "تعذر حساب المسار." : "Impossible de calculer l'itinéraire.";
         }
     });
 } 
@@ -768,10 +768,12 @@ function getMapLink(coord, inputVal) {
         const lng = typeof coord.lng === 'function' ? coord.lng() : coord.lng;
         return `https://maps.google.com/?q=${lat},${lng}`;
     }
-    return "Non spécifié";
+    return "غير محدد";
 } 
 
 function applyPricingLogic(distanceKm) {
+    if (!depCoord || !destCoord) return;
+
     const now = new Date();
     const hour = now.getHours();
     const isNight = (hour >= 21 || hour < 5); 
@@ -796,26 +798,42 @@ function applyPricingLogic(distanceKm) {
     } else if (distanceKm <= 13) {
         price = isNight ? 40 : 35;
     } else {
-        document.getElementById("result").innerText = currentLang === 'ar' || currentLang === 'dar' ? "غير متوفر" : "Non dispo";
-        document.getElementById("status").innerText = currentLang === 'ar' || currentLang === 'dar' ? "المسافة أكبر من 13 كم (الخدمة غير متوفرة)." : "Distance supérieure à 13 km (Service non disponible).";
+        document.getElementById("result").innerText = (currentLang === 'ar' || currentLang === 'dar') ? "غير متوفر" : "Non dispo";
+        document.getElementById("status").innerText = (currentLang === 'ar' || currentLang === 'dar') ? "المسافة أكبر من 13 كم (الخدمة غير متوفرة)." : "Distance supérieure à 13 km (Service non disponible).";
+        document.getElementById("order").href = "#";
         return;
     } 
 
+    // إظهار النتيجة والحالة
     document.getElementById("result").innerText = price + " DH";
     
-    let rateLabel = isNight ? (currentLang === 'ar' || currentLang === 'dar' ? 'تسعيرة الليل' : 'Tarif Nuit') : (currentLang === 'ar' || currentLang === 'dar' ? 'تسعيرة المساء' : 'Tarif Soir');
-    document.getElementById("status").innerText = `${currentLang === 'ar' || currentLang === 'dar' ? 'المسافة' : 'Distance'} : ${distanceKm.toFixed(1)} km (${rateLabel})`; 
+    let rateLabel = isNight ? 
+        ((currentLang === 'ar' || currentLang === 'dar') ? 'تسعيرة الليل' : 'Tarif Nuit') : 
+        ((currentLang === 'ar' || currentLang === 'dar') ? 'تسعيرة المساء' : 'Tarif Soir');
+        
+    document.getElementById("status").innerText = `${(currentLang === 'ar' || currentLang === 'dar') ? 'المسافة' : 'Distance'} : ${distanceKm.toFixed(1)} km (${rateLabel})`; 
 
-    const depInputValue = document.getElementById("input-depart").value;
-    const destInputValue = document.getElementById("input-dest").value; 
+    // جلب العناوين والروابط بدقة
+    const depInputValue = document.getElementById("input-depart").value.trim() || depName || "غير محدد";
+    const destInputValue = document.getElementById("input-dest").value.trim() || destName || "غير محدد"; 
 
     const depMapLink = getMapLink(depCoord, depInputValue);
     const destMapLink = getMapLink(destCoord, destInputValue); 
 
-    const waText = `Bonjour JibLi-vraison, je souhaite commander une livraison.%0A%0A📍 Départ : ${depInputValue || depName}%0A🔗 Map Départ : ${depMapLink}%0A%0A🏁 Destination : ${destInputValue || destName}%0A🔗 Map Destination : ${destMapLink}%0A%0A📏 Distance : ${distanceKm.toFixed(1)} km%0A💰 Prix estimé : ${price} DH`;
-    
-    document.getElementById("order").href = `https://wa.me/212634084543?text=${waText}`;
-} 
+    // تركيب الرسالة حسب اللغة المختارة
+    let rawText = "";
+    if (currentLang === 'ar') {
+        rawText = `السلام عليكم JibLi-vraison، بغيت نطلب توصيلة:\n\n📍 مكان الانطلاق: ${depInputValue}\n🔗 رابط الانطلاق: ${depMapLink}\n\n🏁 الوجهة: ${destInputValue}\n🔗 رابط الوجهة: ${destMapLink}\n\n📏 المسافة: ${distanceKm.toFixed(1)} كم\n💰 الثمن التقديري: ${price} DH`;
+    } else if (currentLang === 'dar') {
+        rawText = `السلام عليكم JibLi-vraison، بغيت ندير تسخيرة:\n\n📍 منين نجيبوها: ${depInputValue}\n🔗 لوكاليزارسيون: ${depMapLink}\n\n🏁 فين نديوها: ${destInputValue}\n🔗 لوكاليزارسيون: ${destMapLink}\n\n📏 المسافة: ${distanceKm.toFixed(1)} كم\n💰 الثمن التقديري: ${price} DH`;
+    } else {
+        rawText = `Bonjour JibLi-vraison, je souhaite commander une livraison.\n\n📍 Départ : ${depInputValue}\n🔗 Map Départ : ${depMapLink}\n\n🏁 Destination : ${destInputValue}\n🔗 Map Destination : ${destMapLink}\n\n📏 Distance : ${distanceKm.toFixed(1)} km\n💰 Prix estimé : ${price} DH`;
+    }
+
+    // التشفير الصحيح للرابط ليعمل على الواتساب بدون مشاكل
+    const encodedText = encodeURIComponent(rawText);
+    document.getElementById("order").href = `https://wa.me/212634084543?text=${encodedText}`;
+}
 
 function toggleAccordion(btn) {
     btn.classList.toggle("active");
@@ -850,9 +868,12 @@ function changeLanguage(lang) {
         }
     });
 
-    // إعادة فحص النقطة في الخريطة لتغيير اللغة
+    // إعادة فحص النقطة في الخريطة وتحديث الرابط
     if (map) {
         checkCenterInZone(map.getCenter());
+    }
+    if (depCoord && destCoord) {
+        calculateRouteAndPrice();
     }
 }
 </script>

@@ -376,14 +376,16 @@ let isSettingDepNext = true;
 let kenitraPolygon = null;
 let isInsideZone = true; 
 
+// Les coordonnées m3ddlin باش tdkhol Mehdia Plage w les restaurants li f la côte كاملين
 const kenitraCoords = [
     {lat: 34.3500, lng: -6.6500},
     {lat: 34.3500, lng: -6.5300},
     {lat: 34.2500, lng: -6.5100},
     {lat: 34.1800, lng: -6.5300},
-    {lat: 34.1800, lng: -6.6200},
-    {lat: 34.2000, lng: -6.6800},
-    {lat: 34.3000, lng: -6.6800}
+    {lat: 34.1800, lng: -6.6800},
+    {lat: 34.2400, lng: -6.6950},
+    {lat: 34.2800, lng: -6.6950},
+    {lat: 34.3100, lng: -6.6800}
 ]; 
 
 const translations = {
@@ -614,7 +616,7 @@ function onSearchInput(val, isDep) {
     } 
 
     const kenitraBounds = new google.maps.LatLngBounds(
-        new google.maps.LatLng(34.18, -6.68),
+        new google.maps.LatLng(34.18, -6.70),
         new google.maps.LatLng(34.35, -6.50)
     ); 
 
@@ -879,3 +881,4 @@ function changeLanguage(lang) {
 </script>
 </body>
 </html>
+

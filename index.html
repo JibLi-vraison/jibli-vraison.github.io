@@ -13,22 +13,22 @@
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:'Cairo',Arial,sans-serif;background:#090909;color:#fff;overflow-x:hidden}
+body{margin:0;font-family:'Cairo',Arial,sans-serif;background:#090909;color:#fff;overflow-x:hidden;font-size:16px}
 a{text-decoration:none;color:inherit}
 .c{width:92%;max-width:1100px;margin:auto} 
 
 header{position:sticky;top:0;background:#090909ee;border-bottom:1px solid #292929;z-index:999}
 nav{height:70px;display:flex;align-items:center;justify-content:space-between;gap:5px}
-.brand{font-size:20px;font-weight:900;font-style:italic;white-space:nowrap;direction:ltr}
+.brand{font-size:22px;font-weight:900;font-style:italic;white-space:nowrap;direction:ltr}
 .brand span{color:#ffb900}
-.links{display:flex;gap:20px;font-size:14px}
-.btn{display:inline-block;padding:10px 14px;border-radius:11px;font-weight:800;cursor:pointer;border:none;font-size:13px;white-space:nowrap}
+.links{display:flex;gap:20px;font-size:15px}
+.btn{display:inline-block;padding:12px 18px;border-radius:11px;font-weight:800;cursor:pointer;border:none;font-size:15px;white-space:nowrap}
 .yellow{background:#ffb900;color:#111}
 .dark{background:#171717;border:1px solid #555;color:#fff} 
 
 .lang-select {
 background: #171717; color: #ffb900; border: 1px solid #ffb900;
-padding: 4px 6px; border-radius: 6px; font-weight: bold; font-size: 11px; cursor: pointer; outline: none; max-width: 85px;
+padding: 6px 10px; border-radius: 6px; font-weight: bold; font-size: 13px; cursor: pointer; outline: none;
 } 
 
 .hero{padding:40px 0;background:radial-gradient(circle at 50% 30%,#ffb90015,transparent 50%)}
@@ -37,32 +37,34 @@ padding: 4px 6px; border-radius: 6px; font-weight: bold; font-size: 11px; cursor
 
 section{padding:50px 0}
 .title{text-align:center;font-size:35px}
-.sub{text-align:center;color:#aaa}
+.sub{text-align:center;color:#aaa;font-size:16px}
 .cards,.steps,.why{display:grid;gap:16px}
 .cards{grid-template-columns:repeat(3,1fr)}
 .steps{grid-template-columns:repeat(4,1fr)}
 .why{grid-template-columns:repeat(4,1fr)}
 .card,.step,.whyitem,.tarif,.faq details{background:#151515;border:1px solid #2b2b2b;border-radius:17px;padding:24px}
-.icon{font-size:30px}
-.card p,.step p,.whyitem small,.answer{color:#aaa}
-.num{width:38px;height:38px;background:#ffb900;color:#111;border-radius:50%;display:grid;place-items:center;font-weight:900}
+.icon{font-size:32px}
+.card h3, .step h3, .whyitem h3{font-size:18px}
+.card p,.step p,.whyitem small,.answer{color:#aaa;font-size:15px}
+.num{width:42px;height:42px;background:#ffb900;color:#111;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:18px}
 .whyitem{text-align:center}
-.whyitem span{font-size:28px}
+.whyitem span{font-size:32px}
 .tarif{max-width:700px;margin:auto;text-align:center;padding:20px}
-.result{font-size:32px;font-weight:900;color:#ffb900;margin:12px 0}
+.result{font-size:36px;font-weight:900;color:#ffb900;margin:12px 0}
 .cta{background:linear-gradient(135deg,#ffb900,#f08d00);color:#111;border-radius:23px;padding:40px;display:flex;justify-content:space-between;align-items:center;gap:20px}
 .cta h2{font-size:32px;margin:0}
+.cta p{font-size:16px}
 .cta .btn{background:#111;color:#fff}
-footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
-.wa{position:fixed;right:20px;bottom:25px;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:28px;z-index:9999;box-shadow:0 4px 15px rgba(0,0,0,0.5)} 
+footer{padding:28px 0;border-top:1px solid #292929;color:#aaa;font-size:15px}
+.wa{position:fixed;right:20px;bottom:25px;width:62px;height:62px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center;font-size:32px;z-index:9999;box-shadow:0 4px 15px rgba(0,0,0,0.5)} 
 
 .accordion-toggle {
 margin-top: 25px; width: 100%; background: #1e1e1e; border: 1px solid #333; color: #ffb900;
-padding: 14px 18px; border-radius: 12px; font-weight: bold; font-size: 14px; cursor: pointer;
+padding: 16px 20px; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer;
 display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease;
 }
 .accordion-toggle:hover { background: #252525; border-color: #ffb900; }
-.accordion-icon { transition: transform 0.3s ease; font-size: 12px; }
+.accordion-icon { transition: transform 0.3s ease; font-size: 14px; }
 .accordion-toggle.active .accordion-icon { transform: rotate(180deg); } 
 
 .price-table-wrapper {
@@ -71,47 +73,58 @@ background: #181818; border-radius: 12px; border: 0px solid #333;
 }
 .price-table-wrapper.open { max-height: 600px; margin-top: 10px; border-width: 1px; } 
 
-.price-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+.price-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 15px; }
 [dir="rtl"] .price-table { text-align: right; }
-.price-table th, .price-table td { padding: 12px 15px; border-bottom: 1px solid #262626; }
+.price-table th, .price-table td { padding: 14px 16px; border-bottom: 1px solid #262626; }
 .price-table th { background: #222; color: #ffb900; font-weight: bold; }
 .price-table tr:last-child td { border-bottom: none; }
 .price-table tr:hover { background: #202020; } 
 
+/* MODIFICATIONS TELEPHONE (MOBILE) */
 @media(max-width:800px){
+body{font-size:17px}
 .links{display:none}
 .cards,.steps,.why{grid-template-columns:1fr}
 .hero{padding:20px 0}
-.cta{display:block}
-.cta .btn{margin-top:20px}
-.tarif{padding:15px 12px}
-.brand{font-size:18px}
+.cta{display:block;padding:25px}
+.cta .btn{margin-top:20px;width:100%;text-align:center}
+.tarif{padding:18px 14px}
+.brand{font-size:20px}
+.title{font-size:28px}
+.sub{font-size:15px}
+.btn{font-size:16px;padding:14px 18px}
+.search-input{font-size:16px;padding:16px}
+.gps-btn{font-size:14px;padding:0 14px}
+.price-table{font-size:14px}
+.price-table th, .price-table td{padding:12px 10px}
+summary{font-size:17px;font-weight:bold}
+.answer{font-size:15px}
 } 
 
 .search-box { position: relative; width: 100%; text-align: left; }
 [dir="rtl"] .search-box { text-align: right; }
 .input-wrapper { position: relative; flex: 1; display: flex; align-items: center; }
 .input-group { display: flex; gap: 8px; position: relative; z-index: 10; }
-.search-input { width: 100%; padding: 14px 35px 14px 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 15px; outline: none; }
+.search-input { width: 100%; padding: 16px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 16px; outline: none; }
 .search-input:focus { border-color: #ffb900; }
-.clear-btn { position: absolute; right: 10px; background: none; border: none; color: #888; font-size: 18px; font-weight: bold; cursor: pointer; display: none; padding: 2px 6px; }
+.clear-btn { position: absolute; right: 10px; background: none; border: none; color: #888; font-size: 20px; font-weight: bold; cursor: pointer; display: none; padding: 2px 6px; }
 [dir="rtl"] .clear-btn { right: auto; left: 10px; }
 .clear-btn:hover { color: #ffb900; } 
 
-.gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 12px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; } 
+.gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 14px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 14px; } 
 
 .suggestions-list {
 position: absolute; top: 100%; left: 0; right: 0;
 background: #1e1e1e; border: 1px solid #ffb900;
-border-radius: 10px; max-height: 180px; overflow-y: auto;
+border-radius: 10px; max-height: 200px; overflow-y: auto;
 z-index: 3000; display: none; margin: 4px 0 0 0; padding: 0;
 list-style: none; box-shadow: 0 8px 20px rgba(0,0,0,0.8);
 }
-.suggestions-list li { padding: 12px; cursor: pointer; color: #eee; border-bottom: 1px solid #2e2e2e; font-size: 13px; line-height: 1.4; }
+.suggestions-list li { padding: 14px; cursor: pointer; color: #eee; border-bottom: 1px solid #2e2e2e; font-size: 15px; line-height: 1.4; }
 .suggestions-list li:last-child { border-bottom: none; }
 .suggestions-list li:hover { background: #2a2a2a; color: #ffb900; } 
 
-.map-wrapper { position: relative; width: 100%; height: 350px; margin-top: 10px; border-radius: 15px; overflow: hidden; border: 2px solid #ffb900; }
+.map-wrapper { position: relative; width: 100%; height: 360px; margin-top: 12px; border-radius: 15px; overflow: hidden; border: 2px solid #ffb900; }
 #map { width: 100%; height: 100%; z-index: 1; } 
 
 .center-picker {
@@ -121,15 +134,15 @@ pointer-events: none; display: flex; flex-direction: column; align-items: center
 } 
 
 .picker-card {
-background: #fff; color: #111; padding: 8px 14px; border-radius: 12px;
-box-shadow: 0 4px 15px rgba(0,0,0,0.4); font-size: 13px; font-weight: bold;
+background: #fff; color: #111; padding: 10px 16px; border-radius: 12px;
+box-shadow: 0 4px 15px rgba(0,0,0,0.4); font-size: 14px; font-weight: bold;
 text-align: center; margin-bottom: 6px; pointer-events: auto; cursor: pointer;
 border: 2px solid #ffb900; transition: transform 0.2s;
 }
 .picker-card:active { transform: scale(0.95); }
-.picker-card span { color: #00a082; display: block; font-size: 11px; margin-top: 2px; text-decoration: underline; } 
+.picker-card span { color: #00a082; display: block; font-size: 12px; margin-top: 2px; text-decoration: underline; } 
 
-.picker-pin { font-size: 38px; line-height: 1; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5)); }
+.picker-pin { font-size: 40px; line-height: 1; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5)); }
 </style>
 </head>
 <body> 
@@ -273,7 +286,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <div id="section-auto">
 <div style="display:grid;gap:15px;margin-bottom:18px;">
 <div class="search-box">
-<label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dep">🚦🟢 Départ</label>
+<label style="font-weight:700;display:block;margin-bottom:5px;font-size:16px" data-key="lbl-dep">🚦🟢 Départ</label>
 <div class="input-group">
 <div class="input-wrapper">
 <input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare Kenitra, Marjane ou lien Maps..." autocomplete="off" oninput="onSearchInput(this.value, true)" data-ph-key="ph-dep">
@@ -285,7 +298,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 </div> 
 
 <div class="search-box">
-<label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dest">🚦🔴 Destination</label>
+<label style="font-weight:700;display:block;margin-bottom:5px;font-size:16px" data-key="lbl-dest">🚦🔴 Destination</label>
 <div class="input-group">
 <div class="input-wrapper">
 <input type="text" id="input-dest" class="search-input" placeholder="Ex: Café, Residence ou lien Maps..." autocomplete="off" oninput="onSearchInput(this.value, false)" data-ph-key="ph-dest">
@@ -310,7 +323,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 </div> 
 
 <div class="result" id="result">— DH</div>
-<p id="status" style="color:#aaa;margin-bottom:15px;" data-key="status-default">Sélectionnez les lieux pour afficher le tarif.</p> 
+<p id="status" style="color:#aaa;margin-bottom:15px;font-size:16px" data-key="status-default">Sélectionnez les lieux pour afficher le tarif.</p> 
 
 <a id="order" class="btn yellow" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison" style="width:100%;text-align:center;" data-key="btn-wa">Commander sur WhatsApp</a> 
 

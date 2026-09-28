@@ -19,6 +19,7 @@ nav{height:70px;display:flex;align-items:center;justify-content:space-between;ga
 .brand{font-size:20px;font-weight:900;font-style:italic;white-space:nowrap;direction:ltr}
 .brand span{color:#ffb900}
 .links{display:flex;gap:20px;font-size:14px}
+[dir="rtl"] .links {flex-direction: row-reverse;}
 .btn{display:inline-block;padding:10px 14px;border-radius:11px;font-weight:800;cursor:pointer;border:none;font-size:13px;white-space:nowrap}
 .yellow{background:#ffb900;color:#111}
 .dark{background:#171717;border:1px solid #555;color:#fff}
@@ -48,6 +49,7 @@ section{padding:50px 0}
 .tarif{max-width:700px;margin:auto;text-align:center;padding:20px}
 .result{font-size:32px;font-weight:900;color:#ffb900;margin:12px 0}
 .cta{background:linear-gradient(135deg,#ffb900,#f08d00);color:#111;border-radius:23px;padding:40px;display:flex;justify-content:space-between;align-items:center;gap:20px}
+[dir="rtl"] .cta {flex-direction: row-reverse; text-align: right;}
 .cta h2{font-size:32px;margin:0}
 .cta .btn{background:#111;color:#fff}
 footer{padding:28px 0;border-top:1px solid #292929;color:#aaa}
@@ -79,7 +81,7 @@ background: #181818; border-radius: 12px; border: 0px solid #333;
 .links{display:none}
 .cards,.steps,.why{grid-template-columns:1fr}
 .hero{padding:20px 0}
-.cta{display:block}
+.cta{display:block; text-align: center;}
 .cta .btn{margin-top:20px}
 .tarif{padding:15px 12px}
 .brand{font-size:18px}
@@ -90,7 +92,7 @@ background: #181818; border-radius: 12px; border: 0px solid #333;
 .input-wrapper { position: relative; flex: 1; display: flex; align-items: center; }
 .input-group { display: flex; gap: 8px; position: relative; z-index: 10; }
 .search-input { width: 100%; padding: 14px 35px 14px 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 15px; outline: none; }
-[dir="rtl"] .search-input { padding: 14px 14px 14px 35px; }
+[dir="rtl"] .search-input { padding: 14px 14px 14px 35px; text-align: right; }
 .search-input:focus { border-color: #ffb900; }
 .clear-btn { position: absolute; right: 10px; background: none; border: none; color: #888; font-size: 18px; font-weight: bold; cursor: pointer; display: none; padding: 2px 6px; }
 [dir="rtl"] .clear-btn { right: auto; left: 10px; }
@@ -166,14 +168,14 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <circle cx="750" cy="280" r="220" fill="#ffb900" opacity="0.04"/>
 
 <!-- Brand Name -->
-<g transform="translate(45, 45)">
+<g id="svg-group-brand" transform="translate(45, 45)">
 <text id="svg-brand-text" x="0" y="35" font-weight="900" font-style="italic" font-size="42" fill="#ffffff">JibLi-<tspan fill="#ffb900">vraison</tspan></text>
 <line id="svg-brand-line" x1="0" y1="52" x2="350" y2="52" stroke="#ffb900" stroke-width="4" stroke-linecap="round"/>
 <text id="svg-sub" x="0" y="80" font-weight="bold" font-size="14" fill="#aaa" letter-spacing="1" data-key="svg-sub">SERVICE DE COURSIER À MOTO</text>
 </g>
 
 <!-- Cadre Jaune -->
-<g transform="translate(45, 145)">
+<g id="svg-group-disp" transform="translate(45, 145)">
 <rect width="420" height="135" fill="#ffb900" rx="14"/>
 <text id="svg-disp-title" x="24" y="34" font-weight="900" font-size="18" fill="#111" data-key="svg-disp-title">DISPONIBLE À KÉNITRA</text>
 <line x1="24" y1="46" x2="396" y2="46" stroke="#111" stroke-width="1.5" opacity="0.3"/>
@@ -182,22 +184,28 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 </g>
 
 <!-- Badges -->
-<g transform="translate(45, 295)">
+<g id="svg-group-badges" transform="translate(45, 295)">
+<g id="badge-item-1" transform="translate(0, 0)">
 <rect x="0" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
 <text x="65" y="26" font-size="20" text-anchor="middle">⚡</text>
 <text id="svg-badge-1" x="65" y="50" font-weight="bold" font-size="11" fill="#fff" text-anchor="middle" data-key="svg-badge-1">LIVRAISON RAPIDE</text>
+</g>
 
-<rect x="145" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
-<text x="210" y="26" font-size="20" text-anchor="middle">🔒</text>
-<text id="svg-badge-2" x="210" y="50" font-weight="bold" font-size="11" fill="#fff" text-anchor="middle" data-key="svg-badge-2">SÉCURISÉE &amp; FIABLE</text>
+<g id="badge-item-2" transform="translate(145, 0)">
+<rect x="0" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
+<text x="65" y="26" font-size="20" text-anchor="middle">🔒</text>
+<text id="svg-badge-2" x="65" y="50" font-weight="bold" font-size="11" fill="#fff" text-anchor="middle" data-key="svg-badge-2">SÉCURISÉE &amp; FIABLE</text>
+</g>
 
-<rect x="290" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
-<text x="355" y="26" font-size="20" text-anchor="middle">🌙</text>
-<text id="svg-badge-3" x="355" y="50" font-weight="bold" font-size="11" fill="#fff" text-anchor="middle" data-key="svg-badge-3">SERVICE NOCTURNE</text>
+<g id="badge-item-3" transform="translate(290, 0)">
+<rect x="0" y="0" width="130" height="70" fill="#181818" stroke="#2c2c2c" rx="12"/>
+<text x="65" y="26" font-size="20" text-anchor="middle">🌙</text>
+<text id="svg-badge-3" x="65" y="50" font-weight="bold" font-size="11" fill="#fff" text-anchor="middle" data-key="svg-badge-3">SERVICE NOCTURNE</text>
+</g>
 </g>
 
 <!-- Tous vos besoins -->
-<g transform="translate(45, 385)">
+<g id="svg-group-needs" transform="translate(45, 385)">
 <text id="svg-serv-head" x="0" y="18" font-weight="900" font-size="13" fill="#ffb900" letter-spacing="0.5" data-key="svg-serv-head">TOUS VOS BESOINS, UNE SEULE LIVRAISON</text>
 
 <g transform="translate(0, 28)">
@@ -245,7 +253,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 </g>
 
 <!-- CTA Footer -->
-<g transform="translate(45, 620)">
+<g id="svg-group-footer" transform="translate(45, 620)">
 <rect width="910" height="55" fill="#181818" stroke="#ffb900" stroke-width="2" rx="14"/>
 <text id="svg-cta" x="25" y="34" font-weight="bold" font-size="14" fill="#fff" data-key="svg-cta">REJOIGNEZ-NOUS DÈS MAINTENANT</text>
 <a href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison" target="_blank" style="cursor:pointer">
@@ -509,7 +517,9 @@ dar: {
 "faq-4-q": "شنو هوما أوقات العمل؟", "faq-4-a": "من الإثنين حتى السبت: من 17:00 حتى 02:00.<br>نهار الأحد: من 10:00 حتى 02:00.",
 "footer-text": "خدمة توصيل بالموطور ف القنيطرة.",
 "acc-btn": "📊 وريني تفاصيل الأثمنة",
-"th-dist": "المسافة", "th-eve": "العشية (17h - 21h)", "th-night": "الليل (21h - 02h)",
+"th-dist": "المسافة",
+"th-eve": "العشية (17h - 21h)",
+"th-night": "الليل (21h - 02h)",
 "tbl-na": "ما خدامش (> 13 كلم)",
 "svg-sub": "خدمة التوصيل بالموطور",
 "svg-disp-title": "موجودين ف القنيطرة",
@@ -809,51 +819,55 @@ content.classList.add("open");
 function changeLanguage(lang) {
 currentLang = lang;
 const htmlRoot = document.getElementById("html-root");
-const svgEl = document.getElementById("hero-svg");
 
 if (lang === 'ar' || lang === 'dar') {
 htmlRoot.setAttribute("dir", "rtl");
-svgEl.setAttribute("direction", "rtl");
-// Ajustement dynamique dyal l-coordinates f SVG ila kan RTL bach l-ketba mat'hrabch l l-isra
-document.getElementById("svg-brand-text").setAttribute("x", "420");
-document.getElementById("svg-brand-text").setAttribute("text-anchor", "end");
-document.getElementById("svg-brand-line").setAttribute("x1", "70");
-document.getElementById("svg-brand-line").setAttribute("x2", "420");
-document.getElementById("svg-sub").setAttribute("x", "420");
-document.getElementById("svg-sub").setAttribute("text-anchor", "end");
 
-document.getElementById("svg-serv-head").setAttribute("x", "420");
-document.getElementById("svg-serv-head").setAttribute("text-anchor", "end");
+// Inversion dynamique des positions dans le SVG pour le mode RTL (Arabe/Darija)
+document.getElementById("svg-group-brand").setAttribute("transform", "translate(535, 45)");
+document.getElementById("svg-brand-text").setAttribute("text-anchor", "start");
+document.getElementById("svg-brand-line").setAttribute("x1", "0");
+document.getElementById("svg-brand-line").setAttribute("x2", "350");
+document.getElementById("svg-sub").setAttribute("text-anchor", "start");
 
-// Inversion des boîtes 4 dyal les services f RTL
+document.getElementById("svg-group-disp").setAttribute("transform", "translate(535, 145)");
+document.getElementById("svg-group-badges").setAttribute("transform", "translate(535, 295)");
+document.getElementById("svg-group-needs").setAttribute("transform", "translate(535, 385)");
+document.getElementById("svg-serv-head").setAttribute("text-anchor", "start");
+
+// Inversion des 4 boîtes de services dans le SVG
 document.getElementById("box-s1").setAttribute("transform", "translate(212, 0)");
 document.getElementById("box-s2").setAttribute("transform", "translate(0, 0)");
 document.getElementById("box-s3").setAttribute("transform", "translate(212, 54)");
 document.getElementById("box-s4").setAttribute("transform", "translate(0, 54)");
 
-document.getElementById("svg-cta").setAttribute("x", "885");
-document.getElementById("svg-cta").setAttribute("text-anchor", "end");
+document.getElementById("svg-group-footer").setAttribute("transform", "translate(45, 620)");
+document.getElementById("svg-cta").setAttribute("text-anchor", "start");
+document.getElementById("svg-cta").setAttribute("x", "25");
+
 } else {
 htmlRoot.setAttribute("dir", "ltr");
-svgEl.removeAttribute("direction");
 
-document.getElementById("svg-brand-text").setAttribute("x", "0");
-document.getElementById("svg-brand-text").removeAttribute("text-anchor");
+// Remise en place pour le mode LTR (Français)
+document.getElementById("svg-group-brand").setAttribute("transform", "translate(45, 45)");
+document.getElementById("svg-brand-text").setAttribute("text-anchor", "start");
 document.getElementById("svg-brand-line").setAttribute("x1", "0");
 document.getElementById("svg-brand-line").setAttribute("x2", "350");
-document.getElementById("svg-sub").setAttribute("x", "0");
-document.getElementById("svg-sub").removeAttribute("text-anchor");
+document.getElementById("svg-sub").setAttribute("text-anchor", "start");
 
-document.getElementById("svg-serv-head").setAttribute("x", "0");
-document.getElementById("svg-serv-head").removeAttribute("text-anchor");
+document.getElementById("svg-group-disp").setAttribute("transform", "translate(45, 145)");
+document.getElementById("svg-group-badges").setAttribute("transform", "translate(45, 295)");
+document.getElementById("svg-group-needs").setAttribute("transform", "translate(45, 385)");
+document.getElementById("svg-serv-head").setAttribute("text-anchor", "start");
 
 document.getElementById("box-s1").setAttribute("transform", "translate(0, 0)");
 document.getElementById("box-s2").setAttribute("transform", "translate(212, 0)");
 document.getElementById("box-s3").setAttribute("transform", "translate(0, 54)");
 document.getElementById("box-s4").setAttribute("transform", "translate(212, 54)");
 
+document.getElementById("svg-group-footer").setAttribute("transform", "translate(45, 620)");
+document.getElementById("svg-cta").setAttribute("text-anchor", "start");
 document.getElementById("svg-cta").setAttribute("x", "25");
-document.getElementById("svg-cta").removeAttribute("text-anchor");
 }
 
 const t = translations[lang];

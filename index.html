@@ -198,7 +198,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 
 <!-- Tous vos besoins -->
 <g transform="translate(45, 395)" style="direction: ltr;">
-<text x="0" y="18" id="svg-serv-head" font-weight="900" font-size="14" fill="#ffb900" letter-spacing="0.5" text-anchor="start" data-key="svg-serv-head">TOUS VOS BESOINS, UNE SEULE LIVRAISON</text> 
+<text x="0" y="18" id="svg-serv-head" font-weight="900" font-size="14" fill="#ffb900" letter-spacing="0.5" text-anchor="start" data-key="svg-serv-head">TOUS VOS BESOINS, UNE SEULE LIVRAISON</text 
 
 <g transform="translate(0, 32)">
 <rect x="0" y="0" width="202" height="48" fill="#161616" stroke="#282828" rx="8"/>
@@ -207,7 +207,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 
 <rect x="212" y="0" width="202" height="48" fill="#161616" stroke="#282828" rx="8"/>
 <text x="226" y="30" font-size="18" text-anchor="start">🍔</text>
-<text x="256" y="29" id="svg-s2" font-weight="bold" font-size="13" fill="#eee" text-anchor="start" data-key="svg-s2">Restaurants</text> 
+<text x="256" y="29" id="svg-s2" font-weight="bold" font-size="13" fill="#eee" text-anchor="start" data-key="svg-s2">Restaurants</text 
 
 <rect x="0" y="56" width="202" height="48" fill="#161616" stroke="#282828" rx="8"/>
 <text x="14" y="86" font-size="18" text-anchor="start">💊</text>
@@ -516,7 +516,8 @@ function initGoogleMap() {
         center: kenitraCenter,
         zoom: 12,
         disableDefaultUI: true,
-        zoomControl: true
+        zoomControl: true,
+        gestureHandling: 'greedy'
     }); 
 
     kenitraPolygon = new google.maps.Polygon({

@@ -100,6 +100,14 @@ background: #181818; border-radius: 12px; border: 0px solid #333;
 
 .gps-btn { background: #222; border: 1px solid #ffb900; color: #ffb900; padding: 0 12px; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; white-space: nowrap; font-size: 13px; } 
 
+/* STYLES KHANA SKHRA */
+.details-textarea {
+width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #555;
+background: #1a1a1a; color: #fff; font-size: 14px; outline: none;
+resize: vertical; min-height: 80px; font-family: inherit;
+}
+.details-textarea:focus { border-color: #ffb900; }
+
 .suggestions-list {
 position: absolute; top: 100%; left: 0; right: 0;
 background: #1e1e1e; border: 1px solid #ffb900;
@@ -203,7 +211,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <g transform="translate(0, 32)">
 <rect x="0" y="0" width="202" height="48" fill="#161616" stroke="#282828" rx="8"/>
 <text x="14" y="30" font-size="18" text-anchor="start">🛒</text>
-<text x="44" y="29" id="svg-s1" font-weight="bold" font-size="13" fill="#eee" text-anchor="start" data-key="svg-s1">E-Commerce</text> 
+<text x="44" y="29" id="svg-s1" font-weight="bold" font-size="13" fill="#eee" text-anchor="start" data-key="svg-s1">E-Commerce</text 
 
 <rect x="212" y="0" width="202" height="48" fill="#161616" stroke="#282828" rx="8"/>
 <text x="226" y="30" font-size="18" text-anchor="start">🍔</text>
@@ -295,6 +303,13 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 </div>
 <ul id="list-dest" class="suggestions-list"></ul>
 </div>
+
+<!-- KHANA SKHRA / DETAILS -->
+<div class="search-box">
+<label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-details">📝 Détails de la commande / Skhra</label>
+<textarea id="input-details" class="details-textarea" placeholder="Ex: Sandwich, médicament, petit colis..." oninput="calculateRouteAndPrice()" data-ph-key="ph-details"></textarea>
+</div>
+
 </div> 
 
 <div class="map-wrapper">
@@ -376,7 +391,6 @@ let isSettingDepNext = true;
 let kenitraPolygon = null;
 let isInsideZone = true; 
 
-// Les coordonnées m3ddlin باش tdkhol Mehdia Plage w les restaurants li f la côte كاملين
 const kenitraCoords = [
     {lat: 34.3500, lng: -6.6500},
     {lat: 34.3500, lng: -6.5300},
@@ -405,8 +419,8 @@ fr: {
 "step-3-t": "Envoyez", "step-3-d": "Validez votre demande directement sur WhatsApp.",
 "step-4-t": "Recevez", "step-4-d": "Votre coursier livre votre commande rapidement.",
 "tarif-title": "Commander ma livraison", "tarif-sub": "Choisissez vos adresses sur la carte ou recherchez par nom.",
-"lbl-dep": "🚦🟢 Départ", "lbl-dest": "🚦🔴 Destination",
-"ph-dep": "Ex: Gare Kenitra, Marjane ou lien Maps...", "ph-dest": "Ex: Café, Residence ou lien Maps...",
+"lbl-dep": "🚦🟢 Départ", "lbl-dest": "🚦🔴 Destination", "lbl-details": "📝 Détails de la commande",
+"ph-dep": "Ex: Gare Kenitra, Marjane ou lien Maps...", "ph-dest": "Ex: Café, Residence ou lien Maps...", "ph-details": "Ex: Sandwich, médicament, petit colis...",
 "map-moving": "Déplacez la carte...", "map-use": "Utiliser ce point ›",
 "status-default": "Sélectionnez les lieux pour afficher le tarif.",
 "why-title": "Pourquoi choisir JibLi-vraison ?", "why-sub": "Un service pensé pour vous faciliter la vie.",
@@ -443,8 +457,8 @@ ar: {
 "step-3-t": "أرسل", "step-3-d": "أكد طلبك مباشرة عبر واتساب.",
 "step-4-t": "استلم", "step-4-d": "يوصل المندوب طلبك بسرعة.",
 "tarif-title": "طلب التوصيل", "tarif-sub": "اختر العناوين من الخريطة أو ابحث بالاسم.",
-"lbl-dep": "🚦🟢 مكان الانطلاق", "lbl-dest": "🚦🔴 الوجهة",
-"ph-dep": "مثال: محطة القنيطرة، مرجان أو رابط الخريطة...", "ph-dest": "مثال: مقهى، إقامة أو رابط الخريطة...",
+"lbl-dep": "🚦🟢 مكان الانطلاق", "lbl-dest": "🚦🔴 الوجهة", "lbl-details": "📝 تفاصيل الطلب / السخرة",
+"ph-dep": "مثال: محطة القنيطرة، مرجان أو رابط الخريطة...", "ph-dest": "مثال: مقهى، إقامة أو رابط الخريطة...", "ph-details": "مثال: وجبة، دواء، طرد صغير...",
 "map-moving": "حرك الخريطة...", "map-use": "استخدم هذه النقطة ›",
 "status-default": "حدد الأماكن لإظهار السعر.",
 "why-title": "لماذا تختار JibLi-vraison؟", "why-sub": "خدمة مصممة لتسهيل حياتك.",
@@ -481,8 +495,8 @@ dar: {
 "step-3-t": "صيفط الطلب", "step-3-d": "أكد الطلب ديالك مباشرة ف الواتساب.",
 "step-4-t": "شد سخرتك", "step-4-d": "الليفرور كيوصلك أمانتك ف أسرع وقت.",
 "tarif-title": "طلب التوصيل ديالك", "tarif-sub": "عزل البلايص ف الخريطة أو قلب بالسمية.",
-"lbl-dep": "🚦🟢 منين نجيبوها؟", "lbl-dest": "🚦🔴 فين نديوها؟",
-"ph-dep": "مثال: لاغار القنيطرة، مرجان أو لوكاليزارسيون...", "ph-dest": "مثال: قهوة، دار أو لوكاليزارسيون...",
+"lbl-dep": "🚦🟢 منين نجيبوها؟", "lbl-dest": "🚦🔴 فين نديوها؟", "lbl-details": "📝 شنو بغيتي نجيبو ليك؟ (تفاصيل السخرة)",
+"ph-dep": "مثال: لاغار القنيطرة، مرجان أو لوكاليزارسيون...", "ph-dest": "مثال: قهوة، دار أو لوكاليزارسيون...", "ph-details": "مثال: سندويش، دوا، أمانة صغيرة...",
 "map-moving": "حرك الخريطة...", "map-use": "خدم بهاد البلاصة ›",
 "status-default": "عزل البلايص باش يطلع ليك الثمن.",
 "why-title": "علاش تختار JibLi-vraison؟", "why-sub": "خدمة مصاوبة باش تسهل عليك الحياة.",
@@ -567,7 +581,6 @@ function checkCenterInZone(latLng) {
 function updateCenterAddress(latLng) {
     geocoder.geocode({ location: latLng }, (results, status) => {
         if (status === "OK" && results && results.length > 0) {
-            // اختيار أقرب عنوان مفصل يظهر الشارع أو المكان تحديداً
             let bestAddress = results[0].formatted_address;
             currentCenterAddress = bestAddress;
             document.getElementById("picker-address").innerText = bestAddress;
@@ -810,7 +823,6 @@ function applyPricingLogic(distanceKm) {
         return;
     } 
 
-    // إظهار النتيجة والحالة
     document.getElementById("result").innerText = price + " DH";
     
     let rateLabel = isNight ? 
@@ -819,24 +831,22 @@ function applyPricingLogic(distanceKm) {
         
     document.getElementById("status").innerText = `${(currentLang === 'ar' || currentLang === 'dar') ? 'المسافة' : 'Distance'} : ${distanceKm.toFixed(1)} km (${rateLabel})`; 
 
-    // جلب العناوين والروابط بدقة
     const depInputValue = document.getElementById("input-depart").value.trim() || depName || "غير محدد";
     const destInputValue = document.getElementById("input-dest").value.trim() || destName || "غير محدد"; 
+    const orderDetails = document.getElementById("input-details").value.trim() || (currentLang === 'fr' ? 'Non spécifié' : 'غير محدد');
 
     const depMapLink = getMapLink(depCoord, depInputValue);
     const destMapLink = getMapLink(destCoord, destInputValue); 
 
-    // تركيب الرسالة حسب اللغة المختارة
     let rawText = "";
     if (currentLang === 'ar') {
-        rawText = `السلام عليكم JibLi-vraison، بغيت نطلب توصيلة:\n\n📍 مكان الانطلاق: ${depInputValue}\n🔗 رابط الانطلاق: ${depMapLink}\n\n🏁 الوجهة: ${destInputValue}\n🔗 رابط الوجهة: ${destMapLink}\n\n📏 المسافة: ${distanceKm.toFixed(1)} كم\n💰 الثمن التقديري: ${price} DH`;
+        rawText = `السلام عليكم JibLi-vraison، بغيت نطلب توصيلة:\n\n📦 تفاصيل السخرة: ${orderDetails}\n\n📍 مكان الانطلاق: ${depInputValue}\n🔗 رابط الانطلاق: ${depMapLink}\n\n🏁 الوجهة: ${destInputValue}\n🔗 رابط الوجهة: ${destMapLink}\n\n📏 المسافة: ${distanceKm.toFixed(1)} كم\n💰 الثمن التقديري: ${price} DH`;
     } else if (currentLang === 'dar') {
-        rawText = `السلام عليكم JibLi-vraison، بغيت ندير تسخيرة:\n\n📍 منين نجيبوها: ${depInputValue}\n🔗 لوكاليزارسيون: ${depMapLink}\n\n🏁 فين نديوها: ${destInputValue}\n🔗 لوكاليزارسيون: ${destMapLink}\n\n📏 المسافة: ${distanceKm.toFixed(1)} كم\n💰 الثمن التقديري: ${price} DH`;
+        rawText = `السلام عليكم JibLi-vraison، بغيت ندير تسخيرة:\n\n📦 شنو نجيبو: ${orderDetails}\n\n📍 منين نجيبوها: ${depInputValue}\n🔗 لوكاليزارسيون: ${depMapLink}\n\n🏁 فين نديوها: ${destInputValue}\n🔗 لوكاليزارسيون: ${destMapLink}\n\n📏 المسافة: ${distanceKm.toFixed(1)} كم\n💰 الثمن التقديري: ${price} DH`;
     } else {
-        rawText = `Bonjour JibLi-vraison, je souhaite commander une livraison.\n\n📍 Départ : ${depInputValue}\n🔗 Map Départ : ${depMapLink}\n\n🏁 Destination : ${destInputValue}\n🔗 Map Destination : ${destMapLink}\n\n📏 Distance : ${distanceKm.toFixed(1)} km\n💰 Prix estimé : ${price} DH`;
+        rawText = `Bonjour JibLi-vraison, je souhaite commander une livraison.\n\n📦 Détails de la commande : ${orderDetails}\n\n📍 Départ : ${depInputValue}\n🔗 Map Départ : ${depMapLink}\n\n🏁 Destination : ${destInputValue}\n🔗 Map Destination : ${destMapLink}\n\n📏 Distance : ${distanceKm.toFixed(1)} km\n💰 Prix estimé : ${price} DH`;
     }
 
-    // التشفير الصحيح للرابط ليعمل على الواتساب بدون مشاكل
     const encodedText = encodeURIComponent(rawText);
     document.getElementById("order").href = `https://wa.me/212634084543?text=${encodedText}`;
 }
@@ -858,7 +868,6 @@ function changeLanguage(lang) {
         document.getElementById("html-root").setAttribute("dir", "ltr");
     } 
 
-    // تحديث النصوص العادية
     document.querySelectorAll("[data-key]").forEach(el => {
         const key = el.getAttribute("data-key");
         if (t[key]) {
@@ -866,7 +875,6 @@ function changeLanguage(lang) {
         }
     });
 
-    // تحديث الـ Placeholders في خانات البحث
     document.querySelectorAll("[data-ph-key]").forEach(el => {
         const key = el.getAttribute("data-ph-key");
         if (t[key]) {
@@ -874,7 +882,6 @@ function changeLanguage(lang) {
         }
     });
 
-    // إعادة فحص النقطة في الخريطة وتحديث الرابط
     if (map) {
         checkCenterInZone(map.getCenter());
     }
@@ -885,5 +892,6 @@ function changeLanguage(lang) {
 </script>
 </body>
 </html>
+
 
 

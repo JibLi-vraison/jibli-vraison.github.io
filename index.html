@@ -211,7 +211,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 
 <rect x="0" y="56" width="202" height="48" fill="#161616" stroke="#282828" rx="8"/>
 <text x="14" y="86" font-size="18" text-anchor="start">💊</text>
-<text x="44" y="85" id="svg-s3" font-weight="bold" font-size="13" fill="#eee" text-anchor="start" data-key="svg-s3">Pharmacie</text> 
+<text x="44" y="85" id="svg-s3" font-weight="bold" font-size="13" fill="#eee" text-anchor="start" data-key="svg-s3">Pharmacie</text 
 
 <rect x="212" y="56" width="202" height="48" fill="#161616" stroke="#282828" rx="8"/>
 <text x="226" y="86" font-size="18" text-anchor="start">📦</text>
@@ -566,12 +566,15 @@ function checkCenterInZone(latLng) {
 
 function updateCenterAddress(latLng) {
     geocoder.geocode({ location: latLng }, (results, status) => {
-        if (status === "OK" && results[0]) {
-            currentCenterAddress = results[0].formatted_address;
-            document.getElementById("picker-address").innerText = currentCenterAddress;
+        if (status === "OK" && results && results.length > 0) {
+            // اختيار أقرب عنوان مفصل يظهر الشارع أو المكان تحديداً
+            let bestAddress = results[0].formatted_address;
+            currentCenterAddress = bestAddress;
+            document.getElementById("picker-address").innerText = bestAddress;
         } else {
-            document.getElementById("picker-address").innerText = "Kénitra, Maroc";
-            currentCenterAddress = "Kénitra, Maroc";
+            const fallback = `Point (${latLng.lat().toFixed(4)}, ${latLng.lng().toFixed(4)})`;
+            document.getElementById("picker-address").innerText = fallback;
+            currentCenterAddress = fallback;
         }
     });
 } 
@@ -882,4 +885,5 @@ function changeLanguage(lang) {
 </script>
 </body>
 </html>
+
 

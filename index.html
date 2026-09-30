@@ -198,7 +198,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 
 <!-- Tous vos besoins -->
 <g transform="translate(45, 395)" style="direction: ltr;">
-<text x="0" y="18" id="svg-serv-head" font-weight="900" font-size="14" fill="#ffb900" letter-spacing="0.5" text-anchor="start" data-key="svg-serv-head">TOUS VOS BESOINS, UNE SEULE LIVRAISON</text 
+<text x="0" y="18" id="svg-serv-head" font-weight="900" font-size="14" fill="#ffb900" letter-spacing="0.5" text-anchor="start" data-key="svg-serv-head">TOUS VOS BESOINS, UNE SEULE LIVRAISON</text> 
 
 <g transform="translate(0, 32)">
 <rect x="0" y="0" width="202" height="48" fill="#161616" stroke="#282828" rx="8"/>
@@ -207,11 +207,11 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 
 <rect x="212" y="0" width="202" height="48" fill="#161616" stroke="#282828" rx="8"/>
 <text x="226" y="30" font-size="18" text-anchor="start">ðŸ”</text>
-<text x="256" y="29" id="svg-s2" font-weight="bold" font-size="13" fill="#eee" text-anchor="start" data-key="svg-s2">Restaurants</text 
+<text x="256" y="29" id="svg-s2" font-weight="bold" font-size="13" fill="#eee" text-anchor="start" data-key="svg-s2">Restaurants</text> 
 
 <rect x="0" y="56" width="202" height="48" fill="#161616" stroke="#282828" rx="8"/>
 <text x="14" y="86" font-size="18" text-anchor="start">ðŸ’Š</text>
-<text x="44" y="85" id="svg-s3" font-weight="bold" font-size="13" fill="#eee" text-anchor="start" data-key="svg-s3">Pharmacie</text 
+<text x="44" y="85" id="svg-s3" font-weight="bold" font-size="13" fill="#eee" text-anchor="start" data-key="svg-s3">Pharmacie</text> 
 
 <rect x="212" y="56" width="202" height="48" fill="#161616" stroke="#282828" rx="8"/>
 <text x="226" y="86" font-size="18" text-anchor="start">ðŸ“¦</text>
@@ -516,8 +516,7 @@ function initGoogleMap() {
         center: kenitraCenter,
         zoom: 12,
         disableDefaultUI: true,
-        zoomControl: true,
-        gestureHandling: 'greedy'
+        zoomControl: true
     }); 
 
     kenitraPolygon = new google.maps.Polygon({
@@ -566,15 +565,12 @@ function checkCenterInZone(latLng) {
 
 function updateCenterAddress(latLng) {
     geocoder.geocode({ location: latLng }, (results, status) => {
-        if (status === "OK" && results && results.length > 0) {
-            // Ø§Ø®ØªÙŠØ§Ø± Ø£Ù‚Ø±Ø¨ Ø¹Ù†ÙˆØ§Ù† Ù…ÙØµÙ„ ÙŠØ¸Ù‡Ø± Ø§Ù„Ø´Ø§Ø±Ø¹ Ø£Ùˆ Ø§Ù„Ù…ÙƒØ§Ù† ØªØ­Ø¯ÙŠØ¯Ø§Ù‹
-            let bestAddress = results[0].formatted_address;
-            currentCenterAddress = bestAddress;
-            document.getElementById("picker-address").innerText = bestAddress;
+        if (status === "OK" && results[0]) {
+            currentCenterAddress = results[0].formatted_address;
+            document.getElementById("picker-address").innerText = currentCenterAddress;
         } else {
-            const fallback = `Point (${latLng.lat().toFixed(4)}, ${latLng.lng().toFixed(4)})`;
-            document.getElementById("picker-address").innerText = fallback;
-            currentCenterAddress = fallback;
+            document.getElementById("picker-address").innerText = "KÃ©nitra, Maroc";
+            currentCenterAddress = "KÃ©nitra, Maroc";
         }
     });
 } 

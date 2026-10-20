@@ -490,39 +490,49 @@ function checkCenterInZone(latLng) {
     }
 }
 
-function getBestAreaName(results) {
-    if (!results || !results.length) return "";
-    // Priorité au quartier, en parcourant tous les résultats avant la ville.
-    const priorityTypes = [
-        "neighborhood", "sublocality_level_2", "sublocality_level_1",
-        "sublocality", "administrative_area_level_3", "locality",
-        "administrative_area_level_2"
-    ];
-    for (const type of priorityTypes) {
-        for (const result of results) {
-            const component = (result.address_components || []).find(c =>
-                (c.types || []).includes(type)
-            );
-            if (component && component.long_name) return component.long_name;
+function getBestAreaName(results, latLng) {
+    if (results && results.length) {
+        // Cherche d'abord le quartier, puis la rue ou un nom de lieu connu.
+        const priorityTypes = [
+            "neighborhood", "sublocality_level_2", "sublocality_level_1",
+            "sublocality", "route", "premise", "point_of_interest",
+            "locality", "administrative_area_level_3", "administrative_area_level_2"
+        ];
+        for (const type of priorityTypes) {
+            for (const result of results) {
+                const component = (result.address_components || []).find(c =>
+                    (c.types || []).includes(type)
+                );
+                if (component && component.long_name) return component.long_name;
+            }
+        }
+        // Dernier recours: adresse complète renvoyée par Google.
+        if (results[0].formatted_address) return results[0].formatted_address;
+    }
+    // Si Google ne renvoie aucun nom, conserver un emplacement précis plutôt qu'un message d'erreur.
+    if (latLng) {
+        const lat = typeof latLng.lat === 'function' ? latLng.lat() : latLng.lat;
+        const lng = typeof latLng.lng === 'function' ? latLng.lng() : latLng.lng;
+        if (Number.isFinite(lat) && Number.isFinite(lng)) {
+            return `Point GPS (${lat.toFixed(5)}, ${lng.toFixed(5)})`;
         }
     }
-    return results[0].formatted_address || "";
+    return "Position GPS";
 }
 
 function updateCenterAddress(latLng) {
     const addressEl = document.getElementById("picker-address");
-    addressEl.innerText = "Recherche du quartier...";
+    addressEl.innerText = "Recherche de l'adresse...";
 
     geocoder.geocode(
         { location: latLng, language: "fr", region: "ma" },
         (results, status) => {
             if (status === "OK" && results && results.length > 0) {
-                currentCenterAddress = getBestAreaName(results);
-                addressEl.innerText = currentCenterAddress || "Adresse introuvable";
+                currentCenterAddress = getBestAreaName(results, latLng);
             } else {
-                currentCenterAddress = "";
-                addressEl.innerText = "Adresse introuvable";
+                currentCenterAddress = getBestAreaName([], latLng);
             }
+            addressEl.innerText = currentCenterAddress;
         }
     );
 }
@@ -664,11 +674,9 @@ function useCurrentLocation(isDep) {
             geocoder.geocode(
                 { location: pos, language: "fr", region: "ma" },
                 (results, status) => {
-                    let address = "";
-                    if (status === "OK" && results && results.length > 0) {
-                        address = getBestAreaName(results);
-                    }
-                    if (!address) address = "Position GPS";
+                    const address = (status === "OK" && results && results.length > 0)
+                        ? getBestAreaName(results, pos)
+                        : getBestAreaName([], pos);
 
                 if (isDep) {
                     depCoord = pos;

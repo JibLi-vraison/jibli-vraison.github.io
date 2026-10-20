@@ -490,9 +490,17 @@ function checkCenterInZone(latLng) {
     }
 }
 
+let centerGeocodeSequence = 0;
+
+function coordinateLabel(latLng) {
+    const lat = typeof latLng.lat === 'function' ? latLng.lat() : latLng.lat;
+    const lng = typeof latLng.lng === 'function' ? latLng.lng() : latLng.lng;
+    return `Point GPS (${Number(lat).toFixed(5)}, ${Number(lng).toFixed(5)})`;
+}
+
 function getBestAreaName(results, latLng) {
     if (results && results.length) {
-        // Cherche d'abord le quartier, puis la rue ou un nom de lieu connu.
+        // D'abord le quartier / la zone, puis la rue, puis l'adresse complète.
         const priorityTypes = [
             "neighborhood", "sublocality_level_2", "sublocality_level_1",
             "sublocality", "route", "premise", "point_of_interest",
@@ -506,35 +514,31 @@ function getBestAreaName(results, latLng) {
                 if (component && component.long_name) return component.long_name;
             }
         }
-        // Dernier recours: adresse complète renvoyée par Google.
+        const detailed = results.find(r =>
+            (r.types || []).some(t => ["street_address", "route", "premise", "subpremise"].includes(t))
+        );
+        if (detailed && detailed.formatted_address) return detailed.formatted_address;
         if (results[0].formatted_address) return results[0].formatted_address;
     }
-    // Si Google ne renvoie aucun nom, conserver un emplacement précis plutôt qu'un message d'erreur.
-    if (latLng) {
-        const lat = typeof latLng.lat === 'function' ? latLng.lat() : latLng.lat;
-        const lng = typeof latLng.lng === 'function' ? latLng.lng() : latLng.lng;
-        if (Number.isFinite(lat) && Number.isFinite(lng)) {
-            return `Point GPS (${lat.toFixed(5)}, ${lng.toFixed(5)})`;
-        }
-    }
-    return "Position GPS";
+    return latLng ? coordinateLabel(latLng) : "Position GPS";
 }
 
 function updateCenterAddress(latLng) {
     const addressEl = document.getElementById("picker-address");
+    const thisRequest = ++centerGeocodeSequence;
+    currentCenterAddress = coordinateLabel(latLng); // immédiat et utilisable même si Google échoue
     addressEl.innerText = "Recherche de l'adresse...";
-
-    geocoder.geocode(
-        { location: latLng, language: "fr", region: "ma" },
-        (results, status) => {
-            if (status === "OK" && results && results.length > 0) {
-                currentCenterAddress = getBestAreaName(results, latLng);
-            } else {
-                currentCenterAddress = getBestAreaName([], latLng);
-            }
-            addressEl.innerText = currentCenterAddress;
+    geocoder.geocode({ location: latLng, language: "fr", region: "ma" }, (results, status) => {
+        // Évite qu'une ancienne réponse remplace l'adresse de la position actuelle.
+        if (thisRequest !== centerGeocodeSequence) return;
+        if (status === "OK" && results && results.length) {
+            currentCenterAddress = getBestAreaName(results, latLng);
+        } else {
+            console.warn("Geocoding de la carte:", status);
+            currentCenterAddress = coordinateLabel(latLng);
         }
-    );
+        addressEl.innerText = currentCenterAddress;
+    });
 }
 
 function confirmCenterPoint() {
@@ -546,7 +550,7 @@ function confirmCenterPoint() {
     const center = map.getCenter();
     if (isSettingDepNext) {
         depCoord = center;
-        depName = currentCenterAddress || "Point de départ";
+        depName = currentCenterAddress || coordinateLabel(center);
         document.getElementById("input-depart").value = depName;
         document.getElementById("clear-depart").style.display = "block";
         if (depMarker) depMarker.setMap(null);
@@ -555,7 +559,7 @@ function confirmCenterPoint() {
         document.getElementById("picker-address").innerText = "Choisissez la destination...";
     } else {
         destCoord = center;
-        destName = currentCenterAddress || "Destination";
+        destName = currentCenterAddress || coordinateLabel(center);
         document.getElementById("input-dest").value = destName;
         document.getElementById("clear-dest").style.display = "block";
         if (destMarker) destMarker.setMap(null);

@@ -2,8 +2,12 @@
 <html lang="fr" id="html-root">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>JibLi-vraison | Service de livraison</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="JibLi-vraison : service de livraison à moto à Kénitra. Livraison de repas, petits colis, courses et commandes, avec estimation du tarif avant confirmation sur WhatsApp.">
+<meta name="theme-color" content="#090909">
+<meta property="og:title" content="JibLi-vraison | Livraison à Kénitra">
+<meta property="og:description" content="Estimez le prix de votre livraison à Kénitra et commandez sur WhatsApp.">
+<title>JibLi-vraison | Livraison à moto à Kénitra</title>
 
 <!-- Google Maps JS API & Libraries -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA0nXHHyHRpw1vMo-TmUeD79M7biu5ZXe0&libraries=places,geometry"></script>
@@ -76,6 +80,9 @@ background: #181818; border-radius: 12px; border: 0px solid #333;
 .price-table tr:hover { background: #202020; }
 
 @media(max-width:800px){
+.input-group{gap:6px}
+.gps-btn{padding:0 8px;font-size:12px;flex:0 0 auto}
+.search-input{font-size:14px;padding:12px 30px 12px 10px}
 .links{display:none}
 .cards,.steps,.why{grid-template-columns:1fr}
 .hero{padding:20px 0}
@@ -87,9 +94,9 @@ background: #181818; border-radius: 12px; border: 0px solid #333;
 
 .search-box { position: relative; width: 100%; text-align: left; }
 [dir="rtl"] .search-box { text-align: right; }
-.input-wrapper { position: relative; flex: 1; display: flex; align-items: center; }
-.input-group { display: flex; gap: 8px; position: relative; z-index: 10; }
-.search-input { width: 100%; padding: 14px 35px 14px 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 15px; outline: none; }
+.input-wrapper { position: relative; flex: 1 1 auto; min-width:0; display: flex; align-items: center; }
+.input-group { display: flex; gap: 8px; position: relative; z-index: 10; width:100%; min-width:0; }
+.search-input { min-width:0; width: 100%; padding: 14px 35px 14px 14px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 15px; outline: none; }
 .search-input:focus { border-color: #ffb900; }
 .clear-btn { position: absolute; right: 10px; background: none; border: none; color: #888; font-size: 18px; font-weight: bold; cursor: pointer; display: none; padding: 2px 6px; }
 [dir="rtl"] .clear-btn { right: auto; left: 10px; }
@@ -274,7 +281,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <div class="input-group">
 <div class="input-wrapper">
 <input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare Kenitra, Marjane ou lien Maps..." autocomplete="off" oninput="onSearchInput(this.value, true)">
-<button type="button" class="clear-btn" id="clear-depart" onclick="clearField(true)">✕</button>
+<button type="button" class="clear-btn" id="clear-depart" aria-label="Effacer le départ" onclick="clearField(true)">✕</button>
 </div>
 <button type="button" class="gps-btn" onclick="useCurrentLocation(true)">🎯 GPS</button>
 </div>
@@ -286,7 +293,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <div class="input-group">
 <div class="input-wrapper">
 <input type="text" id="input-dest" class="search-input" placeholder="Ex: Café, Residence ou lien Maps..." autocomplete="off" oninput="onSearchInput(this.value, false)">
-<button type="button" class="clear-btn" id="clear-dest" onclick="clearField(false)">✕</button>
+<button type="button" class="clear-btn" id="clear-dest" aria-label="Effacer la destination" onclick="clearField(false)">✕</button>
 </div>
 <button type="button" class="gps-btn" onclick="useCurrentLocation(false)">🎯 GPS</button>
 </div>
@@ -437,6 +444,11 @@ window.onload = function() {
 };
 
 function initGoogleMap() {
+    if (!window.google || !google.maps || !document.getElementById("map")) {
+        const statusEl = document.getElementById("status");
+        if (statusEl) statusEl.innerText = "La carte n'a pas pu se charger. Vérifiez la connexion ou la configuration Google Maps.";
+        return;
+    }
     const kenitraCenter = { lat: 34.2610, lng: -6.5802 };
 
     map = new google.maps.Map(document.getElementById("map"), {
@@ -490,58 +502,51 @@ function checkCenterInZone(latLng) {
     }
 }
 
-let centerGeocodeSequence = 0;
-
-function coordinateLabel(latLng) {
-    const lat = typeof latLng.lat === 'function' ? latLng.lat() : latLng.lat;
-    const lng = typeof latLng.lng === 'function' ? latLng.lng() : latLng.lng;
-    return `Point GPS (${Number(lat).toFixed(5)}, ${Number(lng).toFixed(5)})`;
-}
-
-function getBestAreaName(results, latLng) {
-    if (results && results.length) {
-        // D'abord le quartier / la zone, puis la rue, puis l'adresse complète.
-        const priorityTypes = [
-            "neighborhood", "sublocality_level_2", "sublocality_level_1",
-            "sublocality", "route", "premise", "point_of_interest",
-            "locality", "administrative_area_level_3", "administrative_area_level_2"
-        ];
-        for (const type of priorityTypes) {
-            for (const result of results) {
-                const component = (result.address_components || []).find(c =>
-                    (c.types || []).includes(type)
-                );
+function getBestAreaName(results) {
+    if (!results || !results.length) return "";
+    const preferredTypes = [
+        "neighborhood", "sublocality_level_2", "sublocality_level_1",
+        "sublocality", "administrative_area_level_3", "locality",
+        "administrative_area_level_2", "administrative_area_level_1"
+    ];
+    for (const type of preferredTypes) {
+        for (const result of results) {
+            if ((result.types || []).includes(type)) {
+                const component = (result.address_components || []).find(c => (c.types || []).includes(type));
                 if (component && component.long_name) return component.long_name;
+                if (result.formatted_address) return result.formatted_address;
             }
         }
-        const detailed = results.find(r =>
-            (r.types || []).some(t => ["street_address", "route", "premise", "subpremise"].includes(t))
-        );
-        if (detailed && detailed.formatted_address) return detailed.formatted_address;
-        if (results[0].formatted_address) return results[0].formatted_address;
     }
-    return latLng ? coordinateLabel(latLng) : "Position GPS";
+    // Si Google ne renvoie pas le quartier, garder l'adresse la plus précise disponible.
+    const detailed = results.find(r => r.formatted_address && !/Maroc$/.test(r.formatted_address));
+    return (detailed || results[0]).formatted_address || "";
 }
 
 function updateCenterAddress(latLng) {
     const addressEl = document.getElementById("picker-address");
-    const thisRequest = ++centerGeocodeSequence;
-    currentCenterAddress = coordinateLabel(latLng); // immédiat et utilisable même si Google échoue
-    addressEl.innerText = "Recherche de l'adresse...";
+    const requestedPoint = {lat: latLng.lat(), lng: latLng.lng()};
+    currentCenterAddress = "";
+    addressEl.innerText = "Recherche du quartier…";
     geocoder.geocode({ location: latLng, language: "fr", region: "ma" }, (results, status) => {
-        // Évite qu'une ancienne réponse remplace l'adresse de la position actuelle.
-        if (thisRequest !== centerGeocodeSequence) return;
+        // Ignore older responses if the user moved the map in the meantime.
+        const current = map.getCenter();
+        if (Math.abs(current.lat() - requestedPoint.lat) > 0.0002 || Math.abs(current.lng() - requestedPoint.lng) > 0.0002) return;
         if (status === "OK" && results && results.length) {
-            currentCenterAddress = getBestAreaName(results, latLng);
+            currentCenterAddress = getBestAreaName(results);
+            addressEl.innerText = currentCenterAddress || `Point GPS ${requestedPoint.lat.toFixed(5)}, ${requestedPoint.lng.toFixed(5)}`;
         } else {
-            console.warn("Geocoding de la carte:", status);
-            currentCenterAddress = coordinateLabel(latLng);
+            currentCenterAddress = `Point GPS ${requestedPoint.lat.toFixed(5)}, ${requestedPoint.lng.toFixed(5)}`;
+            addressEl.innerText = "Quartier indisponible — utiliser les coordonnées GPS";
         }
-        addressEl.innerText = currentCenterAddress;
     });
 }
 
 function confirmCenterPoint() {
+    if (!currentCenterAddress) {
+        alert(currentLang === 'ar' || currentLang === 'dar' ? "تسنى شوية حتى يتحدد الحي ديال النقطة." : "Patientez un instant : recherche du quartier en cours.");
+        return;
+    }
     if (!isInsideZone) {
         alert(currentLang === 'ar' || currentLang === 'dar' ? "هذه النقطة خارج منطقة التغطية (Hors zone)!" : "Cette position est hors zone de livraison !");
         return;
@@ -550,7 +555,7 @@ function confirmCenterPoint() {
     const center = map.getCenter();
     if (isSettingDepNext) {
         depCoord = center;
-        depName = currentCenterAddress || coordinateLabel(center);
+        depName = currentCenterAddress || "Point de départ";
         document.getElementById("input-depart").value = depName;
         document.getElementById("clear-depart").style.display = "block";
         if (depMarker) depMarker.setMap(null);
@@ -559,7 +564,7 @@ function confirmCenterPoint() {
         document.getElementById("picker-address").innerText = "Choisissez la destination...";
     } else {
         destCoord = center;
-        destName = currentCenterAddress || coordinateLabel(center);
+        destName = currentCenterAddress || "Destination";
         document.getElementById("input-dest").value = destName;
         document.getElementById("clear-dest").style.display = "block";
         if (destMarker) destMarker.setMap(null);
@@ -595,7 +600,7 @@ function onSearchInput(val, isDep) {
             listEl.innerHTML = "";
             predictions.forEach(prediction => {
                 const li = document.createElement("li");
-                li.innerHTML = prediction.description;
+                li.textContent = prediction.description;
                 li.onclick = () => selectPrediction(prediction.place_id, prediction.description, isDep);
                 listEl.appendChild(li);
             });
@@ -675,30 +680,23 @@ function useCurrentLocation(isDep) {
                 return;
             }
 
-            geocoder.geocode(
-                { location: pos, language: "fr", region: "ma" },
-                (results, status) => {
-                    const address = (status === "OK" && results && results.length > 0)
-                        ? getBestAreaName(results, pos)
-                        : getBestAreaName([], pos);
-
+            geocoder.geocode({ location: pos, language: "fr", region: "ma" }, (results, status) => {
+                const areaName = status === "OK" ? getBestAreaName(results) : "";
+                const displayName = areaName || `Point GPS ${pos.lat.toFixed(5)}, ${pos.lng.toFixed(5)}`;
                 if (isDep) {
-                    depCoord = pos;
-                    depName = address;
+                    depCoord = pos; depName = displayName;
                     document.getElementById("input-depart").value = depName;
                     document.getElementById("clear-depart").style.display = "block";
                     if (depMarker) depMarker.setMap(null);
                     depMarker = new google.maps.Marker({ position: pos, map: map, label: "A" });
                 } else {
-                    destCoord = pos;
-                    destName = address;
+                    destCoord = pos; destName = displayName;
                     document.getElementById("input-dest").value = destName;
                     document.getElementById("clear-dest").style.display = "block";
                     if (destMarker) destMarker.setMap(null);
                     destMarker = new google.maps.Marker({ position: pos, map: map, label: "B" });
                 }
-                map.setCenter(pos);
-                map.setZoom(17);
+                map.setCenter(pos); map.setZoom(17);
                 calculateRouteAndPrice();
             });
         }, () => {
@@ -727,7 +725,7 @@ function calculateRouteAndPrice() {
             const distanceKm = distanceMeters / 1000;
             applyPricingLogic(distanceKm);
         } else {
-            document.getElementById("status").innerText = "Impossible de calculer l'itinéraire.";
+            document.getElementById("status").innerText = "Itinéraire indisponible. Essayez de choisir les adresses à nouveau.";
         }
     });
 }
@@ -747,7 +745,7 @@ function getMapLink(coord, inputVal) {
 function applyPricingLogic(distanceKm) {
     const now = new Date();
     const hour = now.getHours();
-    const isNight = (hour >= 21 || hour < 5);
+    const isNight = (hour >= 21 || hour < 2);
 
     let price = 0;
     if (distanceKm <= 3) {
@@ -769,8 +767,9 @@ function applyPricingLogic(distanceKm) {
     } else if (distanceKm <= 13) {
         price = isNight ? 40 : 35;
     } else {
-        document.getElementById("result").innerText = "Non dispo";
-        document.getElementById("status").innerText = "Distance supérieure à 13 km (Service non disponible).";
+        document.getElementById("result").innerText = "Non disponible";
+        document.getElementById("status").innerText = "Distance supérieure à 13 km : service non disponible.";
+        document.getElementById("order").href = "https://wa.me/212634084543?text=" + encodeURIComponent("Bonjour JibLi-vraison, je souhaite vérifier si une livraison de plus de 13 km est possible.");
         return;
     }
 
@@ -783,9 +782,8 @@ function applyPricingLogic(distanceKm) {
     const depMapLink = getMapLink(depCoord, depInputValue);
     const destMapLink = getMapLink(destCoord, destInputValue);
 
-    const waText = `Bonjour JibLi-vraison, je souhaite commander une livraison.%0A%0A📍 Départ : ${depInputValue || depName}%0A🔗 Map Départ : ${depMapLink}%0A%0A🏁 Destination : ${destInputValue || destName}%0A🔗 Map Destination : ${destMapLink}%0A%0A📏 Distance : ${distanceKm.toFixed(1)} km%0A💰 Prix estimé : ${price} DH`;
-    
-    document.getElementById("order").href = `https://wa.me/212634084543?text=${waText}`;
+    const waText = `Bonjour JibLi-vraison, je souhaite commander une livraison.\n\n📍 Départ : ${depInputValue || depName}\n🔗 Map Départ : ${depMapLink}\n\n🏁 Destination : ${destInputValue || destName}\n🔗 Map Destination : ${destMapLink}\n\n📏 Distance : ${distanceKm.toFixed(1)} km\n💰 Prix estimé : ${price} DH\n\nMerci de confirmer la disponibilité et le tarif final.`;
+    document.getElementById("order").href = `https://wa.me/212634084543?text=${encodeURIComponent(waText)}`;
 }
 
 function toggleAccordion(btn) {

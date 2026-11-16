@@ -333,8 +333,8 @@ border: 2px solid #ffb900; transition: transform 0.2s;
     <thead>
       <tr>
         <th data-key="th-dist">Distance</th>
-        <th data-key="th-eve">Soir (17h - 21h)</th>
-        <th data-key="th-night">Nuit (21h - 02h)</th>
+        <th data-key="th-eve">Soir (16h - 21h)</th>
+        <th data-key="th-night">Nuit (21h - 00h)</th>
       </tr>
     </thead>
     <tbody>
@@ -425,7 +425,7 @@ fr: {
 "faq-3-q": "Comment connaître le prix ?", "faq-3-a": "Le prix est calculé automatiquement en fonction du kilométrage exact et de l'heure.",
 "faq-4-q": "Quels sont vos horaires ?", "faq-4-a": "Messages WhatsApp : 24h/24 (messages uniquement, pas d’appel WhatsApp).<br>Confirmation des demandes : tous les jours de 08h00 à 23h00.<br>Livraisons : lundi au vendredi de 16h00 à 00h00, samedi de 12h00 à 00h00 et dimanche de 10h00 à 00h00.",
 "footer-text": "Service de coursier à moto à Kénitra.",
-"acc-btn": "📊 Afficher le détail des tarifs", "th-dist": "Distance", "th-eve": "Soir (17h - 21h)", "th-night": "Nuit (21h - 02h)", "tbl-na": "Non disponible (> 13 km)"
+"acc-btn": "📊 Afficher le détail des tarifs", "th-dist": "Distance", "th-eve": "Soir (16h - 21h)", "th-night": "Nuit (21h - 00h)", "tbl-na": "Non disponible (> 13 km)"
 },
 ar: {
 "nav-services": "الخدمات", "nav-tarifs": "الأسعار", "nav-comment": "كيف نشتغل", "nav-pourquoi": "لماذا نحن", "nav-faq": "أسئلة شائعة",
@@ -780,9 +780,9 @@ function getMapLink(coord, inputVal) {
 }
 
 function applyPricingLogic(distanceKm) {
-    const now = new Date();
-    const hour = now.getHours();
-    const isNight = (hour >= 21 || hour < 5);
+    // Utiliser l'heure du Maroc (Africa/Casablanca), pas l'heure locale de l'appareil.
+    const {hour} = getMoroccoClock();
+    const isNight = hour >= 21 && hour < 24;
 
     let price = 0;
     if (distanceKm <= 3) {

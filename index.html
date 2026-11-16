@@ -110,6 +110,11 @@ list-style: none; box-shadow: 0 8px 20px rgba(0,0,0,0.8);
 .suggestions-list li:last-child { border-bottom: none; }
 .suggestions-list li:hover { background: #2a2a2a; color: #ffb900; }
 
+.schedule-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 16px;text-align:left}
+.schedule-fields label{display:block;font-weight:700;font-size:13px;margin:0 0 6px;color:#ffb900}
+.schedule-fields input{min-width:0;width:100%;color-scheme:dark}
+.schedule-hint{grid-column:1/-1;margin:0;color:#aaa;font-size:12px;text-align:left}
+@media(max-width:520px){.schedule-fields{grid-template-columns:1fr}}
 .map-wrapper { position: relative; width: 100%; height: 350px; margin-top: 10px; border-radius: 15px; overflow: hidden; border: 2px solid #ffb900; }
 #map { width: 100%; height: min(72vh, 720px); z-index: 1; }
 
@@ -310,6 +315,18 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 </div>
 </div>
 
+<div class="schedule-fields">
+  <div>
+    <label for="delivery-date">Date de livraison souhaitée</label>
+    <input type="date" id="delivery-date" class="search-input" min="" onchange="onDeliveryScheduleChange()">
+  </div>
+  <div>
+    <label for="delivery-time">Heure souhaitée</label>
+    <input type="time" id="delivery-time" class="search-input" step="900" onchange="onDeliveryScheduleChange()">
+  </div>
+  <p class="schedule-hint">Choisissez le créneau de livraison. Le tarif sera calculé selon cette date et cette heure.</p>
+</div>
+
 <div class="map-wrapper">
 <div id="map"></div>
 <div class="center-picker">
@@ -455,6 +472,7 @@ const DELIVERY_START_HOURS = {0:10, 1:16, 2:16, 3:16, 4:16, 5:16, 6:12};
 function getMoroccoClock() {
   const parts = new Intl.DateTimeFormat("en-GB", {
     timeZone: "Africa/Casablanca",
+    year: "numeric", month: "2-digit", day: "2-digit",
     weekday: "short",
     hour: "2-digit",
     minute: "2-digit",
@@ -462,7 +480,7 @@ function getMoroccoClock() {
   }).formatToParts(new Date());
   const values = Object.fromEntries(parts.map(p => [p.type, p.value]));
   const days = {Sun:0, Mon:1, Tue:2, Wed:3, Thu:4, Fri:5, Sat:6};
-  return {day:days[values.weekday], hour:Number(values.hour), minute:Number(values.minute)};
+  return {day:days[values.weekday], hour:Number(values.hour), minute:Number(values.minute), date:`${values.year}-${values.month}-${values.day}`};
 }
 
 // La réception et la confirmation des commandes sont assurées chaque jour de 08h à 23h.
@@ -494,6 +512,8 @@ function updateServiceAvailability() {
 // notamment pour une livraison le lendemain. Les demandes sont traitées de 08h00 à 23h00.
 
 window.onload = function() {
+    const moroccoDate = getMoroccoClock().date;
+    document.getElementById("delivery-date").min = moroccoDate;
     initGoogleMap();
     updateServiceAvailability();
     setInterval(updateServiceAvailability, 60000);
@@ -785,10 +805,40 @@ function getMapLink(coord, inputVal) {
     return "Non spécifié";
 }
 
+function onDeliveryScheduleChange() {
+    if (depCoord && destCoord) calculateRouteAndPrice();
+}
+
+function getSelectedDeliverySlot() {
+    const date = document.getElementById("delivery-date").value;
+    const time = document.getElementById("delivery-time").value;
+    const now = getMoroccoClock();
+    if (!date || !time) return {valid:false, message:"Veuillez choisir la date et l'heure de livraison."};
+    if (date < now.date || (date === now.date && time <= `${String(now.hour).padStart(2,"0")}:${String(now.minute).padStart(2,"0")}`)) {
+        return {valid:false, message:"La date et l'heure choisies doivent être dans le futur."};
+    }
+    const [year, month, day] = date.split("-").map(Number);
+    const weekday = new Date(Date.UTC(year, month - 1, day)).getUTCDay();
+    const startHour = DELIVERY_START_HOURS[weekday];
+    const minutes = Number(time.slice(0,2)) * 60 + Number(time.slice(3,5));
+    if (minutes < startHour * 60 || minutes >= 24 * 60) {
+        return {valid:false, message:"L'heure choisie est hors des horaires de livraison pour ce jour."};
+    }
+    return {valid:true, date, time, isNight:minutes >= 21 * 60};
+}
+
 function applyPricingLogic(distanceKm) {
-    // Utiliser l'heure du Maroc (Africa/Casablanca), pas l'heure locale de l'appareil.
-    const {hour} = getMoroccoClock();
-    const isNight = hour >= 21 && hour < 24;
+    const slot = getSelectedDeliverySlot();
+    const orderLink = document.getElementById("order");
+    if (!slot.valid) {
+        document.getElementById("result").innerText = "— DH";
+        document.getElementById("status").innerText = slot.message;
+        orderLink.href = "#";
+        orderLink.setAttribute("aria-disabled","true");
+        orderLink.style.opacity = "0.55";
+        return;
+    }
+    const isNight = slot.isNight;
 
     let price = 0;
     if (distanceKm <= 3) {
@@ -816,7 +866,7 @@ function applyPricingLogic(distanceKm) {
     }
 
     document.getElementById("result").innerText = price + " DH";
-    document.getElementById("status").innerText = `Distance : ${distanceKm.toFixed(1)} km (${isNight ? 'Tarif Nuit' : 'Tarif Soir'})`;
+    document.getElementById("status").innerText = `Livraison prévue le ${slot.date.split("-").reverse().join("/")} à ${slot.time} · Distance : ${distanceKm.toFixed(1)} km · ${isNight ? 'Tarif Nuit' : 'Tarif Soir'}`;
 
     const depInputValue = document.getElementById("input-depart").value;
     const destInputValue = document.getElementById("input-dest").value;
@@ -824,9 +874,11 @@ function applyPricingLogic(distanceKm) {
     const depMapLink = getMapLink(depCoord, depInputValue);
     const destMapLink = getMapLink(destCoord, destInputValue);
 
-    const waText = `Bonjour JibLi-vraison, je souhaite commander une livraison.%0A%0A📍 Départ : ${encodeURIComponent(depInputValue || depName)}%0A🔗 Map Départ : ${encodeURIComponent(depMapLink)}%0A%0A🏁 Destination : ${encodeURIComponent(destInputValue || destName)}%0A🔗 Map Destination : ${encodeURIComponent(destMapLink)}%0A%0A📏 Distance : ${distanceKm.toFixed(1)} km%0A💰 Prix estimé : ${price} DH`;
+    const waText = `Bonjour JibLi-vraison, je souhaite réserver une livraison.%0A%0A📅 Date souhaitée : ${encodeURIComponent(slot.date)}%0A🕒 Heure souhaitée : ${encodeURIComponent(slot.time)}%0A%0A📍 Départ : ${encodeURIComponent(depInputValue || depName)}%0A🔗 Map Départ : ${encodeURIComponent(depMapLink)}%0A%0A🏁 Destination : ${encodeURIComponent(destInputValue || destName)}%0A🔗 Map Destination : ${encodeURIComponent(destMapLink)}%0A%0A📏 Distance : ${distanceKm.toFixed(1)} km%0A💰 Prix estimé : ${price} DH (${isNight ? 'Tarif Nuit' : 'Tarif Soir'})`;
     
-    document.getElementById("order").href = `https://wa.me/212634084543?text=${waText}`;
+    orderLink.href = `https://wa.me/212634084543?text=${waText}`;
+    orderLink.removeAttribute("aria-disabled");
+    orderLink.style.opacity = "1";
 }
 
 function toggleAccordion(btn) {

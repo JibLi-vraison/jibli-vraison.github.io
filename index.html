@@ -110,11 +110,16 @@ list-style: none; box-shadow: 0 8px 20px rgba(0,0,0,0.8);
 .suggestions-list li:last-child { border-bottom: none; }
 .suggestions-list li:hover { background: #2a2a2a; color: #ffb900; }
 
-.schedule-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 16px;text-align:left}
-.schedule-fields label{display:block;font-weight:700;font-size:13px;margin:0 0 6px;color:#ffb900}
-.schedule-fields input{min-width:0;width:100%;color-scheme:dark}
-.schedule-hint{grid-column:1/-1;margin:0;color:#aaa;font-size:12px;text-align:left}
-@media(max-width:520px){.schedule-fields{grid-template-columns:1fr}}
+.schedule-fields{margin:0 0 16px;text-align:left}
+.schedule-choice{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.schedule-option{display:flex!important;align-items:center;gap:8px;background:#1a1a1a;border:1px solid #444;border-radius:10px;padding:12px 14px;color:#fff!important;cursor:pointer}
+.schedule-option:has(input:checked){border-color:#ffb900;background:#241f12}
+.schedule-option input{accent-color:#ffb900}
+.schedule-datetime{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.schedule-fields label:not(.schedule-option){display:block;font-weight:700;font-size:13px;margin:0 0 6px;color:#ffb900}
+.schedule-fields input[type="date"],.schedule-fields input[type="time"]{min-width:0;width:100%;color-scheme:dark}
+.schedule-hint{margin:8px 0 0;color:#aaa;font-size:12px;text-align:left}
+@media(max-width:520px){.schedule-datetime{grid-template-columns:1fr}}
 .map-wrapper { position: relative; width: 100%; height: 350px; margin-top: 10px; border-radius: 15px; overflow: hidden; border: 2px solid #ffb900; }
 #map { width: 100%; height: min(72vh, 720px); z-index: 1; }
 
@@ -316,15 +321,23 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 </div>
 
 <div class="schedule-fields">
-  <div>
-    <label for="delivery-date">Date de livraison souhaitée</label>
-    <input type="date" id="delivery-date" class="search-input" min="" onchange="onDeliveryScheduleChange()">
+  <div class="schedule-choice">
+    <label class="schedule-option"><input type="radio" name="delivery-mode" value="now" checked onchange="onDeliveryModeChange()"> Livraison sur place</label>
+    <label class="schedule-option"><input type="radio" name="delivery-mode" value="later" onchange="onDeliveryModeChange()"> Livraison à l’avance</label>
   </div>
-  <div>
-    <label for="delivery-time">Heure souhaitée</label>
-    <input type="time" id="delivery-time" class="search-input" step="900" onchange="onDeliveryScheduleChange()">
+  <div id="advance-fields" hidden>
+    <div class="schedule-datetime">
+      <div>
+        <label for="delivery-date">Date souhaitée</label>
+        <input type="date" id="delivery-date" class="search-input" min="" onchange="onDeliveryScheduleChange()">
+      </div>
+      <div>
+        <label for="delivery-time">Heure souhaitée</label>
+        <input type="time" id="delivery-time" class="search-input" step="900" onchange="onDeliveryScheduleChange()">
+      </div>
+    </div>
+    <p class="schedule-hint">Choisissez la date et l’heure de votre livraison. Le tarif sera calculé selon le créneau choisi.</p>
   </div>
-  <p class="schedule-hint">Choisissez le créneau de livraison. Le tarif sera calculé selon cette date et cette heure.</p>
 </div>
 
 <div class="map-wrapper">
@@ -805,15 +818,27 @@ function getMapLink(coord, inputVal) {
     return "Non spécifié";
 }
 
+function onDeliveryModeChange() {
+    const mode = document.querySelector('input[name="delivery-mode"]:checked')?.value || "now";
+    document.getElementById("advance-fields").hidden = mode !== "later";
+    if (depCoord && destCoord) calculateRouteAndPrice();
+}
+
 function onDeliveryScheduleChange() {
     if (depCoord && destCoord) calculateRouteAndPrice();
 }
 
 function getSelectedDeliverySlot() {
+    const mode = document.querySelector('input[name="delivery-mode"]:checked')?.value || "now";
+    const now = getMoroccoClock();
+    if (mode === "now") {
+        if (!isDeliveryOpen()) return {valid:false, message:"La livraison immédiate n’est pas disponible actuellement. Choisissez « Livraison à l’avance »."};
+        return {valid:true, mode:"now", date:now.date, time:`${String(now.hour).padStart(2,"0")}:${String(now.minute).padStart(2,"0")}`, isNight:now.hour >= 21};
+    }
+
     const date = document.getElementById("delivery-date").value;
     const time = document.getElementById("delivery-time").value;
-    const now = getMoroccoClock();
-    if (!date || !time) return {valid:false, message:"Veuillez choisir la date et l'heure de livraison."};
+    if (!date || !time) return {valid:false, message:"Veuillez choisir la date et l'heure de livraison souhaitées."};
     if (date < now.date || (date === now.date && time <= `${String(now.hour).padStart(2,"0")}:${String(now.minute).padStart(2,"0")}`)) {
         return {valid:false, message:"La date et l'heure choisies doivent être dans le futur."};
     }
@@ -824,7 +849,7 @@ function getSelectedDeliverySlot() {
     if (minutes < startHour * 60 || minutes >= 24 * 60) {
         return {valid:false, message:"L'heure choisie est hors des horaires de livraison pour ce jour."};
     }
-    return {valid:true, date, time, isNight:minutes >= 21 * 60};
+    return {valid:true, mode:"later", date, time, isNight:minutes >= 21 * 60};
 }
 
 function applyPricingLogic(distanceKm) {
@@ -866,7 +891,7 @@ function applyPricingLogic(distanceKm) {
     }
 
     document.getElementById("result").innerText = price + " DH";
-    document.getElementById("status").innerText = `Livraison prévue le ${slot.date.split("-").reverse().join("/")} à ${slot.time} · Distance : ${distanceKm.toFixed(1)} km · ${isNight ? 'Tarif Nuit' : 'Tarif Soir'}`;
+    document.getElementById("status").innerText = `${slot.mode === "now" ? "Livraison immédiate" : "Livraison prévue le " + slot.date.split("-").reverse().join("/") + " à " + slot.time} · Distance : ${distanceKm.toFixed(1)} km · ${isNight ? 'Tarif Nuit' : 'Tarif Soir'}`;
 
     const depInputValue = document.getElementById("input-depart").value;
     const destInputValue = document.getElementById("input-dest").value;
@@ -874,7 +899,7 @@ function applyPricingLogic(distanceKm) {
     const depMapLink = getMapLink(depCoord, depInputValue);
     const destMapLink = getMapLink(destCoord, destInputValue);
 
-    const waText = `Bonjour JibLi-vraison, je souhaite réserver une livraison.%0A%0A📅 Date souhaitée : ${encodeURIComponent(slot.date)}%0A🕒 Heure souhaitée : ${encodeURIComponent(slot.time)}%0A%0A📍 Départ : ${encodeURIComponent(depInputValue || depName)}%0A🔗 Map Départ : ${encodeURIComponent(depMapLink)}%0A%0A🏁 Destination : ${encodeURIComponent(destInputValue || destName)}%0A🔗 Map Destination : ${encodeURIComponent(destMapLink)}%0A%0A📏 Distance : ${distanceKm.toFixed(1)} km%0A💰 Prix estimé : ${price} DH (${isNight ? 'Tarif Nuit' : 'Tarif Soir'})`;
+    const waText = `Bonjour JibLi-vraison, je souhaite commander une livraison.%0A%0A🚚 Type : ${encodeURIComponent(slot.mode === "now" ? "Livraison sur place" : "Livraison à l’avance")}%0A${slot.mode === "later" ? "%0A📅 Date souhaitée : " + encodeURIComponent(slot.date) + "%0A🕒 Heure souhaitée : " + encodeURIComponent(slot.time) : ""}%0A%0A📍 Départ : ${encodeURIComponent(depInputValue || depName)}%0A🔗 Map Départ : ${encodeURIComponent(depMapLink)}%0A%0A🏁 Destination : ${encodeURIComponent(destInputValue || destName)}%0A🔗 Map Destination : ${encodeURIComponent(destMapLink)}%0A%0A📏 Distance : ${distanceKm.toFixed(1)} km%0A💰 Prix estimé : ${price} DH (${isNight ? 'Tarif Nuit' : 'Tarif Soir'})`;
     
     orderLink.href = `https://wa.me/212634084543?text=${waText}`;
     orderLink.removeAttribute("aria-disabled");

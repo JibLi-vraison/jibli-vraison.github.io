@@ -183,7 +183,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <rect width="420" height="180" fill="#ffb900" rx="14"/>
 <text x="24" y="34" id="svg-disp-title" font-weight="900" font-size="20" fill="#111" text-anchor="start" data-key="svg-disp-title">DISPONIBLE À KÉNITRA</text>
 <line x1="24" y1="46" x2="396" y2="46" stroke="#111" stroke-width="1.5" opacity="0.3"/>
-<text x="24" y="82" id="svg-disp-1" font-weight="bold" font-size="15" fill="#111" text-anchor="start" data-key="svg-disp-1">📲 Commandes : 08h00 à 23h00</text>
+<text x="24" y="82" id="svg-disp-1" font-weight="bold" font-size="15" fill="#111" text-anchor="start" data-key="svg-disp-1">💬 Messages WhatsApp : 24h/24 (sans appel)</text>
 <text x="24" y="118" id="svg-disp-2" font-weight="bold" font-size="14" fill="#111" text-anchor="start" data-key="svg-disp-2">🛵 Livraison : Lun-Ven 16h-00h</text>
 <text x="24" y="150" font-weight="bold" font-size="14" fill="#111" text-anchor="start">Sam 12h-00h | Dim 10h-00h</text>
 </g>
@@ -361,7 +361,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <div class="whyitem"><span>🌙</span><h3 data-key="why-4-t">Disponibilité</h3><small data-key="why-4-d">Horaires : Lun-Ven 16h-00h, Sam 12h-00h, Dim 10h-00h.</small></div>
 </div></div></section>
 
-<section><div class="c"><div class="cta"><div><h2 data-key="cta-t">Besoin d'une livraison à Kénitra ?</h2><p data-key="cta-d">Contactez-nous directement sur WhatsApp pour votre commande.</p></div><a class="btn" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison" data-key="cta-b">Commander maintenant</a></div></div></section>
+<section><div class="c"><div class="cta"><div><h2 data-key="cta-t">Besoin d'une livraison à Kénitra ?</h2><p data-key="cta-d">Envoyez-nous un message WhatsApp à tout moment (messages uniquement, pas d’appel WhatsApp).</p></div><a class="btn" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison" data-key="cta-b">Commander maintenant</a></div></div></section>
 
 <section id="faq"><div class="c"><h2 class="title">FAQ</h2><div class="faq">
 <details><summary data-key="faq-1-q">Comment commander ?</summary><div class="answer" data-key="faq-1-a">Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.</div></details>
@@ -419,11 +419,11 @@ fr: {
 "why-2-t": "Transparence", "why-2-d": "Calcul clair du tarif avant commande.",
 "why-3-t": "Simplicité", "why-3-d": "Tout se fait en quelques clics via WhatsApp.",
 "why-4-t": "Disponibilité", "why-4-d": "Commandes : tous les jours de 08h00 à 23h00. Livraisons : Lun-Ven 16h-00h, Sam 12h-00h, Dim 10h-00h.",
-"cta-t": "Besoin d'une livraison à Kénitra ?", "cta-d": "Contactez-nous directement sur WhatsApp pour votre commande.", "cta-b": "Commander maintenant",
+"cta-t": "Besoin d'une livraison à Kénitra ?", "cta-d": "Envoyez-nous un message WhatsApp à tout moment (messages uniquement, pas d’appel WhatsApp).", "cta-b": "Commander maintenant",
 "faq-1-q": "Comment commander ?", "faq-1-a": "Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.",
 "faq-2-q": "Où faites-vous les livraisons ?", "faq-2-a": "Le service est destiné aux livraisons dans la zone de couverture jusqu'à 13 km.",
 "faq-3-q": "Comment connaître le prix ?", "faq-3-a": "Le prix est calculé automatiquement en fonction du kilométrage exact et de l'heure.",
-"faq-4-q": "Quels sont vos horaires ?", "faq-4-a": "Réception et confirmation des commandes : tous les jours de 08h00 à 23h00.<br>Livraisons : lundi au vendredi de 16h00 à 00h00, samedi de 12h00 à 00h00 et dimanche de 10h00 à 00h00.",
+"faq-4-q": "Quels sont vos horaires ?", "faq-4-a": "Messages WhatsApp : 24h/24 (messages uniquement, pas d’appel WhatsApp).<br>Confirmation des demandes : tous les jours de 08h00 à 23h00.<br>Livraisons : lundi au vendredi de 16h00 à 00h00, samedi de 12h00 à 00h00 et dimanche de 10h00 à 00h00.",
 "footer-text": "Service de coursier à moto à Kénitra.",
 "acc-btn": "📊 Afficher le détail des tarifs", "th-dist": "Distance", "th-eve": "Soir (17h - 21h)", "th-night": "Nuit (21h - 02h)", "tbl-na": "Non disponible (> 13 km)"
 },
@@ -476,10 +476,10 @@ function updateServiceAvailability() {
   const note = document.getElementById("service-hours");
   if (note) {
     note.textContent = !intakeOpen
-      ? "Vous pouvez nous envoyer votre demande WhatsApp à tout moment. Les demandes sont traitées de 08h00 à 23h00."
+      ? "Messages WhatsApp acceptés 24h/24 (sans appel WhatsApp). Confirmation des demandes : 08h00–23h00."
       : deliveryOpen
-        ? "Réception des commandes ouverte et service de livraison disponible."
-        : "Réception des commandes ouverte. Vous pouvez réserver maintenant pour le prochain créneau de livraison.";
+        ? "Messages WhatsApp 24h/24. Confirmation des demandes : 08h00–23h00. Livraison disponible."
+        : "Messages WhatsApp 24h/24. Confirmation : 08h00–23h00. Vous pouvez réserver pour le prochain créneau de livraison.";
     note.style.color = intakeOpen && deliveryOpen ? "#25d366" : "#ffb900";
   }
 }

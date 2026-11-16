@@ -829,17 +829,25 @@ function onDeliveryModeChange() {
     const mode = document.querySelector('input[name="delivery-mode"]:checked')?.value || "now";
     document.getElementById("advance-fields").hidden = mode !== "later";
     const feedback = document.getElementById("schedule-feedback");
-    if (feedback) { feedback.textContent = ""; feedback.className = "schedule-feedback"; }\n    const hoursButton = document.getElementById("view-hours-btn");\n    if (hoursButton) hoursButton.hidden = true;
+    if (feedback) { feedback.textContent = ""; feedback.className = "schedule-feedback"; }
+    const hoursButton = document.getElementById("view-hours-btn");
+    if (hoursButton) hoursButton.hidden = true;
     if (depCoord && destCoord) calculateRouteAndPrice();
 }
 
-function showServiceHours() {\n    document.getElementById("service-hours-panel")?.scrollIntoView({behavior:"smooth",block:"center"});\n}\n\nfunction onDeliveryScheduleChange() {
+function showServiceHours() {
+    document.getElementById("service-hours-panel")?.scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+function onDeliveryScheduleChange() {
     const feedback = document.getElementById("schedule-feedback");
+    const hoursButton = document.getElementById("view-hours-btn");
     const date = document.getElementById("delivery-date").value;
     const time = document.getElementById("delivery-time").value;
     if (!date || !time) {
         feedback.textContent = "";
         feedback.className = "schedule-feedback";
+        hoursButton.hidden = true;
         if (depCoord && destCoord) calculateRouteAndPrice();
         return;
     }
@@ -847,9 +855,11 @@ function showServiceHours() {\n    document.getElementById("service-hours-panel"
     if (!slot.valid) {
         feedback.textContent = slot.message;
         feedback.className = "schedule-feedback error";
+        hoursButton.hidden = false;
     } else {
         feedback.textContent = "Créneau disponible pour votre demande.";
         feedback.className = "schedule-feedback success";
+        hoursButton.hidden = true;
     }
     if (depCoord && destCoord) calculateRouteAndPrice();
 }

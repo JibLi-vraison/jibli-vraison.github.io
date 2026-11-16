@@ -180,11 +180,12 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 
 <!-- Cadre Jaune -->
 <g transform="translate(45, 125)" style="direction: ltr;">
-<rect width="420" height="150" fill="#ffb900" rx="14"/>
+<rect width="420" height="180" fill="#ffb900" rx="14"/>
 <text x="24" y="34" id="svg-disp-title" font-weight="900" font-size="20" fill="#111" text-anchor="start" data-key="svg-disp-title">DISPONIBLE À KÉNITRA</text>
 <line x1="24" y1="46" x2="396" y2="46" stroke="#111" stroke-width="1.5" opacity="0.3"/>
-<text x="24" y="82" id="svg-disp-1" font-weight="bold" font-size="16" fill="#111" text-anchor="start" data-key="svg-disp-1">🕒 Lun - Ven : 16h00 à 00h00</text>
-<text x="24" y="118" id="svg-disp-2" font-weight="bold" font-size="16" fill="#111" text-anchor="start" data-key="svg-disp-2">🕒 Sam : 12h00 | Dim : 10h00 à 00h00</text>
+<text x="24" y="82" id="svg-disp-1" font-weight="bold" font-size="15" fill="#111" text-anchor="start" data-key="svg-disp-1">📲 Commandes : 08h00 à 23h00</text>
+<text x="24" y="118" id="svg-disp-2" font-weight="bold" font-size="14" fill="#111" text-anchor="start" data-key="svg-disp-2">🛵 Livraison : Lun-Ven 16h-00h</text>
+<text x="24" y="150" font-weight="bold" font-size="14" fill="#111" text-anchor="start">Sam 12h-00h | Dim 10h-00h</text>
 </g>
 
 <!-- Badges -->
@@ -417,12 +418,12 @@ fr: {
 "why-1-t": "Rapidité", "why-1-d": "Livraison directe à moto dans Kénitra.",
 "why-2-t": "Transparence", "why-2-d": "Calcul clair du tarif avant commande.",
 "why-3-t": "Simplicité", "why-3-d": "Tout se fait en quelques clics via WhatsApp.",
-"why-4-t": "Disponibilité", "why-4-d": "Horaires : Lun-Ven 16h-00h, Sam 12h-00h, Dim 10h-00h.",
+"why-4-t": "Disponibilité", "why-4-d": "Commandes : tous les jours de 08h00 à 23h00. Livraisons : Lun-Ven 16h-00h, Sam 12h-00h, Dim 10h-00h.",
 "cta-t": "Besoin d'une livraison à Kénitra ?", "cta-d": "Contactez-nous directement sur WhatsApp pour votre commande.", "cta-b": "Commander maintenant",
 "faq-1-q": "Comment commander ?", "faq-1-a": "Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.",
 "faq-2-q": "Où faites-vous les livraisons ?", "faq-2-a": "Le service est destiné aux livraisons dans la zone de couverture jusqu'à 13 km.",
 "faq-3-q": "Comment connaître le prix ?", "faq-3-a": "Le prix est calculé automatiquement en fonction du kilométrage exact et de l'heure.",
-"faq-4-q": "Quels sont vos horaires ?", "faq-4-a": "Lundi au vendredi : 16h00 à 00h00.<br>Samedi : 12h00 à 00h00.<br>Dimanche : 10h00 à 00h00.",
+"faq-4-q": "Quels sont vos horaires ?", "faq-4-a": "Réception et confirmation des commandes : tous les jours de 08h00 à 23h00.<br>Livraisons : lundi au vendredi de 16h00 à 00h00, samedi de 12h00 à 00h00 et dimanche de 10h00 à 00h00.",
 "footer-text": "Service de coursier à moto à Kénitra.",
 "acc-btn": "📊 Afficher le détail des tarifs", "th-dist": "Distance", "th-eve": "Soir (17h - 21h)", "th-night": "Nuit (21h - 02h)", "tbl-na": "Non disponible (> 13 km)"
 },
@@ -442,8 +443,8 @@ dar: {
 }
 };
 
-// Horaires officiels JibLi-vraison (heure du Maroc)
-const SERVICE_HOURS = {0:10, 1:16, 2:16, 3:16, 4:16, 5:16, 6:12};
+// Horaires JibLi-vraison — heure du Maroc
+const DELIVERY_START_HOURS = {0:10, 1:16, 2:16, 3:16, 4:16, 5:16, 6:12};
 
 function getMoroccoClock() {
   const parts = new Intl.DateTimeFormat("en-GB", {
@@ -458,31 +459,40 @@ function getMoroccoClock() {
   return {day:days[values.weekday], hour:Number(values.hour), minute:Number(values.minute)};
 }
 
-function isServiceOpen() {
+// La réception et la confirmation des commandes sont assurées chaque jour de 08h à 23h.
+function isOrderIntakeOpen() {
   const now = getMoroccoClock();
-  return now.hour >= SERVICE_HOURS[now.day] && now.hour < 24;
+  return now.hour >= 8 && now.hour < 23;
+}
+
+function isDeliveryOpen() {
+  const now = getMoroccoClock();
+  return now.hour >= DELIVERY_START_HOURS[now.day] && now.hour < 24;
 }
 
 function updateServiceAvailability() {
-  const open = isServiceOpen();
+  const intakeOpen = isOrderIntakeOpen();
+  const deliveryOpen = isDeliveryOpen();
   const note = document.getElementById("service-hours");
   if (note) {
-    note.textContent = open
-      ? "Service ouvert — vous pouvez envoyer votre demande."
-      : "Service fermé actuellement. Consultez nos horaires avant de commander.";
-    note.style.color = open ? "#25d366" : "#ffb900";
+    note.textContent = !intakeOpen
+      ? "Réception des commandes fermée. Nous recevons les demandes tous les jours de 08h00 à 23h00."
+      : deliveryOpen
+        ? "Commandes ouvertes et service de livraison disponible actuellement."
+        : "Commandes ouvertes : votre demande peut être confirmée et programmée pour le prochain créneau de livraison.";
+    note.style.color = intakeOpen ? (deliveryOpen ? "#25d366" : "#ffb900") : "#ffb900";
   }
   document.querySelectorAll('a[href*="wa.me"]').forEach(link => {
-    link.classList.toggle("service-closed", !open);
-    link.setAttribute("aria-disabled", String(!open));
+    link.classList.toggle("service-closed", !intakeOpen);
+    link.setAttribute("aria-disabled", String(!intakeOpen));
   });
 }
 
 document.addEventListener("click", function(event) {
   const link = event.target.closest('a[href*="wa.me"]');
-  if (link && !isServiceOpen()) {
+  if (link && !isOrderIntakeOpen()) {
     event.preventDefault();
-    alert("JibLi-vraison est fermé actuellement.\\nHoraires :\\nLundi au vendredi : 16h00–00h00\\nSamedi : 12h00–00h00\\nDimanche : 10h00–00h00");
+    alert("La réception des commandes est fermée.\\nHoraires : tous les jours de 08h00 à 23h00.\\nLes livraisons suivent un planning distinct.");
     updateServiceAvailability();
   }
 }, true);

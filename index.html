@@ -20,6 +20,8 @@ nav{height:70px;display:flex;align-items:center;justify-content:space-between;ga
 .brand span{color:#ffb900}
 .links{display:flex;gap:20px;font-size:14px}
 .btn{display:inline-block;padding:10px 14px;border-radius:11px;font-weight:800;cursor:pointer;border:none;font-size:13px;white-space:nowrap}
+.btn.service-closed{opacity:.55;filter:grayscale(1);cursor:not-allowed}
+#service-hours{color:#ffb900;font-weight:700;margin:8px 0 14px;text-align:center}
 .yellow{background:#ffb900;color:#111}
 .dark{background:#171717;border:1px solid #555;color:#fff}
 
@@ -181,8 +183,8 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <rect width="420" height="150" fill="#ffb900" rx="14"/>
 <text x="24" y="34" id="svg-disp-title" font-weight="900" font-size="20" fill="#111" text-anchor="start" data-key="svg-disp-title">DISPONIBLE À KÉNITRA</text>
 <line x1="24" y1="46" x2="396" y2="46" stroke="#111" stroke-width="1.5" opacity="0.3"/>
-<text x="24" y="82" id="svg-disp-1" font-weight="bold" font-size="16" fill="#111" text-anchor="start" data-key="svg-disp-1">🕒 Lun - Sam : 17h00 à 02h00</text>
-<text x="24" y="118" id="svg-disp-2" font-weight="bold" font-size="16" fill="#111" text-anchor="start" data-key="svg-disp-2">🕒 Dimanche : 10h00 à 02h00</text>
+<text x="24" y="82" id="svg-disp-1" font-weight="bold" font-size="16" fill="#111" text-anchor="start" data-key="svg-disp-1">🕒 Lun - Ven : 16h00 à 00h00</text>
+<text x="24" y="118" id="svg-disp-2" font-weight="bold" font-size="16" fill="#111" text-anchor="start" data-key="svg-disp-2">🕒 Sam : 12h00 | Dim : 10h00 à 00h00</text>
 </g>
 
 <!-- Badges -->
@@ -314,6 +316,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 </div>
 
 <div class="result" id="result">— DH</div>
+<p id="service-hours" aria-live="polite"></p>
 <p id="status" style="color:#aaa;margin-bottom:15px;" data-key="status-default">Sélectionnez les lieux pour afficher le tarif.</p>
 
 <a id="order" class="btn yellow" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison" style="width:100%;text-align:center;" data-key="btn-wa">Commander sur WhatsApp</a>
@@ -354,7 +357,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <div class="whyitem"><span>⚡</span><h3 data-key="why-1-t">Rapidité</h3><small data-key="why-1-d">Livraison directe à moto dans Kénitra.</small></div>
 <div class="whyitem"><span>🎯</span><h3 data-key="why-2-t">Transparence</h3><small data-key="why-2-d">Calcul clair du tarif avant commande.</small></div>
 <div class="whyitem"><span>📱</span><h3 data-key="why-3-t">Simplicité</h3><small data-key="why-3-d">Tout se fait en quelques clics via WhatsApp.</small></div>
-<div class="whyitem"><span>🌙</span><h3 data-key="why-4-t">Disponibilité</h3><small data-key="why-4-d">Service disponible jusqu'à 02h00 du matin.</small></div>
+<div class="whyitem"><span>🌙</span><h3 data-key="why-4-t">Disponibilité</h3><small data-key="why-4-d">Horaires : Lun-Ven 16h-00h, Sam 12h-00h, Dim 10h-00h.</small></div>
 </div></div></section>
 
 <section><div class="c"><div class="cta"><div><h2 data-key="cta-t">Besoin d'une livraison à Kénitra ?</h2><p data-key="cta-d">Contactez-nous directement sur WhatsApp pour votre commande.</p></div><a class="btn" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison" data-key="cta-b">Commander maintenant</a></div></div></section>
@@ -363,7 +366,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 <details><summary data-key="faq-1-q">Comment commander ?</summary><div class="answer" data-key="faq-1-a">Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.</div></details>
 <details><summary data-key="faq-2-q">Où faites-vous les livraisons ?</summary><div class="answer" data-key="faq-2-a">Le service est destiné aux livraisons dans la zone de couverture jusqu'à 13 km.</div></details>
 <details><summary data-key="faq-3-q">Comment connaître le prix ?</summary><div class="answer" data-key="faq-3-a">Le prix est calculé automatiquement en fonction du kilométrage exact et de l'heure actuelle.</div></details>
-<details><summary data-key="faq-4-q">Quels sont vos horaires ?</summary><div class="answer" data-key="faq-4-a">Du Lundi au Samedi : 17h00 à 02h00.<br>Le Dimanche : 10h00 à 02h00.</div></details>
+<details><summary data-key="faq-4-q">Quels sont vos horaires ?</summary><div class="answer" data-key="faq-4-a">Lundi au vendredi : 16h00 à 00h00.<br>Samedi : 12h00 à 00h00.<br>Dimanche : 10h00 à 00h00.</div></details>
 </div></div></section>
 
 <footer><div class="c"><b>JibLi-vraison</b> — <span data-key="footer-text">Service de coursier à moto à Kénitra.</span> <span style="float:right">© 2026</span></div></footer>
@@ -414,12 +417,12 @@ fr: {
 "why-1-t": "Rapidité", "why-1-d": "Livraison directe à moto dans Kénitra.",
 "why-2-t": "Transparence", "why-2-d": "Calcul clair du tarif avant commande.",
 "why-3-t": "Simplicité", "why-3-d": "Tout se fait en quelques clics via WhatsApp.",
-"why-4-t": "Disponibilité", "why-4-d": "Service disponible jusqu'à 02h00 du matin.",
+"why-4-t": "Disponibilité", "why-4-d": "Horaires : Lun-Ven 16h-00h, Sam 12h-00h, Dim 10h-00h.",
 "cta-t": "Besoin d'une livraison à Kénitra ?", "cta-d": "Contactez-nous directement sur WhatsApp pour votre commande.", "cta-b": "Commander maintenant",
 "faq-1-q": "Comment commander ?", "faq-1-a": "Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.",
 "faq-2-q": "Où faites-vous les livraisons ?", "faq-2-a": "Le service est destiné aux livraisons dans la zone de couverture jusqu'à 13 km.",
 "faq-3-q": "Comment connaître le prix ?", "faq-3-a": "Le prix est calculé automatiquement en fonction du kilométrage exact et de l'heure.",
-"faq-4-q": "Quels sont vos horaires ?", "faq-4-a": "Du Lundi au Samedi : 17h00 à 02h00.<br>Le Dimanche : 10h00 à 02h00.",
+"faq-4-q": "Quels sont vos horaires ?", "faq-4-a": "Lundi au vendredi : 16h00 à 00h00.<br>Samedi : 12h00 à 00h00.<br>Dimanche : 10h00 à 00h00.",
 "footer-text": "Service de coursier à moto à Kénitra.",
 "acc-btn": "📊 Afficher le détail des tarifs", "th-dist": "Distance", "th-eve": "Soir (17h - 21h)", "th-night": "Nuit (21h - 02h)", "tbl-na": "Non disponible (> 13 km)"
 },
@@ -439,8 +442,55 @@ dar: {
 }
 };
 
+// Horaires officiels JibLi-vraison (heure du Maroc)
+const SERVICE_HOURS = {0:10, 1:16, 2:16, 3:16, 4:16, 5:16, 6:12};
+
+function getMoroccoClock() {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Africa/Casablanca",
+    weekday: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23"
+  }).formatToParts(new Date());
+  const values = Object.fromEntries(parts.map(p => [p.type, p.value]));
+  const days = {Sun:0, Mon:1, Tue:2, Wed:3, Thu:4, Fri:5, Sat:6};
+  return {day:days[values.weekday], hour:Number(values.hour), minute:Number(values.minute)};
+}
+
+function isServiceOpen() {
+  const now = getMoroccoClock();
+  return now.hour >= SERVICE_HOURS[now.day] && now.hour < 24;
+}
+
+function updateServiceAvailability() {
+  const open = isServiceOpen();
+  const note = document.getElementById("service-hours");
+  if (note) {
+    note.textContent = open
+      ? "Service ouvert — vous pouvez envoyer votre demande."
+      : "Service fermé actuellement. Consultez nos horaires avant de commander.";
+    note.style.color = open ? "#25d366" : "#ffb900";
+  }
+  document.querySelectorAll('a[href*="wa.me"]').forEach(link => {
+    link.classList.toggle("service-closed", !open);
+    link.setAttribute("aria-disabled", String(!open));
+  });
+}
+
+document.addEventListener("click", function(event) {
+  const link = event.target.closest('a[href*="wa.me"]');
+  if (link && !isServiceOpen()) {
+    event.preventDefault();
+    alert("JibLi-vraison est fermé actuellement.\\nHoraires :\\nLundi au vendredi : 16h00–00h00\\nSamedi : 12h00–00h00\\nDimanche : 10h00–00h00");
+    updateServiceAvailability();
+  }
+}, true);
+
 window.onload = function() {
     initGoogleMap();
+    updateServiceAvailability();
+    setInterval(updateServiceAvailability, 60000);
 };
 
 function initGoogleMap() {

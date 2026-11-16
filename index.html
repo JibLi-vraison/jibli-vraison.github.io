@@ -119,6 +119,9 @@ list-style: none; box-shadow: 0 8px 20px rgba(0,0,0,0.8);
 .schedule-fields label:not(.schedule-option){display:block;font-weight:700;font-size:13px;margin:0 0 6px;color:#ffb900}
 .schedule-fields input[type="date"],.schedule-fields input[type="time"]{min-width:0;width:100%;color-scheme:dark}
 .schedule-hint{margin:8px 0 0;color:#aaa;font-size:12px;text-align:left}
+.schedule-feedback{display:none;margin:10px 0 0;padding:10px 12px;border-radius:9px;font-size:13px;font-weight:700;text-align:left}
+.schedule-feedback.error{display:block;background:#351818;border:1px solid #d94a4a;color:#ff7777}
+.schedule-feedback.success{display:block;background:#14291d;border:1px solid #27834a;color:#69d391}
 @media(max-width:520px){.schedule-datetime{grid-template-columns:1fr}}
 .map-wrapper { position: relative; width: 100%; height: 350px; margin-top: 10px; border-radius: 15px; overflow: hidden; border: 2px solid #ffb900; }
 #map { width: 100%; height: min(72vh, 720px); z-index: 1; }
@@ -337,6 +340,7 @@ border: 2px solid #ffb900; transition: transform 0.2s;
       </div>
     </div>
     <p class="schedule-hint">Choisissez la date et l’heure de votre livraison. Le tarif sera calculé selon le créneau choisi.</p>
+    <p id="schedule-feedback" class="schedule-feedback" role="status" aria-live="polite"></p>
   </div>
 </div>
 
@@ -821,10 +825,29 @@ function getMapLink(coord, inputVal) {
 function onDeliveryModeChange() {
     const mode = document.querySelector('input[name="delivery-mode"]:checked')?.value || "now";
     document.getElementById("advance-fields").hidden = mode !== "later";
+    const feedback = document.getElementById("schedule-feedback");
+    if (feedback) { feedback.textContent = ""; feedback.className = "schedule-feedback"; }
     if (depCoord && destCoord) calculateRouteAndPrice();
 }
 
 function onDeliveryScheduleChange() {
+    const feedback = document.getElementById("schedule-feedback");
+    const date = document.getElementById("delivery-date").value;
+    const time = document.getElementById("delivery-time").value;
+    if (!date || !time) {
+        feedback.textContent = "";
+        feedback.className = "schedule-feedback";
+        if (depCoord && destCoord) calculateRouteAndPrice();
+        return;
+    }
+    const slot = getSelectedDeliverySlot();
+    if (!slot.valid) {
+        feedback.textContent = slot.message;
+        feedback.className = "schedule-feedback error";
+    } else {
+        feedback.textContent = "Créneau disponible pour votre demande.";
+        feedback.className = "schedule-feedback success";
+    }
     if (depCoord && destCoord) calculateRouteAndPrice();
 }
 

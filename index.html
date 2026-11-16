@@ -476,26 +476,16 @@ function updateServiceAvailability() {
   const note = document.getElementById("service-hours");
   if (note) {
     note.textContent = !intakeOpen
-      ? "Réception des commandes fermée. Nous recevons les demandes tous les jours de 08h00 à 23h00."
+      ? "Vous pouvez nous envoyer votre demande WhatsApp à tout moment. Les demandes sont traitées de 08h00 à 23h00."
       : deliveryOpen
-        ? "Commandes ouvertes et service de livraison disponible actuellement."
-        : "Commandes ouvertes : votre demande peut être confirmée et programmée pour le prochain créneau de livraison.";
-    note.style.color = intakeOpen ? (deliveryOpen ? "#25d366" : "#ffb900") : "#ffb900";
+        ? "Réception des commandes ouverte et service de livraison disponible."
+        : "Réception des commandes ouverte. Vous pouvez réserver maintenant pour le prochain créneau de livraison.";
+    note.style.color = intakeOpen && deliveryOpen ? "#25d366" : "#ffb900";
   }
-  document.querySelectorAll('a[href*="wa.me"]').forEach(link => {
-    link.classList.toggle("service-closed", !intakeOpen);
-    link.setAttribute("aria-disabled", String(!intakeOpen));
-  });
 }
 
-document.addEventListener("click", function(event) {
-  const link = event.target.closest('a[href*="wa.me"]');
-  if (link && !isOrderIntakeOpen()) {
-    event.preventDefault();
-    alert("La réception des commandes est fermée.\\nHoraires : tous les jours de 08h00 à 23h00.\\nLes livraisons suivent un planning distinct.");
-    updateServiceAvailability();
-  }
-}, true);
+// Les liens WhatsApp restent toujours accessibles : un client peut réserver à l'avance,
+// notamment pour une livraison le lendemain. Les demandes sont traitées de 08h00 à 23h00.
 
 window.onload = function() {
     initGoogleMap();

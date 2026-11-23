@@ -189,8 +189,8 @@ nav{height:82px;gap:18px}
 .scooter-stage{height:210px;position:relative;display:grid;place-items:center;overflow:hidden}
 .scooter-ring{position:absolute;width:190px;height:190px;border:1px solid rgba(255,189,24,.3);border-radius:50%;box-shadow:0 0 0 20px rgba(255,189,24,.035),0 0 0 42px rgba(255,189,24,.025)}
 .scooter-icon{position:relative;font-size:clamp(105px,13vw,155px);filter:drop-shadow(0 15px 15px rgba(0,0,0,.55));transform:translateY(2px)}
-.delivery-tag{position:absolute;right:12%;top:34px;display:flex;align-items:center;gap:6px;padding:9px 12px;border-radius:11px;background:linear-gradient(135deg,#ffd45b,#ffb900);color:#17130a;box-shadow:0 8px 25px rgba(255,185,0,.2);font-size:12px}
-.delivery-tag span{font-size:17px}.delivery-tag b{letter-spacing:.1px;font-size:11px;white-space:nowrap}
+.delivery-tag{position:absolute;right:13%;top:70px;width:116px;height:62px;display:flex;align-items:center;justify-content:center;padding:5px 7px;border:2px solid #d88d00;border-radius:8px 8px 5px 5px;background:linear-gradient(145deg,#ffd45b,#ffb900 65%,#e99a00);color:#17130a;box-shadow:0 9px 22px rgba(255,185,0,.22);z-index:2}
+.delivery-tag:before{content:"";position:absolute;left:-7px;bottom:-7px;width:12px;height:8px;border-radius:2px;background:#d88d00}.delivery-tag b{font-size:11px;line-height:1.15;letter-spacing:-.25px;white-space:nowrap;font-weight:950;text-align:center}
 .speed-line{position:absolute;height:2px;border-radius:3px;background:linear-gradient(90deg,transparent,var(--gold));opacity:.8;left:7%}
 .speed-line-one{width:24%;top:58%}.speed-line-two{width:15%;top:65%;left:13%;opacity:.45}
 .service-hours-card{padding:17px 18px;border:1px solid rgba(255,189,24,.23);border-radius:17px;background:rgba(7,8,10,.78)}
@@ -253,7 +253,7 @@ footer{padding:32px 0;border-top:1px solid var(--line);color:#858b95;font-size:1
   .hero-proof{gap:12px;margin-top:23px;font-size:10px}
   .hero-visual{padding:17px;border-radius:21px}.scooter-stage{height:170px}
   .scooter-ring{width:150px;height:150px}.scooter-icon{font-size:115px}
-  .delivery-tag{right:7%;top:25px}
+  .delivery-tag{right:8%;top:58px;width:104px;height:56px}.delivery-tag b{font-size:10px}
   section{padding:56px 0}.cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
   .card,.step,.whyitem{padding:17px;border-radius:15px}.card h3{font-size:14px}.card p{font-size:12px}
   .icon{width:44px;height:44px;font-size:22px}
@@ -318,7 +318,7 @@ footer{padding:32px 0;border-top:1px solid var(--line);color:#858b95;font-size:1
     <div class="scooter-stage" aria-hidden="true">
       <div class="scooter-ring"></div>
       <div class="scooter-icon">🛵</div>
-      <div class="delivery-tag"><span>📦</span><b>JibLi-vraison</b></div>
+      <div class="delivery-tag" aria-label="Coffre de livraison JibLi-vraison"><b>JibLi-vraison</b></div>
       <div class="speed-line speed-line-one"></div><div class="speed-line speed-line-two"></div>
     </div>
     <div class="service-hours-card" id="service-hours-panel">

@@ -361,7 +361,7 @@ footer{padding:32px 0;border-top:1px solid var(--line);color:#858b95;font-size:1
 <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dep">🚦🟢 Départ</label>
 <div class="input-group">
 <div class="input-wrapper">
-<input type="text" id="input-depart" class="search-input" placeholder="Ex: Gare Kenitra, Marjane ou lien Maps..." autocomplete="off" oninput="onSearchInput(this.value, true)">
+<input type="text" id="input-depart" class="search-input" data-placeholder="placeholder-depart" placeholder="Ex: Gare Kenitra, Marjane ou lien Maps..." autocomplete="off" oninput="onSearchInput(this.value, true)">
 <button type="button" class="clear-btn" id="clear-depart" onclick="clearField(true)">✕</button>
 </div>
 <button type="button" class="gps-btn" data-key="gps" onclick="useCurrentLocation(true)">🎯 GPS</button>
@@ -373,7 +373,7 @@ footer{padding:32px 0;border-top:1px solid var(--line);color:#858b95;font-size:1
 <label style="font-weight:700;display:block;margin-bottom:5px" data-key="lbl-dest">🚦🔴 Destination</label>
 <div class="input-group">
 <div class="input-wrapper">
-<input type="text" id="input-dest" class="search-input" placeholder="Ex: Café, Residence ou lien Maps..." autocomplete="off" oninput="onSearchInput(this.value, false)">
+<input type="text" id="input-dest" class="search-input" data-placeholder="placeholder-dest" placeholder="Ex: Café, Residence ou lien Maps..." autocomplete="off" oninput="onSearchInput(this.value, false)">
 <button type="button" class="clear-btn" id="clear-dest" onclick="clearField(false)">✕</button>
 </div>
 <button type="button" class="gps-btn" data-key="gps" onclick="useCurrentLocation(false)">🎯 GPS</button>
@@ -384,8 +384,8 @@ footer{padding:32px 0;border-top:1px solid var(--line);color:#858b95;font-size:1
 
 <div class="schedule-fields">
   <div class="schedule-choice">
-    <label class="schedule-option"><input type="radio" name="delivery-mode" value="now" checked onchange="onDeliveryModeChange()"> Livraison sur place</label>
-    <label class="schedule-option"><input type="radio" name="delivery-mode" value="later" onchange="onDeliveryModeChange()"> Livraison à l’avance</label>
+    <label class="schedule-option"><input type="radio" name="delivery-mode" value="now" checked onchange="onDeliveryModeChange()"> <span data-key="mode-now">Livraison sur place</span></label>
+    <label class="schedule-option"><input type="radio" name="delivery-mode" value="later" onchange="onDeliveryModeChange()"> <span data-key="mode-later">Livraison à l’avance</span></label>
   </div>
   <div id="advance-fields" hidden>
     <div class="schedule-datetime">
@@ -496,6 +496,7 @@ const kenitraCoords = [
 
 const translations = {
 fr: {
+"placeholder-depart":"Ex. : Gare de Kénitra, Marjane ou lien Google Maps...","placeholder-dest":"Ex. : Café, résidence ou lien Google Maps...",
 "nav-services":"Services","nav-tarifs":"Tarifs","nav-comment":"Comment ça marche","nav-pourquoi":"Pourquoi nous","nav-faq":"FAQ",
 "hero-eyebrow":"SERVICE DE LIVRAISON À KÉNITRA","hero-title":"Vos livraisons, <em>en toute simplicité.</em>","hero-lead":"Colis, achats, repas et courses du quotidien : votre coursier à moto vous accompagne à Kénitra.","hero-promise":"Quand les autres s’arrêtent, JibLi-vraison continue.","btn-hero-cmd":"Commander ma livraison","hero-proof-1":"Prix estimé avant commande","hero-proof-2":"Commande via WhatsApp","hero-visual-label":"VOTRE COURSIER À KÉNITRA","hero-hours-overline":"DISPONIBILITÉ","svg-disp-title":"Nos horaires","hero-wa-label":"Messages WhatsApp","hero-confirm-label":"Confirmation des commandes","hero-delivery-label":"HORAIRES DE LIVRAISON","hero-weekdays":"Lundi – Vendredi","hero-saturday":"Samedi","hero-sunday":"Dimanche",
 "srv-title":"Tous vos besoins, une seule livraison","srv-sub":"Un service local pensé pour Kénitra.","srv-1-t":"E-commerce","srv-1-d":"Livraison de vos commandes en ligne.","srv-2-t":"Restaurants","srv-2-d":"Vos repas livrés rapidement.","srv-3-t":"Pharmacie","srv-3-d":"Produits de pharmacie selon les conditions applicables.","srv-4-t":"Courses diverses","srv-4-d":"Petits achats et besoins du quotidien.","srv-5-t":"Petits colis","srv-5-d":"Un service de proximité pour vos petits envois.","srv-6-t":"Service nocturne","srv-6-d":"Disponible en soirée et nuit.",
@@ -508,6 +509,7 @@ fr: {
 "gps":"🎯 GPS","mode-now":"Livraison sur place","mode-later":"Livraison à l’avance","date-label":"Date souhaitée","time-label":"Heure souhaitée","schedule-hint":"Choisissez la date et l’heure de votre livraison. Le tarif sera calculé selon le créneau choisi.","view-hours":"Voir les horaires ↑","email":"Email","header-whatsapp":"WhatsApp","phone-label":"Appeler"
 },
 ar: {
+"placeholder-depart":"مثال: محطة القنيطرة، مرجان أو رابط خرائط Google...","placeholder-dest":"مثال: مقهى، إقامة أو رابط خرائط Google...",
 "nav-services":"الخدمات","nav-tarifs":"الأسعار","nav-comment":"كيف نشتغل","nav-pourquoi":"لماذا نحن","nav-faq":"أسئلة شائعة",
 "hero-eyebrow":"خدمة التوصيل بالقنيطرة","hero-title":"توصيلاتك، <em>بكل سهولة.</em>","hero-lead":"الطرود والمشتريات والوجبات واحتياجاتك اليومية: ساعي التوصيل بالدراجة النارية رهن إشارتك بالقنيطرة.","hero-promise":"عندما تتوقف الخدمات الأخرى، تواصل JibLi-vraison العمل.","btn-hero-cmd":"اطلب التوصيل","hero-proof-1":"السعر التقديري قبل الطلب","hero-proof-2":"الطلب عبر واتساب","hero-visual-label":"ساعي التوصيل الخاص بك بالقنيطرة","hero-hours-overline":"أوقات الخدمة","svg-disp-title":"أوقات العمل","hero-wa-label":"رسائل واتساب","hero-confirm-label":"تأكيد الطلبات","hero-delivery-label":"أوقات التوصيل","hero-weekdays":"الاثنين – الجمعة","hero-saturday":"السبت","hero-sunday":"الأحد",
 "srv-title":"كل احتياجاتك في خدمة توصيل واحدة","srv-sub":"خدمة محلية مصممة لمدينة القنيطرة.","srv-1-t":"التجارة الإلكترونية","srv-1-d":"توصيل مشترياتك وطلباتك عبر الإنترنت.","srv-2-t":"المطاعم","srv-2-d":"توصيل وجباتك إلى غاية باب منزلك.","srv-3-t":"الصيدليات","srv-3-d":"توصيل منتجات الصيدلية وفق الشروط المعمول بها.","srv-4-t":"مشتريات متنوعة","srv-4-d":"مشتريات صغيرة واحتياجاتك اليومية.","srv-5-t":"طرود صغيرة","srv-5-d":"خدمة محلية لإرسال طرودك الصغيرة.","srv-6-t":"خدمة مسائية وليلية","srv-6-d":"متوفر خلال الفترة المسائية والليلية.",
@@ -520,6 +522,7 @@ ar: {
 "gps":"🎯 تحديد موقعي","mode-now":"التوصيل الآن","mode-later":"التوصيل في موعد لاحق","date-label":"التاريخ المطلوب","time-label":"الوقت المطلوب","schedule-hint":"اختر تاريخ ووقت التوصيل. سيتم حساب السعر حسب الموعد المحدد.","view-hours":"عرض أوقات التوصيل ↑","email":"البريد الإلكتروني","header-whatsapp":"واتساب","phone-label":"اتصل بنا"
 },
 dar: {
+"placeholder-depart":"مثال: گار القنيطرة، مرجان ولا رابط Google Maps...","placeholder-dest":"مثال: قهوة، إقامة ولا رابط Google Maps...",
 "nav-services":"الخدمات","nav-tarifs":"الأثمنة","nav-comment":"كيفاش خدامة الخدمة","nav-pourquoi":"علاش تختارنا","nav-faq":"أسئلة شائعة",
 "hero-eyebrow":"خدمة التوصيل فالقنيطرة","hero-title":"التوصيل ديالك، <em>بكل سهولة.</em>","hero-lead":"الطرود، الشرا، الماكلة وقضيات النهار: ساعي التوصيل بالموتور رهن الإشارة ديالك فالقنيطرة.","hero-promise":"ملي كيوقفو الآخرين، JibLi-vraison كتكمل.","btn-hero-cmd":"طلب التوصيل ديالك","hero-proof-1":"الثمن كيبان قبل الطلب","hero-proof-2":"الطلب عبر واتساب","hero-visual-label":"ساعي التوصيل ديالك فالقنيطرة","hero-hours-overline":"أوقات الخدمة","svg-disp-title":"أوقات التوصيل","hero-wa-label":"رسائل واتساب","hero-confirm-label":"تأكيد الطلبات","hero-delivery-label":"أوقات التوصيل","hero-weekdays":"الاثنين – الجمعة","hero-saturday":"السبت","hero-sunday":"الأحد",
 "srv-title":"كاع احتياجاتك ف تسخيرة وحدة","srv-sub":"خدمة محلية مصاوبة للقنيطرة.","srv-1-t":"الشراء من الإنترنت","srv-1-d":"كنوصلو ليك الطلبات ديالك من الإنترنت.","srv-2-t":"المطاعم","srv-2-d":"الماكلة ديالك حتى لباب الدار.","srv-3-t":"الصيدلية","srv-3-d":"توصيل منتجات الصيدلية حسب الشروط المعمول بها.","srv-4-t":"قضيات متنوعة","srv-4-d":"مشتريات صغيرة والحوايج اليومية.","srv-5-t":"الطرود الصغيرة","srv-5-d":"كنعاونوك تصيفط الطرود الصغيرة ديالك.","srv-6-t":"التوصيل فالليل","srv-6-d":"الخدمة متوفرة فالعشية وبالليل.",

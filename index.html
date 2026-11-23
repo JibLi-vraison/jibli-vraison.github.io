@@ -152,6 +152,121 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 @media (max-width: 380px) {
   #map { height: calc(100dvh - 185px) !important; min-height: 400px; }
 }
+
+/* Premium black & gold visual system */
+:root{--gold:#ffbd18;--gold-deep:#e99a00;--ink:#08090b;--panel:#111419;--muted:#a6abb4;--line:rgba(255,255,255,.09)}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;background:var(--ink);color:#f7f7f8;letter-spacing:.005em}
+.c{max-width:1180px;width:min(92%,1180px)}
+header{background:rgba(8,9,11,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+nav{height:82px;gap:18px}
+.brand img{width:205px;max-height:64px}
+.links{gap:clamp(12px,1.8vw,25px);font-size:13px;font-weight:650;color:#c7c9ce}
+.links a{transition:color .2s}.links a:hover{color:var(--gold)}
+.btn{padding:13px 18px;border-radius:12px;font-size:13px;transition:transform .2s,box-shadow .2s,background .2s}
+.btn:hover{transform:translateY(-2px)}
+.yellow{background:linear-gradient(135deg,#ffd45b 0%,#ffb900 55%,#ed9900 100%);color:#15110a;box-shadow:0 8px 24px rgba(255,185,0,.18)}
+.dark{background:#15181e;border:1px solid #353a43;color:#f4f4f5}
+.lang-select{background:#15181e;color:var(--gold);border:1px solid #46403a;padding:8px 9px;border-radius:9px;font-size:12px}
+.hero{position:relative;isolation:isolate;overflow:hidden;padding:76px 0 68px;background:radial-gradient(ellipse at 78% 22%,rgba(255,185,0,.12),transparent 34%),linear-gradient(180deg,#0c0e12 0%,#090a0c 100%)}
+.hero:before{content:"";position:absolute;inset:0;z-index:-1;opacity:.18;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(to bottom,black,transparent 90%)}
+.hero-layout{display:grid;grid-template-columns:1.03fr .97fr;align-items:center;gap:clamp(34px,6vw,82px)}
+.hero-copy{padding:8px 0}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:9px;padding:9px 13px;border:1px solid rgba(255,189,24,.25);border-radius:99px;background:rgba(255,189,24,.07);color:#f6c64d;font-size:11px;font-weight:800;letter-spacing:1.25px}
+.eyebrow-dot,.hours-live-dot{width:7px;height:7px;border-radius:50%;background:#ffbd18;box-shadow:0 0 13px #ffbd18}
+.hero-copy h1{font-size:clamp(42px,5.3vw,68px);line-height:1.04;letter-spacing:-2.7px;margin:25px 0 20px;font-weight:850;max-width:650px}
+.hero-copy h1 em{font-style:normal;color:var(--gold)}
+.hero-lead{font-size:17px;line-height:1.75;color:#b9bdc5;max-width:560px;margin:0 0 13px}
+.hero-promise{font-size:15px;color:#fff;font-weight:750;margin:0 0 27px}
+.hero-actions{display:flex;justify-content:flex-start;gap:12px;flex-wrap:wrap}
+.hero-main-btn{padding:16px 21px;font-size:14px}.hero-main-btn span{font-size:17px;margin-left:8px}
+.hero-call-btn{padding:15px 18px}
+.hero-proof{display:flex;gap:22px;flex-wrap:wrap;margin-top:31px;color:#9da2ac;font-size:12px}
+.hero-proof span{display:flex;align-items:center;gap:7px}.hero-proof b{color:var(--gold);font-size:10px;letter-spacing:1px}
+.hero-visual{position:relative;isolation:isolate;min-width:0;padding:25px;border:1px solid rgba(255,255,255,.1);border-radius:27px;background:linear-gradient(145deg,rgba(28,30,35,.97),rgba(13,15,19,.98));box-shadow:0 28px 80px rgba(0,0,0,.4)}
+.visual-glow{position:absolute;width:290px;height:290px;top:15px;right:5%;z-index:-1;border-radius:50%;background:rgba(255,185,0,.13);filter:blur(50px)}
+.visual-kicker{display:flex;align-items:center;gap:9px;color:#c5c8ce;font-size:10px;letter-spacing:1.4px;font-weight:800}
+.visual-kicker span:first-child{font-size:18px}
+.scooter-stage{height:210px;position:relative;display:grid;place-items:center;overflow:hidden}
+.scooter-ring{position:absolute;width:190px;height:190px;border:1px solid rgba(255,189,24,.3);border-radius:50%;box-shadow:0 0 0 20px rgba(255,189,24,.035),0 0 0 42px rgba(255,189,24,.025)}
+.scooter-icon{position:relative;font-size:clamp(105px,13vw,155px);filter:drop-shadow(0 15px 15px rgba(0,0,0,.55));transform:translateY(2px)}
+.delivery-tag{position:absolute;right:12%;top:34px;display:flex;align-items:center;gap:6px;padding:9px 12px;border-radius:11px;background:linear-gradient(135deg,#ffd45b,#ffb900);color:#17130a;box-shadow:0 8px 25px rgba(255,185,0,.2);font-size:12px}
+.delivery-tag span{font-size:17px}.delivery-tag b{letter-spacing:.3px}
+.speed-line{position:absolute;height:2px;border-radius:3px;background:linear-gradient(90deg,transparent,var(--gold));opacity:.8;left:7%}
+.speed-line-one{width:24%;top:58%}.speed-line-two{width:15%;top:65%;left:13%;opacity:.45}
+.service-hours-card{padding:17px 18px;border:1px solid rgba(255,189,24,.23);border-radius:17px;background:rgba(7,8,10,.78)}
+.hours-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.hours-overline{font-size:9px;letter-spacing:1.6px;color:var(--gold);font-weight:850}
+.hours-card-head h2{font-size:18px;margin:4px 0 0}
+.hours-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:7px 0;color:#aeb3bc;font-size:12px}
+.hours-row strong{color:#fff;font-size:12px;white-space:nowrap}
+.hours-divider{height:1px;background:var(--line);margin:7px 0 11px}
+.hours-delivery-title{font-size:9px;font-weight:850;letter-spacing:1.2px;color:var(--gold);margin-bottom:4px}
+.hours-status{font-size:10px;line-height:1.5;color:#858b95;margin:8px 0 0}
+section{padding:76px 0}
+section:nth-of-type(odd):not(.hero){background:#0c0e12}
+.title{text-align:center;font-size:clamp(27px,3vw,38px);letter-spacing:-1.1px;margin:0 0 12px;font-weight:800}
+.sub{text-align:center;color:#969ca6;line-height:1.7;margin:0 auto 34px;max-width:620px;font-size:14px}
+.cards,.steps,.why{gap:17px}
+.cards{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card,.step,.whyitem,.tarif,.faq details{background:linear-gradient(145deg,#15191f,#101318);border:1px solid #292e36;border-radius:18px;padding:25px;box-shadow:0 10px 30px rgba(0,0,0,.12)}
+.card{transition:transform .22s,border-color .22s,background .22s}
+.card:hover{transform:translateY(-5px);border-color:rgba(255,189,24,.5);background:linear-gradient(145deg,#1b1e24,#12151a)}
+.icon{width:52px;height:52px;display:grid;place-items:center;border-radius:15px;background:rgba(255,189,24,.1);border:1px solid rgba(255,189,24,.18);font-size:25px}
+.card h3,.step h3,.whyitem h3{font-size:16px;margin:17px 0 8px}
+.card p,.step p,.whyitem small,.answer{color:#9da3ad;line-height:1.7;font-size:13px}
+.steps{grid-template-columns:repeat(4,minmax(0,1fr))}
+.step{position:relative;overflow:hidden}.step:after{content:"";position:absolute;right:-20px;bottom:-35px;width:100px;height:100px;border-radius:50%;background:rgba(255,189,24,.05)}
+.num{width:38px;height:38px;background:linear-gradient(135deg,#ffdb76,#ffb900);color:#17130a;border-radius:12px;display:grid;place-items:center;font-weight:900}
+.why{grid-template-columns:repeat(4,minmax(0,1fr))}
+.whyitem{text-align:left}.whyitem span{display:inline-grid;place-items:center;width:50px;height:50px;border-radius:15px;background:rgba(255,189,24,.1);font-size:25px}
+.tarif{max-width:900px;margin:auto;text-align:left;padding:clamp(18px,3vw,30px);border-radius:23px}
+#tarifs{background:radial-gradient(ellipse at 50% 0%,rgba(255,189,24,.07),transparent 55%),#0a0c0f}
+.result{font-size:36px;font-weight:900;color:var(--gold);margin:12px 0}
+.cta{background:linear-gradient(115deg,#f5b51b,#ffcf55 65%,#e99a00);color:#16120a;border-radius:24px;padding:clamp(25px,4vw,45px);box-shadow:0 18px 45px rgba(255,185,0,.12)}
+.cta h2{font-size:clamp(25px,3vw,34px);margin:0 0 10px}.cta p{color:#40310d;line-height:1.65}
+.cta .btn{background:#11151b;color:#fff}
+.faq details{margin:10px 0;padding:19px 22px}.faq summary{font-weight:750;cursor:pointer}.faq .answer{padding-top:12px}
+footer{padding:32px 0;border-top:1px solid var(--line);color:#858b95;font-size:12px}
+.wa{box-shadow:0 8px 24px rgba(37,211,102,.24);border:3px solid #090a0c}
+.map-wrapper{border:1px solid rgba(255,189,24,.45);border-radius:18px}
+.search-input{background:#0e1116;border:1px solid #363c46;border-radius:12px;padding:15px;color:#fff}
+.search-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(255,189,24,.1)}
+.gps-btn{background:#171b21;border:1px solid rgba(255,189,24,.45);border-radius:11px}
+.schedule-option{background:#15191f;border-color:#363c46;border-radius:11px}
+.schedule-option:has(input:checked){background:rgba(255,189,24,.09);border-color:var(--gold)}
+.price-table-wrapper{background:#11151b;border-color:#303640}.price-table th{background:#1b2028}
+@media(max-width:900px){
+  nav{height:74px}.links{display:none}
+  .hero{padding:54px 0}.hero-layout{grid-template-columns:1fr;gap:30px}
+  .hero-copy{max-width:720px}.hero-visual{max-width:650px;width:100%;margin:auto}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .why{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:620px){
+  .c{width:90%}nav{height:68px}.brand img{width:145px;max-height:49px}
+  nav>div:last-child{gap:4px!important}.nav .btn{padding:9px 10px}
+  .btn{padding:11px 12px;font-size:12px}
+  .hero{padding:38px 0 42px}.hero-layout{gap:25px}
+  .hero-copy h1{font-size:clamp(39px,11vw,53px);letter-spacing:-1.9px;margin:20px 0 14px}
+  .hero-lead{font-size:14px;line-height:1.7}.hero-promise{font-size:13px}
+  .hero-proof{gap:12px;margin-top:23px;font-size:10px}
+  .hero-visual{padding:17px;border-radius:21px}.scooter-stage{height:170px}
+  .scooter-ring{width:150px;height:150px}.scooter-icon{font-size:115px}
+  .delivery-tag{right:7%;top:25px}
+  section{padding:56px 0}.cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+  .card,.step,.whyitem{padding:17px;border-radius:15px}.card h3{font-size:14px}.card p{font-size:12px}
+  .icon{width:44px;height:44px;font-size:22px}
+  .steps,.why{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+  .title{font-size:27px}.sub{font-size:13px;margin-bottom:25px}
+  .cta{padding:24px;border-radius:19px}.cta h2{font-size:25px}
+  .tarif{padding:16px 13px}.map-wrapper{border-radius:13px}
+  .wa{right:15px;bottom:17px;width:54px;height:54px}
+}
+@media(max-width:370px){
+  .brand img{width:125px}.hero-actions{align-items:stretch;flex-direction:column}.hero-actions .btn{text-align:center}
+  .cards,.steps,.why{grid-template-columns:1fr}.hours-row{font-size:11px}
+}
+
 </style>
 </head>
 <body>
@@ -181,102 +296,42 @@ border: 2px solid #ffb900; transition: transform 0.2s;
 </header>
 
 <section class="hero">
-<div class="c">
-<div class="poster-container">
-<svg viewBox="0 0 1000 720" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="background:#090909; font-family:Arial, sans-serif; border-radius:18px; border:1px solid #333; box-shadow:0 12px 40px rgba(0,0,0,0.8); direction: ltr;">
-<rect width="1000" height="720" fill="#0c0c0c" rx="18"/>
-<path d="M 480 0 L 1000 0 L 1000 720 L 380 720 Z" fill="#141414"/>
-<circle cx="750" cy="280" r="220" fill="#ffb900" opacity="0.04"/>
-
-<g transform="translate(45, 45)" style="direction: ltr;">
-<text x="0" y="0" font-weight="900" font-style="italic" font-size="52" fill="#ffffff" text-anchor="start">JibLi-<tspan fill="#ffb900">vraison</tspan></text>
-<line x1="0" y1="18" x2="380" y2="18" stroke="#ffb900" stroke-width="4" stroke-linecap="round"/>
-<text x="0" y="44" id="svg-sub" font-weight="bold" font-size="15" fill="#aaa" letter-spacing="1" text-anchor="start" data-key="svg-sub">SERVICE DE COURSIER À MOTO</text>
-</g>
-
-<!-- Cadre Jaune -->
-<g id="service-hours-panel" transform="translate(45, 125)" style="direction: ltr;">
-<rect width="420" height="180" fill="#171717" stroke="#ffb900" stroke-width="2" rx="14"/>
-<rect x="0" y="0" width="7" height="180" fill="#ffb900" rx="3"/>
-<text x="24" y="31" id="svg-disp-title" font-weight="900" font-size="21" fill="#ffb900" letter-spacing="0.6" text-anchor="start">HORAIRES DE SERVICE</text>
-<line x1="24" y1="44" x2="396" y2="44" stroke="#555" stroke-width="1"/>
-<text x="24" y="70" font-weight="bold" font-size="15" fill="#aaa" letter-spacing="0.2" text-anchor="start">RÉCEPTION DES MESSAGES WHATSAPP</text>
-<text x="396" y="70" font-weight="900" font-size="19" fill="#fff" text-anchor="end">24h/24</text>
-<text x="24" y="99" font-weight="bold" font-size="15" fill="#aaa" letter-spacing="0.2" text-anchor="start">CONFIRMATION DES COMMANDES</text>
-<text x="396" y="99" font-weight="900" font-size="19" fill="#fff" text-anchor="end">08h – 23h</text>
-<line x1="24" y1="113" x2="396" y2="113" stroke="#555" stroke-width="1"/>
-<text x="24" y="136" font-weight="bold" font-size="15" fill="#ffb900" letter-spacing="0.2" text-anchor="start">HORAIRES DE LIVRAISON</text>
-<text x="24" y="157" font-weight="bold" font-size="16" fill="#fff" text-anchor="start">Lun–Ven : 16h – 00h</text>
-<text x="396" y="157" font-weight="bold" font-size="16" fill="#fff" text-anchor="end">Sam : 12h–00h  |  Dim : 10h–00h</text>
-</g>
-
-<!-- Badges -->
-<g transform="translate(45, 295)" style="direction: ltr;">
-<rect x="0" y="0" width="130" height="75" fill="#181818" stroke="#2c2c2c" rx="12"/>
-<text x="65" y="28" font-size="22" text-anchor="middle">⚡</text>
-<text x="65" y="52" id="svg-badge-1" font-weight="bold" font-size="11" fill="#fff" text-anchor="middle" data-key="svg-badge-1">LIVRAISON RAPIDE</text>
-
-<rect x="145" y="0" width="130" height="75" fill="#181818" stroke="#2c2c2c" rx="12"/>
-<text x="210" y="28" font-size="22" text-anchor="middle">🔒</text>
-<text x="210" y="52" id="svg-badge-2" font-weight="bold" font-size="11" fill="#fff" text-anchor="middle" data-key="svg-badge-2">SÉCURISÉE &amp; FIABLE</text>
-
-<rect x="290" y="0" width="130" height="75" fill="#181818" stroke="#2c2c2c" rx="12"/>
-<text x="355" y="28" font-size="22" text-anchor="middle">🌙</text>
-<text x="355" y="52" id="svg-badge-3" font-weight="bold" font-size="11" fill="#fff" text-anchor="middle" data-key="svg-badge-3">SERVICE NOCTURNE</text>
-</g>
-
-<!-- Tous vos besoins -->
-<g transform="translate(45, 395)" style="direction: ltr;">
-<text x="0" y="18" id="svg-serv-head" font-weight="900" font-size="14" fill="#ffb900" letter-spacing="0.5" text-anchor="start" data-key="svg-serv-head">TOUS VOS BESOINS, UNE SEULE LIVRAISON</text>
-
-<g transform="translate(0, 32)">
-<rect x="0" y="0" width="202" height="48" fill="#161616" stroke="#282828" rx="8"/>
-<text x="14" y="30" font-size="18" text-anchor="start">🛒</text>
-<text x="44" y="29" id="svg-s1" font-weight="bold" font-size="13" fill="#eee" text-anchor="start" data-key="svg-s1">E-Commerce</text>
-
-<rect x="212" y="0" width="202" height="48" fill="#161616" stroke="#282828" rx="8"/>
-<text x="226" y="30" font-size="18" text-anchor="start">🍔</text>
-<text x="256" y="29" id="svg-s2" font-weight="bold" font-size="13" fill="#eee" text-anchor="start" data-key="svg-s2">Restaurants</text>
-
-<rect x="0" y="56" width="202" height="48" fill="#161616" stroke="#282828" rx="8"/>
-<text x="14" y="86" font-size="18" text-anchor="start">💊</text>
-<text x="44" y="85" id="svg-s3" font-weight="bold" font-size="13" fill="#eee" text-anchor="start" data-key="svg-s3">Pharmacie</text>
-
-<rect x="212" y="56" width="202" height="48" fill="#161616" stroke="#282828" rx="8"/>
-<text x="226" y="86" font-size="18" text-anchor="start">📦</text>
-<text x="256" y="85" id="svg-s4" font-weight="bold" font-size="12" fill="#eee" text-anchor="start" data-key="svg-s4">Petits Colis &amp; Courses</text>
-</g>
-</g>
-
-<!-- Moto Graphic -->
-<g transform="translate(520, 100)" style="direction: ltr;">
-<circle cx="210" cy="210" r="170" fill="#1a1a1a" stroke="#ffb900" stroke-width="2" stroke-dasharray="8,8"/>
-<text x="200" y="250" font-size="180" text-anchor="middle">🛵</text>
-
-<g transform="translate(265, 90)">
-<rect width="110" height="90" fill="#ffb900" rx="12"/>
-<text x="55" y="38" font-weight="900" font-size="14" fill="#111" text-anchor="middle">JibLi-</text>
-<text x="55" y="58" font-weight="900" font-size="14" fill="#111" text-anchor="middle">vraison</text>
-<text x="55" y="78" font-size="16" text-anchor="middle">📍</text>
-</g>
-</g>
-
-<!-- CTA Footer -->
-<g transform="translate(45, 620)" style="direction: ltr;">
-<rect width="910" height="55" fill="#181818" stroke="#ffb900" stroke-width="2" rx="14"/>
-<text x="25" y="34" id="svg-cta" font-weight="bold" font-size="15" fill="#fff" text-anchor="start" data-key="svg-cta">REJOIGNEZ-NOUS DÈS MAINTENANT</text>
-<a href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison" target="_blank" style="cursor:pointer">
-<rect x="620" y="10" width="270" height="35" fill="#25d366" rx="8"/>
-<text x="755" y="33" font-weight="900" font-size="18" fill="#fff" text-anchor="middle">📲 06 34 08 45 43</text>
-</a>
-</g>
-</svg>
-</div>
-
-<div class="hero-actions">
-<a class="btn yellow" id="btn-hero-wa" href="#tarifs" data-key="btn-hero-cmd">Commander ma livraison</a>
-<a class="btn dark" href="tel:+212634084543" style="direction: ltr;">📞 06 34 08 45 43</a>
-</div>
+<div class="c hero-layout">
+  <div class="hero-copy">
+    <div class="hero-eyebrow"><span class="eyebrow-dot"></span><span data-key="hero-eyebrow">SERVICE DE LIVRAISON À KÉNITRA</span></div>
+    <h1 data-key="hero-title">Vos livraisons, <em>en toute simplicité.</em></h1>
+    <p class="hero-lead" data-key="hero-lead">Colis, achats, repas et courses du quotidien : votre coursier à moto vous accompagne à Kénitra.</p>
+    <p class="hero-promise" data-key="hero-promise">Quand les autres s’arrêtent, JibLi-vraison continue.</p>
+    <div class="hero-actions">
+      <a class="btn yellow hero-main-btn" id="btn-hero-wa" href="#tarifs" data-key="btn-hero-cmd">Commander ma livraison <span aria-hidden="true">↗</span></a>
+      <a class="btn dark hero-call-btn" href="tel:+212634084543">☎ <span dir="ltr">06 34 08 45 43</span></a>
+    </div>
+    <div class="hero-proof">
+      <span><b>01</b> <span data-key="hero-proof-1">Prix estimé avant commande</span></span>
+      <span><b>02</b> <span data-key="hero-proof-2">Commande via WhatsApp</span></span>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="visual-glow"></div>
+    <div class="visual-kicker"><span>🛵</span><span data-key="hero-visual-label">VOTRE COURSIER À KÉNITRA</span></div>
+    <div class="scooter-stage" aria-hidden="true">
+      <div class="scooter-ring"></div>
+      <div class="scooter-icon">🛵</div>
+      <div class="delivery-tag"><span>📦</span><b>JibLi</b></div>
+      <div class="speed-line speed-line-one"></div><div class="speed-line speed-line-two"></div>
+    </div>
+    <div class="service-hours-card" id="service-hours-panel">
+      <div class="hours-card-head"><div><span class="hours-overline" data-key="hero-hours-overline">DISPONIBILITÉ</span><h2 data-key="svg-disp-title">Nos horaires</h2></div><span class="hours-live-dot"></span></div>
+      <div class="hours-row"><span data-key="hero-wa-label">Messages WhatsApp</span><strong>24h/24</strong></div>
+      <div class="hours-row"><span data-key="hero-confirm-label">Confirmation des commandes</span><strong>08h – 23h</strong></div>
+      <div class="hours-divider"></div>
+      <div class="hours-delivery-title" data-key="hero-delivery-label">HORAIRES DE LIVRAISON</div>
+      <div class="hours-row"><span data-key="hero-weekdays">Lundi – Vendredi</span><strong>16h – 00h</strong></div>
+      <div class="hours-row"><span data-key="hero-saturday">Samedi</span><strong>12h – 00h</strong></div>
+      <div class="hours-row"><span data-key="hero-sunday">Dimanche</span><strong>10h – 00h</strong></div>
+      <p id="service-hours" class="hours-status">Messages WhatsApp reçus 24h/24. Confirmation des commandes : 08h00–23h00.</p>
+    </div>
+  </div>
 </div>
 </section>
 
@@ -442,6 +497,7 @@ const translations = {
 fr: {
 "nav-services": "Services", "nav-tarifs": "Tarifs", "nav-comment": "Comment ça marche", "nav-pourquoi": "Pourquoi nous", "nav-faq": "FAQ",
 "btn-hero-cmd": "Commander ma livraison",
+"hero-eyebrow":"SERVICE DE LIVRAISON À KÉNITRA","hero-title":"Vos livraisons, <em>en toute simplicité.</em>","hero-lead":"Colis, achats, repas et courses du quotidien : votre coursier à moto vous accompagne à Kénitra.","hero-promise":"Quand les autres s’arrêtent, JibLi-vraison continue.","hero-proof-1":"Prix estimé avant commande","hero-proof-2":"Commande via WhatsApp","hero-visual-label":"VOTRE COURSIER À KÉNITRA","hero-hours-overline":"DISPONIBILITÉ","hero-wa-label":"Messages WhatsApp","hero-confirm-label":"Confirmation des commandes","hero-delivery-label":"HORAIRES DE LIVRAISON","hero-weekdays":"Lundi – Vendredi","hero-saturday":"Samedi","hero-sunday":"Dimanche",
 "btn-wa": "Commander sur WhatsApp", "srv-title": "Tous vos besoins, une seule livraison", "srv-sub": "Un service local pensé pour Kénitra.",
 "srv-1-t": "E-commerce", "srv-1-d": "Livraison de vos commandes en ligne.",
 "srv-2-t": "Restaurants", "srv-2-d": "Vos repas livrés rapidement.",
@@ -474,6 +530,7 @@ fr: {
 ar: {
 "nav-services": "الخدمات", "nav-tarifs": "الأسعار", "nav-comment": "كيف نشتغل", "nav-pourquoi": "لماذا نحن", "nav-faq": "أسئلة شائعة",
 "btn-hero-cmd": "طلب التوصيل",
+"hero-eyebrow":"خدمة التوصيل بالقنيطرة","hero-title":"توصيلاتك، <em>بكل سهولة.</em>","hero-lead":"الطرود والمشتريات والوجبات واحتياجاتك اليومية: ساعي التوصيل بالدراجة النارية رهن إشارتك بالقنيطرة.","hero-promise":"ملي كيوقفو الآخرين، JibLi-vraison كتواصل.","hero-proof-1":"الثمن التقديري قبل الطلب","hero-proof-2":"الطلب عبر واتساب","hero-visual-label":"ساعي التوصيل ديالك بالقنيطرة","hero-hours-overline":"أوقات الخدمة","hero-wa-label":"رسائل واتساب","hero-confirm-label":"تأكيد الطلبات","hero-delivery-label":"أوقات التوصيل","hero-weekdays":"الاثنين – الجمعة","hero-saturday":"السبت","hero-sunday":"الأحد",
 "btn-wa": "اطلب عبر واتساب", "srv-title": "جميع احتياجاتك، توصيلة واحدة", "srv-sub": "خدمة محلية مصممة لمدينة القنيطرة.",
 "tarif-title": "طلب التوصيل", "tarif-sub": "اختر العناوين من الخريطة أو ابحث بالاسم.",
 "lbl-dep": "🚦🟢 مكان الانطلاق", "lbl-dest": "🚦🔴 الوجهة",
@@ -482,6 +539,7 @@ ar: {
 dar: {
 "nav-services": "الخدمات", "nav-tarifs": "الأثمنة", "nav-comment": "كيفاش كانديرو", "nav-pourquoi": "علاش إحنا", "nav-faq": "الأسئلة",
 "btn-hero-cmd": "طلب التوصيل ديالك",
+"hero-eyebrow":"خدمة التوصيل فالقنيطرة","hero-title":"التوصيل ديالك، <em>بكل سهولة.</em>","hero-lead":"الطرود، الشرا، الماكلة وقضيات النهار: ساعي التوصيل بالموتور رهن الإشارة ديالك فالقنيطرة.","hero-promise":"ملي كيوقفو الآخرين، JibLi-vraison كتكمل.","hero-proof-1":"الثمن كيبان قبل الطلب","hero-proof-2":"الطلب عبر واتساب","hero-visual-label":"ساعي التوصيل ديالك فالقنيطرة","hero-hours-overline":"أوقات الخدمة","hero-wa-label":"رسائل واتساب","hero-confirm-label":"تأكيد الطلبات","hero-delivery-label":"أوقات التوصيل","hero-weekdays":"الاثنين – الجمعة","hero-saturday":"السبت","hero-sunday":"الأحد",
 "btn-wa": "طلب ف الواتساب", "srv-title": "كاع احتياجاتك ف تسخيرة وحدة", "srv-sub": "خدمة محلية مصاوبة للقنيطرة.",
 "tarif-title": "طلب التوصيل ديالك", "tarif-sub": "عزل البلايص ف الخريطة أو قلب بالسمية.",
 }

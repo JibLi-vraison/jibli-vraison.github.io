@@ -577,6 +577,8 @@ function updateServiceAvailability() {
 // notamment pour une livraison le lendemain. Les demandes sont traitées de 08h00 à 23h00.
 
 window.onload = function() {
+    setOrderEnabled(false);
+    resetRouteAndPrice();
     const moroccoDate = getMoroccoClock().date;
     document.getElementById("delivery-date").min = moroccoDate;
     initGoogleMap();
@@ -802,9 +804,7 @@ function clearField(isDep) {
         destName = "";
         if (destMarker) { destMarker.setMap(null); destMarker = null; }
     }
-    directionsRenderer.set('directions', null);
-    document.getElementById("result").innerText = "— DH";
-    document.getElementById("status").innerText = "Sélectionnez les lieux pour afficher le tarif.";
+    resetRouteAndPrice();
 }
 
 function useCurrentLocation(isDep) {

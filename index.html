@@ -226,6 +226,8 @@ section:nth-of-type(odd):not(.hero){background:#0c0e12}
 .faq details{margin:10px 0;padding:19px 22px}.faq summary{font-weight:750;cursor:pointer}.faq .answer{padding-top:12px}
 footer{padding:32px 0;border-top:1px solid var(--line);color:#858b95;font-size:12px}
 .wa{box-shadow:0 8px 24px rgba(37,211,102,.24);border:3px solid #090a0c}
+.wa svg{width:31px;height:31px;display:block}
+a[aria-disabled="true"]{cursor:not-allowed}
 .map-wrapper{border:1px solid rgba(255,189,24,.45);border-radius:18px}
 .search-input{background:#0e1116;border:1px solid #363c46;border-radius:12px;padding:15px;color:#fff}
 .search-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(255,189,24,.1)}
@@ -245,12 +247,12 @@ footer{padding:32px 0;border-top:1px solid var(--line);color:#858b95;font-size:1
   .c{width:90%}nav{height:68px}.brand img{width:145px;max-height:49px}
   nav>div:last-child{gap:4px!important}.nav .btn{padding:9px 10px}
   .btn{padding:11px 12px;font-size:12px}
-  .hero{padding:38px 0 42px}.hero-layout{gap:25px}
+  .hero{padding:30px 0 34px}.hero-layout{gap:21px}
   .hero-copy h1{font-size:clamp(39px,11vw,53px);letter-spacing:-1.9px;margin:20px 0 14px}
   .hero-lead{font-size:14px;line-height:1.7}.hero-promise{font-size:13px}
   .hero-proof{gap:12px;margin-top:23px;font-size:10px}
   .hero-visual{padding:17px;border-radius:21px}.scooter-stage{height:225px;padding:6px;margin-bottom:14px}.scooter-image{max-height:205px}
-  section{padding:56px 0}.cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+  section{padding:46px 0}.cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
   .card,.step,.whyitem{padding:17px;border-radius:15px}.card h3{font-size:14px}.card p{font-size:12px}
   .icon{width:44px;height:44px;font-size:22px}
   .steps,.why{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
@@ -426,7 +428,7 @@ footer{padding:32px 0;border-top:1px solid var(--line);color:#858b95;font-size:1
     <thead>
       <tr>
         <th data-key="th-dist">Distance</th>
-        <th data-key="th-eve">Soir (16h - 21h)</th>
+        <th data-key="th-eve">Tarif normal (selon horaires)</th>
         <th data-key="th-night">Nuit (21h - 00h)</th>
       </tr>
     </thead>
@@ -464,7 +466,7 @@ footer{padding:32px 0;border-top:1px solid var(--line);color:#858b95;font-size:1
 </div></div></section>
 
 <footer><div class="c"><b>JibLi-vraison</b> — <span data-key="footer-text">Service de coursier à moto à Kénitra.</span> <span style="float:right">© 2026</span></div></footer>
-<a class="wa" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison">☏</a>
+<a class="wa" href="https://wa.me/212634084543?text=Bonjour%20JibLi-vraison%2C%20je%20souhaite%20une%20livraison" aria-label="Contacter JibLi-vraison sur WhatsApp" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16.02 3.2A12.7 12.7 0 0 0 5.1 22.4L3.4 28.7l6.45-1.68A12.7 12.7 0 1 0 16.02 3.2Zm0 23.1c-1.95 0-3.86-.52-5.53-1.5l-.4-.24-3.82 1 1.02-3.72-.26-.42a10.47 10.47 0 1 1 8.99 4.88Zm5.75-7.84c-.31-.16-1.84-.91-2.13-1.02-.29-.1-.5-.16-.71.16-.21.31-.81 1.02-.99 1.23-.18.21-.36.24-.67.08-.31-.16-1.32-.49-2.51-1.55-.93-.83-1.56-1.85-1.74-2.16-.18-.31-.02-.48.14-.64.14-.14.31-.36.47-.54.16-.18.21-.31.31-.52.1-.21.05-.39-.03-.55-.08-.16-.71-1.7-.97-2.32-.26-.61-.52-.53-.71-.54h-.61c-.21 0-.55.08-.84.39-.29.31-1.1 1.07-1.1 2.61s1.13 3.03 1.29 3.24c.16.21 2.22 3.39 5.38 4.75.75.32 1.34.51 1.8.65.76.24 1.45.2 2 .12.61-.09 1.84-.75 2.1-1.48.26-.73.26-1.36.18-1.49-.08-.13-.29-.21-.6-.37Z"/></svg></a>
 
 <script>
 let depCoord = null, destCoord = null, depName = '', destName = '';
@@ -494,7 +496,7 @@ fr: {
 "hero-eyebrow":"SERVICE DE LIVRAISON À KÉNITRA","hero-title":"Vos livraisons, <em>en toute simplicité.</em>","hero-lead":"Colis, achats, repas et courses du quotidien : votre coursier à moto vous accompagne à Kénitra.","hero-promise":"Quand les autres s’arrêtent, JibLi-vraison continue.","btn-hero-cmd":"Commander ma livraison","hero-proof-1":"Prix estimé avant commande","hero-proof-2":"Commande via WhatsApp","hero-visual-label":"VOTRE COURSIER À KÉNITRA","hero-hours-overline":"DISPONIBILITÉ","svg-disp-title":"Nos horaires","hero-wa-label":"Messages WhatsApp","hero-confirm-label":"Confirmation des commandes","hero-delivery-label":"HORAIRES DE LIVRAISON","hero-weekdays":"Lundi – Vendredi","hero-saturday":"Samedi","hero-sunday":"Dimanche",
 "srv-title":"Tous vos besoins, une seule livraison","srv-sub":"Un service local pensé pour Kénitra.","srv-1-t":"E-commerce","srv-1-d":"Livraison de vos commandes en ligne.","srv-2-t":"Restaurants","srv-2-d":"Vos repas livrés rapidement.","srv-3-t":"Pharmacie","srv-3-d":"Produits de pharmacie selon les conditions applicables.","srv-4-t":"Courses diverses","srv-4-d":"Petits achats et besoins du quotidien.","srv-5-t":"Petits colis","srv-5-d":"Un service de proximité pour vos petits envois.","srv-6-t":"Service nocturne","srv-6-d":"Disponible en soirée et nuit.",
 "how-title":"Comment ça marche ?","how-sub":"Commander en 4 étapes simples.","step-1-t":"Choisissez","step-1-d":"Sélectionnez votre départ et votre destination.","step-2-t":"Calculez","step-2-d":"Le tarif s'affiche automatiquement.","step-3-t":"Envoyez","step-3-d":"Validez votre demande directement sur WhatsApp.","step-4-t":"Recevez","step-4-d":"Votre coursier livre votre commande rapidement.",
-"tarif-title":"Commander ma livraison","tarif-sub":"Choisissez vos adresses sur la carte ou recherchez par nom.","lbl-dep":"🚦🟢 Départ","lbl-dest":"🚦🔴 Destination","map-moving":"Déplacez la carte...","map-use":"Utiliser ce point ›","status-default":"Sélectionnez les lieux pour afficher le tarif.","btn-wa":"Commander sur WhatsApp","acc-btn":"📊 Afficher le détail des tarifs","th-dist":"Distance","th-eve":"Soir (16h - 21h)","th-night":"Nuit (21h - 00h)","tbl-na":"Service non disponible",
+"tarif-title":"Commander ma livraison","tarif-sub":"Choisissez vos adresses sur la carte ou recherchez par nom.","lbl-dep":"🚦🟢 Départ","lbl-dest":"🚦🔴 Destination","map-moving":"Déplacez la carte...","map-use":"Utiliser ce point ›","status-default":"Sélectionnez les lieux pour afficher le tarif.","btn-wa":"Commander sur WhatsApp","acc-btn":"📊 Afficher le détail des tarifs","th-dist":"Distance","th-eve":"Tarif normal","th-night":"Nuit (21h - 00h)","tbl-na":"Service non disponible",
 "why-title":"Pourquoi choisir JibLi-vraison ?","why-sub":"Un service pensé pour vous faciliter la vie.","why-1-t":"Rapidité","why-1-d":"Livraison directe à moto dans Kénitra.","why-2-t":"Transparence","why-2-d":"Calcul clair du tarif avant commande.","why-3-t":"Simplicité","why-3-d":"Tout se fait en quelques clics via WhatsApp.","why-4-t":"Disponibilité","why-4-d":"Commandes : tous les jours de 08h00 à 23h00. Livraisons : Lun-Ven 16h-00h, Sam 12h-00h, Dim 10h-00h.",
 "cta-t":"Besoin d'une livraison à Kénitra ?","cta-d":"Écrivez-nous sur WhatsApp à tout moment. Les demandes sont confirmées de 08h00 à 23h00.","cta-b":"Commander maintenant",
 "faq-1-q":"Comment commander ?","faq-1-a":"Choisissez le lieu de départ et la destination (ou entrez les adresses), puis cliquez sur le bouton WhatsApp.","faq-2-q":"Où faites-vous les livraisons ?","faq-2-a":"Le service est destiné aux livraisons dans la zone de couverture jusqu'à 13 km.","faq-3-q":"Comment connaître le prix ?","faq-3-a":"Le prix est calculé automatiquement en fonction du kilométrage exact et de l'heure.","faq-4-q":"Quels sont vos horaires ?","faq-4-a":"Réception des messages WhatsApp : 24h/24.<br>Confirmation des commandes : tous les jours de 08h00 à 23h00.<br>Livraisons : lundi au vendredi de 16h00 à 00h00, samedi de 12h00 à 00h00 et dimanche de 10h00 à 00h00.",
@@ -699,6 +701,16 @@ function confirmCenterPoint() {
 }
 
 function onSearchInput(val, isDep) {
+    const selectedName = isDep ? depName : destName;
+    if (isDep && depCoord && val !== selectedName) {
+        depCoord = null; depName = "";
+        if (depMarker) { depMarker.setMap(null); depMarker = null; }
+        resetRouteAndPrice("Choisissez un départ valide dans la liste ou sur la carte.");
+    } else if (!isDep && destCoord && val !== selectedName) {
+        destCoord = null; destName = "";
+        if (destMarker) { destMarker.setMap(null); destMarker = null; }
+        resetRouteAndPrice("Choisissez une destination valide dans la liste ou sur la carte.");
+    }
     const clearBtnId = isDep ? "clear-depart" : "clear-dest";
     document.getElementById(clearBtnId).style.display = val.length > 0 ? "block" : "none";
     
@@ -748,6 +760,8 @@ function selectPrediction(placeId, description, isDep) {
             
             const checkInZone = google.maps.geometry.poly.containsLocation(loc, kenitraPolygon);
             if (!checkInZone) {
+                if (isDep) { depCoord = null; depName = ""; } else { destCoord = null; destName = ""; }
+                resetRouteAndPrice("Ce lieu est hors de la zone de livraison.");
                 alert(currentLang === 'ar' || currentLang === 'dar' ? "هذا الموقع خارج نطاق الخدمة!" : "Ce lieu est hors zone de service !");
                 return;
             }
@@ -833,8 +847,31 @@ function useCurrentLocation(isDep) {
     }
 }
 
+function setOrderEnabled(enabled) {
+    const orderLink = document.getElementById("order");
+    if (!orderLink) return;
+    orderLink.setAttribute("aria-disabled", enabled ? "false" : "true");
+    orderLink.style.opacity = enabled ? "1" : "0.55";
+    orderLink.style.pointerEvents = enabled ? "auto" : "none";
+    orderLink.tabIndex = enabled ? 0 : -1;
+    if (!enabled) orderLink.href = "#";
+}
+
+function resetRouteAndPrice(message = "Sélectionnez les lieux pour afficher le tarif.") {
+    if (directionsRenderer) directionsRenderer.set("directions", null);
+    document.getElementById("result").innerText = "— DH";
+    document.getElementById("status").innerText = message;
+    setOrderEnabled(false);
+}
+
 function calculateRouteAndPrice() {
-    if (!depCoord || !destCoord) return;
+    if (!depCoord || !destCoord) {
+        resetRouteAndPrice();
+        return;
+    }
+
+    setOrderEnabled(false);
+    document.getElementById("status").innerText = "Calcul de l’itinéraire…";
 
     directionsService.route({
         origin: depCoord,
@@ -851,7 +888,7 @@ function calculateRouteAndPrice() {
             const distanceKm = distanceMeters / 1000;
             applyPricingLogic(distanceKm);
         } else {
-            document.getElementById("status").innerText = "Impossible de calculer l'itinéraire.";
+            resetRouteAndPrice("Impossible de calculer l’itinéraire. Vérifiez les lieux choisis.");
         }
     });
 }
@@ -937,9 +974,7 @@ function applyPricingLogic(distanceKm) {
     if (!slot.valid) {
         document.getElementById("result").innerText = "— DH";
         document.getElementById("status").innerText = slot.message;
-        orderLink.href = "#";
-        orderLink.setAttribute("aria-disabled","true");
-        orderLink.style.opacity = "0.55";
+        setOrderEnabled(false);
         return;
     }
     const isNight = slot.isNight;
@@ -966,11 +1001,12 @@ function applyPricingLogic(distanceKm) {
     } else {
         document.getElementById("result").innerText = "Non dispo";
         document.getElementById("status").innerText = "Distance supérieure à 13 km (Service non disponible).";
+        setOrderEnabled(false);
         return;
     }
 
     document.getElementById("result").innerText = price + " DH";
-    document.getElementById("status").innerText = `${slot.mode === "now" ? "Livraison immédiate" : "Livraison prévue le " + slot.date.split("-").reverse().join("/") + " à " + slot.time} · Distance : ${distanceKm.toFixed(1)} km · ${isNight ? 'Tarif Nuit' : 'Tarif Soir'}`;
+    document.getElementById("status").innerText = `${slot.mode === "now" ? "Livraison immédiate" : "Livraison prévue le " + slot.date.split("-").reverse().join("/") + " à " + slot.time} · Distance : ${distanceKm.toFixed(1)} km · ${isNight ? 'Tarif Nuit' : 'Tarif normal'}`;
 
     const depInputValue = document.getElementById("input-depart").value;
     const destInputValue = document.getElementById("input-dest").value;
@@ -981,8 +1017,7 @@ function applyPricingLogic(distanceKm) {
     const waText = `Bonjour JibLi-vraison, je souhaite commander une livraison.%0A%0A🚚 Type : ${encodeURIComponent(slot.mode === "now" ? "Livraison sur place" : "Livraison à l’avance")}%0A${slot.mode === "later" ? "%0A📅 Date souhaitée : " + encodeURIComponent(slot.date) + "%0A🕒 Heure souhaitée : " + encodeURIComponent(slot.time) : ""}%0A%0A📍 Départ : ${encodeURIComponent(depInputValue || depName)}%0A🔗 Map Départ : ${encodeURIComponent(depMapLink)}%0A%0A🏁 Destination : ${encodeURIComponent(destInputValue || destName)}%0A🔗 Map Destination : ${encodeURIComponent(destMapLink)}%0A%0A📏 Distance : ${distanceKm.toFixed(1)} km%0A💰 Prix estimé : ${price} DH (${isNight ? 'Tarif Nuit' : 'Tarif Soir'})`;
     
     orderLink.href = `https://wa.me/212634084543?text=${waText}`;
-    orderLink.removeAttribute("aria-disabled");
-    orderLink.style.opacity = "1";
+    setOrderEnabled(true);
 }
 
 function toggleAccordion(btn) {
